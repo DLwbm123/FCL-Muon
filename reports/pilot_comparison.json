@@ -1,0 +1,135 @@
+{
+  "scope": "CIFAR100 first3 tasks, seed0 alpha.05 n10, shared manifest; standard-method configurations",
+  "warning": "Single seed; LoRM differs in rank, module positions, head, precision, optimizer and statistics overhead.",
+  "methods": {
+    "mulora_fl": {
+      "status": "completed",
+      "final_metrics": {
+        "final_micro": 0.6716666666666666,
+        "new_accuracy": 0.557,
+        "old_micro": 0.729,
+        "average_forgetting": 0.023999999999999966
+      },
+      "completion_evidence": {
+        "qualified": true,
+        "client_records": 150,
+        "exit_code": 0,
+        "checkpoint_task": 3,
+        "checkpoint_round": 0,
+        "initialized": false,
+        "matrix_matches_checkpoint": true,
+        "purpose": "Offline saved-state completion and full-epoch budget audit; no new model evaluation"
+      },
+      "stage_new_accuracy": [
+        0.833,
+        0.673,
+        0.557
+      ],
+      "matrix": [
+        [
+          0.833
+        ],
+        [
+          0.793,
+          0.673
+        ],
+        [
+          0.795,
+          0.663,
+          0.557
+        ]
+      ],
+      "elapsed_seconds": 2311.7527475357056,
+      "difference_vs_lorm_percentage_points": {
+        "final_micro": -21.566666666666666,
+        "new_accuracy": -38.29999999999999,
+        "old_micro": -13.200000000000001,
+        "average_forgetting": -7.750000000000002
+      }
+    },
+    "mulora_fl_fedmuon": {
+      "status": "completed",
+      "final_metrics": {
+        "final_micro": 0.4676666666666667,
+        "new_accuracy": 0.223,
+        "old_micro": 0.59,
+        "average_forgetting": 0.009500000000000008
+      },
+      "completion_evidence": {
+        "qualified": true,
+        "client_records": 150,
+        "exit_code": 0,
+        "checkpoint_task": 3,
+        "checkpoint_round": 0,
+        "initialized": false,
+        "matrix_matches_checkpoint": true,
+        "purpose": "Offline saved-state completion and full-epoch budget audit; no new model evaluation"
+      },
+      "stage_new_accuracy": [
+        0.741,
+        0.319,
+        0.223
+      ],
+      "matrix": [
+        [
+          0.741
+        ],
+        [
+          0.769,
+          0.319
+        ],
+        [
+          0.75,
+          0.43,
+          0.223
+        ]
+      ],
+      "elapsed_seconds": 2343.4153649806976,
+      "difference_vs_lorm_percentage_points": {
+        "final_micro": -41.96666666666666,
+        "new_accuracy": -71.7,
+        "old_micro": -27.1,
+        "average_forgetting": -9.199999999999998
+      }
+    },
+    "lorm_official": {
+      "status": "completed",
+      "final_metrics": {
+        "final_micro": 0.8873333333333333,
+        "new_accuracy": 0.94,
+        "old_micro": 0.861,
+        "average_forgetting": 0.10149999999999998
+      },
+      "completion_evidence": {
+        "qualified": true,
+        "client_records": 150,
+        "exit_code": 0,
+        "checkpoint_task": 3,
+        "checkpoint_round": 0,
+        "initialized": false,
+        "matrix_matches_checkpoint": true,
+        "purpose": "Offline saved-state completion and full-epoch budget audit; no new model evaluation"
+      },
+      "stage_new_accuracy": [
+        0.977,
+        0.948,
+        0.94
+      ],
+      "matrix": [
+        [
+          0.977
+        ],
+        [
+          0.875,
+          0.948
+        ],
+        [
+          0.82,
+          0.902,
+          0.94
+        ]
+      ],
+      "elapsed_seconds": 1860.724036693573
+    }
+  }
+}

@@ -10,20 +10,20 @@
   "weights": "exact IN21K identity pinned and downloaded",
   "cifar100": "official archive downloaded and torchvision built-in check passed",
   "real_smoke": "both methods completed; final task-boundary checkpoint audit passed",
-  "pilot": "MuLoRA completed; FedMuon task3/3 round1/5 running; latest complete stage is task2 with all-seen54.4%, new31.9%, old76.9%, unfinished pilot",
-  "formal": "36 runs queued; not started at latest check",
-  "results": "one completed three-task pilot, paired comparison pending; see pilot_mulora_fl_summary.json",
+  "pilot": "All three matched pilots completed, exit0 and saved-state audit passed",
+  "formal": "First of36 runs active: MuLoRA-FL CIFAR100 alpha.05 seed0 task2/10 at check",
+  "results": "See pilot_comparison.json, pilot_completion_audit.json and PILOT_COMPARISON_ZH.txt",
   "cuda_rng_resume": "passed on actual CUDA device",
   "public_delivery": {
     "repository": "https://github.com/DLwbm123/FCL-Muon",
-    "branch": "codex/fcl-baselines",
-    "scope": "implementation, fixed configs, partition manifests, audit, 2 smoke summaries; formal results pending"
+    "branch": "codex/history-spectral-v1",
+    "scope": "Implementation and audits plus three completed pilot comparisons; formal results pending"
   },
   "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
-  "last_health_check": "2026-10-25T08:43:58Z",
-  "resource_snapshot": "9.3 GiB whole-project allocated storage; both jobs inside original deadlines",
+  "last_health_check": "2026-10-25T09:22:00.797219+00:00",
+  "resource_snapshot": "13.73 GiB whole-project allocated; original run clock retained",
   "lorm_comparison": {
-    "stage": "running GPU7 task1 round2/5; fresh checkpoint and actual GPU process confirmed",
+    "stage": "Completed exit0,150 client records,final checkpoint and metrics verified",
     "protocol": "LORM_PROTOCOL.json",
     "smoke": "2 tasks x2 rounds x2 clients completed, official A/B alternation and spatial/temporal merge exercised",
     "tests": "13 passed in LoRM overlay",

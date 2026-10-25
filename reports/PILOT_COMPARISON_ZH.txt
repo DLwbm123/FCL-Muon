@@ -1,0 +1,44 @@
+三方前三任务 pilot：2026-10-25 完成核验
+
+CIFAR-100，10客户端，Dirichlet alpha=0.05，seed=0，前3任务共30类。
+相同划分清单、IN21K权重、每任务5轮×5完整本地epoch、batch16。
+每阶段均在全部已见类别中分类；表中准确率为%，遗忘为百分点。
+
+方法                         最终全类   第3任务新类   最终旧类   平均遗忘
+MuLoRA-FL                    67.17      55.70         72.90      2.40
+MuLoRA-FL + Takezawa FedMuon  46.77      22.30         59.00      0.95
+官方标准 LoRM                88.73      94.00         86.10     10.15
+
+各任务刚学完时的新类准确率：
+MuLoRA-FL：83.3 → 67.3 → 55.7
+FedMuon组合：74.1 → 31.9 → 22.3
+LoRM：97.7 → 94.8 → 94.0
+
+LoRM在这次固定pilot中保持了明显更强的新类学习能力，其最终全类准确率
+比MuLoRA-FL高21.57个百分点，比FedMuon组合高41.97个百分点。
+LoRM的旧任务确实遗忘更多：任务1从97.7降到82.0，任务2从94.8降到90.2，
+分别遗忘15.7和4.6个百分点，平均10.15。但最终旧类86.1仍高于两个基线。
+因此不能把两基线的低遗忘值单独解释为更强的持续学习能力；其初始新类
+学习水平较低，尤其FedMuon组合第2/3任务的学习表现较弱。
+FedMuon任务2从31.9升到最终43.0，按既定“历史最佳减最终”定义该任务
+遗忘为0；平均遗忘0.95也不能掩盖其最终新类只有22.3的事实。
+
+这是单seed、前三任务的标准方法比较，不是完整10任务结论，也不是单机制
+消融。LoRM的rank16、48处适配、A/B交替、线性头、AMP16、RegMean与MuLoRA
+的rank32、24处Q/V、共享RRS固定A、余弦头、FP32不同。两MuLoRA配置的算子
+尺度也按各自来源不同。不可把差异归因于单一聚合器或控制变量，也未根据
+测试分数调参。总计算和通信并未完全匹配；额外统计前向属于方法开销。
+
+完成证据：三个进程均有真实exit_code=0和COMPLETE，最终checkpoint均为
+task=3/round=0/initialized=false，矩阵与metrics一致；各150条客户端记录
+均满足完整epoch访问数和步数，划分/权重身份相同。LoRM缺少独立QUALIFICATION
+文件的问题来自已启动监督进程未加载后来新增的写入逻辑；本次离线读取
+原始日志和checkpoint补做核验、生成注明来源的收据，没有重跑或新增评估。
+复核命令：PROJECT_ROOT=<root> ENTRY_MODULE=scripts.audit_completed_pilots
+PYTHONPATH=<root>:<root>/deps CUDA_VISIBLE_DEVICES= <python> <neutral_entry>
+随后用相同环境令ENTRY_MODULE=scripts.compare_pilots生成比较表。
+
+原GPU6队列已进入36个正式run中的首个MuLoRA-FL alpha.05 seed0全10任务运行，
+本次检查已到任务2。LoRM仅此一次pilot，未扩展矩阵。新增history_spectral
+实验仍暂停等待Pro检查，不进行训练、校准或评估；其此前数值验收未通过
+的记录保留，与本表忠实基线结果分开。

@@ -1,0 +1,33 @@
+{
+  "mulora_fl": {
+    "qualified": true,
+    "client_records": 150,
+    "exit_code": 0,
+    "checkpoint_task": 3,
+    "checkpoint_round": 0,
+    "initialized": false,
+    "matrix_matches_checkpoint": true,
+    "purpose": "Offline saved-state completion and full-epoch budget audit; no new model evaluation"
+  },
+  "mulora_fl_fedmuon": {
+    "qualified": true,
+    "client_records": 150,
+    "exit_code": 0,
+    "checkpoint_task": 3,
+    "checkpoint_round": 0,
+    "initialized": false,
+    "matrix_matches_checkpoint": true,
+    "purpose": "Offline saved-state completion and full-epoch budget audit; no new model evaluation"
+  },
+  "lorm_official": {
+    "qualified": true,
+    "client_records": 150,
+    "exit_code": 0,
+    "checkpoint_task": 3,
+    "checkpoint_round": 0,
+    "initialized": false,
+    "matrix_matches_checkpoint": true,
+    "purpose": "Offline saved-state completion and full-epoch budget audit; no new model evaluation"
+  },
+  "shared_manifest_and_weights": true
+}
