@@ -1,0 +1,20 @@
+{
+  "tests/test_basic_repair.py": "10e78e3f3934c42faa204b4c3683db65d933c5fb21ab47046d35a9b4921b5956",
+  "configs/t1.json": "4fb627c23d15d11453ccc1d8eeb53cddde76e387c5040ab6755aa1fa50c8c53f",
+  "scripts/run_tests.py": "538df1dcc13d81db1b1ed20a1cd3bb7a0d01843334921f7439f323fd7814562c",
+  "scripts/basic_repair_centering.py": "7162fcc9344147f0a3015e7fb5402b1e4520451801add0546f1b318f41d259fe",
+  "scripts/basic_repair_heads.py": "cf524cc56b859b00537b46d5f5470dc6f31cb2a3009cb46c841e5e1e2d6dac4f",
+  "scripts/basic_repair_job.py": "8a8093204b1978f6badcf02290e1644838fa2859a31ad853ce7a1ca038823583",
+  "fcl/checkpoint.py": "5305758ef3ecfb9da662752c5bc885bec4fb1c50a40ab7aa23e603c37d993349",
+  "fcl/lorm_upstream.py": "213266fac6104d47859e4c7e839cc7bab23f9f45cfac5171be994a380b315cf6",
+  "fcl/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "fcl/model.py": "83c5d88f9b695f47c44478d48924b44e9041c54fe6e1fbf2353dbe626c3c3c6e",
+  "fcl/train.py": "80e70dfa728be287742f8cd7ba6fe6b86de639a65ca2de1aeeb45b1dc9234eee",
+  "fcl/lorm_train.py": "1cce71ce446927a6121ec1403f92aee55195ca84d319865b2a75ac5fa647fa1a",
+  "fcl/math.py": "4fb1b8dd6e83f3792426ae46012465316b2b4bd6e92ab5ae010de4647aa9fcbe",
+  "fcl/data.py": "f4165020e26caa8ed4b5b9c2e1704cdbce8de7b897f0acc4fd3bf1271573a17d",
+  "reports/DEPLOYMENT.json": "5de4fce3c1555f697aee5031750c7b8d86ec64200ffe4d68d8ac3d9cc0f3f1cc",
+  "research/basic_repair/FCL_Muon_basic_repair_prompt.txt": "3f064edb662c196f36117714446e617a8815bcf8f8735208877c601e1ce0aff5",
+  "research/basic_repair/fcl_basic_repair_tools.py": "7826efbb618ee632efbaa7081e9b7f05b41fc7cbf4c1952a5323afae1a6eb7fb",
+  "research/basic_repair/LOCKED_PROTOCOL.json": "93678eb8305a758edb499157f4e2bd969173cf52e377fa36a2be1fe21eea3a25"
+}

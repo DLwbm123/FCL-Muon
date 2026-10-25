@@ -1,0 +1,10 @@
+{
+  "passed": 3,
+  "seconds": 3.01,
+  "environment": "isolated frozen fcl source; CPU; no real data",
+  "tests": [
+    "reference pooling and task-block centering",
+    "unequal-client pooled head gradient equivalence",
+    "endpoint serialization RNG preservation"
+  ]
+}

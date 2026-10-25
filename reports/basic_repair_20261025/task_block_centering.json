@@ -1,0 +1,334 @@
+{
+  "self_test": {
+    "self_test": "passed",
+    "scope": "Synthetic mathematical checks; no real data/model performance",
+    "cosine_plus_logits": [
+      14.186702600281059,
+      7.398477500890205
+    ],
+    "cosine_minus_logits": [
+      -7.398477500890205,
+      -14.186702600281059
+    ],
+    "distributed_vs_pooled_ridge_max_abs": 1.3877787807814457e-16
+  },
+  "rule": "subtract every fixed task block mean; no sample task identity",
+  "no_parameters_fit": true,
+  "methods": {
+    "mulora_fl": {
+      "input_sha256": "eee94bd6ab197ad7180b04fd7136f5c2f1fc6900e1439711ea6a46f359ad6df4",
+      "original": {
+        "n": 3000,
+        "all_seen_accuracy": 0.6716666666666666,
+        "per_task": [
+          {
+            "task_zero_based": 0,
+            "n": 1000,
+            "restricted_accuracy": 0.842,
+            "all_seen_accuracy": 0.795,
+            "restricted_correct_but_other_task_wins": 47
+          },
+          {
+            "task_zero_based": 1,
+            "n": 1000,
+            "restricted_accuracy": 0.874,
+            "all_seen_accuracy": 0.663,
+            "restricted_correct_but_other_task_wins": 211
+          },
+          {
+            "task_zero_based": 2,
+            "n": 1000,
+            "restricted_accuracy": 0.851,
+            "all_seen_accuracy": 0.557,
+            "restricted_correct_but_other_task_wins": 294
+          }
+        ],
+        "task_group_confusion": [
+          [
+            900,
+            70,
+            30
+          ],
+          [
+            250,
+            693,
+            57
+          ],
+          [
+            362,
+            53,
+            585
+          ]
+        ],
+        "current_all_seen_accuracy": 0.557,
+        "current_restricted_accuracy": 0.851,
+        "current_to_first_task": 0.362,
+        "current_to_old": 0.415,
+        "old_all_seen_accuracy": 0.729,
+        "old_to_current": 0.0435
+      },
+      "centered": {
+        "n": 3000,
+        "all_seen_accuracy": 0.7383333333333333,
+        "per_task": [
+          {
+            "task_zero_based": 0,
+            "n": 1000,
+            "restricted_accuracy": 0.842,
+            "all_seen_accuracy": 0.77,
+            "restricted_correct_but_other_task_wins": 72
+          },
+          {
+            "task_zero_based": 1,
+            "n": 1000,
+            "restricted_accuracy": 0.874,
+            "all_seen_accuracy": 0.8,
+            "restricted_correct_but_other_task_wins": 74
+          },
+          {
+            "task_zero_based": 2,
+            "n": 1000,
+            "restricted_accuracy": 0.851,
+            "all_seen_accuracy": 0.645,
+            "restricted_correct_but_other_task_wins": 206
+          }
+        ],
+        "task_group_confusion": [
+          [
+            875,
+            85,
+            40
+          ],
+          [
+            76,
+            865,
+            59
+          ],
+          [
+            195,
+            60,
+            745
+          ]
+        ],
+        "current_all_seen_accuracy": 0.645,
+        "current_restricted_accuracy": 0.851,
+        "current_to_first_task": 0.195,
+        "current_to_old": 0.255,
+        "old_all_seen_accuracy": 0.785,
+        "old_to_current": 0.0495
+      },
+      "class6_to7_before": 80,
+      "class6_to7_after": 92
+    },
+    "mulora_fl_fedmuon": {
+      "input_sha256": "9f83add11813ac482952da2028ca1d16aca20e055ec130ea9b8620d95af4088c",
+      "original": {
+        "n": 3000,
+        "all_seen_accuracy": 0.4676666666666667,
+        "per_task": [
+          {
+            "task_zero_based": 0,
+            "n": 1000,
+            "restricted_accuracy": 0.765,
+            "all_seen_accuracy": 0.75,
+            "restricted_correct_but_other_task_wins": 15
+          },
+          {
+            "task_zero_based": 1,
+            "n": 1000,
+            "restricted_accuracy": 0.84,
+            "all_seen_accuracy": 0.43,
+            "restricted_correct_but_other_task_wins": 410
+          },
+          {
+            "task_zero_based": 2,
+            "n": 1000,
+            "restricted_accuracy": 0.756,
+            "all_seen_accuracy": 0.223,
+            "restricted_correct_but_other_task_wins": 533
+          }
+        ],
+        "task_group_confusion": [
+          [
+            926,
+            64,
+            10
+          ],
+          [
+            541,
+            458,
+            1
+          ],
+          [
+            709,
+            66,
+            225
+          ]
+        ],
+        "current_all_seen_accuracy": 0.223,
+        "current_restricted_accuracy": 0.756,
+        "current_to_first_task": 0.709,
+        "current_to_old": 0.775,
+        "old_all_seen_accuracy": 0.59,
+        "old_to_current": 0.0055
+      },
+      "centered": {
+        "n": 3000,
+        "all_seen_accuracy": 0.689,
+        "per_task": [
+          {
+            "task_zero_based": 0,
+            "n": 1000,
+            "restricted_accuracy": 0.765,
+            "all_seen_accuracy": 0.698,
+            "restricted_correct_but_other_task_wins": 67
+          },
+          {
+            "task_zero_based": 1,
+            "n": 1000,
+            "restricted_accuracy": 0.84,
+            "all_seen_accuracy": 0.754,
+            "restricted_correct_but_other_task_wins": 86
+          },
+          {
+            "task_zero_based": 2,
+            "n": 1000,
+            "restricted_accuracy": 0.756,
+            "all_seen_accuracy": 0.615,
+            "restricted_correct_but_other_task_wins": 141
+          }
+        ],
+        "task_group_confusion": [
+          [
+            795,
+            113,
+            92
+          ],
+          [
+            81,
+            840,
+            79
+          ],
+          [
+            162,
+            38,
+            800
+          ]
+        ],
+        "current_all_seen_accuracy": 0.615,
+        "current_restricted_accuracy": 0.756,
+        "current_to_first_task": 0.162,
+        "current_to_old": 0.2,
+        "old_all_seen_accuracy": 0.726,
+        "old_to_current": 0.0855
+      },
+      "class6_to7_before": 78,
+      "class6_to7_after": 62
+    },
+    "lorm_official": {
+      "input_sha256": "182ccae4bb5acb0066f88e504f7aecdadfec5844fd6b00ca4962e6fdd51129ed",
+      "original": {
+        "n": 3000,
+        "all_seen_accuracy": 0.8873333333333333,
+        "per_task": [
+          {
+            "task_zero_based": 0,
+            "n": 1000,
+            "restricted_accuracy": 0.966,
+            "all_seen_accuracy": 0.82,
+            "restricted_correct_but_other_task_wins": 146
+          },
+          {
+            "task_zero_based": 1,
+            "n": 1000,
+            "restricted_accuracy": 0.975,
+            "all_seen_accuracy": 0.902,
+            "restricted_correct_but_other_task_wins": 73
+          },
+          {
+            "task_zero_based": 2,
+            "n": 1000,
+            "restricted_accuracy": 0.974,
+            "all_seen_accuracy": 0.94,
+            "restricted_correct_but_other_task_wins": 34
+          }
+        ],
+        "task_group_confusion": [
+          [
+            825,
+            102,
+            73
+          ],
+          [
+            24,
+            907,
+            69
+          ],
+          [
+            27,
+            16,
+            957
+          ]
+        ],
+        "current_all_seen_accuracy": 0.94,
+        "current_restricted_accuracy": 0.974,
+        "current_to_first_task": 0.027,
+        "current_to_old": 0.043,
+        "old_all_seen_accuracy": 0.861,
+        "old_to_current": 0.071
+      },
+      "centered": {
+        "n": 3000,
+        "all_seen_accuracy": 0.908,
+        "per_task": [
+          {
+            "task_zero_based": 0,
+            "n": 1000,
+            "restricted_accuracy": 0.966,
+            "all_seen_accuracy": 0.863,
+            "restricted_correct_but_other_task_wins": 103
+          },
+          {
+            "task_zero_based": 1,
+            "n": 1000,
+            "restricted_accuracy": 0.975,
+            "all_seen_accuracy": 0.923,
+            "restricted_correct_but_other_task_wins": 52
+          },
+          {
+            "task_zero_based": 2,
+            "n": 1000,
+            "restricted_accuracy": 0.974,
+            "all_seen_accuracy": 0.938,
+            "restricted_correct_but_other_task_wins": 36
+          }
+        ],
+        "task_group_confusion": [
+          [
+            882,
+            77,
+            41
+          ],
+          [
+            30,
+            933,
+            37
+          ],
+          [
+            30,
+            14,
+            956
+          ]
+        ],
+        "current_all_seen_accuracy": 0.938,
+        "current_restricted_accuracy": 0.974,
+        "current_to_first_task": 0.03,
+        "current_to_old": 0.044,
+        "old_all_seen_accuracy": 0.893,
+        "old_to_current": 0.039
+      },
+      "class6_to7_before": 1,
+      "class6_to7_after": 9
+    }
+  }
+}

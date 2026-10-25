@@ -85,5 +85,16 @@
     "causal_attribution": "unresolved: no task1 full checkpoint or preaggregation client heads",
     "real_data_training_or_evaluation": false,
     "history_spectral_remains_paused": true
+  },
+  "basic_repair": {
+    "status": "T1_training_started",
+    "branch": "codex/basic-t1-repair",
+    "protocol": "research/basic_repair/LOCKED_PROTOCOL.json",
+    "head_diagnostics": "pending",
+    "centering": "completed; reports/basic_repair_20261025/task_block_centering.json",
+    "centering_mulora_all_seen": 0.7383333333333333,
+    "history_training_resumed": false,
+    "scope": "One faithful MuLoRA T1 recovery then fixed readouts; no new FedMuon or LoRM training",
+    "tests": "3 preflight tests passed"
   }
 }

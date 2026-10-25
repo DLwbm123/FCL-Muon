@@ -1,0 +1,183 @@
+FCL-Muon：一次完成基础修复验证（0fdbbf4）
+日期：2026-10-25
+仓库：https://github.com/DLwbm123/FCL-Muon
+当前证据提交：0fdbbf4d1b80b288dd79b5258767501524361211
+
+任务目标
+不要再停在只读审计或列出十几种可能性。先处理第一任务的全局学习质量，
+并把第三任务的共同logit偏移作为一个独立、零调参干预。
+本任务交付修复后的真实T1结果，或者一个有同编码器对照支撑的明确阻塞点。
+不保证一次追平LoRM；不能为了追97.7在test上调参。
+
+已知事实
+- 原T1训练结束：MuLoRA83.3%、FedMuon74.1%、LoRM97.7%。
+- 新评估是T3最终模型；T1 restricted84.2/76.5/96.6不是T1刚训练完的模型。
+- T3新类restricted85.1/75.6/97.4，all-seen55.7/22.3/94.0。
+- T3模型class6（属于T1）MuLoRA/FedMuon均0/100，其中80/78被判class7；
+  两者在同一个任务，不能通过只改跨任务共同offset恢复这些错分。
+- task1 class6的500个训练样本有498个在client8。该client全局FedAvg权重11.66%。
+  这说明标签极度集中；不能把样本加权本身说成数学错误。
+- 不改变各任务内部排序的组级校准，其全3000图准确率上界为
+  MuLoRA85.5667%、FedMuon78.7%，来自三个restricted准确率均值；
+  仍低于LoRM实际88.7333%。上界不是实际可实现成绩。
+
+已完成事项不重做
+- 三方T3 checkpoint已精确复现旧成绩；无需再次完整推理来得到同样logits。
+- 使用服务器保存的*_private_logits.npz。
+- history数值代码已独立修订并有42个合成CPU/CUDA测试通过记录；
+  真实history smoke仍未重新验收，history_spectral继续暂停。
+- 旧20个有详情的QP失败属feasibility_only；不能仅用max relative gap>1e-4归因，
+  因为原gap判据还含atol。剩15条缺逐步证据。保留原记录。
+
+执行权限和范围
+- 读取实际AGENTS.md与当前工作区；不覆盖原baseline/旧run。
+- 在隔离修复分支工作，保留source/config/hash和旧指标。
+- 本任务的基本方法诊断与T1修复，不代表恢复history_spectral训练；
+  不删除USER_PAUSE，不绕过history入口限制。
+- 首先复用实际存在的T1 checkpoint；如果确实没有，最多补一个原MuLoRA T1。
+- 根据同编码器head实验的结果，再允许一个明确修复的T1验证。
+  先不要启动完整10任务、36组矩阵、整套2x2或所有IID/K1组合。
+- 不停止或修改其他正在运行的作业；只记录状态与建议。
+- 训练、特征和logits留在服务器，公开仓库只放源码和汇总。
+- 现有用户授权足以进行本轮限定基础修复时，执行到底，不在每个小步骤重复询问。
+  遇到真正权限/资源阻塞时给出具体证据，不伪造结果。
+
+A. 立即完成零训练的固定logit干预
+随包fcl_basic_repair_tools.py已用NumPy合成验证。它不加载模型、不访问网络，
+labels只用于指标计算，绝不用于选择变换。
+
+规则只有一个：
+对每个固定训练任务的10类块，逐样本减去该块的logit均值，然后在全部30类argmax。
+z'_c=z_c-mean_{j in block(c)}z_j。
+每个任务块内部argmax必须不变。
+使用的是类别所属训练块，不是测试样本的真实taskID。
+不要试多个temperature/offset/normalization再选test最好者。
+
+示例：
+python fcl_basic_repair_tools.py --self-test
+
+python fcl_basic_repair_tools.py \
+  --inputs \
+  /data/bmw/FCL-Muon/runs/diagnostic_pilot_checkpoint_20261025/mulora_fl_private_logits.npz \
+  /data/bmw/FCL-Muon/runs/diagnostic_pilot_checkpoint_20261025/mulora_fl_fedmuon_private_logits.npz \
+  /data/bmw/FCL-Muon/runs/diagnostic_pilot_checkpoint_20261025/lorm_official_private_logits.npz \
+  --output <new_diagnostic_dir>/task_block_centering.json
+
+先确认实际文件存在，不猜路径、不覆盖已有报告。
+原始分数应与0fdbbf4报告一致，异常立即查身份。
+报告三个方法变换前后：
+- all3000、旧2000、新1000准确率；
+- task-group confusion；
+- T3→T1比例；
+- 各任务restricted保持不变；
+- 输入hash未变。
+不能只展示新类上涨而隐藏旧类下跌。
+这个诊断不能修T1：只有一个block时所有类减同一数，argmax完全不变。
+
+B. 一次T1闭环，固定编码器比较全局分类头
+1. 枚举实际checkpoint。
+   如果T1模型未保存，跑原MuLoRA-FL的第1任务：
+   原manifest、IN21K权重、Q/V-r32、RRS、5round×5epoch、batch16、原lr/schedule。
+   保留轮末和T1模型，避免再次只剩最终T3 latest。
+   加诊断不能改变训练随机流；保存/恢复RNG，最好用独立进程评估。
+   先不引入history、LoRM全48模块、训练A或别的研究组件。
+
+2. 当前训练图像在客户端，向所有客户端广播同一个已聚合的global encoder。
+   使用deterministic transform提取归一化CLS特征z=f(x)/||f(x)||。
+   全局prototype/Gram必须来自这个同一个encoder，
+   不能把各客户端不同local encoder下的特征当同一坐标系相加。
+   merged base和adapter不能重复使用；先验证merge前后输出等价。
+   特征只在当前任务期间客户端临时保存，不形成旧任务样本回放库。
+
+3. 在同一T1最终encoder上比较四个readout：
+   H0 原pipeline的cosine head；
+   H1 全局cosine prototype；
+   H2 同结构、scale16的全局拟合cosine head；
+   H3 联邦闭式ridge线性probe。
+   这是便宜的头部计算，不再分别训练四个ViT。
+
+H1：
+s_kc=sum_{x:y=c}z(x)，n_kc=该类样本数；
+server s_c=sum_k s_kc；head row=s_c/||s_c||。
+只需class sums/counts，不上传图像。
+不存在类/近零sum必须报错或执行预声明规则，不任意补向量。
+不能先平均每客户端prototype再不按类样本数加权。
+随包global_prototype_rows提供raw-stat计算参考。
+
+H2：
+固定encoder和所有features，只有一个全局cosine head及其optimizer state。
+每个head更新步汇总各客户端样本加权梯度，server更新一次；
+不用多个local head走多步之后再FedAvg。
+full-batch梯度求和对应同一个pooled current-task objective。
+这项与H0函数类相同，比只换ridge更能区分head优化/聚合问题。
+head拟合预算、初始化、lr/停止规则在查看test结果前固定并记录；
+额外头部计算单列，不能冒称原faithful训练预算。
+
+H3：
+augment z with intercept: ztilde=[z;1]；
+C_k=sum ztilde ztilde^T，R_k=sum ztilde onehot(y)^T；
+W=solve(C/N + lambda*diag(I,0), R/N)。
+用solve、不显式inverse；raw sums不得再乘n_k。
+W是线性head，不要normalize W后仍称ridge最优解。
+同一统计合并应与pooled ridge在FP64数值误差内相同；随包已有合成验证。
+
+4. 对原始frozen pretrained encoder也计算H1和H3。
+   共用同样样本、transform、feature normalization、head拟合规则。
+   这用于判断适配损坏特征，不能拿IN21K预训练head的类别输出作CIFAR预测。
+
+验证与test规则
+- 若完整复用已训练T1模型，其训练图像只能作为head fitting数据；
+  不能从这些已经参与encoder训练的图像中事后划出一部分，
+  再声称它们是encoder从未见过的独立validation。
+- 对已有full-train模型，H1是无超参的预声明干预；H2/H3参数预先锁定，
+  test只用于一次性诊断，不据test选择最佳head/lambda/lr或停止点。
+- 若需要选择修复方案/参数，使用从新T1训练开始就隔离的train-derived validation；
+  它不得进入encoder训练、RRS统计、prototype拟合或head fitting。
+  所有候选共用该划分；标清与原full-train run不同的data identity。
+- 最终full-train确认运行只用已锁定配置，不能继续看test调参。
+- 原83.3与新训练子集上的数值不能装成严格同协议复现；
+  必须在报告中说明训练集合差异。
+
+C. 根据B结果直接完成修复，不再只提交“建议继续”
+- 如果同encoder的H1/H2明显优于H0：
+  先落地最小head修复，保留RRS、Q/V、B optimizer、任务merge全部不变。
+  第一版可以只在任务末用H1刷新当前head；它无需另训encoder，
+  并保存独立命名的repaired checkpoint和汇总。
+  若需修改训练中的head路径，再执行每轮global encoder重建head/广播的T1验证。
+  H2提升支持head优化/聚合瓶颈，不能单靠H3提升归因FedAvg（函数类不同）。
+- 如果pretrained H1/H3高、adapted H1/H3低：
+  修encoder update；下一条限定T1运行只改变B优化尺度/明确一个因素，
+  不继续改任务偏置来掩盖表征退化。
+  若选择FedMuon，先把scale与correction拆开；sqrt768算子对应
+  base lr=2e-4/sqrt768约7.216878e-6作系数匹配，不当作验证过的最优lr。
+- 如果全局cosine依然低，但ridge高：
+  识别为readout函数类或cosine拟合问题；有依据时改为LoRM线性head/RegMean，
+  作为已有组件的借用。不要把这种改变当新optimizer贡献。
+- 如果所有统一probe都低且LoRM同头显著高：
+  再查adapter塑性与Q/V-only固定A的容量。不要在本轮自动扩至全48模块、
+  训练A、改rank、改聚合等多个因素同时变化。
+- 无训练centering即使改善T3，也不能宣布T1修好；
+  H1/H2改善T1也不能宣称整个10任务FCL已解决。
+
+完成标准
+交回一张真实、完整的表：
+encoder（pretrained/T1 adapted）×readout（H0/H1/H2/H3）；
+注明哪些组合不适用、哪些未运行、训练/验证/test数据身份。
+同时给centering前后全体/旧/新指标，补class6→class7统计。
+给一个已经验证的最小修复checkpoint/实现，或清楚的失败分支及证据。
+研究history_spectral保持暂停。
+不要虚报“已追平LoRM”“改头必追回26点”“原35QP步已全部回放”。
+
+资料
+https://github.com/DLwbm123/FCL-Muon/blob/0fdbbf4/reports/CHECKPOINT_DIAGNOSTIC_20261025_ZH.txt
+https://github.com/DLwbm123/FCL-Muon/blob/0fdbbf4/reports/checkpoint_diagnostic_20261025/results.json
+https://github.com/DLwbm123/FCL-Muon/blob/0fdbbf4/fcl/model.py
+https://github.com/DLwbm123/FCL-Muon/blob/0fdbbf4/fcl/train.py
+https://github.com/DLwbm123/FCL-Muon/blob/0fdbbf4/reports/history_spectral/numerics_audit/DIAGNOSIS_ZH.txt
+
+工具验证边界
+随包Python脚本已经在本地运行self-test及synthetic NPZ的CLI，
+验证了任务块内排序不变、严格unit-cosine共同分量反例、
+不同客户端raw-stat合并与pooled ridge/prototype等价。
+没有读取服务器private logits，没有得到真实centering分数，没有进行真实T1训练。
+
