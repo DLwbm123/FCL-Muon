@@ -1,0 +1,18 @@
+[
+  {
+    "config": "configs/history_spectral/smoke_mulora_fl_exact_polar.json",
+    "fork_task1": null
+  },
+  {
+    "config": "configs/history_spectral/smoke_history_grad_muon.json",
+    "fork_task1": "runs/smoke_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/smoke_history_spectral.json",
+    "fork_task1": "runs/smoke_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/smoke_history_frobenius_qp.json",
+    "fork_task1": "runs/smoke_mulora_fl_exact_polar/task1_shared.pt"
+  }
+]

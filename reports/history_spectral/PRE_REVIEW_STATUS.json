@@ -1,0 +1,173 @@
+{
+  "status": "PAUSED_BY_USER_FOR_PRO_REVIEW",
+  "no_pilot_started": true,
+  "runs": {
+    "smoke_history_grad_muon": {
+      "completed_receipt": true,
+      "updates": 192,
+      "nonconverged_actual_steps": 0,
+      "max_relative_gap": 0,
+      "max_feasibility_residual": 0,
+      "solver_seconds": 0,
+      "mean_iterations": 0.0,
+      "zero_steps": 48,
+      "warning": "Pre-review abbreviated smoke; no benchmark conclusion",
+      "calibration": [
+        {
+          "kind": "lambda_calibration",
+          "time": 1792919119.8209805,
+          "seconds": 0.5063426750712097,
+          "task": 1,
+          "reference": 3650846.7592847347,
+          "multiplier": 1.0,
+          "lambda": 3650846.7592847347,
+          "selection": "predeclared training-scale diagnostic, not validation-selected or optimal lambda",
+          "batches": [
+            {
+              "client": 0,
+              "indices": [
+                3,
+                37,
+                46,
+                114,
+                181,
+                228,
+                242,
+                254,
+                273,
+                355,
+                367,
+                387,
+                559,
+                563,
+                599,
+                672
+              ],
+              "gain": 0.000746821761197225,
+              "curvature_cost": 1.1220300043422661e-10,
+              "valid_denominator": true
+            },
+            {
+              "client": 1,
+              "indices": [
+                244,
+                307,
+                328,
+                385,
+                532,
+                889,
+                942,
+                966,
+                1173,
+                1355,
+                1489,
+                1579,
+                1587,
+                1645,
+                1799,
+                1897
+              ],
+              "gain": 0.0004092100223260786,
+              "curvature_cost": 1.1208633210511692e-10,
+              "valid_denominator": true
+            }
+          ]
+        }
+      ]
+    },
+    "smoke_history_spectral": {
+      "completed_receipt": true,
+      "updates": 192,
+      "nonconverged_actual_steps": 35,
+      "max_relative_gap": 0.0001549093792780329,
+      "max_feasibility_residual": 1.8575927242540837e-09,
+      "solver_seconds": 3.547496672719717,
+      "mean_iterations": 15.3125,
+      "zero_steps": 48,
+      "warning": "Pre-review abbreviated smoke; no benchmark conclusion",
+      "calibration": [
+        {
+          "kind": "lambda_calibration",
+          "time": 1792919149.7380905,
+          "seconds": 0.47366214194335043,
+          "task": 1,
+          "reference": 3650847.9002227955,
+          "multiplier": 1.0,
+          "lambda": 3650847.9002227955,
+          "selection": "predeclared training-scale diagnostic, not validation-selected or optimal lambda",
+          "batches": [
+            {
+              "client": 0,
+              "indices": [
+                3,
+                37,
+                46,
+                114,
+                181,
+                228,
+                242,
+                254,
+                273,
+                355,
+                367,
+                387,
+                559,
+                563,
+                599,
+                672
+              ],
+              "gain": 0.0007468218951771632,
+              "curvature_cost": 1.1220298773614394e-10,
+              "valid_denominator": true
+            },
+            {
+              "client": 1,
+              "indices": [
+                244,
+                307,
+                328,
+                385,
+                532,
+                889,
+                942,
+                966,
+                1173,
+                1355,
+                1489,
+                1579,
+                1587,
+                1645,
+                1799,
+                1897
+              ],
+              "gain": 0.00040921006399230464,
+              "curvature_cost": 1.1208630848941484e-10,
+              "valid_denominator": true
+            }
+          ]
+        }
+      ],
+      "actual_step_nonconverged_fraction": 0.18229166666666666,
+      "numerically_qualified": false,
+      "qualification_rule": "<=1% actual-step failures; failed with 35/192",
+      "exit_status": "completion receipt present, process gone after user pause; supervisor interrupted before collecting exit code"
+    },
+    "smoke_mulora_fl_exact_polar": {
+      "completed_receipt": true,
+      "updates": 384,
+      "nonconverged_actual_steps": 0,
+      "max_relative_gap": 0,
+      "max_feasibility_residual": 0,
+      "solver_seconds": 0,
+      "mean_iterations": 0.0,
+      "zero_steps": 96,
+      "warning": "Pre-review abbreviated smoke; no benchmark conclusion",
+      "calibration": []
+    }
+  },
+  "experiments_paused_by_user": true,
+  "pilot_started": false,
+  "formal_started": false,
+  "tests_before_pause": "29 passed including CUDA lifecycle",
+  "tests_after_pause_cpu_only": "...........s.s...............                                            [100%]\n27 passed, 2 skipped in 4.09s"
+}

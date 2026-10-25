@@ -10,7 +10,7 @@
   "weights": "exact IN21K identity pinned and downloaded",
   "cifar100": "official archive downloaded and torchvision built-in check passed",
   "real_smoke": "both methods completed; final task-boundary checkpoint audit passed",
-  "pilot": "mulora_fl completed (exit0 and qualification receipt); mulora_fl_fedmuon running, task1 round2 snapshot",
+  "pilot": "MuLoRA completed; FedMuon task3/3 round1/5 running; latest complete stage is task2 with all-seen54.4%, new31.9%, old76.9%, unfinished pilot",
   "formal": "36 runs queued; not started at latest check",
   "results": "one completed three-task pilot, paired comparison pending; see pilot_mulora_fl_summary.json",
   "cuda_rng_resume": "passed on actual CUDA device",
@@ -20,15 +20,25 @@
     "scope": "implementation, fixed configs, partition manifests, audit, 2 smoke summaries; formal results pending"
   },
   "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
-  "last_health_check": "2026-10-25T08:07:27Z",
-  "resource_snapshot": "6.2 GiB project disk use; original clock and guards active",
+  "last_health_check": "2026-10-25T08:43:58Z",
+  "resource_snapshot": "9.3 GiB whole-project allocated storage; both jobs inside original deadlines",
   "lorm_comparison": {
-    "stage": "running on GPU7, first task round1; original source methods and matched manifest/weight hashes verified",
+    "stage": "running GPU7 task1 round2/5; fresh checkpoint and actual GPU process confirmed",
     "protocol": "LORM_PROTOCOL.json",
     "smoke": "2 tasks x2 rounds x2 clients completed, official A/B alternation and spatial/temporal merge exercised",
     "tests": "13 passed in LoRM overlay",
     "method": "official rank16 / AdamW lr5e-4 / linear head / 16-mixed",
     "purpose": "same manifest and 5round x5epochs budget comparison of new-class accuracy and old-class forgetting",
     "gpu": 7
+  },
+  "history_spectral": {
+    "status": "PAUSED_FOR_PRO_REVIEW",
+    "branch": "codex/history-spectral-v1",
+    "implementation": "math, centered statistics, task lifecycle, exact research controls, solver/cache/checkpoint and configs implemented",
+    "unit_tests": "29 passed before pause; post-pause CPU-only log recorded",
+    "numerical_qualification": "not passed: FP32 spectral smoke35/192 actual steps flagged; max relative gap1.55e-4",
+    "research_pilot": "not_started",
+    "formal_research": "not_started",
+    "auto_launch_allowed": false
   }
 }

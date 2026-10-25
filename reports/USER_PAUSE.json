@@ -1,0 +1,7 @@
+{
+  "auto_launch_allowed": false,
+  "scope": "history_spectral research family",
+  "reason": "User requested implementation review by Pro before any further experiments",
+  "requires_explicit_user_resume": true,
+  "existing_faithful_baseline_and_LoRM_jobs": "unchanged"
+}

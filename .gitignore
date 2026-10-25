@@ -15,3 +15,7 @@ cache/
 
 reports/LOCAL_OPERATIONS.md
 lorm_deps/
+
+reports/history_spectral/USER_PAUSE.json
+reports/history_spectral/research-state.json
+review-packages/

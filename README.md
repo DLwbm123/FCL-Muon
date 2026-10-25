@@ -48,3 +48,16 @@ python scripts/validate_manifests.py manifests/*.json
 No unrun score is populated. Smoke, pilot and formal results stay separate. Latest atomic checkpoint is retained per run to control storage. Shared raw datasets, weight cache and original-source snapshots remain outside Git.
 
 An additionally authorized official LoRM three-task comparison is configured in `configs/pilot_lorm_official.json`. Its algorithm methods come directly from the pinned upstream code, using rank16, AdamW lr5e-4, alternating A/B updates, RegMean, the original linear head and default mixed precision. It loads the existing seed0/alpha.05 client manifest. Read `reports/LORM_PROTOCOL.json` for disclosed differences and additional Gram-forward cost. Install the LoRM dependency overlay, set `ENTRY_MODULE=fcl.lorm_train` for the CLI or `ENTRY_FILE=scripts/lorm_job.py` for its persisted-deadline supervisor, and pass the config through `RUN_CONFIG`. The LoRM job is limited to this pilot; it does not add a LoRM hyperparameter search or full experiment grid. All methods' primary stage results compare among all seen classes and use the same forgetting definition.
+
+## Pro review of history_spectral
+
+The research implementation is on branch `codex/history-spectral-v1`. Start with `research/history_spectral/REVIEW_FOR_PRO.txt`, then its full user protocol and source audit. The experiment family is **paused by the user pending Pro review**; `reports/USER_PAUSE.json` blocks research training and queue entry points. Existing faithful baselines and LoRM are independent.
+
+The CPU numerical/lifecycle suite can be checked without a benchmark run:
+
+```sh
+CUDA_VISIBLE_DEVICES='' python -m pytest -q tests/test_history_math.py tests/test_history_lifecycle.py
+python -m fcl.history_train --help
+```
+
+Future reviewed execution uses the same neutral launcher and config environment as the baseline, with `ENTRY_MODULE=fcl.history_train` and a config under `configs/history_spectral/`; `RESUME` restores a round boundary and `FORK_TASK1` loads a matching exported task-one checkpoint. Smoke and bounded-pilot manifests are under `research/history_spectral/`. The separate full research matrix is configuration-only and is never automatically launched. Do not remove the pause marker or start these commands until the user explicitly resumes experiments. See `reports/history_spectral/PRE_REVIEW_STATUS.json`: unit tests passed, but actual-step FP32 QP qualification remains unresolved; no performance claim follows from the pre-review smoke.

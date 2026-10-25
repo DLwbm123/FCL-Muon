@@ -1,0 +1,26 @@
+[
+  {
+    "config": "configs/history_spectral/pilot_a0.05_mulora_fl_exact_polar.json",
+    "fork_task1": null
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.05_history_grad_muon.json",
+    "fork_task1": "runs/pilot_a0.05_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.05_history_spectral.json",
+    "fork_task1": "runs/pilot_a0.05_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.5_mulora_fl_exact_polar.json",
+    "fork_task1": null
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.5_history_grad_muon.json",
+    "fork_task1": "runs/pilot_a0.5_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.5_history_spectral.json",
+    "fork_task1": "runs/pilot_a0.5_mulora_fl_exact_polar/task1_shared.pt"
+  }
+]

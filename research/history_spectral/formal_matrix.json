@@ -1,0 +1,722 @@
+[
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s0_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s1_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.5_s2_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s0_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s1_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.1_s2_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s0_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s1_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-cifar100_a0.05_s2_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s0_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s1_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.5_s2_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s0_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s1_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.1_s2_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s0_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s1_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_mulora_fl_exact_polar_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_mulora_fl_exact_polar_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_history_grad_muon_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_history_grad_muon_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_history_spectral_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_history_spectral_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_history_frobenius_qp_mulora.json",
+    "state": "not_started",
+    "auto_launch": false
+  },
+  {
+    "config": "configs/history_spectral/seq-imagenetr_a0.05_s2_history_frobenius_qp_fedmuon.json",
+    "state": "not_started",
+    "auto_launch": false
+  }
+]

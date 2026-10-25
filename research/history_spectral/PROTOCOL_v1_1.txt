@@ -1,0 +1,777 @@
+Codex 实现 Prompt
+共享累计历史功能风险下的谱下降：MuLoRA-FL 对齐版本
+版本：v1.1（阅读 OSD 全文后修订）
+日期：2026-10-25
+
+将本文件整体作为实现任务交给 Codex。以下是实现规范，不是已有论文官方算法，也不包含已经完成真实 FCL 训练的结论。
+
+============================================================
+0. 你的任务、范围与工作方式
+============================================================
+
+你是当前 FCL 研究仓库的实现负责人。在已经启动的完整 MuLoRA-FL 与 Takezawa FedMuon 复现基础上，增量实现一个研究优化器：shared historical-risk spectral descent，代码简称 history_spectral。
+
+核心：
+保留共享 RRS、固定行正交 A、只训练 B 的完整 MuLoRA 参数化；使用跨客户端共享的、相对历次最终全局模型锚点的累计历史响应风险；每个实际矩阵更新解一个谱范数受限凸二次问题。
+
+本次完成：
+1. 审计并保护现有复现分支；
+2. 精确历史充分统计与联邦状态生命周期；
+3. 小矩阵谱 QP 求解器、可检查的证书及正确热启动；
+4. 统一精度的机制对照；
+5. 有意义的代数/生命周期测试；
+6. 能运行的配置、CLI、检查点、日志、smoke 和小型 pilot；
+7. 可复现实验命令及说明。
+
+不要只返回计划、伪代码或“可以继续”。在现有权限和本地资源内把本次范围做完。遵守仓库工作说明；保留用户已有修改，必要时使用独立分支或 worktree。不要通过修改既有实验定义来让测试通过。
+
+不要求本次自动启动全部正式实验矩阵。代码和配置覆盖正式协议，实际执行先完成单元验证、真实数据 smoke；资源具备时完成下文限定的 pilot。资源缺失要明确记录，并完成不受影响的工作，不能把随机数据结果称为 benchmark 结果。
+
+第一版明确不加入：
+- OSD 的额外硬正交约束；
+- 每客户端×每历史任务的硬预算；
+- 低秩 sketch 压缩；
+- softmax/DRO 的完整实现；
+- 新分类头校准方法；
+- 梯度可靠性门控；
+- 自动逐步变化的 lambda；
+- 未经验证的固定 1–3 次近似求解。
+
+这些不属于本次核心，最多保留干净接口，不实现占位“功能”。
+
+============================================================
+1. 来源、归因与基线身份
+============================================================
+
+先阅读仓库中的 AGENTS.md、README、已有实现、配置和实验 manifest，记录当前 git commit 和工作区状态。用 rg / rg --files 查找相关文件。
+
+相关材料：
+A. MuLoRA:
+https://arxiv.org/html/2610.02283v1
+完整机制包括 RRS 与 B 更新的谱平衡。不要缩减为“普通 LoRA + Muon”。
+B. Takezawa et al. FedMuon，ICLR 2026:
+https://proceedings.iclr.cc/paper_files/paper/2026/hash/427f20d90386fd27804f1831d6a3d48f-Abstract-Conference.html
+https://arxiv.org/html/2509.26337v1
+不要与其他同名 FedMuon 工作混淆。
+C. QSD:
+https://arxiv.org/html/2609.07597v1
+借用谱球上的二次目标及可计算 gap 思想。
+D. OSD: Orthogonal Spectral Descent for Continual Learning in Large Language Models.
+用户提供的 25 页 ICLR 2027 投稿全文；OpenReview id PoqSsLXms7:
+https://openreview.net/forum?id=PoqSsLXms7
+借用对实际更新几何的强调、跨步 warm start 和受控几何比较。
+E. 原 FCL 框架:
+https://github.com/aimagelab/fed-mammoth
+既定参考 commit:
+6d57b5d361f743f3ff0cd1371409bd7a1158de64
+
+这是我们的研究实现，不是 OSD 的忠实复现。OSD 本文主问题是：
+min <G,Delta> s.t. ||Delta||op <= eta, <C_i,Delta>=0，
+其具体保护结构为 U^T Delta V=0。
+本文 p.6 和 p.14 明确 LoRA/PEFT 扩展尚未完成。
+
+不要把以下内容声称为新发现：
+- Muon 的谱球 LMO 解释；
+- QSD 的二次谱优化框架；
+- OSD 的受约束谱下降或 warm start；
+- 历史响应匹配/二次正则本身；
+- 凸性导致的 FedAvg Jensen 不等式。
+
+需要实现与验证的是这些机制组成的具体 FCL 优化器。
+
+保存 source_audit.md（按仓库规范放置）：
+- 哪些配置来自论文/官方代码；
+- 哪些是已经确定的项目选择；
+- 本次新增选择；
+- 未知或无法核实的细节；
+- 当前依赖和预训练权重版本/hash。
+
+若现有仓库的锁定版本与本 prompt 的参考 commit 不同，不要破坏现有复现。记录差异，新增配置应使用现有已审计的数据 manifest；未经核对不能声称与参考协议完全一致。
+
+============================================================
+2. 现有实验协议：保持一致
+============================================================
+
+正式协议：
+- CIFAR-100：10 个任务，每任务 10 类；初始任务与后续任务等规模。
+- ImageNet-R：10 个任务，每任务 20 类；初始任务与后续任务等规模。
+- 10 个客户端，100% 客户端参与。
+- Dirichlet alpha = 0.5 / 0.1 / 0.05。
+- 每任务 5 个通信轮，每轮 5 个本地 epoch，batch size = 16。
+- backbone: ViT-B/16 ImageNet-21K，
+  timm 标识 vit_base_patch16_224.augreg_in21k。
+- 输入 224，rank = 32。
+- seeds = 0, 1, 2（项目选择）。
+- 不保留或回放旧原始训练样本；服务器没有图像数据。
+- 推理在全部已见类别上进行，不能提供真实任务 ID。
+- 完整实验使用既有数据 manifest、类别顺序、client partition、augmentation、checkpoint 初始化。
+
+已有项目建模选择，须与完整 MuLoRA-FL baseline 保持相同：
+- 12 个 Transformer block 中分别适配 Q 和 V，共 24 个矩阵。
+- LoRA scale s=1，实际权重 W=W0+B A。
+- 其余 backbone 参数冻结。
+- cosine head，固定 scale=16，无 bias。
+- 训练当前任务类别对应的新行，旧行冻结；当前任务 CE；推理全部已见类。
+- head AdamW lr=1e-3，weight_decay=0，样本数加权聚合，每个通信轮重置 head optimizer state。
+- B 的 weight_decay=0。
+- B 初始学习率参考：CIFAR-100 2e-4，ImageNet-R 1e-4；任务内连续 cosine，不能每个通信轮重新启动 schedule。
+以上是既定项目选择，不要称为 MuLoRA 原文完整披露的官方细节。如果实际基线已经采用另一个经用户确认的设定，以其配置为对齐依据并明确记录，不要悄悄改变头部或适配层。
+
+数据实现：
+- 继承 fed-mammoth 已锁定的类别/数据划分；seed 不应自行引入新类别重排。
+- ImageNet-R 复用原官方 train/test 清单及映射，不自行重划分或按 WNID 排序重编号。
+- 数据划分 RNG 与模型、DataLoader、诊断和校准 RNG 分离。
+- 训练/验证/测试用途明确，测试集不得参与参数或 lambda 选择。
+- 若需要内部验证集，从当前训练数据建立固定 manifest；所有方法使用同一选择与预算，不覆盖正式数据划分。
+- 不能在后续任务用旧训练图像重算历史统计；历史任务测试集只进入既定评估函数。
+
+原 RRS 必须保持完整：
+- 当前 raw X^T X 与历史 raw 二阶统计；
+- 历史白化、相对响应特征方向、回映射；
+- 欧氏 QR，最终保证 A A^T=I；
+- task 内 A 固定，B 在任务开始清零，任务末合并一次。
+不要省略 QR。新风险统计与 RRS 统计分别维护，因为采样时点、权重可能不同。
+
+============================================================
+3. 方法的数学定义
+============================================================
+
+先说明单层；全模型为各适配矩阵块的和。
+
+W = W0 + B A
+A: [r, d_in]
+B: [d_out, r]
+A A^T = I_r
+D: B 的实际增量
+DeltaW = D A
+
+因此 ||DeltaW||op = ||D||op，||DeltaW||F = ||D||F。
+
+默认 LoRA scale s=1，初始化时 assert。若今后支持 s!=1，必须一致修改：
+DeltaW=s D A，
+H=s^2 A C A^T / Z，
+F=s R A^T / Z，
+并转换 B 空间与权重空间谱半径。第一版不默默支持非单位 scale。
+
+历史风险：
+q_k(B) = q0_k + <F_k,B> + 0.5 tr(B H_k B^T)，H_k PSD。
+k 表示客户端；它汇总该客户端的全部历史阶段，不是每个历史任务的单独最坏风险。
+
+默认对有历史数据的客户端均匀加权 pi_k=1/K_history；当前任务 FedAvg 仍按训练样本数加权。
+这两种权重的作用不同，不能混用。
+全模型历史目标为各适配层归一化风险的平均，层权重 a_l=1/L，L=24。
+可配置 client risk weighting，但默认及改变必须写进 metadata。
+
+对每层：
+H_l = a_l sum_k pi_k H_kl
+F_l = a_l sum_k pi_k F_kl
+q0_l = a_l sum_k pi_k q0_kl
+
+服务器广播同一组 H_l,F_l,q0_l 给所有客户端，任务内固定。
+
+M = 当前任务方向估计，使用既定 baseline 即将送入 polar/NS 的矩阵。
+M 不包含历史风险修正。若使用 FedMuon，M 包含其原有控制变量校正。
+
+在每个本地 minibatch，对每个 B 解：
+D* = argmin_{||D||op <= eta} phi(D)
+phi(D) = <M,D> + lambda_history [q(B+D)-q(B)]
+
+令：
+G = M + lambda_history (F + B H)
+Hhat = lambda_history H
+
+则：
+phi(D) = <G,D> + 0.5 tr(D Hhat D^T)
+
+执行：
+B <- B + D
+
+eta 是实际 B 增量的谱半径，已经包含该研究分支的学习率和确定性 shape scaling。
+不要在返回 D 后再次乘 lr。
+不要在返回 D 后再做 polar、NS、奇异值均衡、RMS 归一化、额外 shape scaling 或未纳入目标的 decay。
+分类头沿用原训练流程，相关保证只针对上述适配矩阵代理。
+
+这是软历史代价 + 硬谱步幅。不要报告“每个旧任务风险都不增长”或“严格无遗忘”。
+
+============================================================
+4. 精确累计历史统计与归一化
+============================================================
+
+采用数值较稳定的、以本任务全局 W0 为中心的充分统计。
+每客户端、每层存原始累计量：
+
+C_k = sum_history x x^T                     [d_in,d_in]
+R_k = sum_history (W0 x - y_anchor) x^T      [d_out,d_in]
+e_k = 0.5 sum_history ||W0 x-y_anchor||^2    scalar
+z_k = sum_history ||y_anchor||^2            scalar
+n_k = historical token count               scalar
+
+x 是登记历史时的层输入；y_anchor 是对应阶段最终全局模型的该矩阵输出 W_anchor x。
+不保留 x、y 或 W_anchor，只保留这些统计。
+若模块有 bias，这里的 y_anchor 只取线性部分 W_anchor x，不直接使用含 bias 的模块输出；否则会破坏新锚点残差为零的定义。
+对 fused QKV 模块，准确提取 Q/V 权重切片以及它们共同的原始输入，不能误用 attention 混合后的输出。
+
+保存额外 metadata：
+- task_id、center/base model version/hash；
+- layer/projection 标识；
+- 统计 transform 与 token 选择；
+- 数值 dtype、累计 token 数；
+- normalization rule；
+- schema_version。
+
+默认 Z_k = max(z_k, energy_floor * n_k * d_out)，energy_floor 可配置，首版数值默认 1e-12。
+若 n_k=0，返回空历史零 core，不除以零。
+统计归一化只在构造 core 时进行，原始累计量不提前除均值。
+Z 的值及是否触发 floor 要记录；这只是防止数值除零，不是额外历史正则。
+
+任务开始时，用当前共同 A 投影：
+H_k = A C_k A^T / Z_k
+F_k = R_k A^T / Z_k
+q0_k = e_k / Z_k
+
+于是：
+q_k(B) = [e_k + <R_k A^T,B> + 0.5 tr(B A C_k A^T B^T)] / Z_k
+
+同一客户端 Q/V 的实际输入完全相同时，允许共享 C；R,e,z 按投影分别存。
+不要仅因维度一样就共享不同输入的统计。
+
+精度：
+- CPU 累计统计建议 FP64 参考模式，或者 FP32 累计配合明确误差测试；
+- 训练 core 与 solver 至少 FP32，不在 BF16/FP16 下求解 QR/SVD 和 gap；
+- 使用 AMP 时，先 unscale 当前梯度，再构造方向 M；overflow/skip step 的处理沿用原训练器，不能更新一个事实上未执行的 solver cache；
+- B 或其实际用于更新的 master parameter 使用 FP32；若保存/计算 dtype 产生额外舍入，最终审计实际执行的 B_after-B_before，不能把提议 D 的证书冒称为另一个实际更新的证书；
+- 测试使用 FP64；
+- H 显式对称化，检查 PSD；
+- 只允许按数值容差修正微小负特征值；明显非 PSD 要报错定位，不能直接大幅裁剪掩盖状态错误；
+- e 与 q 理论非负，记录因舍入出现的小负数；不要用大范围 clamp 让错误消失。
+
+任务内 C,R,e,z 和 center W0 不变。
+B 是从该任务 W0 出发的累计位移。
+FedAvg 轮之间更新 B，不重新移动历史中心。
+
+============================================================
+5. 任务边界的更新顺序：必须严格实现
+============================================================
+
+当前任务最后一轮聚合得到全局 B_end，A 仍是本任务共同基。
+
+步骤 1：用旧历史状态重心更新。
+DeltaW = B_end A
+
+使用旧 C、旧 R、旧 e 计算：
+e_new = e_old + <R_old,DeltaW>
+        + 0.5 tr(DeltaW C_old DeltaW^T)
+R_new = R_old + DeltaW C_old
+
+等价可用旧 H_raw=A C_old A^T、F_raw=R_old A^T：
+e_new = e_old + <F_raw,B_end>
+        + 0.5 tr(B_end H_raw B_end^T)
+
+先计算 e_new，再覆盖 R，或显式使用 old 状态。
+不要误用已经归一化的 H/F 更新原始 e。
+
+步骤 2：合并。
+W0_new = W0_old + B_end A
+更新历史 state 的 center_id，使它与这个最终全局模型一致。
+在统计前向之前，立即禁用/移除当前 adapter 或把已合并的 B 清零，确保有效权重只包含一次 B_end A；不要在 W0_new 上再次叠加未清除的 adapter。
+验证合并前最终全局模型与合并后统计模型的前向输出在容差内相同。
+
+步骤 3：用最终全局合并模型登记当前任务数据。
+每个客户端对自己仍可访问的当前训练数据做一次 deterministic、eval-mode、no_grad 前向。
+默认 patch tokens only、排除 CLS；沿用明确的统计预处理，并记录。
+只使用当前训练 split，不能用 test 或旧训练样本。
+对每个被适配矩阵收集：
+C_current = sum x x^T
+z_current = sum ||W0_new x||^2
+n_current = number of tokens
+
+新数据以 W0_new 为锚点，所以它给 R_new、e_new 的新增项为零。
+因此：
+C <- C_old + C_current
+R <- R_new
+e <- e_new
+z <- z_old + z_current
+n <- n_old + n_current
+
+必须先完成旧历史重心更新，再把 C_current 加入。
+如果先加 C_current 再计算旧历史变化，会错误地给新登记数据制造风险。
+
+步骤 4：下一任务。
+按原 MuLoRA RRS 重选 A_new，B=0，投影新的历史 core。
+按 baseline 规则重置任务相关动量/FedMuon控制状态。
+清除 solver warm-start cache。
+保留累计 C,R,e,z,n，不能跟随 optimizer reset 一起清空。
+
+如果某客户端本任务没有数据，它仍需按全局 DeltaW 移动其旧历史中心，只是不登记新数据。
+正式主协议100%参与，但不要把这种基本状态一致性写错。
+
+============================================================
+6. 小矩阵谱 QP 求解器
+============================================================
+
+接口建议：
+solve_spectral_qp(G, Hhat, eta, previous_delta=None, config=...)
+  -> actual_delta, diagnostics
+
+不要把整个训练器、动量和历史统计塞进求解器。
+
+输入：
+G [d_out,r]，Hhat [r,r] PSD，eta>=0。
+目标：
+phi(D)=<G,D>+0.5 tr(D Hhat D^T)，||D||op<=eta。
+
+特殊情况：
+- eta=0：返回零，并正确计算诊断；
+- G=0：选择零最优解；
+- Hhat=0：返回 -eta * compact_polar(G)；
+- compact_polar 在零奇异值上取零，G=0不能返回任意正交矩阵；
+- 任何使用 rank tolerance 的近似都须记录，并用原始 G 复核 gap；
+- Hhat 可以奇异，不要默认逆矩阵存在。
+
+一般情形：
+1. reduced QR: G=Q T，Q^T Q=I。
+2. 存在最优解 D=Q X。
+3. 解 r×r 问题：
+   min <T,X> + 0.5 tr(X Hhat X^T)
+   s.t. ||X||op<=eta。
+4. 还原 D=Q X，并在原始 d_out×r 空间复核目标、谱半径与 gap。
+
+谱球投影：
+Z=U diag(s) V^T
+Proj(Z)=U diag(min(s,eta)) V^T
+逐个裁剪奇异值，不是统一 Frobenius normalization。
+
+推荐参考算法：
+- projected gradient，或带目标单调检查/restart 的加速 projected gradient；
+- 梯度 T+X Hhat；
+- Lipschitz 常数 L=lambda_max(Hhat)，L=0使用线性问题特殊分支；
+- 保存 best feasible iterate；
+- 加速导致目标上升时重启，不以最后一步无条件覆盖最优可行点；
+- optional: Hhat 正定且条件允许时先求无约束解 -G Hhat^{-1}，用 solve 而不是显式 inv；若可行直接采用；
+- 不默认添加 ridge/damping。若支持，作为改变目标的显式配置，默认0。
+
+停止与证书：
+原始空间 K=G+D Hhat，
+FW gap = <K,D> + eta * ||K||_*。
+
+对可行 D，gap 是此凸问题的最优性差距上界。
+小空间的对应公式可以用于内循环，但最终用原始空间复核。
+记录：
+- objective phi；
+- gap、relative_gap；
+- actual operator norm 与 feasibility residual；
+- iterations；
+- converged；
+- zero_step；
+- warm_start_used；
+- warm_start_objective；
+- elapsed time；
+- numeric precision。
+
+建议实现可配置默认值，而不是把它们当论文官方值：
+max_iter=200；
+FP32 reference pilot: gap_rtol=1e-4，gap_atol=1e-10；
+FP64 tests: 根据问题尺度使用更严格阈值。
+relative scale 可用 eta*||G||_*，并明确数值下限。
+真实训练前检查容差与该分支实际量级是否相容。
+
+达到 max_iter：
+返回 best feasible，标注 converged=false；
+不要声称精确解；
+不要悄悄无限加迭代；
+记录未收敛比例，必要时在有限诊断上改容差/算法。
+同时记录零步比例，不能靠总返回0伪装成功。
+
+代理非增：
+D=0 可行、phi(0)=0。
+返回的 best feasible 应满足 phi<=数值容差；否则回退0并记录 numerical_failure。
+这是代理证书，不是旧风险单独不增或真实 CE 不增。
+
+============================================================
+7. 借鉴 OSD 后增加：有检查的热启动
+============================================================
+
+OSD 使用跨步 warm start；我们借用原则，不复制其硬约束对偶变量。
+
+每步 QR 的 Q 会变化，禁止直接复用旧 X。
+每客户端、每层保存上一个“实际 D_prev”，以及 task/basis identity。
+
+本步：
+X_warm = Q_new^T D_prev
+X_warm <- 谱球投影(X_warm, eta_current)
+
+计算本步新目标 phi_warm：
+- 若可行且 phi_warm <= 0，从 warm start 开始；
+- 否则从0开始；
+- 不能因为上一目标下降，就默认在当前目标仍下降；
+- 可比较零点和其他可行候选，选本步目标最小者。
+
+FedAvg 广播或学习率变化后仍需重新验证；任务/basis更换时清空 cache。
+solver cache、momentum、FedMuon controls、历史统计是不同生命周期的状态。
+
+支持 warm_start=off/on 开关。
+验证两种初始化都解同一个问题；不能用精度更差的warm start假冒加速。
+报告实际 wall time、平均迭代数与最终 gap。
+
+============================================================
+8. 动量、半径、lambda：不要混淆尺度
+============================================================
+
+保留现有 faithful MuLoRA-FL / FedMuon 的实现和配置。
+新增研究分支有独立 method name。
+
+尤其注意：
+beta*m + g 与 beta*m + (1-beta)*g，
+bias correction，
+Nesterov，
+FedMuon correction，
+在纯 polar 中可能有等价的整体尺度关系，在历史 QP 中会改变 lambda 的意义。
+
+direction_provider 必须输出：
+- baseline 原本将送入 polar/NS 的 M；
+- 当前实际 eta（包含外部确定性缩放）；
+- momentum/scaling convention 的 metadata。
+
+历史项仅在 G=M+lambda(F+BH) 处加入一次。
+禁止先把历史 risk 放入训练 loss/momentum，再在 QP 中重复加一次。
+
+FedMuon 组合模式：
+- 只在当前梯度/动量上使用原定义的 control correction；
+- raw momentum 和 local/global controls 维持其原语义；
+- 历史风险修正不能写回这些 controls；
+- 按既定 task boundary 重置；
+- 不自动继承原 FedMuon 的收敛定理，当前算法发生了变化。
+
+已有审计提醒：
+Takezawa supplementary 的实际 fedmuon_optimizer.py 与 standalone muon.py 并不相同。
+若官方实现存在参数嵌套循环导致同一参数重复更新等明显实现错误，沿用项目此前按公式修正并记录的分支；不要为了“忠实”重新引入错误。
+也不要强行让 MuLoRA 的 faithful 分支使用 Takezawa 的 NS 系数与缩放。
+
+lambda_history 为固定、可配置实验超参数。
+第一版不做在线自适应lambda，按各自方向估计约定调参。
+至少记录：
+r_grad = lambda*||F+B H||F/(||M||F+eps)
+D_mu = -eta*compact_polar(M)
+r_curv = [lambda/2 * tr(D_mu H D_mu^T)] /
+         [-<M,D_mu>+eps]
+history linear term = lambda*<F+B H,D_mu>
+总量与逐层量都可统计。
+
+不要不看风险归一化就只搜0.1/1/10。
+提供 training-only 校准工具：
+- 在第一个拥有有效历史统计的任务起点（通常任务2）校准；任务1无历史、曲率分母为零是预期情况。校准后在本次run后续任务固定lambda，不逐任务重校准；
+- 不同lambda分支可复用同一任务1结束checkpoint，不能用任务2或未来数据反过来影响任务1训练；
+- 从固定当前训练批次的 M,H 和 eta 得到尺度建议；
+- 例如非退化批次上 lambda_ref = median(
+  sum_l[-<M_l,D_mu_l>] /
+  sum_l[0.5 tr(D_mu_l H_l D_mu_l^T)]
+  )，剔除零分母并完整记录；
+- H_l 已含层权重和客户端权重，不能重复计入；
+- 这仅给尺度参考，随后可在 lambda_ref×{0.1,1,10} 上用固定验证协议选择；
+- 校准保存恢复模型、optimizer、RNG和DataLoader/sampler状态，或明确计入训练预算；
+- 不能读取旧训练数据或测试标签；
+- 不在任务/通信轮中悄悄重校准；
+- 校准值、来源批次及是否成功均写入配置快照。
+若数据/验证条件不足，先完成工具和机制诊断，不输出“最优lambda”。
+
+============================================================
+9. 方法注册与实验对照
+============================================================
+
+至少提供清楚分离的名称/配置，实际文件名可按仓库风格调整：
+
+1. mulora_fl
+完整忠实基线，不改它的 NS、momentum 或历史 RRS。
+2. mulora_fedmuon_fl
+现有 MuLoRA 参数化 + Takezawa FedMuon 的 FCL 适配，准确命名。
+3. mulora_fl_exact_polar
+机制参考：同数据、A、M、eta，使用 exact compact polar。
+4. history_grad_muon
+同样历史统计：
+G=M+lambda(F+BH)，D=-eta*compact_polar(G)。
+这里是同一当前M上的历史一阶修正；不把history反复累计进momentum。
+5. history_spectral
+主方法：完整有限步历史二次谱 QP。
+6. history_frobenius_qp
+同样历史统计和G/Hhat，但解：
+min <G,D>+0.5 tr(D Hhat D^T)，||D||F<=rho。
+
+第6项：
+D=-G(Hhat+mu I)^{-1}，mu>=0，
+可用特征分解及单调一维搜索mu。
+Hhat奇异时正确处理边界和线性nullspace，不无条件使用inv。
+当无约束解存在且可行时mu=0。
+训练时rho有单独可调配置与公平验证预算。
+
+主方法可切换 direction_provider=mulora/fedmuon；
+先确保mulora provider的机制对照闭环，再运行fedmuon组合。
+不要把provider变化和history目标变化混成同一个消融。
+
+忠实复现与机制参考要分开：
+lambda=0/no_history 的严格退化对象是 exact-polar Muon（第3项），
+不保证逐位恢复 finite-NS 原基线。
+每个结果表同时列 oracle/precision/momentum/shape_scale，避免用求解精度差异冒充方法收益。
+
+可选：OSD-style baseline 接口说明即可，第一版不实现。
+若后续添加，全权重约束应变为 U^T D(A V)=0，
+不能写成 U^T D V=0 或 D V=0；
+必须单独定义保护统计来源，并报告 constraint residual；
+只能称适配基线，不能称原 OSD 复现。
+
+============================================================
+10. 借鉴 OSD 后增加：同状态的更新几何诊断
+============================================================
+
+实现 paired_update_audit，固定同一个 checkpoint、同一个 minibatch、同一个 B/M/H/F。
+不更新训练状态、不推进RNG或保存恢复相关状态。
+比较上述各更新，记录：
+- 当前预测收益 -<M,D>；
+- 精确代理历史变化 q(B+D)-q(B)；
+- 完整代理phi；
+- ||D||F、||D||op；
+- top singular value、stable rank、effective rank；
+- ||D A||F/op 与 B-space 是否相等；
+- 与普通Muon的方向夹角；
+- 是否主要等价于普通Muon统一缩放。
+
+提供 matched-energy 方向诊断：
+G=M+lambda(F+BH)
+D_frob_matched = -||D_spectral||F * G/||G||F
+G=0时显式处理。
+它只是匹配能量的方向对照，不是完整 Frobenius QP 最优解。
+
+可额外使用 rho=||D_spectral||F 求完整 Frobenius QP；
+这只匹配允许预算，不能保证最终实际范数一定相等。
+
+严格禁止把主方法D事后放大到baseline norm以“公平比较”。
+那会改变原问题、可能破坏谱半径和代理证书。
+所有额外缩放的对照必须单独命名。
+
+有效秩定义明确固定：
+p_i=sigma_i/sum sigma；
+effective_rank=exp(-sum p_i log p_i)；
+stable_rank=sum sigma_i^2/max sigma_i^2。
+零矩阵按明确约定返回0。
+不要混用奇异值能量概率和奇异值幅度概率。
+不声称更高有效秩必然更好。
+
+============================================================
+11. 联邦协调、通信与保存恢复
+============================================================
+
+推荐状态分工：
+client:
+- 当前任务训练数据视图；
+- 原baseline momentum/controls；
+- 原始累计 C,R,e,z,n；
+- solver D_prev cache；
+server:
+- 当前task共享A、全局B与head；
+- 所有已上传客户端当前历史core或聚合core；
+- 原FedMuon全局controls（组合模式）；
+- task/round版本信息。
+
+任务内 history core固定，普通通信轮不重新广播完整历史统计。
+所有客户端对同一公共q负责，而非各自只用自己的q。
+多层目标按预先固定a_l构成均值，可逐层独立解QP。
+
+共同A时：
+mean_k(W0+B_k A)=W0+(mean_k B_k)A。
+必须用测试验证；不平均不同客户端的A/B因子乘积。
+
+记录真实通信字节：
+- RRS统计；
+- 新历史core；
+- B和head；
+- FedMuon controls；
+- 上传/下行及总量。
+不要只报LoRA参数字节。
+历史统计前向、QR/SVD、求解器与eval时间分开记录。
+
+checkpoint包括：
+- 模型、A、B、head；
+- global base/center identity；
+- task/round/epoch/minibatch位置；
+- 每客户端history bank与normalization元数据；
+- momentum、FedMuon controls；
+- scheduler、AMP scaler（若有）；
+- solver cache；
+- python/numpy/torch/cuda RNG；
+- 数据partition manifest和sampler状态；
+- source/config hash。
+resume不能重新登记同一任务历史数据，也不能漏做或重复做recenter。
+
+============================================================
+12. 真正需要的验收测试
+============================================================
+
+实现针对数学语义和状态风险的测试，不写只镜像实现细节的测试。
+
+A. 充分统计一致性
+随机小矩阵，至少3历史阶段、不同全局锚点、非等权样本；
+显式sum ||W x-y||^2与 C/R/e 表示一致；
+q梯度与有限差分一致；
+归一化、客户端聚合和层权重只计入一次。
+
+B. 任务边界递推
+至少跨两个任务：
+recenter前后同一实际W的历史q一致；
+新登记数据初始风险0；
+之后更换A重新投影，仍与显式历史响应一致；
+每round不能重复recenter；
+先加新C的错误应被此测试发现。
+
+C. 解析二维例子
+M=diag(2,1)，F=0，B=0，H=diag(100,1)，lambda=eta=1。
+期望D=diag(-0.02,-1)，phi=-0.52。
+普通Muon D=-I 的phi=47.5。
+统一缩放Muon的最优alpha=3/101，phi=-9/202。
+这是优化单元测试，不是FCL精度结果。
+
+D. solver语义
+PSD且奇异H、零G、零eta、很小eta、各向异性H；
+||D||op可行；
+phi不高于零（在数值容差内）；
+FW gap达要求或诚实converged=false；
+QR降维与原始目标一致；
+精确compactpolar的rank-def/zero输入不注入任意nullspace更新。
+
+E. warm start
+Q坐标变化、eta变化、FedAvg改变B后的情况；
+旧实际D运输正确；
+坏warm start回退0；
+与从0求出的高精度目标一致；
+新任务清cache但保留history。
+
+F. Muon退化
+lambda=0和空history在exact研究分支匹配exact-polar基线；
+eta/shape scaling只作用一次；
+s=1下||DA||与||D||一致。
+不要把finite-NS精确逐位匹配写成这条断言。
+
+G. 共同历史目标与聚合
+同A下实际权重平均恒等式；
+公共凸q满足Jensen；
+所有客户端的core hash相同。
+
+H. checkpoint与无旧样本访问
+中断恢复与不中断过程在可重复容差内一致；
+history只登记一次；
+新任务训练/统计collector不能读取旧train index；
+评测访问与训练访问分离。
+不要为了通过测试把所有数据一起放进训练loader。
+
+============================================================
+13. 实验执行顺序与资源范围
+============================================================
+
+阶段0：只做数学与生命周期测试，CPU即可。
+阶段1：真实数据smoke：
+2 clients、2 tasks、2 rounds、每个本地阶段少量真实batch；
+验证训练、聚合、任务末登记、resume、日志和统计。
+smoke使用自己的清楚配置，不能覆盖正式设定。
+使用合适的小rank/dim的单元测试不算真实benchmark。
+
+阶段2：限定pilot：
+CIFAR-100，前3个完整任务，10 clients，seed0，
+alpha=0.5和0.05，
+正式的round/epoch/batch/模型/头部设定。
+优先运行已存在基线结果或直接复用完全相同manifest与代码版本的已完成结果，不重复花费计算。
+核心对比：
+exact-polar Muon、history_grad_muon、history_spectral。
+Frobenius QP 完成可运行配置，资源允许再加入该pilot。
+lambda用training-only尺度诊断和统一验证预算选择，避免整套无效小lambda实验。
+
+若实际环境缺GPU或数据：
+完成CPU测试、配置、命令和数据检查；
+明确哪一步未跑、原因、所需资源；
+不能捏造训练结果或声称方法优于基线。
+
+阶段3：生成完整正式矩阵配置及运行脚本：
+CIFAR-100/ImageNet-R × alpha三档 × seeds三档 × methods。
+原两基线的36个正式组合继续保留；
+新增方法的组合单独列出，不混入原复现结果。
+本次不默认自动提交全部昂贵长作业。
+
+============================================================
+14. 指标与判断方法是否有效
+============================================================
+
+保存完整accuracy matrix A[t,i]，同时报告：
+- 当前已见类别的micro accuracy；
+- task-macro accuracy；
+- 每阶段current/new与old accuracy；
+- 最终准确率；
+- 全阶段平均准确率；
+- forgetting：明确是否用历史max或首次学完值，不混用；
+- 每客户端累计历史测试集的指标（如有一致测试划分）；
+- old→old与old→new错分率。
+
+训练诊断：
+- 归一化历史q及每步/每轮变化；
+- r_grad、r_curv；
+- solver gap、非收敛比例、零步比例；
+- 更新奇异值、Frobenius/operator norm；
+- 旧模型响应代理与held-out真实表现的关系；
+- 新类学习是否被过度抑制；
+- 实测总训练时间、统计收集时间、内步时间；
+- 峰值GPU显存、CPU统计存储、通信字节。
+
+预先定义解释原则：
+- 若history_spectral与history_grad_muon无差别，不能强称有限步曲率有效；
+- 若主要只是统一缩小步长，报告该发现；
+- 若proxy下降但真实遗忘不改善，检查冻结特征代理与分类头竞争，不堆新模块掩盖；
+- 若求解器常不收敛，先解决数值实现再评价方法；
+- 若原完整MuLoRA更好，如实报告，不能削弱baseline；
+- 小pilot仅用于机制验证，不声称SOTA。
+
+============================================================
+15. 第一版不做的鲁棒扩展：只保留数据接口
+============================================================
+
+未来可用：
+R_tau(B)=tau log sum_k pi_k exp(q_k(B)/tau)
+来强调历史响应风险较高的客户端。
+
+注意：
+- q_k是该客户端全部历史的平均代理，不是每client×task最坏风险；
+- 权重必须随候选终点B+D变化；
+- 固定当前权重只做一次QP，不等于解完整softmax目标；
+- 多层softmax使用共同客户端权重，不能各层独立挑最差客户端后仍声称同一全模型目标；
+- 广播所有客户端cores通信成本更高。
+第一版只保留per-client bank/core与明确接口，不把此项作为主方法必要模块。
+
+============================================================
+16. 建议交付物与最终汇报
+============================================================
+
+在仓库风格下实现对应职责，文件路径可调整：
+- historical_state / functional_history：原始bank、归一化与recenter/register；
+- historical_coordinator：公共core与task lifecycle；
+- spectral_qp：小矩阵QP、compactpolar、谱球投影、gap、warmstart；
+- history_optimizer：direction provider与B实际更新；
+- frobenius_qp / paired_update_audit；
+- configs、CLI、checkpoint schema；
+- 上述有意义的tests；
+- source_audit、method说明、精确运行命令与结果汇总脚本。
+
+先审计已有项目再复用其组件，不创建第二套数据划分或不相容训练器。
+如发现 baseline 审计问题，单独修正并记录，不把它与方法收益混在一起。
+
+最终回复至少说明：
+1. 修改了什么、为什么；
+2. 哪些基线保持原定义，哪些是研究适配；
+3. 数学/生命周期测试是否通过；
+4. 哪些真实实验已跑、哪些未跑；
+5. 训练和求解器指标，包含失败与不收敛情况；
+6. 完整复现命令、配置与manifest位置；
+7. 风险代理的限制，以及下一步最有信息的实验。
+
+不要宣称：
+- 本方法已经有端到端无遗忘保证；
+- OSD/QSD/FedMuon的原定理自动适用于组合；
+- 已经过真实FCL验证，除非确实完成并报告结果；
+- 已建立新颖性或顶会录用保证。
+
+现在开始执行：先读取现有仓库和复现进度，保护基线，再按上面顺序完成独立的history_spectral实现、测试和资源允许的smoke/pilot。
+

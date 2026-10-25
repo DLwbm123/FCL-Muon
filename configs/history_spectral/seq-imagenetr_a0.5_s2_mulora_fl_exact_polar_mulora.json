@@ -1,0 +1,32 @@
+{
+  "dataset": "seq-imagenetr",
+  "seed": 2,
+  "alpha": 0.5,
+  "clients": 10,
+  "tasks": 10,
+  "rounds": 5,
+  "epochs": 5,
+  "batch": 16,
+  "rank": 32,
+  "lr": 0.0001,
+  "cosine_scale": 16,
+  "direction_provider": "mulora",
+  "lora_scale": 1,
+  "lambda_history": 0.0,
+  "lambda_mode": "training_curvature_reference",
+  "lambda_multiplier": 1.0,
+  "calibration_clients": 2,
+  "calibration_batches": 2,
+  "energy_floor": 1e-12,
+  "paired_audit": true,
+  "rho_factor": 5.656854249492381,
+  "source_revision": "history-spectral-v1-audit-baseline-00b6508",
+  "solver": {
+    "max_iter": 200,
+    "gap_rtol": 0.0001,
+    "gap_atol": 1e-10,
+    "warm_start": true
+  },
+  "method": "mulora_fl_exact_polar",
+  "output": "runs/seq-imagenetr_a0.5_s2_mulora_fl_exact_polar_mulora"
+}

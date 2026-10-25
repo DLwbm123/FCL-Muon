@@ -1,0 +1,32 @@
+请先审查实现正确性；用户已要求在 Pro 审查前不再开展实验。
+
+阅读顺序：
+1. PROTOCOL_v1_1.txt：用户完整规范。
+2. SOURCE_AUDIT.txt：来源、与忠实基线的区别、已运行与未运行状态。
+3. fcl/functional_history.py：C/R/e/z/n、共享 Q/V 的 C、归一化、重心移动和登记事务。
+4. fcl/spectral_qp.py：PSD 审计、compact polar、谱球投影、QR 小空间求解、原空间证书、Frobenius 奇异处理。
+5. fcl/history_optimizer.py：当前方向与历史项分离、eta 只计一次、实际增量证书、同状态几何诊断。
+6. fcl/history_extension.py：任务生命周期、核心广播、训练数据尺度校准、缓存与恢复。
+7. fcl/history_train.py 和 fcl/train.py：复用原训练器的可选 hooks；diff 对比原 baseline00b6508。
+8. tests/test_history_math.py 与 tests/test_history_lifecycle.py；reports/history_spectral/ 下的测试和审查状态。
+
+核心数学：
+q(B)=q0+<F,B>+1/2 tr(BHB^T)
+G=M+lambda(F+BH), Hhat=lambda H
+D=argmin_{||D||op<=eta} <G,D>+1/2 tr(DHhatD^T)
+实际执行 B<-B+D；不再套 Muon、不再次乘 LR。
+历史客户端权重默认均匀；FedAvg 当前训练样本权重独立。每层权重1/24。
+任务末必须先用旧 C/R/e 重心移动，merge并清零B，再在最终模型的当前训练数据上登记新C与锚点能量。
+
+重点审查问题：
+A. C/R/e 的中心移动及“新数据零残差”是否正确，有无先加新C造成的错误风险？
+B. 不同任务的表示漂移只作为固定输入统计代理处理，代码与论文性质是否被严格区分？
+C. 谱QP降维、单调加速重启、奇异/秩亏情形、warm-start坐标运输与原空间gap是否严谨？
+D. 实际FP32参数相加后，证书是否诚实？这是目前明确的数值未通过项：spectral smoke192更新中35个 actual-step 判据未通过，最大 relative gap1.55e-4（目标1e-4）、最大operator feasibility residual1.86e-9。请检查应怎样处理精度、最终迭代和容差，而不是隐藏失败。
+E. 校准使用当前训练数据并恢复RNG，但它只是训练尺度诊断，不是验证集选出的最优lambda；后续正式选择协议是否足够？
+F. checkpoint 是否完整恢复 raw banks、中心身份、task/round、A/B/head、raw m/FedMuon c、核心、cache和RNG？本次只保证通信轮边界恢复，不声称中途minibatch可恢复。
+G. exact-polar/一阶风险/二次谱/Frobenius 分支是否只改变指定的研究几何？faithful finite-NS基线保持独立。
+
+当前不是“已验证方法优于baseline”的交付。数学/生命周期测试通过，但FP32实步数值资格尚未通过；所有新方法pilot、验证集调参和正式矩阵均未运行。已有缩减smoke仅用于工程验证，不能当benchmark。
+
+运行保护：reports/USER_PAUSE.json 和 research队列入口均阻止新实验启动；既有主基线/LoRM运行不变。请给出可定位到函数/代码行的正确性意见，不要求Codex先跑新实验。
