@@ -72,5 +72,18 @@
       "lorm_official"
     ],
     "history_spectral_remains_paused": true
+  },
+  "first_task_audit": {
+    "status": "completed_read_only_and_synthetic_tests",
+    "tests_passed": 8,
+    "report": "FIRST_TASK_AUDIT_20261025_ZH.txt",
+    "implementation_fault_confirmed": false,
+    "confirmed_risks": [
+      "raw cosine-head FedAvg is not invariant to client-local positive row scaling",
+      "Takezawa sqrt768 scaling is correct but shared base LR is an unvalidated configuration transfer"
+    ],
+    "causal_attribution": "unresolved: no task1 full checkpoint or preaggregation client heads",
+    "real_data_training_or_evaluation": false,
+    "history_spectral_remains_paused": true
   }
 }
