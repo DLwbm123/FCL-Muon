@@ -1,0 +1,162 @@
+[
+  {
+    "config": "configs/smoke_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/smoke_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/pilot_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/pilot_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/formal_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/formal_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.5_s0_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.5_s0_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.5_s1_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.5_s1_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.5_s2_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.5_s2_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.1_s0_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.1_s0_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.1_s1_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.1_s1_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.1_s2_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.1_s2_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.05_s1_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.05_s1_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.05_s2_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-cifar100_a0.05_s2_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.5_s0_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.5_s0_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.5_s1_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.5_s1_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.5_s2_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.5_s2_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.1_s0_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.1_s0_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.1_s1_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.1_s1_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.1_s2_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.1_s2_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.05_s0_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.05_s0_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.05_s1_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.05_s1_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.05_s2_mulora_fl.json",
+    "state": "not_started"
+  },
+  {
+    "config": "configs/seq-imagenetr_a0.05_s2_mulora_fl_fedmuon.json",
+    "state": "not_started"
+  }
+]

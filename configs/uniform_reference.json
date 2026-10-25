@@ -1,0 +1,9 @@
+{
+  "scope": "small-matrix Algorithm 1 reference; no images or performance claims",
+  "clients": 2,
+  "weights": [0.5, 0.5],
+  "rounds": 2,
+  "fixed_local_steps": 3,
+  "matrix_shapes": [[5, 2], [3, 4]],
+  "test": "tests/test_core.py::test_two_clients_two_matrices_two_rounds_reference"
+}

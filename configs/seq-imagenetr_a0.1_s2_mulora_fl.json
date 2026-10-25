@@ -1,0 +1,15 @@
+{
+  "dataset": "seq-imagenetr",
+  "clients": 10,
+  "alpha": 0.1,
+  "seed": 2,
+  "tasks": 10,
+  "rounds": 5,
+  "epochs": 5,
+  "batch": 16,
+  "rank": 32,
+  "lr": 0.0001,
+  "method": "mulora_fl",
+  "output": "runs/seq-imagenetr_a0.1_s2_mulora_fl",
+  "cosine_scale": 16
+}

@@ -1,0 +1,542 @@
+你是这个研究项目的复现工程师。请在当前工作区建立一个可复现的联邦类增量学习项目，完成下面两个基线的实现、算法验证和真实数据实验：
+
+1. MuLoRA-FL：共享 RRS 正交基 + 本地 Muon + 联邦聚合。
+2. MuLoRA-FL + FedMuon：相同 RRS、模型、数据和分类头，在可训练 B 矩阵上使用 Takezawa 等人的 bias-corrected FedMuon。
+
+请实际开展工作，不要只返回方案或代码骨架。先检查工作区、现有代码、AGENTS.md、数据、GPU和依赖；已有工程优先复用，在独立分支中修改，保留用户已有工作。
+
+本阶段只实现上述两个基线。此前讨论的历史分组预算、约束优化和其他新方法，留到基线可靠之后再做。
+
+# 一、研究目标与命名
+
+主问题是 supervised federated class-incremental learning：
+
+- 客户端按同步阶段学习新增类别；
+- 数据在客户端之间 Non-IID；
+- 当前阶段不能访问原始旧任务训练样本；
+- 测试时不知道样本的真实任务身份；
+- 在所有已见类别中分类。
+
+请采用以下清晰命名：
+
+- `mulora_fl`：本项目定义的 MuLoRA 联邦适配。
+- `mulora_fl_fedmuon`：同一参数化上的 Takezawa FedMuon 适配。
+
+报告中必须说明：
+
+- MuLoRA 原文研究集中式 CL；本项目增加了共享统计、客户端训练和服务器聚合。
+- FedMuon 原文研究联邦优化；本项目将其应用于任务变化的低秩 B 参数。
+- 本项目是核心算法重建及统一 FCIL 协议适配，不是直接复现两篇原文实验表中的数值。
+- 两方法之间尽量只改变 FedMuon 的控制变量校正，其他设置保持一致。
+- 不预设哪一种方法一定更好，不以胜过另一方法作为测试通过条件。
+
+# 二、必须阅读并固定的来源
+
+## 2.1 FCIL 工程和协议来源
+
+官方仓库：
+
+https://github.com/aimagelab/fed-mammoth
+
+固定起点 commit：
+
+`6d57b5d361f743f3ff0cd1371409bd7a1158de64`
+
+先核实这个 commit，保存上游来源与本地修改记录。
+
+真实路径：
+
+- `main.py`
+- `_datasets/seq_cifar100.py`
+- `_datasets/seq_imagenetr.py`
+- `_datasets/_utils.py`
+- `_networks/vit.py`
+- `_models/lorm.py`
+- `_models/lora_pre.py`
+- `utils/training.py`
+- `utils/args.py`
+- `utils/global_consts.py`
+- `imagenet_r_utils/imagenet-r_train.yaml`
+- `imagenet_r_utils/imagenet-r_test.yaml`
+
+真实注册名称：
+
+- `seq-cifar100`
+- `seq-imagenetr`
+- `vit`
+
+仓库通过 CLI 提供实验配置，不要虚构已有的官方 YAML 配置或 requirements 文件。
+
+复用其数据管线、任务划分、模型加载和评测基础设施。新增独立模型类实现两个基线，不要把 LoRM 的交替训练 A/B、RegMean 合并或历史 adapter 平均逻辑误带入 MuLoRA。
+
+## 2.2 MuLoRA
+
+MuLoRA: Spectrally Balanced Low-Rank Adaptation for Continual Learning
+
+https://arxiv.org/abs/2610.02283v1
+
+https://arxiv.org/html/2610.02283v1
+
+若工作区有用户提供的论文 PDF，一并阅读并核对版本。
+
+本次准备阶段未定位到公开官方实现。请先核查作者是否已经发布；若仍没有，按论文重建。不能用名称类似的仓库冒充官方实现。
+
+重点阅读：
+
+- Relative-Response Spectral Allocation，RRS；
+- Subspace Spectral Balancing，SSB；
+- 固定正交 A 时的谱传递；
+- 任务末 merge；
+- Appendix B 的统计解释；
+- Appendix D 的实现设定与限制。
+
+## 2.3 FedMuon：必须锁定这一篇
+
+Yuki Takezawa, Anastasia Koloskova, Xiaowen Jiang, Sebastian U. Stich：
+
+FedMuon: Federated Learning with Bias-corrected LMO-based Optimization，ICLR 2026。
+
+https://arxiv.org/abs/2509.26337
+
+正式论文：
+
+https://proceedings.iclr.cc/paper_files/paper/2026/file/427f20d90386fd27804f1831d6a3d48f-Paper-Conference.pdf
+
+官方代码 ZIP：
+
+https://proceedings.iclr.cc/paper_files/paper/2026/file/427f20d90386fd27804f1831d6a3d48f-Supplemental-Conference.zip
+
+已核查版本的 SHA256：
+
+`dfc176670be5a63a8256d521229819ef428ca0529555f0efd58f6194b066904b`
+
+下载后验证哈希；若文件已更新，记录新版本并重新审计，不能静默替换。
+
+ZIP 中重点查看：
+
+- `code/optimizer/fedmuon_optimizer.py`
+- `code/optimizer/local_muon_optimizer.py`
+- `code/optimizer/muon.py`
+- `code/evaluate.py`
+
+不要使用 `junkangLiu0/FedMuon` 代替目标算法。那个仓库对应另一篇同名论文，机制不同。
+
+保留官方代码原始快照，以论文 Algorithm 1 为算法依据，在本项目中实现可独立测试的版本。
+
+# 三、正式实验协议
+
+以下设置固定为本项目主协议：
+
+| 项目 | 设置 |
+|---|---|
+| 数据集 | CIFAR-100、ImageNet-R |
+| CIFAR-100 | 10 个任务，每任务 10 类，初始任务也是 10 类 |
+| ImageNet-R | 10 个任务，每任务 20 类，初始任务也是 20 类 |
+| 客户端数 | 10 |
+| 每轮参与率 | 100% |
+| Non-IID | Dirichlet α ∈ {0.5, 0.1, 0.05} |
+| 每任务通信轮数 | 5 |
+| 每轮本地训练 | 5 epochs |
+| Batch size | 16 |
+| 骨干 | ViT-B/16，ImageNet-21K 预训练 |
+| 模型标识 | `vit_base_patch16_224.augreg_in21k` |
+| 输入分辨率 | 224 |
+| 主 rank | 32 |
+| 正式种子 | 0、1、2，作为本项目选择 |
+| 原始旧样本回放 | 无 |
+| 服务器辅助图像 | 无 |
+| 测试任务身份 | 不提供 |
+| 测试候选类别 | 当前阶段全部已见类别 |
+
+注意：
+
+1. LoRM 官方 README 在不同设置下使用不同 rank。本项目统一 r=32，依据 MuLoRA 原文的默认 rank，用于两方法的受控比较。
+2. 不得把骨干替换成 DINO、ImageNet-1K 微调权重或随机初始化后仍使用正式实验名称。
+3. 保存实际权重下载来源、revision、文件 SHA256，以及 timm 版本。
+4. 5 local epochs 不是 5 optimizer steps。
+5. 两方法的模块位置、有效缩放、精度、训练数据和辅助优化器必须一致。
+
+# 四、数据划分与预处理
+
+## 4.1 固定数据身份
+
+CIFAR-100 使用官方 train/test。
+
+ImageNet-R 使用固定 commit 下的 YAML 清单：
+
+- 训练集 24,000 张；
+- 测试集 6,000 张；
+- 200 类；
+- 保留 YAML 的标签映射。
+
+不得重新随机生成 ImageNet-R 的 80/20 划分，也不得按 WNID 字典序重新分配标签。可以修正文件根目录，但不能改变样本身份。
+
+类别顺序沿用仓库默认：
+
+- CIFAR-100：原整数标签顺序；
+- ImageNet-R：YAML 标签顺序。
+
+将类别顺序保存成显式 manifest。种子改变客户端分配和训练随机性，默认不额外随机类别顺序。
+
+## 4.2 固定客户端分区
+
+审计并复用 `_split_fcil` 的实际规则：
+
+- 每任务、每类别抽取 Dirichlet 概率；
+- 逐样本按概率分配；
+- 原实现要求每个客户端当前任务至少 6 个训练样本；
+- 测试分配使用相应类别的训练分配比例。
+
+导出每个 seed、dataset、α 对应的独立 partition manifest，保存样本索引、类别、task、client ID。
+
+不同方法必须加载同一个 manifest。不能因模型初始化或额外统计前向消耗 RNG，导致客户端划分变化。
+
+如果原实现存在无限重试等工程问题，可以增加明确的重试上限和错误信息，但不能静默改变分配规则。
+
+## 4.3 预处理
+
+先按固定 commit 保留预处理顺序，并记录实际参数：
+
+- BASE_TRANSFORM：Resize 到 224×224，bicubic，再 ToTensor；
+- 训练：RandomResizedCrop 224、水平翻转、RGB 各通道 mean/std = 0.5/0.5；
+- 测试：Resize 到 256×256、CenterCrop 224、相同 normalization。
+
+不要静默替换成另一套常见 ImageNet preprocessing。
+
+RRS 统计前向使用当前训练图像和确定性预处理，默认沿用测试变换的形式，但输入来源仍只能是训练集。记录这一工程选择。
+
+不使用测试或未来任务样本构造 A、历史统计、原型或超参数。
+
+# 五、统一模型配置及明确补全
+
+MuLoRA 原文说明在所有 attention blocks 插入适配器，但未充分说明内部具体投影位置。第一版采用以下可追溯的项目选择：
+
+- 所有 12 个 Transformer blocks；
+- 分别适配 Q 和 V；
+- 每个投影 rank=32；
+- 冻结 K、attention output projection、MLP、LayerNorm、patch embedding 和其他骨干参数；
+- B 可训练，A 固定；
+- 实际权重增量为 `B @ A`，有效 LoRA scale=1。
+
+timm 使用 fused QKV 时，显式处理 Q/V 切片，验证 K 的输出不受 adapter 直接修改。不要因为上游 LoRM 默认适配 48 个矩阵，就自动沿用其模块列表。
+
+这属于项目补全，不得标成已核实的 MuLoRA 原始投影配置。如果之后找到明确的官方配置，新增版本并说明差异。
+
+分类头使用 MuLoRA 所述的 cosine classifier。以下细节作为统一项目默认：
+
+- 无 bias；
+- 固定 cosine scale=16，可配置；
+- 当前任务类别行参与训练，旧类别行保持不变；
+- 训练 CE 使用当前任务类别 logits；
+- 推理拼接全部已见类别行，统一比较全部已见类别；
+- 不根据真实 task ID 选择分类头；
+- 分类头使用独立 AdamW，初始 lr=1e-3、weight decay=0；
+- 分类头参数按当前任务样本数加权聚合；
+- 分类头 optimizer state 每轮重新初始化，两个方法完全一致。
+
+记录 cosine scale、旧行策略、头优化器等属于补全约定；上游 LoRM 默认是线性头，因此本项目不是原样复用 LoRM 分类头。
+
+报告可训练参数数量、固定 A 存储、每个适配矩阵名称和形状。禁止依据“二维参数”规则把分类头或其他权重自动混入 Muon。
+
+# 六、MuLoRA-FL 的精确定义
+
+每个任务、每个适配层执行以下流程。
+
+## 6.1 任务开始：构造共享 A
+
+使用本方法自己的任务前全局模型 W_(t-1)，在 B=0 时收集当前任务输入特征。
+
+客户端累计未中心化、未归一化二阶矩：
+
+`S_(k,t) = Σ x x^T`
+
+服务器直接求和：
+
+`S_t = Σ_k S_(k,t)`
+
+原始二阶矩已经包含样本/token 数量，不能再乘一次样本数权重。
+
+维护进入任务前的历史统计 `H_raw`：
+
+1. `H = H_raw + epsilon * I`
+2. Cholesky：`H = L L^T`
+3. `S_white = L^(-1) S_t L^(-T)`
+4. 提取领先 r 维特征子空间 U
+5. `Z = L^(-T) U`
+6. Thin QR：`Z = Q R`
+7. `A_t = Q^T`
+
+要求：
+
+- 使用三角求解，不显式求逆；
+- 不能省略映射回原空间后的 QR；
+- 不能把 RRS 换成 PCA 或随机正交基后仍沿用名称；
+- 首版使用精确特征分解作为 reference，随机化版本以后再做；
+- 分解使用 FP64，数值稳定项及实际 jitter 显式记录；
+- epsilon 原文数值不明确时，依据训练统计尺度作出稳定、可复现的选择，写入配置与审计表；
+- 默认统计 patch tokens，不包含 CLS token，记录该补全约定；
+- 正式统计使用当前训练样本的一次完整前向；smoke 的采样缩减必须单独标记；
+- 只有输入张量完全相同的 Q/V 才可共享统计。
+
+同一次运行、同一任务的所有客户端共享数值相同的 A。
+
+不同方法从后续任务开始可能有不同的 W，因此不能直接共用另一方法的 S、H 或 A 缓存。缓存键必须包含 checkpoint hash、task、layer、split、预处理和 token 策略。
+
+## 6.2 本地训练和聚合
+
+任务开始时：
+
+- 冻结 W_(t-1)；
+- 固定 A_t；
+- B_t 初始化为零；
+- 初始化本任务对应的客户端 optimizer states。
+
+每轮：
+
+- 客户端从服务器当前 B 开始；
+- 本地训练完整 5 epochs；
+- A 不变化；
+- 服务器按 `p_k = N_k / Σ_j N_j` 聚合 B；
+- N_k 是当前任务实际训练样本数，不是 step 数或重复访问次数。
+
+共享 A 时，应验证：
+
+`(Σ_k p_k B_k) A = Σ_k p_k (B_k A)`
+
+每轮不能把 B 重新清零。
+
+## 6.3 任务结束
+
+仅执行一次：
+
+`W_t = W_(t-1) + B_t A_t`
+
+然后：
+
+- 将本任务开始时收集的 S_t 加入 H_raw，一次且仅一次；
+- 进入新任务后重新构造 A、清零 B；
+- 重置与旧 B 坐标绑定的 Muon/FedMuon states；
+- 不重新读取旧训练样本刷新历史特征。
+
+明确说明历史统计是过去表示下的代理，不声称它等于当前模型下重新计算的所有旧特征。
+
+# 七、Muon 与 FedMuon 的共同算子和状态
+
+## 7.1 共同的 Muon operator
+
+两方法共享同一个显式实现，隔离 FedMuon correction 的影响。
+
+第一版使用 Takezawa 官方 FedMuon 实验代码中的算子：
+
+- 原始动量：`m <- beta*m + (1-beta)*g`
+- 项目默认 beta=0.9；
+- 无 Nesterov；
+- NS 输入按 Frobenius norm + 1e-7 归一化；
+- 系数 `(3.4445, -4.7750, 2.0315)`；
+- 5 次 NS；
+- NS 和动量使用 FP32；
+- 按矩阵形状选择较小的 Gram；
+- 最终乘 `sqrt(max(d_out, r))`。
+
+将维度缩放与基础学习率分别记录。这个 operator 是统一项目配置，不能声称未知的 MuLoRA 原实现参数已经被逐项复现。
+
+初始 B 学习率先采用：
+
+- CIFAR-100：2e-4；
+- ImageNet-R：1e-4。
+
+采用任务内连续 cosine schedule，不在每个通信轮重启。记录每个客户端的真实 step 数和 LR。B 默认 weight decay=0。
+
+如果后续调参，使用训练集分出的验证数据、相同搜索预算，冻结参数后重新训练正式模型；不得根据最终测试结果选择超参数或 checkpoint。
+
+## 7.2 MuLoRA-FL
+
+本地使用：
+
+`B <- B - lr * MuonOperator(m)`
+
+每个客户端的原始 momentum 在同一任务的通信轮之间保留，按真实 client ID 存储。任务切换时清零。这是项目的联邦状态约定。
+
+## 7.3 FedMuon
+
+对每个客户端、每个 B，保存原始 momentum `m_k` 和本地控制变量 `c_k`；服务器保存 `c`。
+
+全参与、样本加权适配采用：
+
+- 任务初始化：`m_k = c_k = c = 0`
+- 本地每步：
+  - `m_k <- beta*m_k + (1-beta)*g_k`
+  - `h_k = m_k - c_k_old + c_old`
+  - `B_k <- B_k - lr * MuonOperator(h_k)`
+- 整轮本地训练中，`c_k_old` 和 `c_old` 固定；
+- 整轮结束后：
+  - `c_k_new = m_k_end`
+  - `c_new = Σ_k p_k*c_k_new`
+  - `B_new = Σ_k p_k*B_k_end`
+
+不要把 corrected momentum 写回原始 m。
+不要在每个 minibatch 更新 c_k。
+不要把 correction 加在 NS 之后。
+不要把它误写成 Adam 的时间偏差修正。
+
+原论文采用 uniform-client objective。本项目样本加权及变长 local steps 属于 FCIL 适配，单独记录，不直接沿用原论文收敛结论。
+
+保留一个 uniform weights、相同固定 local steps 的小型参考配置，验证论文 Algorithm 1。
+
+主实验严格保持 E=5 epochs：
+
+`K_k = 5 × len(train_loader_k)`
+
+显式 `drop_last=False`，记录真实 K_k。不能为匹配固定 K 而静默截断、重复样本或改训练预算，也不能把 c_k 再除以 K_k。
+
+同一任务内保留 m_k、c_k 和 c。新任务 A 改变且 B 清零时，这些状态一起重置。
+
+## 7.4 官方代码审计
+
+官方 `fedmuon_optimizer.py` 中存在需要检查的实现问题：
+
+- step 中外层遍历参数，内层又遍历整个参数组，可能导致每个参数重复更新；
+- `use_muon=False` 分支不能仅凭名字当作 Adam；
+- 部分参与分支的控制变量聚合需要与 Algorithm 1 不变量核对。
+
+本阶段主实验全参与，不扩展部分参与研究。
+
+保留原始代码，写独立公式 reference，用测试确认并修正问题。在 SOURCE_AUDIT.md 中记录差异、修正和依据，不能把修正后的实现称为“官方代码原样运行”。
+
+# 八、必须完成的正确性验证
+
+只写能发现实质错误的测试，至少覆盖：
+
+1. 不等客户端样本数下，二阶矩汇总等于拼接特征后的 X^T X；不存在重复样本数加权。
+2. RRS whitening、逆映射和 QR 正确；A A^T≈I；历史统计每任务只提交一次。
+3. B 与 BA、实际 ΔB 与 ΔBA 的非零奇异值一致；B=0 不改变骨干输出。
+4. 不等客户端权重下的共享 A 聚合等价；A 不一致时直接报错。
+5. 跨轮 B 连续、任务末 merge 前后输出一致、重复 merge 被阻止。
+6. FedMuon 独立数值 reference：至少两个客户端、两个矩阵、两个通信轮；每参数每步只更新一次，控制变量冻结及跨轮状态正确。
+7. 断点恢复后的下一轮与连续运行一致，覆盖模型、历史、客户端状态和 RNG。
+8. 统计管线不访问 validation/test/future 数据；评测使用全部已见类别且不接收真实 task ID。
+
+另外提供 compact-SVD polar 作为诊断 reference：
+
+- 零矩阵返回零；
+- 秩亏矩阵不人为补出零空间更新；
+- 覆盖良态、病态和矩形矩阵。
+
+有限次 optimized NS 是近似谱变换，不要求输出严格正交到 1e-6，不设置虚假的精确 polar 验收。
+
+# 九、评测、日志与 checkpoint
+
+保存每个阶段结束后的完整任务准确率矩阵 A[t,i]。评测任务 i 时，候选类别仍是阶段 t 的全部已见类别。
+
+分别报告：
+
+- 最终 all-seen micro accuracy；
+- 最终 task-macro accuracy；
+- 各阶段 all-seen accuracy 的平均值；
+- 明确定义的 average forgetting；
+- 旧类与新类准确率；
+- 必要的客户端分组诊断。
+
+不要直接沿用上游函数名称就认定其 forgetting 定义是标准定义。保存原始矩阵，使指标可重算。
+
+同时记录：
+
+- 每轮每客户端样本数、实际 steps、LR；
+- 实际更新 Frobenius norm、stable rank、有效秩；
+- 统计收集、RRS、训练、聚合、评测耗时；
+- GPU 峰值显存；
+- 参数、A、二阶矩、控制变量的实际通信字节；
+- 总持久状态内存。
+
+谱诊断区分单步 ΔB、任务累计 B 和聚合后的 B，不能用单步谱图声称累计更新一直平衡。
+
+Checkpoint 至少包括：
+
+- 已合并 backbone、当前 A/B、分类头；
+- 历史二阶矩、待提交当前统计、计数；
+- 真实 client ID 对应的 m_k、c_k；
+- 服务器 c；
+- task、round、scheduler；
+- Python、NumPy、PyTorch、CUDA及数据采样 RNG；
+- 配置、划分 manifest 和权重 hash；
+- 历史统计是否已经提交的状态标志。
+
+优先保证通信轮边界可准确恢复。保存采用原子写入，避免中断损坏。
+
+# 十、执行顺序
+
+## 阶段 A：环境与来源审计
+
+- 检查硬件、可用 GPU、磁盘、数据和权重。
+- 下载并固定公开来源。
+- 阅读许可证并保留来源说明。
+- 建立依赖环境并锁定实际验证通过的版本。
+- 输出配置来源表：用户协议、MuLoRA原文、FedMuon原文/代码、项目补全。
+- 在不影响正确性的情况下，单 GPU 串行模拟客户端即可，不要求先部署真实分布式集群。
+
+## 阶段 B：数学测试与真实模型 smoke
+
+先通过小矩阵/CPU reference 测试，再用真实 ViT 和 r32 做 smoke：
+
+- 2 客户端；
+- 正式类别划分中的前 2 个任务；
+- 每任务 2 轮；
+- 少量真实训练 batch；
+- 两种方法都运行。
+
+所有缩减仅存在于专用 smoke 配置，结果不能混入正式结果。
+
+## 阶段 C：配对 pilot
+
+- CIFAR-100 正式 10×10 划分的前 3 个任务；
+- 10 客户端；
+- α=0.05；
+- 5 rounds × 5 local epochs；
+- batch16、r32；
+- seed0；
+- 两种方法使用完全相同的数据 manifest。
+
+检查状态、数值稳定性、新任务拟合、旧类保留和资源消耗。
+
+## 阶段 D：正式实验
+
+通过前面检查后，先完成两方法在 CIFAR-100、α=0.05、seed0 上的完整 10 任务训练。
+
+再按可用资源运行完整矩阵：
+
+`2 datasets × 3 alphas × 3 seeds × 2 methods = 36 runs`
+
+用已有可用资源执行，不新开付费云实例。长任务保存检查点、日志与可恢复的运行队列。
+
+不要在只完成 smoke 或 pilot 时宣布复现完成。若环境或会话限制导致部分实验尚未执行，明确记录已完成、运行中、未启动、失败和阻塞原因，并提供精确恢复命令。
+
+# 十一、工程交付与验收
+
+至少交付：
+
+- 可运行的两个基线实现及共享模块；
+- 可锁定的依赖环境；
+- smoke、pilot、formal 配置；
+- 数据 manifest 和校验工具；
+- 测试；
+- 训练、恢复、评测及结果汇总命令；
+- README；
+- SOURCE_AUDIT.md；
+- IMPLEMENTATION_NOTES.md；
+- 实际运行日志、checkpoint、指标和结果汇总；
+- 未完成实验清单与可恢复队列。
+
+建议新增模型注册名与配置名称保持一致。给出的最终命令必须由实际代码支持，至少通过帮助参数解析和对应阶段验证，不得编造尚不存在的 CLI 参数。
+
+来源审计必须特别记录：
+
+- MuLoRA 没有确认到官方实现的部分；
+- 具体 Q/V placement、分类头温度、NS参数等补全约定；
+- 与 LoRM 原始 rank、适配矩阵和分类头的差异；
+- FedMuon 原始 uniform/fixed-step 设置与本项目 weighted/epoch 设置的差异；
+- 官方代码审计发现及修正；
+- 任务切换时重置优化状态的适配决定。
+
+请现在开始工作。按照“审计 → 实现 → 数学验证 → 真实 smoke → pilot → 正式实验”的顺序推进，发现问题就定位修复，继续完成未受阻塞部分。
+
+最后报告实际完成情况、测试结果、训练结果、关键差异、资源消耗和下一步恢复命令。没有运行的实验明确标记未运行，不能用模拟数据、预期分数或论文数字填充结果。

@@ -1,0 +1,62 @@
+[
+  {
+    "run": "smoke_mulora_fl",
+    "elapsed_seconds": 24.78805661201477,
+    "peak_gpu_bytes": 1648327168,
+    "checkpoint_bytes": 403510827,
+    "manifest_hash": "c81393d8820f2edac9f3d6175083194dab94e3ba4b8bc687d145deb93292b379",
+    "core_task_boundary_audit": "passed",
+    "metrics": {
+      "matrix": [
+        [
+          0.34375
+        ],
+        [
+          0.34375,
+          0.03125
+        ]
+      ],
+      "stage_micro": [
+        0.34375,
+        0.1875
+      ],
+      "final_micro": 0.1875,
+      "final_task_macro": 0.1875,
+      "mean_stage_micro": 0.265625,
+      "average_forgetting": 0.0,
+      "old_micro": 0.34375,
+      "new_accuracy": 0.03125
+    },
+    "warning": "tiny real-data smoke, not scientific performance evidence"
+  },
+  {
+    "run": "smoke_mulora_fl_fedmuon",
+    "elapsed_seconds": 22.406636476516724,
+    "peak_gpu_bytes": 1648327168,
+    "checkpoint_bytes": 403510827,
+    "manifest_hash": "c81393d8820f2edac9f3d6175083194dab94e3ba4b8bc687d145deb93292b379",
+    "core_task_boundary_audit": "passed",
+    "metrics": {
+      "matrix": [
+        [
+          0.34375
+        ],
+        [
+          0.34375,
+          0.0
+        ]
+      ],
+      "stage_micro": [
+        0.34375,
+        0.171875
+      ],
+      "final_micro": 0.171875,
+      "final_task_macro": 0.171875,
+      "mean_stage_micro": 0.2578125,
+      "average_forgetting": 0.0,
+      "old_micro": 0.34375,
+      "new_accuracy": 0.0
+    },
+    "warning": "tiny real-data smoke, not scientific performance evidence"
+  }
+]

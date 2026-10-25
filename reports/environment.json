@@ -1,0 +1,25 @@
+{
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-6.8.0-146-generic-x86_64-with-glibc2.39",
+  "versions": {
+    "torch": "2.7.1+cu128",
+    "torchvision": "0.22.1+cu128",
+    "timm": "1.0.22",
+    "kornia": "0.8.2",
+    "kornia_rs": "0.2.0",
+    "numpy": "1.26.4",
+    "huggingface-hub": "0.36.0",
+    "safetensors": "0.8.0",
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.1",
+    "Pillow": "10.4.0",
+    "pluggy": "1.7.0",
+    "iniconfig": "2.3.1"
+  },
+  "cuda": "12.8",
+  "gpu": "NVIDIA RTX PRO 5000 72GB Blackwell",
+  "free_total_bytes": [
+    76008128512,
+    76368052224
+  ]
+}

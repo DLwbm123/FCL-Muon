@@ -1,0 +1,16 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+sources/
+data/
+deps/
+runs/
+*.pt
+*.pth
+*.zip
+reports/author-public-repos.json
+manifests/
+weights.json
+cache/
+
+reports/LOCAL_OPERATIONS.md

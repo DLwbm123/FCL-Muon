@@ -1,0 +1,13 @@
+{
+  "new_project_initial_allocated_bytes": 0,
+  "shared_existing_runtime": "existing CUDA environment, not copied or modified",
+  "planned_new_peak_bytes": 35000000000,
+  "strict_per_server_limit_bytes": 50000000000,
+  "conservative_stop_bytes": 45000000000,
+  "per_run_hard_training_seconds": 85500,
+  "termination_grace_seconds": 60,
+  "absolute_run_limit_seconds": 86400,
+  "checkpoint_policy": "one latest atomic checkpoint per run, no historical deletion",
+  "training_policy": "serial clients and serial experiment configs; no paid resources",
+  "storage_policy": "guard counts whole newly created project including dependencies, downloads and all runs"
+}
