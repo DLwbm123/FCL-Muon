@@ -1,0 +1,40 @@
+{
+  "authorization": "2026-10-25 user: 按照你的顺序立即执行",
+  "stage": "Frozen candidate paired confirmation after D1/D2",
+  "candidate": "Head-RegMean with fixed task-block logit centering",
+  "decision_source": "reports/head_competition_diagnostic_20261025/DECISION.json",
+  "scope": "CIFAR100 alpha.05 clients10 first3 tasks; seeds1 and2; aggregation regmean/fedavg and official LoRM, six runs total",
+  "lanes": [
+    {
+      "seed": 1,
+      "gpu": 0
+    },
+    {
+      "seed": 2,
+      "gpu": 3
+    }
+  ],
+  "lane_order": [
+    "regmean",
+    "fedavg",
+    "lorm"
+  ],
+  "hard_timeout_seconds": 85500,
+  "storage_limit_bytes": 20000000000,
+  "estimated_peak_new_bytes": 12000000000,
+  "training_image_visits": 2250000,
+  "source_clock": "New independent fresh-seed confirmation; all six runs and retries share the first group launch clock; never reset",
+  "frozen_training": "Head pair uses common Pilot.train_client, QV rank32, current-only CE, cosine16, original SSB B/FedAvg, shared RRS fixedA, 5rounds*5epochs, batch16, .0002 B lr and .001 AdamW head reset; RegMean alpha=.5 endpoint Grams; no training change for centering",
+  "FedAvg_control": "Same data/initialization/augmentation and learner; no Gram forward/upload/solve in pure FedAvg arm. Verify first preaggregation heads/B/A/RNG equal; later B trajectory is allowed to diverge",
+  "LoRM": "Same pinned official LoRM settings as seed0; rank16, 48 matrices, A/B alternation, linear+bias head, 16mixed, official RegMean. No optimizer/structure tuning. Add task-end fixed-rule output only",
+  "reporting": "Both raw and fixed centered matrices, final old/new, forgetting, task restricted, task-block errors; paired seed values and aggregate mean/std; training/statistics/communication/storage costs. Never select best checkpoint",
+  "seed0": "Retain all seed0 development results separately; old FedAvg implementation not a clean same-code pair; do not pool it as an exact treatment ablation",
+  "test_boundary": "Same CIFAR test set used in development; seeds1/2 validate training/partition variability, not independent held-out confirmation. No parameter fit/search on test; retain every arm",
+  "qualification": "Existing solver/lifecycle tests plus exact production-subclass trajectory preservation on synthetic data; actual first-round pair identity; final Head checkpoint full confusion reload; final LoRM checkpoint boundary and full forward audit",
+  "full10_gate": "After both seeds complete, audit and report all outcomes before any full10 launch. Candidate mean new gain over raw Head>=5pp, mean old loss<=1pp and no seed old task loss>2pp; compare candidate vs equally centered LoRM without claiming complete superiority. If gains are unstable, do not silently add seeds or search; record mechanism decision in a new protocol",
+  "paused": [
+    "history_spectral",
+    "ridge/v1"
+  ],
+  "no_automatic_retry": true
+}

@@ -105,15 +105,28 @@ def main():
         dl=loader(raw[0 if split=='train' else 1],ids,cfg['batch'],shuffle)
         dl.dataset.data=np.array(ids)  # upstream get_client_info only needs sample count
         return fabric.setup_dataloaders(dl)
-    def evaluate(t):
+    def evaluate(t,record_fixed_rules=False):
         server.to(server.device);server.eval();row=[];counts=[];corrects=[]
+        saved_scores=[];saved_y=[]
         with torch.no_grad():
             for i in range(t+1):
                 correct=total=0
                 for x,y in get_loader('test',i):
-                    pred=server(test_tf(x))[:,:cpt*(t+1)].argmax(-1)
+                    scores=server(test_tf(x))[:,:cpt*(t+1)]
+                    pred=scores.argmax(-1)
+                    if record_fixed_rules:
+                        saved_scores.append(scores.float().cpu().numpy());saved_y.append(y.cpu().numpy())
                     correct+=int((pred==y).sum());total+=len(y)
                 row.append(correct/total);counts.append(total);corrects.append(correct)
+        if record_fixed_rules:
+            from research.basic_repair.fcl_basic_repair_tools import center_task_logits,summarize
+            scores=np.concatenate(saved_scores).astype(np.float64);ys=np.concatenate(saved_y)
+            raw_result=summarize(scores,ys,cpt);centered=summarize(center_task_logits(scores,cpt),ys,cpt)
+            assert [v['all_seen_accuracy'] for v in raw_result['per_task']]==row
+            indices=[j for task_groups in m['partitions']['test'][:t+1] for group in task_groups for j in group]
+            assert len(set(indices))==len(indices)==len(ys)
+            np.savez(out/f'task{t+1}_private_logits.npz',logits=scores,labels=ys,indices=np.array(indices))
+            (out/f'task{t+1}_fixed_rules.json').write_text(json.dumps({'raw':raw_result,'centered':centered},indent=2))
         return row,counts,corrects
     for t in range(task,cfg['tasks']):
         task=t
@@ -154,7 +167,7 @@ def main():
             dl=get_loader('train',t,k,True);client.to(client.device)
             info.append(client.end_task_client(dl,server_info));client.to('cpu')
         server.end_task_server(info);del info,server_info
-        row,counts,corrects=evaluate(t);matrix.append(row);stage_micro.append(sum(corrects)/sum(counts))
+        row,counts,corrects=evaluate(t,cfg.get('record_fixed_rules',False));matrix.append(row);stage_micro.append(sum(corrects)/sum(counts))
         metrics={'matrix':matrix,'stage_micro':stage_micro,'final_micro':stage_micro[-1],
                  'final_task_macro':sum(row)/len(row),'mean_stage_micro':sum(stage_micro)/len(stage_micro),
                  'average_forgetting':sum(max(matrix[j][i] for j in range(i,t+1))-row[i] for i in range(t))/t if t else 0.,

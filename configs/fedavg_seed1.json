@@ -1,0 +1,20 @@
+{
+  "dataset": "seq-cifar100",
+  "clients": 10,
+  "alpha": 0.05,
+  "seed": 1,
+  "tasks": 3,
+  "cpt": 10,
+  "rounds": 5,
+  "epochs": 5,
+  "batch": 16,
+  "rank": 32,
+  "lr": 0.0002,
+  "cosine_scale": 16,
+  "backbone": "vit_base_patch16_224.augreg_in21k",
+  "aggregation": "fedavg",
+  "manifest": "manifests/seq-cifar100_n10_a0.05_s1.json",
+  "output": "runs/fedavg_seed1",
+  "source_revision": "frozen confirmation source; see reports/SOURCE.json",
+  "inference_rule": "fixed block mean subtraction; always report raw too"
+}
