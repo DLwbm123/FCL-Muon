@@ -1,0 +1,93 @@
+三方已完成 pilot：最终 checkpoint 只读诊断（2026-10-25）
+
+结论
+差距同时存在于当前任务内部分类和跨任务竞争；在当前任务准确率相对
+LoRM 的差距中，约68%/70%可用“额外跨任务竞争损失”作算术分解。
+这是同一模型预测的分解，不是头、优化器或任何单一机制的因果归因。
+本次没有训练、调参、校准、重选 checkpoint 或恢复 history_spectral。
+
+范围与执行证据
+- 仅恢复三个已完成 pilot 的最终 T3 checkpoint；没有 T1/T2 独立模型评估。
+- CIFAR100，原 n10/alpha.05/seed0 manifest，类顺序不变。
+- 同一3000张已见类测试图；T1/T2/T3各1000张，当前类20..29，旧类0..19。
+- 仅测试集、download=False、pretrained=False；无训练集或优化器。
+- MuLoRA两个方法保留FP32/禁TF32；LoRM保留16-mixed/medium精度。
+- 严格加载全部模型权重；LoRM使用官方forward所用的最终optimization_dict，
+  包含任务结束的temporal RegMean，不重新合并A/B、不构造新的训练状态。
+- 原MuLoRA指标在merge前计算，最终checkpoint在merge后保存；本次三方
+  每一项逐任务all-seen准确率均精确复现原记录，最大差为0。
+- checkpoint前后size/mtime未变；这不是逐字节哈希验证。
+- 独立GPU3运行，启动可用显存72830MiB；硬超时1800秒，输出guard100MB。
+  evaluator耗时31.76秒，supervisor约40秒，exit0且两个进程已退出。
+  输出约0.68MB。COMPLETE.json、job.json和results.json均保留。
+- 两项合成指标测试通过：包含旧新类并列最大值、不同分母及错误重叠。
+  history_spectral的auto_launch_allowed=false保持不变。
+
+指标（百分比；准确率越高越好）
+方法                         当前10类限定   当前样本30类竞争   旧样本30类竞争   全3000张30类准确率
+MuLoRA-FL                    85.1          55.7              72.9             67.17
+MuLoRA-FL + FedMuon           75.6          22.3              59.0             46.77
+LoRM官方标准                 97.4          94.0              86.1             88.73
+
+“当前10类限定”对T3测试样本仅在20..29的logits中argmax，使用真实任务身份
+进行诊断，不能当作无需任务标签的FCIL性能。后面三列均在0..29中argmax。
+
+当前类错误的互斥分解（分母均为1000个T3样本）
+方法                         任务内已错   任务内正确但旧类胜出   总错误
+MuLoRA-FL                    14.9%        29.4%（294张）        44.3%
+MuLoRA-FL + FedMuon           24.4%        53.3%（533张）        77.7%
+LoRM                          2.6%         3.4%（34张）          6.0%
+
+相对LoRM，MuLoRA的新类差38.3个百分点 = 12.3点任务内差 + 26.0点额外竞争损失；
+FedMuon组合的新类差71.7点 = 21.8点任务内差 + 49.9点额外竞争损失。
+后者各占差距67.9%和69.6%。这个恒等式描述预测结果，不能证明调整分类头
+就能恢复这些点，也不意味着当前类限定准确率可直接用于真实推理。
+
+跨任务预测的方向
+新类被预测为任意旧类：MuLoRA41.5%，FedMuon组合77.5%，LoRM4.3%。
+其中直接预测成T1类：36.2%、70.9%、2.7%。这表明前两者存在明显偏向早期
+任务的预测模式。相反，旧类被判成T3新类仅为4.35%、0.55%、7.10%。
+“新→旧”包括任务内本来就错的样本，所以不能与“任务内错误”直接相加；
+上方互斥分解只计任务内正确、加入旧类后才错的样本。
+
+任务组混淆计数（行：真实T1/T2/T3；列：预测T1/T2/T3；每行1000）
+MuLoRA-FL:          [[900,70,30], [250,693,57], [362,53,585]]
+MuLoRA-FL+FedMuon:  [[926,64,10], [541,458,1],  [709,66,225]]
+LoRM:               [[825,102,73],[24,907,69],  [27,16,957]]
+对角项只要求任务组正确，不等于具体类别正确。
+
+同一最终T3模型，对各任务限定10类 vs 全30类的准确率：
+MuLoRA:        T1 84.2→79.5，T2 87.4→66.3，T3 85.1→55.7。
+FedMuon组合:   T1 76.5→75.0，T2 84.0→43.0，T3 75.6→22.3。
+LoRM:          T1 96.6→82.0，T2 97.5→90.2，T3 97.4→94.0。
+这些是T3时刻的任务条件诊断，不是各任务刚训练完时的准确率。
+
+能支持与不能支持的解释
+1. 前两者低新类all-seen准确率不能单纯归因于“10个新类没有学会”；
+   它们已分别能在当前任务内分对85.1%/75.6%，但与旧类共同竞争时大量丢失。
+2. LoRM任务内部准确率也更高，故只讨论跨任务得分偏置仍不完整。
+3. FedMuon组合低遗忘数值不能独立代表更好的保留能力：它当前类和旧类的
+   绝对准确率都低，且预测集中到T1。遗忘差值需要与初始拟合水平一起解释。
+4. 这些诊断不能区分骨干特征、RRS限制、优化器、联邦聚合及头的具体贡献。
+   三方标准配置不同（rank、模块、头、精度、RegMean等），不是单机制消融。
+5. 只评价了一个seed的前三任务，不能外推完整10任务、多seed或history方法。
+   原始训练loss是本地当前类过程均值，本次是最终全局模型的测试诊断，二者
+   不能直接比较来认定过拟合或聚合错误。未作任何测试集导向的参数选择。
+
+复现与文件
+脚本：scripts/diagnose_checkpoint.py、scripts/readonly_eval_job.py。
+合成测试：tests/test_checkpoint_diagnostic.py。
+汇总、完整30×30类别混淆、精度/配置/来源及退出证据：
+reports/checkpoint_diagnostic_20261025/。
+每样本logits/标签/索引仅在服务器私有运行目录保存，不推送。
+
+实际启动命令（环境传路径，中性argv；该次运行已完成，不要重复执行）：
+PROJECT_ROOT=/data/bmw/FCL-Muon/readonly_eval_20261025 \
+EXPERIMENT_ROOT=/data/bmw/FCL-Muon \
+ENTRY_FILE=scripts/readonly_eval_job.py \
+PYTHONPATH=/data/bmw/FCL-Muon/deps:/data/bmw/FCL-Muon \
+CUDA_VISIBLE_DEVICES=3 nohup /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py \
+  > /data/bmw/FCL-Muon/readonly_eval_20261025/supervisor.log 2>&1 < /dev/null &
+
+本次只读诊断已完成。history_spectral真实数据实验仍暂停；没有新方法性能
+结果，也未执行Pro提出的2×2训练、分类头改造或其他调参实验。

@@ -1,0 +1,6 @@
+{
+  "command": "PYTHONPATH=<isolated-eval>:<frozen-baseline>/deps:<frozen-baseline> <python> -m pytest -q tests/test_checkpoint_diagnostic.py",
+  "passed": 2,
+  "seconds": 1.43,
+  "scope": "Synthetic metric accounting: unequal old/new denominators, old/new ties, no double counting of within-task and cross-task errors"
+}

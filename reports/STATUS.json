@@ -49,5 +49,28 @@
       "original_smoke_qualification": "unchanged: failed",
       "failure_tensor_replay": "original tensors unavailable; full capture/replay helper not yet implemented"
     }
+  },
+  "pilot_checkpoint_diagnostic": {
+    "status": "completed_exit0",
+    "report": "CHECKPOINT_DIAGNOSTIC_20261025_ZH.txt",
+    "results": "checkpoint_diagnostic_20261025/results.json",
+    "training_or_tuning": false,
+    "saved_metrics_exactly_reproduced": true,
+    "current_restricted_accuracy": [
+      0.851,
+      0.756,
+      0.974
+    ],
+    "current_all_seen_accuracy": [
+      0.557,
+      0.223,
+      0.94
+    ],
+    "method_order": [
+      "mulora_fl",
+      "mulora_fl_fedmuon",
+      "lorm_official"
+    ],
+    "history_spectral_remains_paused": true
   }
 }

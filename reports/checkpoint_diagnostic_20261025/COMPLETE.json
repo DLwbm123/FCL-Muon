@@ -1,0 +1,10 @@
+{
+  "ended": 1792925657.9090226,
+  "elapsed": 31.759400367736816,
+  "methods": [
+    "mulora_fl",
+    "mulora_fl_fedmuon",
+    "lorm_official"
+  ],
+  "all_saved_metrics_reproduced": true
+}
