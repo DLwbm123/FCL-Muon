@@ -1,0 +1,63 @@
+{
+  "name": "T2-only frozen encoder and centered-head mechanism experiment",
+  "purpose": "Identify whether head competition remains when old encoder/head responses cannot drift. This directly informs the next mainline mechanism after two all-seen objectives failed old retention.",
+  "previous_result": "Centered head-loss three seeds qualified but BOTH frozen gates FAILED: raw old-1.5833/new+4.4333pp, centered overall-.2556/old-1/new+1.2333pp; seed2 old T1 centered-3.3pp. No full10 expansion.",
+  "lanes": [
+    {
+      "seed": 0,
+      "gpu": 1,
+      "source": "head_loss_intervention_20261026/runs/seed0/shared/latest.pt",
+      "control": "head_centered_loss_20261026/runs/seed0/centered_all_seen",
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed0/current"
+    },
+    {
+      "seed": 1,
+      "gpu": 5,
+      "source": "head_loss_intervention_20261026/runs/seed1/shared/latest.pt",
+      "control": "head_centered_loss_20261026/runs/seed1/centered_all_seen",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s1.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed1/current"
+    },
+    {
+      "seed": 2,
+      "gpu": 7,
+      "source": "head_loss_intervention_20261026/runs/seed2/shared/latest.pt",
+      "control": "head_centered_loss_20261026/runs/seed2/centered_all_seen",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s2.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed2/current"
+    }
+  ],
+  "scientific_change": "Freeze entire encoder including zero task2 B; train only new task2 head with exactly the same centered-all-seen CE, constrained headRegMean alpha.5, local endpoint CLS Gram, rawFedAvg row norms and AdamW .001 wd0 reset per client/round. Stop after task2. No B optimizer; no new RRS; no offset/temperature/margin search.",
+  "shared_start": "Exact saved shared T2 model/state/RNG from previous experiment, same GPU per seed. Existing adapting-encoder centered-head-loss T2 metrics are the primary comparison; existing current-CE T2 metrics are context. Reuse both without training.",
+  "fixed_training": "Five rounds x five epochs, ten clients, batch16, same manifests/class order, same augmentations and FP32 deterministic mathSDPA/TF32off/CUBLAS=:4096:8. All old heads frozen; no old-data training.",
+  "qualification": "CPU direct head-gradient identity and frozen lifecycle/old-response invariance. Real first-batch inputs/labels/head gradients equal the adapting-encoder reference; frozen B has no gradient and no optimizer steps. Actual training first batch must match. Final entire backbone state and old head exactly equal source, same-shape old raw responses exactly equal on all1000 T1 test examples, 5 new FP32 solver certificates and full final raw/centered confusion reload. Any failure invalidates scientific interpretation; preserve evidence, no costly retry.",
+  "budget": {
+    "new_training_visits": 375000,
+    "new_client_rounds": 150,
+    "new_branches": 3,
+    "new_statistics_visits": 75000,
+    "preflight_backward_visits_max": 96,
+    "new_common_RRS_visits": 0,
+    "old_training_or_replay_visits": 0,
+    "old_source_invariance_forward_images": 3000,
+    "task2_evaluation_and_reload_forward_images": 12000,
+    "new_storage_guard_bytes": 6000000000,
+    "estimated_new_peak_bytes": 3000000000,
+    "lineage_guard_bytes": 45000000000,
+    "clock": "Original earliest started1792926949.7496953/deadline1793012449.7496953 retained. Lineage includes newroot and centered-loss/head-loss/confirmation/pilot/round/basicrepair."
+  },
+  "evaluation": "All three seeds, raw and centered T2 old/new/overall/restricted/forgetting/error-transfer; source old restricted response, final old response invariant. Old classification losses with invariant raw old responses must arise from competition with new head under the fixed inference rule. Difference from adapting-encoder run is total effect of freezing, including altered head trajectory and Grams; not pure causal decomposition of drift. Shared test development evidence only, no heldout claim or fitted parameters.",
+  "decision": {
+    "invariance": "Must pass all exact invariance/lifecycle checks in all seeds before mechanism claims.",
+    "competition": "Compare final old all-seen with old restricted accuracy using same final logits; nonzero gap establishes remaining new-head competition under fixed encoder. Report each seed and both inference rules, no inferred universal threshold.",
+    "mainline_next": "If freezing improves centered old accuracy versus adapting encoder in every seed with mean new loss<=1pp, prioritize an encoder-preserving B mechanism next. Otherwise prioritize head objective/competition mechanism that retains useful B learning. Freeze any next protocol before execution; no full10 qualification from this T2 diagnostic and no retroactive weakening of previous gates."
+  },
+  "no_automatic_retry": true,
+  "paused": [
+    "ridge/v1",
+    "history_spectral"
+  ],
+  "original_formal_queue": "Previously interrupted by legacy shared-root guard; protected, no restart or guard change.",
+  "resource_admission": "At least12000MiB free per GPU1/5/7 immediately before launch; no exclusivity/no other-process modifications."
+}

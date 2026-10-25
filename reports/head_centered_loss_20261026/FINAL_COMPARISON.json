@@ -1,0 +1,719 @@
+{
+  "status": "THREE_BRANCHES_COMPLETED_QUALIFIED_BOTH_SCIENTIFIC_GATES_FAILED",
+  "rows": [
+    {
+      "seed": 0,
+      "mode": "centered_all_seen",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.961,
+          0.951
+        ],
+        [
+          0.951,
+          0.922,
+          0.905
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.973,
+          0.956
+        ],
+        [
+          0.966,
+          0.94,
+          0.917
+        ]
+      ],
+      "raw_final": 0.926,
+      "raw_old": 0.9365,
+      "raw_new": 0.905,
+      "raw_forgetting": 0.033999999999999975,
+      "restricted": [
+        0.989,
+        0.979,
+        0.966
+      ],
+      "raw_new_to_old": 0.085,
+      "raw_old_to_new": 0.0315,
+      "centered_final": 0.941,
+      "centered_old": 0.953,
+      "centered_new": 0.917,
+      "centered_forgetting": 0.020000000000000018,
+      "qualification": {
+        "qualified": true,
+        "head_loss_mode": "centered_all_seen",
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15850,
+        "new_statistics_visits": 55000,
+        "new_communication_bytes": {
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400,
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.973,
+            0.956
+          ],
+          [
+            0.966,
+            0.94,
+            0.917
+          ]
+        ],
+        "centered_forgetting": 0.020000000000000018,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "reused_control": "head_loss_intervention_20261026/runs/seed0/current",
+        "reused_control_new_optimizer_steps": 0,
+        "new_common_RRS_images": 0,
+        "new_T1_replay_images": 0,
+        "preflight_backward_images": 32
+      }
+    },
+    {
+      "seed": 1,
+      "mode": "centered_all_seen",
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.958,
+          0.953
+        ],
+        [
+          0.941,
+          0.917,
+          0.922
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.955,
+          0.959
+        ],
+        [
+          0.95,
+          0.934,
+          0.927
+        ]
+      ],
+      "raw_final": 0.9266666666666666,
+      "raw_old": 0.929,
+      "raw_new": 0.922,
+      "raw_forgetting": 0.04049999999999998,
+      "restricted": [
+        0.986,
+        0.983,
+        0.969
+      ],
+      "raw_new_to_old": 0.061,
+      "raw_old_to_new": 0.035,
+      "centered_final": 0.937,
+      "centered_old": 0.942,
+      "centered_new": 0.927,
+      "centered_forgetting": 0.03049999999999997,
+      "qualification": {
+        "qualified": true,
+        "head_loss_mode": "centered_all_seen",
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15825,
+        "new_statistics_visits": 55000,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.986
+          ],
+          [
+            0.955,
+            0.959
+          ],
+          [
+            0.95,
+            0.934,
+            0.927
+          ]
+        ],
+        "centered_forgetting": 0.03049999999999997,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "reused_control": "head_loss_intervention_20261026/runs/seed1/current",
+        "reused_control_new_optimizer_steps": 0,
+        "new_common_RRS_images": 0,
+        "new_T1_replay_images": 0,
+        "preflight_backward_images": 32
+      }
+    },
+    {
+      "seed": 2,
+      "mode": "centered_all_seen",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.923,
+          0.957
+        ],
+        [
+          0.885,
+          0.891,
+          0.947
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.953,
+          0.959
+        ],
+        [
+          0.938,
+          0.922,
+          0.948
+        ]
+      ],
+      "raw_final": 0.9076666666666666,
+      "raw_old": 0.888,
+      "raw_new": 0.947,
+      "raw_forgetting": 0.08549999999999996,
+      "restricted": [
+        0.991,
+        0.975,
+        0.974
+      ],
+      "raw_new_to_old": 0.037,
+      "raw_old_to_new": 0.0695,
+      "centered_final": 0.936,
+      "centered_old": 0.93,
+      "centered_new": 0.948,
+      "centered_forgetting": 0.044499999999999984,
+      "qualification": {
+        "qualified": true,
+        "head_loss_mode": "centered_all_seen",
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15875,
+        "new_statistics_visits": 55000,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.953,
+            0.959
+          ],
+          [
+            0.938,
+            0.922,
+            0.948
+          ]
+        ],
+        "centered_forgetting": 0.044499999999999984,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "reused_control": "head_loss_intervention_20261026/runs/seed2/current",
+        "reused_control_new_optimizer_steps": 0,
+        "new_common_RRS_images": 0,
+        "new_T1_replay_images": 0,
+        "preflight_backward_images": 32
+      }
+    }
+  ],
+  "reused_current_controls": [
+    {
+      "seed": 0,
+      "mode": "current",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.979,
+          0.92
+        ],
+        [
+          0.977,
+          0.906,
+          0.851
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.981,
+          0.949
+        ],
+        [
+          0.979,
+          0.934,
+          0.906
+        ]
+      ],
+      "raw_final": 0.9113333333333333,
+      "raw_old": 0.9415,
+      "raw_new": 0.851,
+      "raw_forgetting": 0.013500000000000012,
+      "restricted": [
+        0.989,
+        0.982,
+        0.971
+      ],
+      "raw_new_to_old": 0.145,
+      "raw_old_to_new": 0.013,
+      "centered_final": 0.9396666666666667,
+      "centered_old": 0.9565,
+      "centered_new": 0.906,
+      "centered_forgetting": 0.012999999999999956,
+      "centered_new_to_old": 0.079,
+      "centered_old_to_new": 0.0105,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15850,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400,
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.981,
+            0.949
+          ],
+          [
+            0.979,
+            0.934,
+            0.906
+          ]
+        ],
+        "centered_forgetting": 0.012999999999999956,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "head_loss_mode": "current"
+      }
+    },
+    {
+      "seed": 1,
+      "mode": "current",
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.971,
+          0.94
+        ],
+        [
+          0.966,
+          0.925,
+          0.879
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.964,
+          0.952
+        ],
+        [
+          0.96,
+          0.942,
+          0.916
+        ]
+      ],
+      "raw_final": 0.9233333333333333,
+      "raw_old": 0.9455,
+      "raw_new": 0.879,
+      "raw_forgetting": 0.01749999999999996,
+      "restricted": [
+        0.986,
+        0.985,
+        0.972
+      ],
+      "raw_new_to_old": 0.112,
+      "raw_old_to_new": 0.013,
+      "centered_final": 0.9393333333333334,
+      "centered_old": 0.951,
+      "centered_new": 0.916,
+      "centered_forgetting": 0.018000000000000016,
+      "centered_new_to_old": 0.068,
+      "centered_old_to_new": 0.0125,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15825,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.986
+          ],
+          [
+            0.964,
+            0.952
+          ],
+          [
+            0.96,
+            0.942,
+            0.916
+          ]
+        ],
+        "centered_forgetting": 0.018000000000000016,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792939753.19282,
+          "deadline": 1793025253.19282
+        },
+        "head_loss_mode": "current"
+      }
+    },
+    {
+      "seed": 2,
+      "mode": "current",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.962,
+          0.934
+        ],
+        [
+          0.942,
+          0.886,
+          0.911
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.979,
+          0.948
+        ],
+        [
+          0.971,
+          0.924,
+          0.933
+        ]
+      ],
+      "raw_final": 0.913,
+      "raw_old": 0.914,
+      "raw_new": 0.911,
+      "raw_forgetting": 0.04800000000000004,
+      "restricted": [
+        0.99,
+        0.98,
+        0.978
+      ],
+      "raw_new_to_old": 0.081,
+      "raw_old_to_new": 0.0445,
+      "centered_final": 0.9426666666666667,
+      "centered_old": 0.9475,
+      "centered_new": 0.933,
+      "centered_forgetting": 0.021499999999999964,
+      "centered_new_to_old": 0.057,
+      "centered_old_to_new": 0.02,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15875,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.979,
+            0.948
+          ],
+          [
+            0.971,
+            0.924,
+            0.933
+          ]
+        ],
+        "centered_forgetting": 0.021499999999999964,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792939753.19282,
+          "deadline": 1793025253.19282
+        },
+        "head_loss_mode": "current"
+      }
+    }
+  ],
+  "means": {
+    "current": {
+      "raw_final": 0.9158888888888889,
+      "raw_old": 0.9336666666666666,
+      "raw_new": 0.8803333333333333,
+      "raw_forgetting": 0.026333333333333337,
+      "centered_final": 0.9405555555555556,
+      "centered_old": 0.9516666666666667,
+      "centered_new": 0.9183333333333333,
+      "centered_forgetting": 0.017499999999999977
+    },
+    "centered_all_seen": {
+      "raw_final": 0.9201111111111111,
+      "raw_old": 0.9178333333333334,
+      "raw_new": 0.9246666666666666,
+      "raw_forgetting": 0.05333333333333331,
+      "centered_final": 0.9380000000000001,
+      "centered_old": 0.9416666666666667,
+      "centered_new": 0.9306666666666666,
+      "centered_forgetting": 0.031666666666666655
+    }
+  },
+  "centered_training_minus_current_pp": {
+    "raw_final": 0.42222222222222383,
+    "raw_old": -1.5833333333333255,
+    "raw_new": 4.433333333333334,
+    "raw_forgetting": 2.699999999999997,
+    "centered_final": -0.2555555555555533,
+    "centered_old": -1.0000000000000009,
+    "centered_new": 1.2333333333333307,
+    "centered_forgetting": 1.4166666666666679
+  },
+  "per_seed_old_task_deltas": [
+    {
+      "seed": 0,
+      "raw_old_task_deltas_pp": [
+        -2.6000000000000023,
+        1.6000000000000014
+      ],
+      "centered_old_task_deltas_pp": [
+        -1.3000000000000012,
+        0.5999999999999894
+      ]
+    },
+    {
+      "seed": 1,
+      "raw_old_task_deltas_pp": [
+        -2.500000000000002,
+        -0.8000000000000007
+      ],
+      "centered_old_task_deltas_pp": [
+        -1.0000000000000009,
+        -0.7999999999999896
+      ]
+    },
+    {
+      "seed": 2,
+      "raw_old_task_deltas_pp": [
+        -5.699999999999994,
+        0.5000000000000004
+      ],
+      "centered_old_task_deltas_pp": [
+        -3.300000000000003,
+        -0.20000000000000018
+      ]
+    }
+  ],
+  "raw_gate": {
+    "checks": {
+      "new_gain_at_least_5pp": false,
+      "old_change_at_least_minus1pp": false,
+      "every_old_task_at_least_minus2pp": false
+    },
+    "passed": false
+  },
+  "aligned_centered_gate": {
+    "checks": {
+      "overall_gain_at_least_half_pp": false,
+      "new_gain_at_least_1pp": true,
+      "old_change_at_least_minus1pp": true,
+      "every_old_task_at_least_minus2pp": false
+    },
+    "passed": false
+  },
+  "job": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953,
+    "intervention_launched": 1792958841.9544098,
+    "status": "completed",
+    "lanes": [
+      {
+        "seed": 0,
+        "gpu": 1,
+        "pid": 1240635
+      },
+      {
+        "seed": 1,
+        "gpu": 5,
+        "pid": 1240636
+      },
+      {
+        "seed": 2,
+        "gpu": 7,
+        "pid": 1240637
+      }
+    ],
+    "storage_limit_bytes": 12000000000,
+    "lineage_limit_bytes": 45000000000,
+    "new_before_bytes": 868352,
+    "lineage_before_bytes": 26082164736,
+    "source_clocks": [
+      {
+        "started": 1792926949.7496953,
+        "deadline": 1793012449.7496953
+      },
+      {
+        "started": 1792926949.7496953,
+        "deadline": 1793012449.7496953
+      },
+      {
+        "started": 1792926949.7496953,
+        "deadline": 1793012449.7496953
+      }
+    ],
+    "ended": 1792963950.6998794,
+    "exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "new_allocated_bytes": 3709538304,
+    "lineage_allocated_bytes": 29790834688
+  },
+  "new_training_visits": 750000,
+  "new_statistics_visits": 165000,
+  "preflight_backward_images": 96,
+  "control_retraining_visits": 0,
+  "new_common_RRS_visits": 0,
+  "new_T1_replay_visits": 0,
+  "decision": "No full10 expansion. Run one bounded T2-only frozen-encoder/B mechanism intervention with the same centered head objective and qualified shared start, reusing existing T2 comparisons. It separates unchanged old-function scores from new-head interference without fitting offsets or repeating controls.",
+  "limitations": [
+    "Development evidence on the shared test set, not independent heldout confirmation",
+    "Neither previous raw-all-seen failure nor earlier exact-pair failure is repaired",
+    "No post-hoc inference-rule choice or threshold change"
+  ]
+}

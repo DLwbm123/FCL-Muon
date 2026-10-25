@@ -1,0 +1,7 @@
+{
+  "checked": 1792964499.197145,
+  "mount": "/data  ext4   /dev/sdc1",
+  "available_bytes": 14931426344960,
+  "probe_passed": true,
+  "expected_new_peak_bytes": 3000000000
+}

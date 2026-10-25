@@ -1,0 +1,9 @@
+{
+  "seed": 2,
+  "status": "completed",
+  "source": "head_loss_intervention_20261026/runs/seed2/shared/latest.pt",
+  "reused_control": "head_loss_intervention_20261026/runs/seed2/current",
+  "started": 1792958865.6585698,
+  "ended": 1792961573.7706547,
+  "source_signature_unchanged": true
+}

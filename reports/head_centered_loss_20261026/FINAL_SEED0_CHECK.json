@@ -1,0 +1,21 @@
+{
+  "checked": 1792964523.7148662,
+  "seed": 0,
+  "task": 3,
+  "round": 0,
+  "phase": "complete",
+  "B_tensor_count": 24,
+  "B_all_zero": true,
+  "merges": [
+    0,
+    1,
+    2
+  ],
+  "history": [
+    0,
+    1,
+    2
+  ],
+  "matrix_equals_report": true,
+  "qualified": true
+}

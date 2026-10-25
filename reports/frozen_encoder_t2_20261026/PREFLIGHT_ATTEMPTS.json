@@ -1,0 +1,9 @@
+[
+  {
+    "passed": false,
+    "exit_code": 4,
+    "checked": 1792964547.1034343,
+    "scope": "Existing head solver/lifecycle/gradient tests plus frozen-head gradient identity and frozen encoder/old-logit lifecycle invariance",
+    "reason": "Test invocation typo: test_head_regmean_solver.py does not exist; no tests or scientific training ran."
+  }
+]

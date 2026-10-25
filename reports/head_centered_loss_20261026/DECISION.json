@@ -1,0 +1,21 @@
+{
+  "status": "THREE_BRANCHES_COMPLETED_QUALIFIED_BOTH_SCIENTIFIC_GATES_FAILED",
+  "raw_gate": {
+    "checks": {
+      "new_gain_at_least_5pp": false,
+      "old_change_at_least_minus1pp": false,
+      "every_old_task_at_least_minus2pp": false
+    },
+    "passed": false
+  },
+  "aligned_centered_gate": {
+    "checks": {
+      "overall_gain_at_least_half_pp": false,
+      "new_gain_at_least_1pp": true,
+      "old_change_at_least_minus1pp": true,
+      "every_old_task_at_least_minus2pp": false
+    },
+    "passed": false
+  },
+  "decision": "No full10 expansion. Run one bounded T2-only frozen-encoder/B mechanism intervention with the same centered head objective and qualified shared start, reusing existing T2 comparisons. It separates unchanged old-function scores from new-head interference without fitting offsets or repeating controls."
+}

@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "checked": 1792964574.8560867,
+  "scope": "Existing solver/lifecycle/gradient tests plus frozen-head gradient identity and encoder/old-logit lifecycle invariance"
+}
