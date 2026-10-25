@@ -1,0 +1,9 @@
+{
+  "qualified": true,
+  "purpose": "numerical/completion qualification, no test-score ranking",
+  "client_records": 500,
+  "final_micro": 0.4759,
+  "old_micro": 0.46111111111111114,
+  "new_accuracy": 0.609,
+  "average_forgetting": 0.0971111111111111
+}

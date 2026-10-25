@@ -1,0 +1,13 @@
+{
+  "scope": "Original faithful baseline with original head; NOT H1-repaired or history_spectral",
+  "checkpoint_task": 10,
+  "checkpoint_round": 0,
+  "initialized": false,
+  "head_count": 10,
+  "matrix_matches_checkpoint": true,
+  "client_records": 500,
+  "full_epoch_budget_ok": true,
+  "supervisor_exit_code": 0,
+  "checkpoint_bytes": 403759515,
+  "verified_from": "queue-state, completion/qualification/metrics, loaded checkpoint and client event counts"
+}

@@ -11,16 +11,16 @@
   "cifar100": "official archive downloaded and torchvision built-in check passed",
   "real_smoke": "both methods completed; final task-boundary checkpoint audit passed",
   "pilot": "All three matched pilots completed, exit0 and saved-state audit passed",
-  "formal": "First of36 runs active: MuLoRA-FL CIFAR100 alpha.05 seed0 task2/10 at check",
+  "formal": "1/36 completed and audited: original MuLoRA CIFAR100 alpha.05 seed0, unchanged head; original queue next run active",
   "results": "See pilot_comparison.json, pilot_completion_audit.json and PILOT_COMPARISON_ZH.txt",
   "cuda_rng_resume": "passed on actual CUDA device",
   "public_delivery": {
     "repository": "https://github.com/DLwbm123/FCL-Muon",
-    "branch": "codex/history-spectral-v1",
-    "scope": "Implementation and audits plus three completed pilot comparisons; formal results pending"
+    "branch": "codex/basic-t1-repair",
+    "scope": "Completed pilots, audits, verified T1 prototype-head repair, and first original formal run"
   },
   "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
-  "last_health_check": "2026-10-25T09:22:00.797219+00:00",
+  "last_health_check": "2026-10-25T11:38:49Z",
   "resource_snapshot": "13.73 GiB whole-project allocated; original run clock retained",
   "lorm_comparison": {
     "stage": "Completed exit0,150 client records,final checkpoint and metrics verified",
