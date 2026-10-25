@@ -5,8 +5,8 @@
     "smoke_history_grad_muon": {
       "completed_receipt": true,
       "updates": 192,
-      "nonconverged_actual_steps": 0,
-      "max_relative_gap": 0,
+      "nonconverged_actual_steps": null,
+      "max_relative_gap": null,
       "max_feasibility_residual": 0,
       "solver_seconds": 0,
       "mean_iterations": 0.0,
@@ -73,7 +73,9 @@
             }
           ]
         }
-      ]
+      ],
+      "qp_certificate_applicable": false,
+      "certificate_note": "No spectral-QP certificate applies to this exact-polar or first-order control; zero placeholder values in raw logs are not QP convergence evidence."
     },
     "smoke_history_spectral": {
       "completed_receipt": true,
@@ -150,19 +152,22 @@
       "actual_step_nonconverged_fraction": 0.18229166666666666,
       "numerically_qualified": false,
       "qualification_rule": "<=1% actual-step failures; failed with 35/192",
-      "exit_status": "completion receipt present, process gone after user pause; supervisor interrupted before collecting exit code"
+      "exit_status": "completion receipt present, process gone after user pause; supervisor interrupted before collecting exit code",
+      "qp_certificate_applicable": true
     },
     "smoke_mulora_fl_exact_polar": {
       "completed_receipt": true,
       "updates": 384,
-      "nonconverged_actual_steps": 0,
-      "max_relative_gap": 0,
+      "nonconverged_actual_steps": null,
+      "max_relative_gap": null,
       "max_feasibility_residual": 0,
       "solver_seconds": 0,
       "mean_iterations": 0.0,
       "zero_steps": 96,
       "warning": "Pre-review abbreviated smoke; no benchmark conclusion",
-      "calibration": []
+      "calibration": [],
+      "qp_certificate_applicable": false,
+      "certificate_note": "No spectral-QP certificate applies to this exact-polar or first-order control; zero placeholder values in raw logs are not QP convergence evidence."
     }
   },
   "experiments_paused_by_user": true,

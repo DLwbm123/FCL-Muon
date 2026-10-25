@@ -87,7 +87,7 @@ class HistoryOptimizer:
     def flush(self,task,round_idx):
         ds=self.diag;n=len(ds)
         self.ext.event('history_solver_client',task=task,round=round_idx,client=self.client,updates=n,
-            lambda_history=self.ext.lam,mean_iterations=sum(d.get('iterations',0) for d in ds)/max(n,1),
+            lambda_history=self.ext.lam,qp_certificate_applicable=self.ext.method=='history_spectral',mean_iterations=sum(d.get('iterations',0) for d in ds)/max(n,1),
             nonconverged=sum(not d.get('converged',True) for d in ds),zero_steps=sum(d.get('zero_step',d['actual_update']['fro']==0) for d in ds),
             max_relative_gap=max((d.get('relative_gap',0) for d in ds),default=0),
             max_feasibility_residual=max((d.get('feasibility_residual',0) for d in ds),default=0),
