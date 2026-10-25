@@ -1,0 +1,14 @@
+{
+  "started": 1792939217.0373352,
+  "deadline": 1792941017.0373352,
+  "status": "completed",
+  "gpu": "3",
+  "gpu_free_mib": 72830,
+  "baseline_allocated_bytes": 192512,
+  "storage_limit_bytes": 1000000000,
+  "protocol": "research/head_regmean/DIAGNOSTIC_PROTOCOL.json",
+  "pid": 256356,
+  "ended": 1792939257.0437143,
+  "exit_code": 0,
+  "allocated_bytes": 2781184
+}

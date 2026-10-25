@@ -1,0 +1,18 @@
+{
+  "authorization": "2026-10-25 user: 按照你的顺序立即执行",
+  "stage": "D1_D2_COMPLETE_CANDIDATE_FROZEN",
+  "candidate": "MuLoRA-FL Head-RegMean + fixed task-block logit centering",
+  "training_change": null,
+  "decision": "D1 passes the prespecified development gate; do not launch all-seen-CE intervention now",
+  "checks": {
+    "new_gain_at_least_5pp": true,
+    "old_loss_at_most_1pp": true,
+    "no_old_task_loss_over_2pp": true
+  },
+  "next": "seed1,seed2 paired Head-RegMean versus head-FedAvg on the same Pilot path, plus standard LoRM; fixed raw/centered reporting for every method; freeze all hyperparameters",
+  "paused": [
+    "history_spectral",
+    "ridge/v1"
+  ],
+  "interpretation": "seed0 development evidence; seeds do not create an independent test set; no scientific causal attribution from aggregate scores"
+}
