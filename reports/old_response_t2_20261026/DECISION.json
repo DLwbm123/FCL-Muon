@@ -1,0 +1,15 @@
+{
+  "status": "ALL_THREE_QUALIFIED_SCIENTIFIC_T2_GATE_FAILED",
+  "gate": {
+    "checks": {
+      "mean_old_gain_at_least_half_pp": false,
+      "mean_new_change_at_least_minus_half_pp": true,
+      "mean_overall_gain_at_least_quarter_pp": false,
+      "each_seed_old_change_nonnegative": true
+    },
+    "passed": false
+  },
+  "no_T3_continuation_of_this_candidate": true,
+  "no_full10": true,
+  "next": "A distinct T2 geometric head constraint: new head stays in old-head orthogonal complement during learning and RegMean fusion, retaining fixed coefficient1 response loss. Existing controls reused, no coefficient sweep or earlier-gate revision."
+}

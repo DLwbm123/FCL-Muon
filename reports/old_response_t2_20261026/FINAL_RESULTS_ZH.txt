@@ -1,0 +1,6 @@
+旧响应约束T2三个种子全部完成并通过实现验收，科学门槛失败。
+centered旧类97.7/96.0/95.8%，新类95.4/95.5/95.7%；vs adapting旧+.4/+.5/+.5pp，新-.2/-.4/-.2pp。
+centered均值旧+.4667pp、新-.2667pp、总体+.1000pp；旧增益不足预定+.5pp、总体不足+.25pp，虽每seed旧非负和新损失界通过，仍整体失败，不延续此候选到T3或full10。
+raw均值vs adapting总体-.05pp、旧+.60pp、新-.70pp。保留全部raw/centered结果、原current与冻结编码器T2背景。教师和旧头精确保留、学生backbone12个tensor改变、每seed125000训练访问及同数额外teacherforward、5新证书与完整重载均通过。训练约束非零不等于旧分布函数不变，也不等于科学收益。
+jobexit[0,0,0]，ended1792970326.5388017，newroot2460209152/lineage34711474176bytes；合计375000train+375000teacherforward/75000stats/192preflightbackward+96preflightteacher/12000终点评估重载；无control重训/RRS/旧训练，原clock保留。
+下一独立机制仅T2：固定已有响应系数1，同时将新分类头限制于旧头空间的正交补，训练投影与受限RegMean一致。此为新几何假设，不能把本轮失败追改为通过；不扫描系数或删除历史。

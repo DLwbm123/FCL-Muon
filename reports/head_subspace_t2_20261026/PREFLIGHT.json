@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "checked": 1792971798.6642637,
+  "scope": "31 solver/lifecycle/gradient/frozen/teacher checks including projected head updates, complement-basis invariance, constrained actual FP32 deployment and full lifecycle restore"
+}

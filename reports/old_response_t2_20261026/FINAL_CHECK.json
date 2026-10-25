@@ -1,0 +1,81 @@
+{
+  "checked": 1792971618.8622642,
+  "all_passed": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "task": 2,
+      "round": 0,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "new_visits": 125000,
+      "new_certificates": 5,
+      "all_certificates_passed": true,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_and_reload_qualified": true,
+      "preservation_visits": 125000,
+      "positive_mse_batches": 7915
+    },
+    {
+      "seed": 1,
+      "task": 2,
+      "round": 0,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "new_visits": 125000,
+      "new_certificates": 5,
+      "all_certificates_passed": true,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_and_reload_qualified": true,
+      "preservation_visits": 125000,
+      "positive_mse_batches": 7915
+    },
+    {
+      "seed": 2,
+      "task": 2,
+      "round": 0,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "new_visits": 125000,
+      "new_certificates": 5,
+      "all_certificates_passed": true,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_and_reload_qualified": true,
+      "preservation_visits": 125000,
+      "positive_mse_batches": 7940
+    }
+  ]
+}

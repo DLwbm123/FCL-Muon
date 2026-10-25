@@ -1,0 +1,66 @@
+{
+  "name": "T2 new-head orthogonal-complement constraint with fixed old-response B learning",
+  "purpose": "Old-response penalty produced small old-class gains but failed the prespecified T2 gate. Frozen-encoder evidence established residual head competition. Test a distinct geometric mechanism that prevents the new head using old-head directions; retain coefficient1 without search. Full orthogonality can harm learning correlated new classes, which the new-class gate must detect.",
+  "prior_failure": "Old-response all3 qualified, centered old+.4667/new-.2667/overall+.1pp vs adapting, fails required old+.5/overall+.25. No T3 continuation of that candidate; all earlier gates remain failed.",
+  "lanes": [
+    {
+      "seed": 0,
+      "gpu": 1,
+      "source": "head_loss_intervention_20261026/runs/seed0/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed0/old_response",
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed0/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed0/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed0/centered_all_seen"
+    },
+    {
+      "seed": 1,
+      "gpu": 5,
+      "source": "head_loss_intervention_20261026/runs/seed1/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed1/old_response",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s1.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed1/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed1/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed1/centered_all_seen"
+    },
+    {
+      "seed": 2,
+      "gpu": 7,
+      "source": "head_loss_intervention_20261026/runs/seed2/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed2/old_response",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s2.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed2/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed2/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed2/centered_all_seen"
+    }
+  ],
+  "new_mechanism": "Full old-head row span (T2 rank10) defines its orthogonal complement in768D. Derive FP64 complete QR from frozen old rows, canonical column signs, require full numerical row rank. Project the shared new-head initial rows into the complement and preserve their original raw row norms. This intentionally changes the new head at the shared T2 boundary; source encoder/oldhead/state/RNG remain unchanged. Project head gradients and project parameters after every AdamW step. No learned rank, strength, margin or temperature.",
+  "aggregation": "Retain original local normalized-CLS raw Grams and alpha.5 shrinkage in ORIGINAL768D coordinates. Form original H/Q objective, restrict unit effective row u=vr*Qnull.T, solve in reduced758D sphere with existing FP64 secular solver. Map to768D, retain rawFedAvg row norms, and certify ACTUAL deployed FP32 rows in reduced coordinates plus old-span cosine projection norm<=2e-6. Same old tolerance for norm/stationarity/gap; this is a different explicitly constrained feasible set. Do not shrink after rotating Grams or reuse an unconstrained certificate for projected output.",
+  "fixed_components": "T2 only; same shared source and manifests/GPU1/5/7,5rounds5epochs10clientsbatch16,originalsharedA/SSB/BFedAvg/singlemerge; B currentCE + centeredold responseMSE teachercoefficient1 unchanged; headcenteredallseenCE/AdamW.001wd0 reset/oldheadfrozen; same FP32deterministicmathSDPA/TF32off/CUBLAS=:4096:8. Task-start teacher copied before new-head projection, sees only same current augmented images, frozen and discarded at inference.",
+  "communication": "Same full768D head and Gram messages as old-response control. Clients derive the old-span projector from the already retained frozen old heads; no basis transmission or extra dataset/statistic pass. Report additional local projection and server reduced-solve work, saved basis memory, and existing teacher compute.",
+  "qualification": "CPU projector orthogonality, reduced-solver complement-basis rotation invariance, mapped FP32 certificate/rawnorm/feasibleFedAvg objective comparison, B gradient separation and projected-head gradient identity, full local-step/fusion/lifecycle/restore feasibility and teacher-oldhead freeze. Real preflight compares with an OldResponsePilot reference having the SAME projected initial new head: inputs/labels/B gradients exact, candidate head gradient equals manually projected reference and differs from unprojected gradient, initialoldheadexact/rownormpreserved/penalty0/leak<=2e-6. Actual first batch must match. End50clients125kvisits5certs/teacher exact/oldhead exact/studentbackbonechanged/positiveMSE/fullrawcenteredreload/sourceimmutable and local+final+fusion head leak<=2e-6.",
+  "budget": {
+    "new_branches": 3,
+    "new_training_visits": 375000,
+    "additional_training_teacher_forward_images": 375000,
+    "new_client_rounds": 150,
+    "new_statistics_visits": 75000,
+    "new_common_RRS_visits": 0,
+    "new_old_training_or_replay_images": 0,
+    "preflight_backward_images_max": 96,
+    "preflight_teacher_forward_images_max": 96,
+    "T2_evaluation_and_reload_images": 12000,
+    "new_storage_guard_bytes": 6000000000,
+    "estimated_new_peak_bytes": 3200000000,
+    "lineage_guard_bytes": 45000000000,
+    "clock": "Same earliest started1792926949.7496953/deadline1793012449.7496953; include new+oldresponse+frozen+centered+headloss+confirmation+pilot+round+basicrepair. No reset/history removal."
+  },
+  "evaluation": "All3 raw/centered T2 overall/old/new/restricted/forgetting/error-transfer plus head feasibility, trainMSE and teacher/projection cost. Primary comparison is old_response_t2; adapting-centered, frozen-encoder and original current T2 context all reused without training. Shared test development only; no guarantee old image features lie in old classifier span, no old-distribution invariance claim or test fitting.",
+  "gate": {
+    "primary": "Against old_response_t2 with fixed centered inference: mean old gain>=.5pp,new change>=-.5pp,overall gain>=.25pp,each seed old change>=0 (1e-9 numeric tolerance), all integrity checks pass.",
+    "decision": "Pass permits considering a separately frozen T3 continuation from current T2 endpoints; BOTH unchanged original3task gates still required before full10. Failure retains negative/mixed evidence and prompts distinct evidence-based mechanism or concrete budget blocker, not rank/strength/coefficient sweeps, costly retries or weakened gates."
+  },
+  "paused": "ridge/v1 fixed-reference B fusion/ridge and history_spectral remain paused; original GPU6 stopped queue unchanged.",
+  "no_automatic_retry": true,
+  "resource_admission": "Same GPU1/5/7,minimum12000MiBfree;6GBroot/45GBlineage guard. Protect other processes."
+}
