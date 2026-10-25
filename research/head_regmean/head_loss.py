@@ -4,14 +4,22 @@ from torch.nn import functional as F
 from .confirmation import ConfirmationPilot
 
 
+def center_blocks(logits,cpt):
+    blocks=logits.reshape(logits.shape[0],-1,cpt)
+    return (blocks-blocks.mean(dim=-1,keepdim=True)).reshape_as(logits)
+
+
 def separated_backward(model,x,y,task,cpt,mode):
-    if mode not in ('current','all_seen'):raise ValueError('Unknown head objective')
+    if mode not in ('current','all_seen','centered_all_seen'):raise ValueError('Unknown head objective')
     z=F.normalize(model.backbone.forward_features(x)[:,0],dim=-1)
     u=F.normalize(torch.cat(list(model.rows)),dim=-1)
     b_logits=model.scale*F.linear(z,u.detach())
     b_loss=F.cross_entropy(b_logits[:,task*cpt:(task+1)*cpt],y-task*cpt)
     head_logits=model.scale*F.linear(z.detach(),u)
-    h_loss=F.cross_entropy(head_logits,y) if mode=='all_seen' else F.cross_entropy(head_logits[:,task*cpt:(task+1)*cpt],y-task*cpt)
+    if mode=='centered_all_seen':
+        h_loss=F.cross_entropy(center_blocks(head_logits,cpt),y)
+    elif mode=='all_seen':h_loss=F.cross_entropy(head_logits,y)
+    else:h_loss=F.cross_entropy(head_logits[:,task*cpt:(task+1)*cpt],y-task*cpt)
     if not torch.isfinite(b_loss) or not torch.isfinite(h_loss):raise ArithmeticError('Nonfinite separated CE')
     b_loss.backward();h_loss.backward()
     return b_loss,h_loss

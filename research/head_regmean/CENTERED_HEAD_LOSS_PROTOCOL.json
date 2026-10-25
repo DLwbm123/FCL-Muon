@@ -1,0 +1,60 @@
+{
+  "name": "Centered all-seen head-loss objective, three seeds with qualified reused controls",
+  "purpose": "Test whether removing per-task common-mode logits inside the head loss avoids the old-task damage of raw all-seen CE, while improving over the current-CE model with the same fixed centered inference. This is a new falsifiable hypothesis, not a retrospective repair of the failed raw all-seen experiment.",
+  "previous_result": "All six previous branches qualified, raw new+5.30pp but old-3.5833pp and old T1 losses6/7.1/12.4pp; primary gate FAILED. Both centered: overall-.4667pp, old-.8667pp, new+.3333pp. Restricted current-class accuracy also declined.",
+  "lanes": [
+    {
+      "seed": 0,
+      "gpu": 1,
+      "source": "head_loss_intervention_20261026/runs/seed0/shared/latest.pt",
+      "control": "head_loss_intervention_20261026/runs/seed0/current",
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json"
+    },
+    {
+      "seed": 1,
+      "gpu": 5,
+      "source": "head_loss_intervention_20261026/runs/seed1/shared/latest.pt",
+      "control": "head_loss_intervention_20261026/runs/seed1/current",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s1.json"
+    },
+    {
+      "seed": 2,
+      "gpu": 7,
+      "source": "head_loss_intervention_20261026/runs/seed2/shared/latest.pt",
+      "control": "head_loss_intervention_20261026/runs/seed2/current",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s2.json"
+    }
+  ],
+  "scientific_change": "Only head loss uses cross-entropy on logits after subtracting each task block mean. B continues current-class CE on uncentered logits with detached classifier. Head uses detached features; old heads remain frozen. Fixed equal ten-class blocks; no learned offsets, temperature, mixing coefficient, margin or replay.",
+  "shared_start": "Read the exact saved T2 model/state/RNG used by the qualified current-CE and raw-all-seen branches; do not reinitialize RRS or head. Reuse completed current control without optimizer updates; same GPU per seed, loader, transforms and numeric mode.",
+  "fixed_training": "Original QV-r32 sharedRRS/fixedA/SSB B/FedAvg, head constrainedRegMean alpha.5, current-data only, old heads frozen, headAdamW .001 wd0 reset per client/round; B lr.0002; five rounds x five epochs batch16 per task. No rank/lr/alpha sweep.",
+  "numeric_mode": "Same existing FP32/deterministic algorithms/mathSDPA/TF32 off/CUBLAS_WORKSPACE_CONFIG=:4096:8 for all new branches; no precision change.",
+  "qualification": "CPU block-offset invariance and zero block-sum logit gradient; separated direct-B gradients exactly match current CE and old heads get no gradients. Real current vs centered preflight from shared start: exact input/label/B gradient and changed head gradient; actual first new training batch must match preflight before first optimizer update. Final lifecycle,10 new deployed certificates and raw/centered full-confusion reload per seed.",
+  "budget": {
+    "new_training_visits": 750000,
+    "new_client_rounds": 300,
+    "new_branches": 3,
+    "no_control_retraining": true,
+    "new_statistics_visits": 165000,
+    "new_common_RRS_visits": 0,
+    "new_T1_replay_test_visits": 0,
+    "preflight_backward_visits_max": 96,
+    "new_storage_guard_bytes": 12000000000,
+    "estimated_new_peak_bytes": 6000000000,
+    "lineage_guard_bytes": 45000000000,
+    "clock": "Same actual source started1792926949.7496953/deadline1793012449.7496953; preserve original clock and cost. Include new root plus prior head-loss/confirmation/pilot/round/basicrepair in conservative lineage allocation."
+  },
+  "evaluation": "Report all seeds and both raw and fixed-centered matrices/old/new/restricted/forgetting/error transfer. Include the reused current control and prior raw-all-seen arm. Same shared test set: development evidence, no independent heldout claim or checkpoint/rule selection.",
+  "gates": {
+    "raw_safety_and_gain": "Keep the previous raw primary gate: vs reused current raw, mean new gain>=5pp, mean old change>=-1pp and every old task in every seed>=-2pp. Prior raw-all-seen failure remains failed.",
+    "aligned_centered_benefit": "Additional gate vs reused current centered: mean overall gain>=0.5pp, mean new gain>=1pp, mean old change>=-1pp and every old task in every seed>=-2pp. Fixed centered rule is declared before this run; do not choose the best inference after seeing results.",
+    "decision": "Only consider full10 expansion if implementation qualification and BOTH gates pass; mixed/negative results remain mixed/negative, no threshold changes. Otherwise use evidence to choose a new targeted mainline hypothesis, not baseline tuning or a repeated control trajectory."
+  },
+  "no_automatic_retry": true,
+  "paused": [
+    "ridge/v1",
+    "history_spectral"
+  ],
+  "source_controls_unchanged": true,
+  "resource_admission": "Same physical GPUs1/5/7; minimum12,000MiB free before launch, exceeding observed prior same-model startup2.7GiB by >4x. GPU need not be idle; do not stop or alter other jobs. New protocol admission threshold does not change old frozen jobs."
+}
