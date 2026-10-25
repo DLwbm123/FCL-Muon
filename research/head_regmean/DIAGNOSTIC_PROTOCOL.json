@@ -1,0 +1,18 @@
+{
+  "authorization": "2026-10-25 user: 按照你的顺序立即执行. D1/D2 then freeze candidate, paired confirmation and full ten-task validation; ridge/v1 and history_spectral remain paused.",
+  "entry": "scripts/head_competition_diagnostic.py",
+  "completion": "runs/diagnostic/COMPLETE.json",
+  "hard_timeout_seconds": 1800,
+  "minimum_gpu_free_mib": 8000,
+  "storage_limit_bytes": 1000000000,
+  "estimated_peak_new_bytes": 20000000,
+  "dataset": "CIFAR100 original alpha.05 seed0 manifest, task-end test sets 1000/2000/3000",
+  "source": "completed head_regmean_pilot_20261025/runs/pilot/task1.pt,task2.pt,task3.pt; round_t1_r5.pt and round_t2_r5.pt",
+  "D1": "Subtract each fixed ten-class block logit mean for every sample; no label/task-ID input; no row renormalization or fitting. All three task boundaries.",
+  "D2": "Use merged task2/task3 encoder and frozen old heads, replace current head with same round raw_FedAvg_head. Both raw and fixed centered reporting. Not an independent FedAvg training baseline.",
+  "checks": ["Original full confusion reproduced", "Within-block predictions invariant", "Old logits unchanged under D2", "No source checkpoint writes", "Unique complete test indices"],
+  "outputs": ["Full confusion and per-class/task metrics", "Paired corrected/broken counts", "Within/cross-task margins", "Block score distributions", "D1 full matrix and forgetting", "Private logits retained on server only"],
+  "selection_rule": "Prefer fixed centering only if T3 new improves at least 5pp, old decreases no more than 1pp, and no old task loses over 2pp. Otherwise retain raw Head-RegMean and evaluate one head-only all-seen-CE candidate, with same fixed centering also reported. Thresholds are development resource decisions, not significance or held-out validation.",
+  "no_training": true,
+  "no_automatic_retry": true
+}
