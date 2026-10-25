@@ -1,0 +1,18 @@
+{
+  "stage": "2_of_6_complete; FedAvg running, LoRM pending",
+  "new_seed_new_gain_pp": [
+    3.7000000000000033,
+    2.200000000000002
+  ],
+  "new_seed_old_gain_pp": [
+    0.5499999999999949,
+    3.3499999999999974
+  ],
+  "mean_new_gain_pp": 2.950000000000003,
+  "mean_old_gain_pp": 1.9499999999999962,
+  "new_gain_ge5_gate": false,
+  "old_loss_le1_gate": true,
+  "no_old_task_loss_over2pp": true,
+  "inference": "Positive centering gains replicated, but prespecified new-class magnitude gate fails. Do not lower gate or claim independent held-out validation. Complete frozen six-run matrix before final next-stage decision.",
+  "next_if_no_new_integrity_issue": "Previously proposed head-only all-seen CE intervention under a new frozen protocol; keep original controls/results; no automatic full10 expansion on this failed gate."
+}

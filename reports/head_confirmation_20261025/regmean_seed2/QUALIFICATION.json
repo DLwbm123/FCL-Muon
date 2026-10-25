@@ -1,0 +1,39 @@
+{
+  "qualified": true,
+  "training_visits": 375000,
+  "optimizer_steps": 23825,
+  "client_rounds": 150,
+  "stats_visits": 90000,
+  "logical_communication_bytes": {
+    "RRS_raw_upload": 1698693120,
+    "A_broadcast": 35389440,
+    "B_download": 353894400,
+    "current_head_download": 4608000,
+    "head_Gram_upload": 707788800,
+    "B_upload": 353894400,
+    "current_head_upload": 4608000,
+    "task_end_B_download": 70778880,
+    "task_end_head_download": 921600
+  },
+  "checkpoint_reload_confusion_equal": true,
+  "centered_matrix": [
+    [
+      0.99
+    ],
+    [
+      0.979,
+      0.948
+    ],
+    [
+      0.971,
+      0.924,
+      0.933
+    ]
+  ],
+  "centered_final": 0.9426666666666668,
+  "centered_forgetting": 0.021499999999999964,
+  "clock": {
+    "started": 1792939753.19282,
+    "deadline": 1793025253.19282
+  }
+}

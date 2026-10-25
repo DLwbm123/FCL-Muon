@@ -1,0 +1,124 @@
+{
+  "checked": 1792944071.3266494,
+  "stage": "regmean_two_seeds_complete_fedavg_running_lorm_pending",
+  "rows": [
+    {
+      "seed": 1,
+      "actual_final_checkpoint_verified": true,
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.971,
+          0.94
+        ],
+        [
+          0.966,
+          0.925,
+          0.879
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.964,
+          0.952
+        ],
+        [
+          0.96,
+          0.942,
+          0.916
+        ]
+      ],
+      "raw_overall": 0.9233333333333333,
+      "raw_old": 0.9455,
+      "raw_new": 0.879,
+      "raw_forgetting": 0.01749999999999996,
+      "centered_overall": 0.9393333333333334,
+      "centered_old": 0.951,
+      "centered_new": 0.916,
+      "centered_forgetting": 0.018000000000000016,
+      "restricted": [
+        0.986,
+        0.985,
+        0.972
+      ],
+      "raw_new_to_old": 0.112,
+      "centered_new_to_old": 0.068,
+      "training_visits": 375000,
+      "stats_visits": 90000,
+      "certificates_passed": 15,
+      "end": 1792942901.1309154,
+      "next_fedavg": {
+        "task": 1,
+        "round": 0,
+        "phase": "clients",
+        "next_client": 9,
+        "visits_saved": 146045
+      }
+    },
+    {
+      "seed": 2,
+      "actual_final_checkpoint_verified": true,
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.962,
+          0.934
+        ],
+        [
+          0.942,
+          0.886,
+          0.911
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.979,
+          0.948
+        ],
+        [
+          0.971,
+          0.924,
+          0.933
+        ]
+      ],
+      "raw_overall": 0.913,
+      "raw_old": 0.914,
+      "raw_new": 0.911,
+      "raw_forgetting": 0.04800000000000004,
+      "centered_overall": 0.9426666666666667,
+      "centered_old": 0.9475,
+      "centered_new": 0.933,
+      "centered_forgetting": 0.021499999999999964,
+      "restricted": [
+        0.99,
+        0.98,
+        0.978
+      ],
+      "raw_new_to_old": 0.081,
+      "centered_new_to_old": 0.057,
+      "training_visits": 375000,
+      "stats_visits": 90000,
+      "certificates_passed": 15,
+      "end": 1792942853.591631,
+      "next_fedavg": {
+        "task": 1,
+        "round": 1,
+        "phase": "clients",
+        "next_client": 3,
+        "visits_saved": 152820
+      }
+    }
+  ],
+  "allocated_bytes": 5127610368,
+  "full_six_run_gate_evaluation": "pending full frozen matrix"
+}
