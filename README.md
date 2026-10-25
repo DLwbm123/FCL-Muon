@@ -46,3 +46,5 @@ python scripts/validate_manifests.py manifests/*.json
 ```
 
 No unrun score is populated. Smoke, pilot and formal results stay separate. Latest atomic checkpoint is retained per run to control storage. Shared raw datasets, weight cache and original-source snapshots remain outside Git.
+
+An additionally authorized official LoRM three-task comparison is configured in `configs/pilot_lorm_official.json`. Its algorithm methods come directly from the pinned upstream code, using rank16, AdamW lr5e-4, alternating A/B updates, RegMean, the original linear head and default mixed precision. It loads the existing seed0/alpha.05 client manifest. Read `reports/LORM_PROTOCOL.json` for disclosed differences and additional Gram-forward cost. Install the LoRM dependency overlay, set `ENTRY_MODULE=fcl.lorm_train` for the CLI or `ENTRY_FILE=scripts/lorm_job.py` for its persisted-deadline supervisor, and pass the config through `RUN_CONFIG`. The LoRM job is limited to this pilot; it does not add a LoRM hyperparameter search or full experiment grid. All methods' primary stage results compare among all seen classes and use the same forgetting definition.

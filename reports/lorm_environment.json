@@ -1,0 +1,8 @@
+{
+  "lightning-fabric": "2.5.6",
+  "lightning-utilities": "0.15.2",
+  "transformers": "4.44.2",
+  "torch": "2.7.1+cu128",
+  "torchvision": "0.22.1+cu128",
+  "timm": "1.0.22"
+}

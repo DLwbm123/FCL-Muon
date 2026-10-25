@@ -21,5 +21,14 @@
   },
   "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
   "last_health_check": "2026-10-25T08:07:27Z",
-  "resource_snapshot": "6.2 GiB project disk use; original clock and guards active"
+  "resource_snapshot": "6.2 GiB project disk use; original clock and guards active",
+  "lorm_comparison": {
+    "stage": "running on GPU7, first task round1; original source methods and matched manifest/weight hashes verified",
+    "protocol": "LORM_PROTOCOL.json",
+    "smoke": "2 tasks x2 rounds x2 clients completed, official A/B alternation and spatial/temporal merge exercised",
+    "tests": "13 passed in LoRM overlay",
+    "method": "official rank16 / AdamW lr5e-4 / linear head / 16-mixed",
+    "purpose": "same manifest and 5round x5epochs budget comparison of new-class accuracy and old-class forgetting",
+    "gpu": 7
+  }
 }

@@ -1,0 +1,6 @@
+{
+  "manifest_hash": "db56592c855bbc970a179d5860a377268ed49376d4dfcaabc1ef79740eda0762",
+  "weight_hash": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+  "same_partition_and_backbone_verified": true,
+  "optimizer_budget": "3 tasks x10 clients x5 rounds x5 epochs, batch16"
+}
