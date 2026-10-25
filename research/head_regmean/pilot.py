@@ -130,6 +130,14 @@ class Pilot:
         self.s['stats_records'].append({'task':self.s['task'],'round':self.s['round'],'client':k,'kind':'local_endpoint_Gram','samples':n})
         return g.cpu()
 
+    def backward_loss(self,x,y):
+        t=self.s['task'];c=self.cfg['cpt']
+        logits=self.model(x)[:,t*c:(t+1)*c]
+        loss=F.cross_entropy(logits,y-t*c)
+        if not torch.isfinite(loss):raise ArithmeticError('Nonfinite CE')
+        loss.backward()
+        return loss
+
     def train_client(self):
         s=self.s;k=s['next_client'];t=s['task'];r=s['round'];bs=self.model.b_parameters()
         global_b=[b.detach().clone() for b in bs];global_head=self.model.rows[-1].detach().clone()
@@ -146,10 +154,8 @@ class Pilot:
                     self.budget();self.check_labels(y)
                     lr=self.cfg['lr']*.5*(1+math.cos(math.pi*(r*count+steps)/max(self.cfg['rounds']*count-1,1)))
                     self.model.zero_grad(set_to_none=True)
-                    logits=self.model(self.train_tf(x.to(self.device)))[:,t*self.cfg['cpt']:(t+1)*self.cfg['cpt']]
-                    loss=F.cross_entropy(logits,y.to(self.device)-t*self.cfg['cpt'])
-                    if not torch.isfinite(loss):raise ArithmeticError('Nonfinite CE')
-                    loss.backward();opt.step(lr);headopt.step();steps+=1;seen+=len(y);loss_sum+=float(loss.detach())*len(y)
+                    loss=self.backward_loss(self.train_tf(x.to(self.device)),y.to(self.device))
+                    opt.step(lr);headopt.step();steps+=1;seen+=len(y);loss_sum+=float(loss.detach())*len(y)
             if steps!=count or seen!=n*self.cfg['epochs']:raise AssertionError('Optimizer budget')
             s['client_states'][k]={'m':[v.cpu() for v in momentum]}
             # This is the local endpoint encoder, BEFORE B FedAvg. Observation

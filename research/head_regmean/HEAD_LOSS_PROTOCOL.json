@@ -1,0 +1,57 @@
+{
+  "name": "Shared-state head-only all-seen CE intervention",
+  "authorization": "2026-10-25 autonomous continuation after failed prespecified gain and exact-pair qualification; preserve original failure, no costly rerun",
+  "purpose": "Test current-head all-seen CE while B receives only current-class CE. Add a matched current-CE control under identical numeric settings and identical saved T2 start; not a rerun of the failed FedAvg comparison.",
+  "lanes": [
+    {
+      "seed": 0,
+      "gpu": 1,
+      "source": "head_regmean_pilot_20261025/runs/pilot/task1.pt",
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json"
+    },
+    {
+      "seed": 1,
+      "gpu": 5,
+      "source": "head_confirmation_20261025/runs/regmean_seed1/task1.pt",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s1.json"
+    },
+    {
+      "seed": 2,
+      "gpu": 7,
+      "source": "head_confirmation_20261025/runs/regmean_seed2/task1.pt",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s2.json"
+    }
+  ],
+  "branch_order": [
+    "current",
+    "all_seen"
+  ],
+  "scientific_changes": "Only head loss differs within each pair. Both use FP32, TF32 off, deterministic algorithms, math SDPA, CUBLAS_WORKSPACE_CONFIG=:4096:8. These numeric settings differ from old runs; compare the new matched control, not only old historical results.",
+  "fixed_training": "Original QV-r32 sharedRRS/fixedA/SSB B/FedAvg, head constrainedRegMean alpha.5, current-data only, old heads frozen, headAdamW .001 wd0 reset per client/round; B lr.0002; five rounds x five epochs batch16 per task. No rank/lr/alpha sweep.",
+  "gradient_routing": "B loss uses detached classifier rows and current-class CE; head loss uses detached normalized features and current or all-seen CE. One backbone forward per minibatch; no direct cross-task gradient to B. Later B trajectories may diverge through changed heads.",
+  "shared_start": "Load qualified fixed T1 checkpoint; replay T1 once under fixed new numeric mode and preserve both old/new metrics; initialize T2 RRS/head exactly once and save shared full model/state/RNG. Both arms load that exact snapshot.",
+  "qualification": "Before any optimizer update, both modes must have exact augmented inputs/labels and direct B gradients, different head gradients, no old-head gradients. Each real branch rechecks its actual first batch against its preflight before first update. Existing mathematical/lifecycle tests plus new gradient-route tests must pass.",
+  "budget": {
+    "new_training_visits": 1500000,
+    "branches": 6,
+    "visits_per_branch": 250000,
+    "client_rounds_per_branch": 100,
+    "preflight_backward_images_total_max": 96,
+    "common_RRS_images_total": 15000,
+    "source_T1_replay_test_images_total": 3000,
+    "statistics_images_per_branch_excluding_shared_RRS": 55000,
+    "new_storage_guard_bytes": 20000000000,
+    "lineage_guard_bytes": 45000000000,
+    "estimated_new_peak_bytes": 12000000000,
+    "clock": "Use minimum actual source start and minimum source deadline, never reset original clocks. Independent supervisor enforces same limits."
+  },
+  "evaluation": "All three task matrices, raw and fixed block-centered inference on every arm; old/new/restricted/forgetting/task confusion; final checkpoint full confusion reload. Preserve source T1 metrics and all outputs. Test feedback is development evidence, no fitting or checkpoint selection.",
+  "primary_gate": "Against new matched current-CE raw control: three-seed mean new-class gain >=5pp, mean old loss<=1pp, no seed old-task loss>2pp. Also report all-seen-CE raw versus matched control centered; a training gain alone cannot establish superiority to the existing centered candidate. Report the full 2x2 without choosing the best inference variant post hoc.",
+  "next": "Analyze all six branches and unmodified standard LoRM references together. No automatic full10 expansion before qualification and decision.",
+  "original_failure": "Both prior Head-RegMean/FedAvg exact endpoint gates remain FAILED. Synthetic within-process CUDA gradient repeats passed in all modes; unique cause of original mismatch unresolved. New shared-start design does not retrospectively qualify prior comparison.",
+  "no_automatic_retry": true,
+  "paused": [
+    "ridge/v1",
+    "history_spectral"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "purpose": "Investigate failed exact-pair audit without rerunning costly scientific trajectories. Synthetic actual-architecture repeatability only.",
+  "entry": "scripts/cuda_gradient_probe.py",
+  "completion": "runs/probe/COMPLETE.json",
+  "hard_timeout_seconds": 1200,
+  "minimum_gpu_free_mib": 8000,
+  "storage_limit_bytes": 1000000000,
+  "estimated_peak_new_bytes": 10000000,
+  "real_data_access": false,
+  "training_parameter_updates": 0,
+  "checks": "Same fixed random ViT-B, QV-r32, fixed synthetic batch2; three repeated forward/backward calls per default SDPA, deterministic flag, and forced math deterministic modes; compare gradients and SSB operators exactly.",
+  "environment": "CUBLAS_WORKSPACE_CONFIG=:4096:8 set before CUDA initialization for every probe mode; original scientific runs did not pin this environment. Probe cannot alone establish unique cause of original endpoint differences.",
+  "no_automatic_retry": true,
+  "scientific_pair_gate": "Original first-round exact-pair failure stays failed regardless of probe result. No tolerance relaxation."
+}
