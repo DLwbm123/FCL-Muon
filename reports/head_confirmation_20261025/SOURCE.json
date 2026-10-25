@@ -1,0 +1,6 @@
+{
+  "git_revision": "98f86c4279f51ab8340f4acfc5e7311423131c67",
+  "branch": "codex/head-regmean-pilot-release",
+  "remote_copy": "rsync -a completed; no byte-level hash comparison",
+  "source_receipt_created_before_training": true
+}

@@ -1,0 +1,20 @@
+{
+  "started": 1792939753.19282,
+  "deadline": 1793025253.19282,
+  "status": "running",
+  "lanes": [
+    {
+      "seed": 1,
+      "gpu": 0,
+      "pid": 290452
+    },
+    {
+      "seed": 2,
+      "gpu": 3,
+      "pid": 290453
+    }
+  ],
+  "storage_limit_bytes": 20000000000,
+  "baseline_allocated_bytes": 1789952,
+  "protocol": "research/head_regmean/CONFIRMATION_PROTOCOL.json"
+}

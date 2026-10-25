@@ -14,6 +14,7 @@ weights.json
 cache/
 
 reports/LOCAL_OPERATIONS.md
+reports/LOCAL_AUTONOMOUS_CONTROL.json
 lorm_deps/
 
 reports/history_spectral/USER_PAUSE.json

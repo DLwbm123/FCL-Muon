@@ -1,0 +1,10 @@
+{
+  "status": "active",
+  "pid": 316258,
+  "deadline": 1793025253.19282,
+  "storage_limit_bytes": 20000000000,
+  "groups": [
+    290452,
+    290453
+  ]
+}

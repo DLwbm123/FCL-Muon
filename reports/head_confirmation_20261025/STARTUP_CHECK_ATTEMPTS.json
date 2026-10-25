@@ -1,0 +1,11 @@
+[
+  {
+    "attempt": 1,
+    "status": "inspection_entry_failed",
+    "error": "Missing project import path for fcl while loading checkpoint; no training failure or retry"
+  },
+  {
+    "attempt": 2,
+    "repair": "Added project to sys.path; same running checkpoints only"
+  }
+]

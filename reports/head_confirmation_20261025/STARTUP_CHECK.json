@@ -1,0 +1,36 @@
+{
+  "checked": 1792940136.6376696,
+  "status": "running",
+  "actual_checkpoints_read": [
+    {
+      "seed": 1,
+      "checkpoint_task": 0,
+      "checkpoint_round": 1,
+      "phase": "clients",
+      "next_client": 8,
+      "completed_client_rounds": 18,
+      "training_visits_saved": 41600,
+      "clock": {
+        "started": 1792939753.19282,
+        "deadline": 1793025253.19282
+      }
+    },
+    {
+      "seed": 2,
+      "checkpoint_task": 0,
+      "checkpoint_round": 1,
+      "phase": "clients",
+      "next_client": 7,
+      "completed_client_rounds": 17,
+      "training_visits_saved": 45490,
+      "clock": {
+        "started": 1792939753.19282,
+        "deadline": 1793025253.19282
+      }
+    }
+  ],
+  "preflight_tests_passed": 18,
+  "visible_argv_checked": "supervisor, lanes and both GPU children use neutral e17.py; nvidia-smi names neutral",
+  "remaining_queue": "After each regmean arm, paired fedavg then standard lorm; no full10 launched",
+  "source": "98f86c4279f51ab8340f4acfc5e7311423131c67"
+}
