@@ -96,6 +96,9 @@ class ClientMuon:
 def spectrum(x):
     s = torch.linalg.svdvals(x.float())
     energy = s.square()
-    p = energy / energy.sum().clamp_min(1e-30)
+    p = s / s.sum().clamp_min(1e-30)
+    legacy = energy / energy.sum().clamp_min(1e-30)
     return {'fro': float(x.norm()), 'stable_rank': float(energy.sum()/energy.max().clamp_min(1e-30)),
-            'effective_rank': float(torch.exp(-(p*p.clamp_min(1e-30).log()).sum())) if float(energy.sum()) else 0.0}
+            'effective_rank': float(torch.exp(-(p*p.clamp_min(1e-30).log()).sum())) if float(energy.sum()) else 0.0,
+            'effective_rank_definition':'singular_value_amplitude_entropy',
+            'legacy_energy_entropy_rank':float(torch.exp(-(legacy*legacy.clamp_min(1e-30).log()).sum())) if float(energy.sum()) else 0.0}

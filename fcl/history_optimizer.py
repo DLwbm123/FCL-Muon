@@ -1,7 +1,7 @@
 """Research updates: current direction state never contains historical correction."""
 import math
 import torch
-from .spectral_qp import SolverConfig,solve_spectral_qp,solve_frobenius_qp,compact_polar,certificate
+from .spectral_qp import SolverConfig,solve_spectral_qp,solve_frobenius_qp,compact_polar,actual_update_certificate
 
 METHODS=['mulora_fl_exact_polar','history_grad_muon','history_spectral','history_frobenius_qp']
 
@@ -69,8 +69,17 @@ class HistoryOptimizer:
                 self.ext.audited_tasks.add(self.ext.task)
             b.add_(d);actual=b-before
             if self.ext.method=='history_spectral':
-                actual_diag=certificate(g,hh,actual,eta,self.ext.solver)
+                proposal_diag=diagnostic['proposed_certificate'].copy()
+                actual_diag=actual_update_certificate(g,hh,before,b,eta,self.ext.solver)
                 diagnostic.update(actual_diag)
+                diagnostic['proposed_certificate']=proposal_diag
+                diagnostic['actual_certificate']=actual_diag.copy()
+                diagnostic['application_roundoff_fro']=float((b.double()-before.double()-d.double()).norm())
+                diagnostic['failure_stage']=('none' if actual_diag['converged'] else
+                                             'parameter_addition' if proposal_diag['converged'] else 'proposal')
+                diagnostic['failure_reason']=[f'{stage}_{check}' for stage,info in
+                    [('proposed',proposal_diag),('actual',actual_diag)] for check in
+                    ['gap_satisfied','feasible_within_tolerance'] if not info[check]]
                 diagnostic['certificate_for']='actual_B_after_minus_before'
             self.ext.caches[self.client][i]=actual.clone()
             mu=-eta*compact_polar(m)[0];gradient=core['F']+before@core['H']
@@ -95,4 +104,7 @@ class HistoryOptimizer:
             solver_seconds=sum(d.get('elapsed_seconds',0) for d in ds),
             mean_r_grad=sum(d['r_grad'] for d in ds)/max(n,1),mean_r_curv=sum(d['r_curv'] for d in ds)/max(n,1),
             mean_history_q=sum(d['q_before'] for d in ds)/max(n,1),history_q_change_sum=sum(d['q_change'] for d in ds),
-            first_step_per_layer=ds[:len(self.parameters)],paired_first_layer_audit=self.audits)
+            first_step_per_layer=ds[:len(self.parameters)],paired_first_layer_audit=self.audits,
+            # Preserve every failed step, not just the first update of each round.
+            failed_updates=[d for d in ds if not d.get('converged',True)],
+            failure_counts={key:sum(d.get('failure_stage')==key for d in ds) for key in ['proposal','parameter_addition']})

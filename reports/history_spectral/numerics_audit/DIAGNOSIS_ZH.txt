@@ -1,0 +1,101 @@
+history_spectral 数值定位、修订及Pro审查核对（2026-10-25）
+
+范围：只读旧标量日志，CPU/CUDA合成矩阵和合成模型状态测试；没有真实图像
+前向、训练、校准或评估。history实验仍暂停。修订位于独立分支
+codex/history-spectral-numerics-review，基于Pro审查提交145b121；未覆盖服务器
+原忠实基线或research_v1运行源码。原smoke和pilot结果不变。
+
+一、旧35次失败的证据边界
+192次实际更新中35次converged=false。旧日志只保存各客户端每轮首步逐层详情，
+共96条，其中20条失败；另外15条没有逐步详情。
+对20条按旧判据分类，全部是feasibility_only：gap上限和负gap检查均通过，
+最多迭代63次，没有耗尽200次预算。7条发生在任务开始B=0的第一轮首步，
+可排除非零B与小D相加的舍入；它们属于提议/重构/证书边界数值问题。
+eta=2e-4时旧允许半径误差1.5258789e-9，eta=5e-5时为3.8146973e-10，
+失败值多紧邻阈值。没有原始G/H、D和B端点，不能进一步逐条区分真实越界
+与FP32 SVD测量误差，也不能归因缺失的15条。
+
+此前“最大relative_gap=1.55e-4高于1e-4”的比较不充分：实际判据包含绝对容差，
+gap <= 1e-10 + 1e-4*(eta*||G||_*)。已保存的20条gap均通过。
+原整体验收失败仍保留，不据本次分析把旧结果改判为通过。
+
+二、Pro指出的确定缺陷及本轮修订
+已完整阅读用户提供的FCL_Muon_145b121_review_and_codex_prompt.txt。
+S1 候选选择：旧best仅在phi严格下降时更新，可能丢弃证书已通过的nxt。
+现在每个候选都检查原空间证书，分别维护best objective与best certified。
+达到预算时优先返回已合格候选，不要求其同时拥有最低的未合格候选目标值。
+S2 精度/停止：默认reduced_dtype=float64，r维小矩阵迭代使用FP64；QR及返回
+参数增量仍按输入精度。内部目标显式为rtol=1e-6/atol=1e-12，最终仍为
+1e-4/1e-10，max_iter仍200。内部更严格目标未达到但最终证书已通过时，
+可在预算结束返回best certified，诚实记录iteration_limit_reached。
+小空间、原空间提议、存储参数实际增量分别审核；不因小空间gap通过就提前
+宣称原空间或实际步通过。CUDA SVD显式选gesvd，证书计算使用FP64。
+S3 rank cutoff：FP32的max(shape)*eps会误删大量小非零模式。compact polar改为
+FP64 SVD参考、使用FP64数值零阈值，再返回输入dtype；真零空间仍取零。
+无历史、exact-polar及相关对照共用此oracle。最终用原始G复核gap。
+S4 证据记录：分别保留reduced_certificate/proposed_certificate/actual_certificate，
+以及failure_reason；保存所有失败步的标量详情，不再只保存首步。
+端点先转FP64再相减，提议/实际证书使用相同的H对称化及微小PSD修正。
+谱范数允许的舍入容差不变，并单独记录strictly_feasible；容差内通过不被
+表述为严格可行点的精确数学证明。不把signed gap截为0，不修改实际更新来
+掩盖失败，也不添加ridge/额外科学约束。
+S5 已补针对性测试，见下方实际结果。原有历史统计/生命周期检查保留。
+
+Pro的effective_rank问题也确认：旧fcl.math.spectrum用sigma^2的熵，却命名
+effective_rank。新日志改用sigma的熵，并保留独立legacy_energy_entropy_rank。
+diag(9,1)检查分别约1.38414549与1.06807818。旧日志原值不改写；只有摘要
+时不能倒推出正确谱指标。服务器当前既有运行未部署此次代码，仍属于旧口径。
+
+三、实际PyTorch验证，不冒用NumPy结果
+Pro给定5x3问题，输入按提供数值存储为FP32，原145b121函数实际执行：
+- CPU：200次，relative gap=2.0653723e-4，不通过。
+- CUDA：200次，relative gap=1.5725268e-4，不通过。
+修订后的默认FP64小矩阵路径、仍返回FP32增量：
+- CPU：200次，relative gap=2.3175930e-6，最终通过；内部更严目标未必通过。
+- CUDA：182次，relative gap=1.0162260e-6，最终通过。
+显式reduced_dtype=input路径也通过最终判据：CPU6.55333e-5、CUDA4.51868e-5，
+均到200次。没有扩大迭代预算或放宽最终阈值。
+这是合成反例，不能称为旧smoke35次真实失败张量回放。
+
+768x32、H=0、eta=1、s=[1,9e-5重复31次]回归测试：新oracle保留小非零模式，
+通过最终证书；另有真正零奇异值的版本验证不填充零空间。
+3个固定种子×3个eta×3个B尺度=27个合成更新，加3个投影检查：
+旧提议最大相对半径超出6.0513e-6，最初SVD/证书修订后1.3618e-6，
+Pro复核修订后1.9642e-7。此固定随机组各版提议均未超过旧7.6294e-6容差，
+因此它显示数值误差降低，不是原35步逐一复现。
+刻意放大B/eta比例时，9个实际可行性失败在修订后仍为9个：这是保留的反例，
+不是“所有数学输入都能通过”的声明。更准的求解不能消除FP32参数网格限制。
+解析例B=1、G=1、H=0、eta=1e-7：提议-1e-7通过，但实际FP32增量约
+-1.19209e-7超出半径，必须失败。eta=2e-7时实际约-1.78814e-7虽可行却gap不达标。
+
+最终测试命令执行结果：42 passed in3.97s。
+覆盖新精度/候选/rank/日志测试、原历史数学、生命周期及基线核心测试。
+包括CUDA合成张量与小型合成模型状态恢复；没有调用数据集。
+
+四、Pro建议中的未执行项与限制
+未进行checkpoint真实图像评估、任何T1诊断训练、2x2算子消融或head/RegMean变体。
+这些是后续路线，不能由附件内的建议覆盖用户当前“不要真实数据实验”要求。
+cosine-head raw-row平均存在尺度不变性弱点；目前没有端点头/预测证据证明它
+造成pilot全部差距。FedMuon尺度、LoRM模块/头/聚合差异和NS epsilon风险也不
+据此转为已证实的性能因果结论。history_spectral没有参加三方pilot。
+完整失败张量保存/通用离线重放入口尚未接入；旧G/H/B/D缺失无法补造。
+真实数据smoke未重跑，数值验收状态仍为未通过/待重新验证，研究训练仍暂停。
+
+五、证据与命令
+OLD_SMOKE_FAILURE_CLASSIFICATION.json：旧记录分类。
+pro_case_legacy_torch.json / pro_case_revised_torch.json：真实PyTorch合成反例。
+pre_fix_cuda.json / post_fix_cuda.json / post_pro_revision_cuda.json：三个源码阶段。
+pro-review-final-tests.log：最终42项测试。precision-tests-final.log是早期26项记录。
+tests/fixtures/pro_spectral_counterexample.json：用户提供的合成输入。
+原版函数通过git show145b121:fcl/spectral_qp.py提取到隔离目录，仅供合成比较。
+
+在独立audit_root中设置：
+CUDA_VISIBLE_DEVICES=0 PROJECT_ROOT=<audit_root> PYTHONPATH=<audit_root>:<deps>
+ENTRY_MODULE=pytest
+PYTEST_ADDOPTS='-q tests/test_spectral_precision.py tests/test_history_math.py tests/test_history_lifecycle.py tests/test_core.py'
+timeout 180 <python> <neutral_entry>
+
+矩阵诊断设置ENTRY_MODULE=scripts.diagnose_spectral_numerics、MATH_DEVICE=cuda、
+MATH_REPORT=reports/post_pro_revision_cuda.json，同一中性入口和180秒限时。
+此次环境PyTorch2.7.1+cu128，GPU0仅作合成数学测试；没有改动其余任务进程。
+SVD来源：https://docs.pytorch.org/docs/2.7/generated/torch.linalg.svd.html

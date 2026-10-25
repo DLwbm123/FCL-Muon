@@ -39,6 +39,15 @@
     "numerical_qualification": "not passed: FP32 spectral smoke35/192 actual steps flagged; max relative gap1.55e-4",
     "research_pilot": "not_started",
     "formal_research": "not_started",
-    "auto_launch_allowed": false
+    "auto_launch_allowed": false,
+    "numerical_audit": {
+      "branch": "codex/history-spectral-numerics-review",
+      "tests": "42 passed; synthetic CPU/CUDA math/lifecycle/core only",
+      "known_old_failure_details": "20 feasibility-only; remaining15 lack per-step records",
+      "pro_counterexample": "old Torch FP32 fails on CPU/CUDA; revised solver passes final gap with unchanged200-iteration budget",
+      "real_data_rerun": false,
+      "original_smoke_qualification": "unchanged: failed",
+      "failure_tensor_replay": "original tensors unavailable; full capture/replay helper not yet implemented"
+    }
   }
 }

@@ -1,0 +1,773 @@
+Pro numerical review addendum — 2026-10-25
+Base reviewed commit:145b121. Current branch:codex/history-spectral-numerics-review.
+This supplements the frozen97ba2b6 original bundle. Only synthetic tests were run. Real-data history experiments remain USER-PAUSED.
+
+
+================ reports/history_spectral/numerics_audit/DIAGNOSIS_ZH.txt ================
+
+history_spectral 数值定位、修订及Pro审查核对（2026-10-25）
+
+范围：只读旧标量日志，CPU/CUDA合成矩阵和合成模型状态测试；没有真实图像
+前向、训练、校准或评估。history实验仍暂停。修订位于独立分支
+codex/history-spectral-numerics-review，基于Pro审查提交145b121；未覆盖服务器
+原忠实基线或research_v1运行源码。原smoke和pilot结果不变。
+
+一、旧35次失败的证据边界
+192次实际更新中35次converged=false。旧日志只保存各客户端每轮首步逐层详情，
+共96条，其中20条失败；另外15条没有逐步详情。
+对20条按旧判据分类，全部是feasibility_only：gap上限和负gap检查均通过，
+最多迭代63次，没有耗尽200次预算。7条发生在任务开始B=0的第一轮首步，
+可排除非零B与小D相加的舍入；它们属于提议/重构/证书边界数值问题。
+eta=2e-4时旧允许半径误差1.5258789e-9，eta=5e-5时为3.8146973e-10，
+失败值多紧邻阈值。没有原始G/H、D和B端点，不能进一步逐条区分真实越界
+与FP32 SVD测量误差，也不能归因缺失的15条。
+
+此前“最大relative_gap=1.55e-4高于1e-4”的比较不充分：实际判据包含绝对容差，
+gap <= 1e-10 + 1e-4*(eta*||G||_*)。已保存的20条gap均通过。
+原整体验收失败仍保留，不据本次分析把旧结果改判为通过。
+
+二、Pro指出的确定缺陷及本轮修订
+已完整阅读用户提供的FCL_Muon_145b121_review_and_codex_prompt.txt。
+S1 候选选择：旧best仅在phi严格下降时更新，可能丢弃证书已通过的nxt。
+现在每个候选都检查原空间证书，分别维护best objective与best certified。
+达到预算时优先返回已合格候选，不要求其同时拥有最低的未合格候选目标值。
+S2 精度/停止：默认reduced_dtype=float64，r维小矩阵迭代使用FP64；QR及返回
+参数增量仍按输入精度。内部目标显式为rtol=1e-6/atol=1e-12，最终仍为
+1e-4/1e-10，max_iter仍200。内部更严格目标未达到但最终证书已通过时，
+可在预算结束返回best certified，诚实记录iteration_limit_reached。
+小空间、原空间提议、存储参数实际增量分别审核；不因小空间gap通过就提前
+宣称原空间或实际步通过。CUDA SVD显式选gesvd，证书计算使用FP64。
+S3 rank cutoff：FP32的max(shape)*eps会误删大量小非零模式。compact polar改为
+FP64 SVD参考、使用FP64数值零阈值，再返回输入dtype；真零空间仍取零。
+无历史、exact-polar及相关对照共用此oracle。最终用原始G复核gap。
+S4 证据记录：分别保留reduced_certificate/proposed_certificate/actual_certificate，
+以及failure_reason；保存所有失败步的标量详情，不再只保存首步。
+端点先转FP64再相减，提议/实际证书使用相同的H对称化及微小PSD修正。
+谱范数允许的舍入容差不变，并单独记录strictly_feasible；容差内通过不被
+表述为严格可行点的精确数学证明。不把signed gap截为0，不修改实际更新来
+掩盖失败，也不添加ridge/额外科学约束。
+S5 已补针对性测试，见下方实际结果。原有历史统计/生命周期检查保留。
+
+Pro的effective_rank问题也确认：旧fcl.math.spectrum用sigma^2的熵，却命名
+effective_rank。新日志改用sigma的熵，并保留独立legacy_energy_entropy_rank。
+diag(9,1)检查分别约1.38414549与1.06807818。旧日志原值不改写；只有摘要
+时不能倒推出正确谱指标。服务器当前既有运行未部署此次代码，仍属于旧口径。
+
+三、实际PyTorch验证，不冒用NumPy结果
+Pro给定5x3问题，输入按提供数值存储为FP32，原145b121函数实际执行：
+- CPU：200次，relative gap=2.0653723e-4，不通过。
+- CUDA：200次，relative gap=1.5725268e-4，不通过。
+修订后的默认FP64小矩阵路径、仍返回FP32增量：
+- CPU：200次，relative gap=2.3175930e-6，最终通过；内部更严目标未必通过。
+- CUDA：182次，relative gap=1.0162260e-6，最终通过。
+显式reduced_dtype=input路径也通过最终判据：CPU6.55333e-5、CUDA4.51868e-5，
+均到200次。没有扩大迭代预算或放宽最终阈值。
+这是合成反例，不能称为旧smoke35次真实失败张量回放。
+
+768x32、H=0、eta=1、s=[1,9e-5重复31次]回归测试：新oracle保留小非零模式，
+通过最终证书；另有真正零奇异值的版本验证不填充零空间。
+3个固定种子×3个eta×3个B尺度=27个合成更新，加3个投影检查：
+旧提议最大相对半径超出6.0513e-6，最初SVD/证书修订后1.3618e-6，
+Pro复核修订后1.9642e-7。此固定随机组各版提议均未超过旧7.6294e-6容差，
+因此它显示数值误差降低，不是原35步逐一复现。
+刻意放大B/eta比例时，9个实际可行性失败在修订后仍为9个：这是保留的反例，
+不是“所有数学输入都能通过”的声明。更准的求解不能消除FP32参数网格限制。
+解析例B=1、G=1、H=0、eta=1e-7：提议-1e-7通过，但实际FP32增量约
+-1.19209e-7超出半径，必须失败。eta=2e-7时实际约-1.78814e-7虽可行却gap不达标。
+
+最终测试命令执行结果：42 passed in3.97s。
+覆盖新精度/候选/rank/日志测试、原历史数学、生命周期及基线核心测试。
+包括CUDA合成张量与小型合成模型状态恢复；没有调用数据集。
+
+四、Pro建议中的未执行项与限制
+未进行checkpoint真实图像评估、任何T1诊断训练、2x2算子消融或head/RegMean变体。
+这些是后续路线，不能由附件内的建议覆盖用户当前“不要真实数据实验”要求。
+cosine-head raw-row平均存在尺度不变性弱点；目前没有端点头/预测证据证明它
+造成pilot全部差距。FedMuon尺度、LoRM模块/头/聚合差异和NS epsilon风险也不
+据此转为已证实的性能因果结论。history_spectral没有参加三方pilot。
+完整失败张量保存/通用离线重放入口尚未接入；旧G/H/B/D缺失无法补造。
+真实数据smoke未重跑，数值验收状态仍为未通过/待重新验证，研究训练仍暂停。
+
+五、证据与命令
+OLD_SMOKE_FAILURE_CLASSIFICATION.json：旧记录分类。
+pro_case_legacy_torch.json / pro_case_revised_torch.json：真实PyTorch合成反例。
+pre_fix_cuda.json / post_fix_cuda.json / post_pro_revision_cuda.json：三个源码阶段。
+pro-review-final-tests.log：最终42项测试。precision-tests-final.log是早期26项记录。
+tests/fixtures/pro_spectral_counterexample.json：用户提供的合成输入。
+原版函数通过git show145b121:fcl/spectral_qp.py提取到隔离目录，仅供合成比较。
+
+在独立audit_root中设置：
+CUDA_VISIBLE_DEVICES=0 PROJECT_ROOT=<audit_root> PYTHONPATH=<audit_root>:<deps>
+ENTRY_MODULE=pytest
+PYTEST_ADDOPTS='-q tests/test_spectral_precision.py tests/test_history_math.py tests/test_history_lifecycle.py tests/test_core.py'
+timeout 180 <python> <neutral_entry>
+
+矩阵诊断设置ENTRY_MODULE=scripts.diagnose_spectral_numerics、MATH_DEVICE=cuda、
+MATH_REPORT=reports/post_pro_revision_cuda.json，同一中性入口和180秒限时。
+此次环境PyTorch2.7.1+cu128，GPU0仅作合成数学测试；没有改动其余任务进程。
+SVD来源：https://docs.pytorch.org/docs/2.7/generated/torch.linalg.svd.html
+
+
+================ fcl/spectral_qp.py ================
+
+"""Spectral-ball convex QP. Every certificate is evaluated on the returned step."""
+import time
+import math
+from dataclasses import dataclass
+import torch
+
+
+@dataclass
+class SolverConfig:
+    max_iter:int=200
+    gap_rtol:float=1e-4
+    gap_atol:float=1e-10
+    warm_start:bool=True
+    reduced_dtype:str='float64'
+    inner_gap_rtol:float=1e-6
+    inner_gap_atol:float=1e-12
+
+
+def _svd(x):
+    # CUDA's default Jacobi driver can lose several e-6 of orthogonality in
+    # FP32. Use the QR-based driver for radius-sensitive projection/polar steps.
+    return torch.linalg.svd(x,full_matrices=False,**({'driver':'gesvd'} if x.is_cuda else {}))
+
+
+def _svdvals(x):
+    return torch.linalg.svdvals(x,**({'driver':'gesvd'} if x.is_cuda else {}))
+
+
+def checked_psd(h):
+    h=(h+h.T)/2
+    values,vectors=torch.linalg.eigh(h)
+    scale=max(float(values.abs().max()),1e-30)
+    tol=64*torch.finfo(h.dtype).eps*h.shape[0]*scale
+    if float(values.min()) < -tol:raise ValueError('Historical Hessian is materially non-PSD')
+    correction=max(0.,-float(values.min()))
+    if correction:h=(vectors*values.clamp_min(0))@vectors.T
+    return h,values.clamp_min(0),correction
+
+
+def compact_polar(g):
+    # Audit the stored matrix in FP64: an input-FP32 rank heuristic can discard
+    # enough small, nonzero singular mass to violate the requested oracle gap.
+    u,s,v=_svd(g.double())
+    tol=max(g.shape)*torch.finfo(s.dtype).eps*(float(s.max()) if s.numel() else 0)
+    keep=s>tol
+    return (u[:,keep]@v[keep]).to(g.dtype),tol
+
+
+def spectral_project(x,radius):
+    u,s,v=_svd(x)
+    return (u*s.clamp_max(radius))@v
+
+
+def objective(g,h,d):return (g*d).sum()+.5*((d@h)*d).sum()
+
+
+@torch.no_grad()
+def certificate(g,h,d,eta,config):
+    # Audit the stored problem/step in FP64, rather than trusting the FP32 SVD
+    # and cancellation-prone reductions used to construct a boundary iterate.
+    # Keep the existing input-precision feasibility allowance and gap tolerances.
+    input_dtype=g.dtype
+    gd,hd,dd=g.double(),h.double(),d.double()
+    k=gd+dd@hd
+    scale=max(float(eta*_svdvals(gd).sum()),1e-30)
+    gap=float((k*dd).sum()+eta*_svdvals(k).sum())
+    norm=float(_svdvals(dd).max()) if dd.numel() else 0.
+    phi=float(objective(gd,hd,dd))
+    numeric=64*torch.finfo(input_dtype).eps*scale
+    gap_limit=config.gap_atol+config.gap_rtol*scale
+    radius_allowance=64*torch.finfo(input_dtype).eps*max(eta,1e-30)
+    gap_ok=-numeric<=gap<=gap_limit
+    feasible=norm<=eta+radius_allowance
+    return {'objective':phi,'gap':gap,'relative_gap':gap/scale,'relative_scale':scale,
+            'operator_norm':norm,'feasibility_residual':max(0.,norm-eta),
+            'gap_limit':gap_limit,'negative_gap_allowance':numeric,'feasibility_allowance':radius_allowance,
+            'gap_satisfied':gap_ok,'feasible_within_tolerance':feasible,
+            'strictly_feasible':norm<=eta,'gap_is_bound_for_feasible_point':norm<=eta,
+            'converged':gap_ok and feasible,
+            'zero_step':not bool(torch.count_nonzero(dd)),'numeric_precision':str(input_dtype),
+            'certificate_precision':'torch.float64','certificate_version':'fp64-endpoints-v2'}
+
+
+def actual_update_certificate(g,h,before,after,eta,config):
+    # Cast the two stored endpoints BEFORE subtraction. In particular, tiny
+    # applied steps and cancellation must not be replaced by the proposal.
+    # Reproduce the solver's declared symmetry/tiny-negative-eigenvalue repair
+    # from the same original input, so both certificates describe the same QP.
+    canonical,_,correction=checked_psd(h)
+    result=certificate(g,canonical,after.double()-before.double(),eta,config)
+    result['certificate_psd_correction']=correction
+    return result
+
+
+@torch.no_grad()
+def solve_spectral_qp(g,h,eta,previous_delta=None,config=None):
+    config=config or SolverConfig();started=time.perf_counter()
+    if g.dtype not in [torch.float32,torch.float64]:raise TypeError('QP requires FP32/FP64')
+    if not math.isfinite(eta) or eta<0 or not torch.isfinite(g).all() or not torch.isfinite(h).all():raise ValueError('Invalid QP input')
+    if config.reduced_dtype not in ['float64','input']:raise ValueError('Unknown reduced solve precision')
+    if config.max_iter<0 or min(config.gap_rtol,config.gap_atol,config.inner_gap_rtol,config.inner_gap_atol)<0:
+        raise ValueError('Invalid solver tolerances/budget')
+    h,_,correction=checked_psd(h)
+    work_dtype=torch.float64 if config.reduced_dtype=='float64' else g.dtype
+    inner=SolverConfig(gap_rtol=min(config.gap_rtol,config.inner_gap_rtol),
+                       gap_atol=min(config.gap_atol,config.inner_gap_atol))
+    warm_used=False;warm_obj=None;rank_tol=0.;iterations=0
+    reduced_info=None;returned='special_case';best_objective=None
+    if eta==0 or not torch.count_nonzero(g):d=torch.zeros_like(g)
+    elif not torch.count_nonzero(h):
+        polar,rank_tol=compact_polar(g);d=-eta*polar
+    else:
+        q,t=torch.linalg.qr(g,mode='reduced')
+        # QR remains in the input precision; the r-dimensional reference solve
+        # and objective/selection arithmetic are explicitly FP64 by default.
+        qw=q.to(work_dtype);t=t.to(work_dtype);hw=h.to(work_dtype)
+        best=None;best_phi=float('inf');certified=None;cert_phi=float('inf')
+
+        def consider(x,label):
+            nonlocal best,best_phi,certified,cert_phi
+            ri=certificate(t,hw,x,eta,inner)
+            di=(qw@x).to(g.dtype)
+            pi=certificate(g,h,di,eta,config)
+            # The best objective and a certified candidate are different ledgers.
+            # Inspect EVERY candidate, even when its objective is slightly higher.
+            if ri['feasible_within_tolerance'] and pi['feasible_within_tolerance']:
+                item=(x.clone(),di,ri,pi,label)
+                if pi['objective']<best_phi:best=item;best_phi=pi['objective']
+                nonincrease=pi['objective']<=config.gap_atol+pi['negative_gap_allowance']
+                if pi['converged'] and nonincrease and pi['objective']<cert_phi:
+                    certified=item;cert_phi=pi['objective']
+            return ri['converged'] and pi['converged']
+
+        consider(torch.zeros_like(t),'zero')
+        if config.warm_start and previous_delta is not None:
+            warm=spectral_project(qw.T@previous_delta.to(device=g.device,dtype=work_dtype),eta)
+            warm_obj=float(objective(t.double(),hw.double(),warm.double()))
+            if warm_obj<=0:consider(warm,'warm');warm_used=True
+        polar,rank_tol=compact_polar(t)
+        consider(-eta*polar,'linear_oracle')
+        ev=torch.linalg.eigvalsh(hw)
+        if float(ev.min())>float(ev.max())*torch.finfo(work_dtype).eps*32:
+            free=-torch.linalg.solve(hw,t.T).T
+            consider(spectral_project(free,eta),'projected_unconstrained')
+        x=best[0].clone();y=x.clone();accel=1.;lip=float(ev.max())
+        for iterations in range(config.max_iter+1):
+            if certified is not None and certified[2]['converged']:break
+            if iterations==config.max_iter:break
+            nxt=spectral_project(y-(t+y@hw)/lip,eta)
+            phi=float(objective(t.double(),hw.double(),nxt.double()))
+            if phi>float(objective(t.double(),hw.double(),x.double())):
+                y=x;accel=1.;nxt=spectral_project(y-(t+y@hw)/lip,eta)
+            consider(nxt,'projected_gradient')
+            new_accel=(1+(1+4*accel*accel)**.5)/2
+            y=nxt+(accel-1)/new_accel*(nxt-x);x=nxt;accel=new_accel
+        selected=certified if certified is not None else best
+        _,d,reduced_info,_,returned=selected;best_objective=best_phi
+    diagnostic=certificate(g,h,d,eta,config)
+    failure=diagnostic['objective']>config.gap_atol+64*torch.finfo(g.dtype).eps*diagnostic['relative_scale']
+    if failure:
+        d=torch.zeros_like(d);diagnostic=certificate(g,h,d,eta,config)
+        reduced_info=None;returned='numerical_failure_zero_fallback'
+    proposed_info=diagnostic.copy()
+    diagnostic.update(iterations=iterations,warm_start_used=warm_used,warm_start_objective=warm_obj,
+                      numerical_failure=failure,rank_tolerance=rank_tol,psd_correction=correction,
+                      svd_driver='gesvd' if g.is_cuda else 'CPU LAPACK',
+                      reduced_precision=str(work_dtype),polar_precision='torch.float64',
+                      reduced_certificate=reduced_info,proposed_certificate=proposed_info,
+                      returned_candidate=returned,best_feasible_objective=best_objective,
+                      inner_gap_rtol=inner.gap_rtol,inner_gap_atol=inner.gap_atol,
+                      iteration_limit_reached=iterations==config.max_iter,
+                      elapsed_seconds=time.perf_counter()-started)
+    return d,diagnostic
+
+
+@torch.no_grad()
+def solve_frobenius_qp(g,h,rho):
+    if rho<0:raise ValueError('Negative Frobenius radius')
+    h,values,_=checked_psd(h)
+    values,vectors=torch.linalg.eigh(h);values=values.clamp_min(0)
+    gv=g@vectors
+    if rho==0 or not torch.count_nonzero(g):return torch.zeros_like(g),{'mu':0.,'iterations':0}
+    tol=torch.finfo(g.dtype).eps*max(float(values.max()),1e-30)*32
+    positive=values>tol
+    free=torch.zeros_like(gv);free[:,positive]=-gv[:,positive]/values[positive]
+    if not torch.count_nonzero(gv[:,~positive]) and float(free.norm())<=rho:return free@vectors.T,{'mu':0.,'iterations':0}
+    low=0.;high=max(float(g.norm())/rho,float(values.max()),1e-30)
+    for _ in range(100):
+        if float((gv/(values+high)).norm())<=rho:break
+        high*=2
+    for it in range(100):
+        mid=(low+high)/2
+        if float((gv/(values+mid)).norm())>rho:low=mid
+        else:high=mid
+        if high-low<max(high,1e-30)*1e-12:break
+    return (-gv/(values+high))@vectors.T,{'mu':high,'iterations':it+1}
+
+
+================ fcl/history_optimizer.py ================
+
+"""Research updates: current direction state never contains historical correction."""
+import math
+import torch
+from .spectral_qp import SolverConfig,solve_spectral_qp,solve_frobenius_qp,compact_polar,actual_update_certificate
+
+METHODS=['mulora_fl_exact_polar','history_grad_muon','history_spectral','history_frobenius_qp']
+
+
+def update_geometry(d):
+    s=torch.linalg.svdvals(d);mass=s.sum();energy=s.square()
+    if not float(mass):return {'fro':0.,'operator':0.,'stable_rank':0.,'effective_rank':0.}
+    prob=s/mass
+    return {'fro':float(d.norm()),'operator':float(s.max()),'stable_rank':float(energy.sum()/energy.max()),
+            'effective_rank':float(torch.exp(-(prob*prob.clamp_min(1e-30).log()).sum())),
+            'effective_rank_definition':'singular_value_amplitude_entropy'}
+
+
+def propose(method,m,b,core,eta,lam,previous=None,solver=None,rho_factor=1.):
+    solver=solver or SolverConfig()
+    h=core['H'];f=core['F'];g=m+lam*(f+b@h);hh=lam*h
+    if method=='history_spectral':d,diagnostic=solve_spectral_qp(g,hh,eta,previous,solver)
+    elif method=='history_grad_muon':
+        d=-eta*compact_polar(g)[0];diagnostic={'oracle':'exact_polar_corrected_gradient'}
+    elif method=='mulora_fl_exact_polar':
+        d=-eta*compact_polar(m)[0];diagnostic={'oracle':'exact_polar_current_direction'}
+    elif method=='history_frobenius_qp':
+        d,diagnostic=solve_frobenius_qp(g,hh,eta*rho_factor)
+    else:raise ValueError(method)
+    return d,diagnostic,g,hh
+
+
+def paired_update_audit(m,b,core,eta,lam,a,config=None):
+    result={};d0=-eta*compact_polar(m)[0]
+    ds,_,_,_=propose('history_spectral',m,b,core,eta,lam,solver=config)
+    g=m+lam*(core['F']+b@core['H'])
+    matched=-ds.norm()*g/g.norm() if float(g.norm()) else torch.zeros_like(g)
+    candidates={name:propose(name,m,b,core,eta,lam,solver=config,rho_factor=max(1,b.shape[-1]**.5))[0] for name in METHODS}
+    candidates['matched_energy_gradient_direction']=matched
+    candidates['matched_budget_frobenius_qp']=solve_frobenius_qp(g,lam*core['H'],float(ds.norm()))[0]
+    for name,d in candidates.items():
+        benefit=-float((m*d).sum());change=float(((core['F']+b@core['H'])*d).sum()+.5*((d@core['H'])*d).sum())
+        factor=float((d*d0).sum()/d0.square().sum()) if float(d0.norm()) else 0.
+        result[name]={**update_geometry(d),'predicted_current_gain':benefit,'historical_q_change':change,
+                      'phi':-benefit+lam*change,'weight_space_fro':float((d@a).norm()),
+                      'weight_space_operator':float(torch.linalg.matrix_norm(d@a,ord=2)),
+                      'cosine_vs_muon':float((d*d0).sum()/(d.norm()*d0.norm()).clamp_min(1e-30)),
+                      'best_uniform_scale_vs_muon':factor,'uniform_scale_residual':float((d-factor*d0).norm()/d.norm().clamp_min(1e-30))}
+    return result
+
+
+class HistoryOptimizer:
+    def __init__(self,parameters,state,local_c,global_c,extension,client):
+        self.parameters=list(parameters);self.state=state;self.local_c=local_c;self.global_c=global_c
+        self.ext=extension;self.client=client;self.corrected=extension.provider=='fedmuon'
+        self.diag=[];self.steps=0;self.audits=[]
+    @torch.no_grad()
+    def step(self,lr):
+        updates=[]
+        for i,b in enumerate(self.parameters):
+            self.state[i].mul_(.9).add_(b.grad.float(),alpha=.1)
+            m=self.state[i]-self.local_c[i]+self.global_c[i] if self.corrected else self.state[i]
+            eta=lr*(max(b.shape)**.5 if self.corrected else 1.)
+            core=self.ext.cores[i];lam=0. if self.ext.method=='mulora_fl_exact_polar' else self.ext.lam
+            before=b.detach().clone();previous=self.ext.caches[self.client][i]
+            d,diagnostic,g,hh=propose(self.ext.method,m,b,core,eta,lam,previous,self.ext.solver,self.ext.rho_factor)
+            if self.ext.audit_enabled and self.client==0 and self.ext.task not in self.ext.audited_tasks and self.steps==0 and i==0:
+                a=list(self.ext.model.adapters.values())[0].A
+                self.audits.append(paired_update_audit(m,b,core,eta,lam,a,self.ext.solver))
+                self.ext.audited_tasks.add(self.ext.task)
+            b.add_(d);actual=b-before
+            if self.ext.method=='history_spectral':
+                proposal_diag=diagnostic['proposed_certificate'].copy()
+                actual_diag=actual_update_certificate(g,hh,before,b,eta,self.ext.solver)
+                diagnostic.update(actual_diag)
+                diagnostic['proposed_certificate']=proposal_diag
+                diagnostic['actual_certificate']=actual_diag.copy()
+                diagnostic['application_roundoff_fro']=float((b.double()-before.double()-d.double()).norm())
+                diagnostic['failure_stage']=('none' if actual_diag['converged'] else
+                                             'parameter_addition' if proposal_diag['converged'] else 'proposal')
+                diagnostic['failure_reason']=[f'{stage}_{check}' for stage,info in
+                    [('proposed',proposal_diag),('actual',actual_diag)] for check in
+                    ['gap_satisfied','feasible_within_tolerance'] if not info[check]]
+                diagnostic['certificate_for']='actual_B_after_minus_before'
+            self.ext.caches[self.client][i]=actual.clone()
+            mu=-eta*compact_polar(m)[0];gradient=core['F']+before@core['H']
+            gain=-float((m*mu).sum());curve=.5*float(((mu@core['H'])*mu).sum())
+            q0=float(core['q0']+(core['F']*before).sum()+.5*((before@core['H'])*before).sum())
+            change=float((gradient*actual).sum()+.5*((actual@core['H'])*actual).sum())
+            self.diag.append({'layer':i,'step':self.steps,'eta':eta,'lambda':lam,**diagnostic,
+                              'r_grad':lam*float(gradient.norm())/max(float(m.norm()),1e-30),
+                              'r_curv':lam*curve/max(gain,1e-30),'history_linear_term':lam*float((gradient*mu).sum()),
+                              'q_before':q0,'q_change':change,'actual_update':update_geometry(actual)})
+            updates.append(actual)
+        self.steps+=1
+        return updates
+    def flush(self,task,round_idx):
+        ds=self.diag;n=len(ds)
+        self.ext.event('history_solver_client',task=task,round=round_idx,client=self.client,updates=n,
+            lambda_history=self.ext.lam,qp_certificate_applicable=self.ext.method=='history_spectral',mean_iterations=sum(d.get('iterations',0) for d in ds)/max(n,1),
+            nonconverged=sum(not d.get('converged',True) for d in ds),zero_steps=sum(d.get('zero_step',d['actual_update']['fro']==0) for d in ds),
+            max_relative_gap=max((d.get('relative_gap',0) for d in ds),default=0),
+            max_feasibility_residual=max((d.get('feasibility_residual',0) for d in ds),default=0),
+            max_objective=max((d.get('objective',0) for d in ds),default=0),
+            solver_seconds=sum(d.get('elapsed_seconds',0) for d in ds),
+            mean_r_grad=sum(d['r_grad'] for d in ds)/max(n,1),mean_r_curv=sum(d['r_curv'] for d in ds)/max(n,1),
+            mean_history_q=sum(d['q_before'] for d in ds)/max(n,1),history_q_change_sum=sum(d['q_change'] for d in ds),
+            first_step_per_layer=ds[:len(self.parameters)],paired_first_layer_audit=self.audits,
+            # Preserve every failed step, not just the first update of each round.
+            failed_updates=[d for d in ds if not d.get('converged',True)],
+            failure_counts={key:sum(d.get('failure_stage')==key for d in ds) for key in ['proposal','parameter_addition']})
+
+
+================ fcl/math.py ================
+
+"""Shared explicit operators. No automatic parameter dispatch by shape."""
+import math
+import torch
+
+
+def mulora_ssb(g, steps=5):
+    assert g.ndim == 2
+    x = g.float()
+    transpose = x.shape[0] > x.shape[1]
+    if transpose:
+        x = x.T
+    x = x / (x.norm() + 1e-7)
+    for _ in range(steps):
+        gram = x @ x.T
+        x = 3.4445*x + (-4.7750*gram + 2.0315*(gram@gram))@x
+    return x.T if transpose else x
+
+
+def muon_operator(g, steps=5):
+    """Takezawa operator: includes dimension scaling, unlike MuLoRA Eq.3."""
+    return mulora_ssb(g, steps) * math.sqrt(max(g.shape))
+
+
+def compact_polar(g):
+    u, s, vh = torch.linalg.svd(g, full_matrices=False)
+    tol = max(g.shape)*torch.finfo(g.dtype).eps*s.max()
+    keep = s > tol
+    return u[:, keep] @ vh[keep]
+
+
+def rrs(s, history, rank, epsilon_relative=1e-6):
+    s, history = s.double(), history.double()
+    # Training-only scale; explicit, deterministic first-task regularization.
+    scale = max(float(history.diag().mean()), float(s.diag().mean()), 1e-12)
+    epsilon = epsilon_relative * scale
+    eye = torch.eye(s.shape[0], dtype=s.dtype, device=s.device)
+    for attempt in range(8):
+        jitter = epsilon * 10**attempt
+        l, info = torch.linalg.cholesky_ex((history+history.T)/2 + jitter*eye)
+        if int(info) == 0:
+            break
+    else:
+        raise RuntimeError('Historical metric failed Cholesky')
+    tmp = torch.linalg.solve_triangular(l, s, upper=False)
+    white = torch.linalg.solve_triangular(l, tmp.T, upper=False).T
+    values, vectors = torch.linalg.eigh((white+white.T)/2)
+    z = torch.linalg.solve_triangular(l.T, vectors[:, -rank:], upper=True)
+    q, _ = torch.linalg.qr(z, mode='reduced')
+    return q.T.float(), {'epsilon': epsilon, 'jitter': jitter, 'eigenvalues': values[-rank:].tolist()}
+
+
+def aggregate(bs, bases, weights):
+    if not all(torch.equal(bases[0], a) for a in bases[1:]):
+        raise ValueError('Client A mismatch')
+    if abs(sum(weights)-1) > 1e-6:
+        raise ValueError('Weights must sum to one')
+    return sum(p*b for p,b in zip(weights,bs))
+
+
+class History:
+    def __init__(self):
+        self.raw = {}
+        self.committed = set()
+    def commit(self, task, stats):
+        if task in self.committed:
+            raise ValueError('Historical statistics already committed')
+        for name, s in stats.items():
+            self.raw[name] = self.raw.get(name, torch.zeros_like(s)) + s
+        self.committed.add(task)
+
+
+class ClientMuon:
+    def __init__(self, parameters, state, local_c, global_c, corrected):
+        self.parameters = list(parameters)
+        self.state = state
+        self.local_c = local_c
+        self.global_c = global_c
+        self.corrected = corrected
+    @torch.no_grad()
+    def step(self, lr):
+        updates = []
+        for i,p in enumerate(self.parameters):
+            if p.grad is None:
+                raise RuntimeError('Missing B gradient')
+            self.state[i].mul_(0.9).add_(p.grad.float(), alpha=0.1)
+            h = self.state[i]
+            if self.corrected:
+                h = h - self.local_c[i] + self.global_c[i]
+            operator = muon_operator if self.corrected else mulora_ssb
+            update = -lr*operator(h)
+            p.add_(update)
+            updates.append(update)
+        return updates
+
+
+def spectrum(x):
+    s = torch.linalg.svdvals(x.float())
+    energy = s.square()
+    p = s / s.sum().clamp_min(1e-30)
+    legacy = energy / energy.sum().clamp_min(1e-30)
+    return {'fro': float(x.norm()), 'stable_rank': float(energy.sum()/energy.max().clamp_min(1e-30)),
+            'effective_rank': float(torch.exp(-(p*p.clamp_min(1e-30).log()).sum())) if float(energy.sum()) else 0.0,
+            'effective_rank_definition':'singular_value_amplitude_entropy',
+            'legacy_energy_entropy_rank':float(torch.exp(-(legacy*legacy.clamp_min(1e-30).log()).sum())) if float(energy.sum()) else 0.0}
+
+
+================ tests/test_spectral_precision.py ================
+
+"""Independent analytic/FP64 checks for FP32 proposals and applied increments."""
+from types import SimpleNamespace
+import pytest
+import torch
+from fcl.spectral_qp import (SolverConfig, certificate, actual_update_certificate,
+                             solve_spectral_qp, spectral_project)
+from fcl.history_optimizer import HistoryOptimizer
+
+
+def test_effective_rank_uses_amplitudes_and_labels_legacy_energy():
+    from fcl.math import spectrum
+    info=spectrum(torch.diag(torch.tensor([9.,1.])))
+    assert abs(info['effective_rank']-1.3841454885)<2e-7
+    assert abs(info['legacy_energy_entropy_rank']-1.0680781756)<2e-7
+    assert info['effective_rank_definition']=='singular_value_amplitude_entropy'
+
+
+def test_certificate_matches_analytic_diagonal_problem():
+    g=torch.diag(torch.tensor([2.,1.]));h=torch.diag(torch.tensor([100.,1.]))
+    d=torch.diag(torch.tensor([-.02,-1.]));cfg=SolverConfig()
+    info=certificate(g,h,d,1.,cfg)
+    # Independent scalar arithmetic on exactly the FP32 values being audited.
+    a,b=map(float,d.diag());k1,k2=2+100*a,1+b
+    expected=k1*a+k2*b+abs(k1)+abs(k2)
+    assert abs(info['gap']-expected)<1e-15
+    assert abs(info['objective']-(2*a+b+50*a*a+.5*b*b))<1e-15
+    assert info['certificate_precision']=='torch.float64' and info['converged']
+
+
+@pytest.mark.parametrize('eta,failed_check',[(1e-7,'feasible_within_tolerance'),(2e-7,'gap_satisfied')])
+def test_exact_proposal_can_fail_after_fp32_parameter_addition(eta,failed_check):
+    g=torch.ones(1,1);h=torch.zeros(1,1);cfg=SolverConfig()
+    d,proposal=solve_spectral_qp(g,h,eta,config=cfg)
+    before=torch.ones_like(g);after=before+d
+    actual=actual_update_certificate(g,h,before,after,eta,cfg)
+    assert proposal['converged'] and not actual['converged']
+    assert not actual[failed_check]
+    assert float(after-before)!=float(d)
+
+
+def test_endpoint_subtraction_is_done_after_promotion():
+    g=torch.ones(1,1);h=torch.zeros(1,1)
+    before=torch.ones(1,1);after=torch.full((1,1),-1e-8)
+    info=actual_update_certificate(g,h,before,after,1.,SolverConfig())
+    exact_difference=float(before)-float(after)
+    assert info['operator_norm']==exact_difference
+    assert info['operator_norm']!=float((after-before).abs())
+
+
+def test_applied_certificate_uses_same_psd_repair_as_solver():
+    g=torch.eye(2);h=torch.diag(torch.tensor([-1e-8,1.]));cfg=SolverConfig()
+    d,proposal=solve_spectral_qp(g,h,.2,config=cfg)
+    actual=actual_update_certificate(g,h,torch.zeros_like(d),d,.2,cfg)
+    assert actual['certificate_psd_correction']==proposal['psd_correction']>0
+    assert actual['objective']==proposal['objective'] and actual['gap']==proposal['gap']
+
+
+def test_relative_gap_above_rtol_is_not_by_itself_failure():
+    # Absolute tolerance matters when eta*||G||_* is small.
+    g=torch.tensor([[1e-3]],dtype=torch.float64);h=g*0
+    info=certificate(g,h,torch.tensor([[-0.99985e-5]],dtype=torch.float64),1e-5,SolverConfig())
+    assert info['relative_gap']>1e-4
+    assert info['gap']<info['gap_limit'] and info['converged']
+
+
+@pytest.mark.parametrize('zero_mode',[False,True])
+def test_small_nonzero_modes_are_retained_without_filling_nullspace(zero_mode):
+    values=[1.]+[9e-5]*31
+    if zero_mode:values[-1]=0.
+    width=31 if zero_mode else 32
+    g=torch.zeros(768,32);g[:32]=torch.diag(torch.tensor(values))
+    d,info=solve_spectral_qp(g,torch.zeros(32,32),1.,config=SolverConfig())
+    assert info['rank_tolerance']<9e-5 and info['converged']
+    torch.testing.assert_close(d[:width,:width],-torch.eye(width))
+    assert not torch.count_nonzero(d[width:]) and not torch.count_nonzero(d[:,width:])
+
+
+def test_iteration_budget_does_not_claim_success():
+    torch.manual_seed(21);g=torch.randn(9,3,dtype=torch.float64)
+    h=torch.diag(torch.tensor([.1,10.,100.],dtype=torch.float64))
+    cfg=SolverConfig(max_iter=0,gap_rtol=1e-12,gap_atol=1e-14)
+    _,info=solve_spectral_qp(g,h,.2,config=cfg)
+    assert not info['converged'] and info['iteration_limit_reached']
+
+
+def test_optimizer_keeps_proposal_and_every_failed_update():
+    b=torch.nn.Parameter(torch.ones(1,1));events=[]
+    ext=SimpleNamespace(provider='mulora',method='history_spectral',lam=0.,
+        cores=[{'H':torch.zeros(1,1),'F':torch.zeros(1,1),'q0':0.}],
+        caches={0:[None]},solver=SolverConfig(),rho_factor=1.,audit_enabled=False,
+        event=lambda kind,**kw:events.append(kw))
+    opt=HistoryOptimizer([b],[torch.zeros_like(b)],[torch.zeros_like(b)],[torch.zeros_like(b)],ext,0)
+    for _ in range(2):b.grad=torch.ones_like(b);opt.step(1e-7)
+    opt.flush(1,0);record=events[0]
+    assert record['nonconverged']==2 and len(record['first_step_per_layer'])==1
+    assert [d['step'] for d in record['failed_updates']]==[0,1]
+    assert record['failure_counts']['parameter_addition']==2
+    assert all(d['proposed_certificate']['converged'] for d in record['failed_updates'])
+    assert all(not d['actual_certificate']['converged'] for d in record['failed_updates'])
+
+
+@pytest.mark.parametrize('precision',['input','float64'])
+def test_pro_candidate_counterexample_in_actual_torch(precision):
+    import json
+    from pathlib import Path
+    case=json.loads((Path(__file__).parent/'fixtures/pro_spectral_counterexample.json').read_text())
+    g=torch.tensor(case['g']);h=torch.tensor(case['h'])
+    cfg=SolverConfig(reduced_dtype=precision)
+    d,info=solve_spectral_qp(g,h,case['eta'],config=cfg)
+    # A budget-exhausted reference must not be waved through by this regression.
+    assert info['converged'] and info['proposed_certificate']['converged']
+    assert info['reduced_certificate'] is not None
+    torch.testing.assert_close(torch.tensor(info['objective']),
+        (g.double()*d.double()).sum()+.5*((d.double()@h.double())*d.double()).sum(),check_dtype=False)
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(),reason='CUDA driver regression')
+def test_cuda_projection_and_restored_proposal_against_fp64():
+    torch.manual_seed(30);g=torch.randn(768,32,device='cuda')*1e-5
+    eta=2e-4;h=torch.diag(torch.logspace(-3,0,32,device='cuda'))
+    projected=g
+    for _ in range(20):projected=spectral_project(projected,eta)
+    norm=float(torch.linalg.svdvals(projected.double(),driver='gesvd').max())
+    assert norm<=eta*(1+64*torch.finfo(g.dtype).eps)
+    d,info=solve_spectral_qp(g,h,eta)
+    independent=certificate(g,h,d,eta,SolverConfig())
+    assert info['svd_driver']=='gesvd' and independent['converged']
+    assert independent['feasible_within_tolerance']
+
+
+================ tests/fixtures/pro_spectral_counterexample.json ================
+
+{
+  "description": "Independent NumPy/SciPy FP32 reimplementation of the source solver loop; not a replay of PyTorch/CUDA smoke or stored training matrices.",
+  "g": [
+    [
+      0.4549819529056549,
+      0.8956324458122253,
+      0.33657994866371155
+    ],
+    [
+      -0.010232842527329922,
+      -0.06533773988485336,
+      -0.7090234160423279
+    ],
+    [
+      1.3335124254226685,
+      -1.5206944942474365,
+      0.3880902826786041
+    ],
+    [
+      -0.22366486489772797,
+      -2.186892032623291,
+      -1.094338059425354
+    ],
+    [
+      0.48447248339653015,
+      1.2706626653671265,
+      -0.963169515132904
+    ]
+  ],
+  "h": [
+    [
+      62.9135856628418,
+      -49.993202209472656,
+      194.49624633789062
+    ],
+    [
+      -49.993202209472656,
+      41.34017562866211,
+      -155.31362915039062
+    ],
+    [
+      194.49624633789062,
+      -155.31362915039062,
+      636.0396728515625
+    ]
+  ],
+  "eta": 1,
+  "max_iter": 200,
+  "gap_rtol": 0.0001
+}
+
+
+================ scripts/diagnose_spectral_numerics.py ================
+
+"""Seeded synthetic arithmetic audit only; never loads data or model checkpoints."""
+import json
+import os
+from pathlib import Path
+import torch
+from fcl.spectral_qp import SolverConfig, certificate, solve_spectral_qp, spectral_project
+
+torch.set_num_threads(4)
+device = os.environ.get('MATH_DEVICE', 'cpu')
+cfg = SolverConfig()
+rows = []
+
+def reference(g, h, d, eta):
+    g, h, d = g.double(), h.double(), d.double()
+    k = g + d @ h
+    scale = max(float(eta * torch.linalg.svdvals(g).sum()), 1e-30)
+    gap = float((k * d).sum() + eta * torch.linalg.svdvals(k).sum())
+    norm = float(torch.linalg.matrix_norm(d, ord=2))
+    return {'gap': gap, 'relative_gap': gap / scale, 'norm': norm,
+            'relative_radius_excess': (norm - eta) / eta,
+            'gap_pass': gap <= cfg.gap_atol + cfg.gap_rtol * scale,
+            'feasible_pass': norm <= eta * (1 + 64 * torch.finfo(torch.float32).eps)}
+
+for seed in range(3):
+    torch.manual_seed(seed)
+    g = torch.randn(768, 32, device=device) * 1e-5
+    h = torch.diag(torch.logspace(-3, 0, 32, device=device))
+    for eta in [2e-4, 5e-5, 1e-8]:
+        d, info = solve_spectral_qp(g, h, eta, config=cfg)
+        for bscale in [0., 1e-3, 1.]:
+            b = torch.randn_like(g) * bscale
+            after = b + d
+            actual32 = after - b
+            actual64 = after.double() - b.double()
+            old = certificate(g, h, actual32, eta, cfg)
+            rows.append({'seed': seed, 'eta': eta, 'B_scale': bscale,
+                         'solver_converged': info['converged'], 'iterations': info['iterations'],
+                         'actual_certificate_converged': old['converged'],
+                         'proposal_reference': reference(g, h, d, eta),
+                         'actual_reference': reference(g, h, actual64, eta),
+                         'proposal_to_actual_fro': float((actual64 - d.double()).norm()),
+                         'subtraction_fp32_fro_error': float((actual32.double() - actual64).norm())})
+    # Projection must be checked independently of the same FP32 SVD that produced it.
+    projected = spectral_project(g, 5e-5)
+    rows.append({'seed': seed, 'projection_reference': reference(g, torch.zeros_like(h), projected, 5e-5)})
+result = {'device': device, 'torch': torch.__version__, 'data': 'synthetic seeded matrices only', 'rows': rows}
+out = Path(os.environ['MATH_REPORT'])
+out.parent.mkdir(parents=True, exist_ok=True)
+out.write_text(json.dumps(result, indent=2) + '\n')
+print(json.dumps({'report': str(out), 'cases': len(rows),
+                  'proposal_feasibility_failures': sum(not r['proposal_reference']['feasible_pass'] for r in rows if 'proposal_reference' in r),
+                  'projection_feasibility_failures': sum(not r['projection_reference']['feasible_pass'] for r in rows if 'projection_reference' in r),
+                  'actual_feasibility_failures': sum(not r['actual_reference']['feasible_pass'] for r in rows if 'actual_reference' in r)}))
