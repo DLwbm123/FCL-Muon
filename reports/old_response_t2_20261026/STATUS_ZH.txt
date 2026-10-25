@@ -1,0 +1,8 @@
+三个种子的旧响应约束T2实验已实际进入训练，尚无性能结果。
+源码c02b119e40c75258f9d49976f803dcc92c74d4ef；监督1800197，子1808978/1808979/1808980，GPU1/5/7。
+28项唯一CPU测试通过；一个新增测试首次未清理toy T1残留梯度，27项通过/1项失败，记录保留；修正测试准备后3项新增测试全通过，没有真实训练重跑。
+真实零起点输入/标签/B梯度/head梯度一致、penalty零；固定Bv探针后penalty正且只改变B梯度、教师无梯度。三seed实际训练首批全部匹配，STARTUP_CHECK1792968213。
+初始保存checkpoint均T2R1 phaseclients/next0，尚无完整新client记录，因此保存的preservation_training尚为空；实际首批事件已确认，不将初始空统计当作失败或完整训练成本。
+存储启动基线1298432/lineage32252563456bytes，初始检查新增目录2623205376bytes（含当时临时写入）。root6GB/lineage45GB硬守护、原started/deadline保持。GPU实测各约2.9GB，中性argv已核。
+每seed125000新增训练访问和同数额外teacherforward，三seed合计375000+375000；75000统计、192首批backward/96额外teacherforward、12000终点评估重载，不重训对照、不用旧数据训练。
+仅T2主线机制检验，原BOTH三任务门槛仍失败；全部结果齐备后按OLD_RESPONSE_PROTOCOL冻结T2门槛决定后续，不据部分seed调系数或扩full10。

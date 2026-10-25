@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checks": {
+    "initial_preservation_loss_zero": true,
+    "input_exact": true,
+    "labels_exact": true,
+    "direct_B_gradients_exact": true,
+    "head_gradient_exact": true,
+    "perturbed_preservation_mse_positive": true,
+    "perturbed_B_gradient_changed": true,
+    "perturbed_head_gradient_exact": true,
+    "teacher_has_no_gradients": true
+  },
+  "optimizer_steps": 0,
+  "backward_images": 64,
+  "extra_teacher_forward_images": 32,
+  "reused_control_qualified": true,
+  "original_failure_retained": true
+}

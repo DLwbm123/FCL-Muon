@@ -1,0 +1,87 @@
+{
+  "checked": 1792968213.598254,
+  "job_status": "running",
+  "all_actual_first_batches_ready": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "pid": 1808978,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_client_records": 0,
+      "new_train_visits": 0,
+      "old_response_coefficient": 1.0,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "first_batch_event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792968177.7541285,
+        "task": 1,
+        "round": 0,
+        "teacher_fixed": true,
+        "initial_preservation_loss_zero": true
+      },
+      "preservation_training_saved": null,
+      "certificates_passed": true
+    },
+    {
+      "seed": 1,
+      "pid": 1808979,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_client_records": 0,
+      "new_train_visits": 0,
+      "old_response_coefficient": 1.0,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "first_batch_event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792968180.0572126,
+        "task": 1,
+        "round": 0,
+        "teacher_fixed": true,
+        "initial_preservation_loss_zero": true
+      },
+      "preservation_training_saved": null,
+      "certificates_passed": true
+    },
+    {
+      "seed": 2,
+      "pid": 1808980,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_client_records": 0,
+      "new_train_visits": 0,
+      "old_response_coefficient": 1.0,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "first_batch_event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792968180.1702695,
+        "task": 1,
+        "round": 0,
+        "teacher_fixed": true,
+        "initial_preservation_loss_zero": true
+      },
+      "preservation_training_saved": null,
+      "certificates_passed": true
+    }
+  ],
+  "clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  },
+  "process_commands": "1800197       1 Ssl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1808978 1800197 Dsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1808979 1800197 Dsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1808980 1800197 Rsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n",
+  "gpu_processes": [
+    "1808978, /data/bmw/envs/n3/bin/python, 2910 MiB",
+    "1808979, /data/bmw/envs/n3/bin/python, 2900 MiB",
+    "1808980, /data/bmw/envs/n3/bin/python, 2910 MiB"
+  ],
+  "new_allocated_bytes": 2623205376
+}
