@@ -1,0 +1,48 @@
+MuLoRA-FL（Head-RegMean）前三任务验证，2026-10-25
+
+本次用户在阅读Pro最新分析、选定余弦Head-RegMean后明确询问进行三任务验证，
+按行动请求执行该限定pilot。此前“先停止”仅对本次Head-RegMean实施/运行解除；
+ridge/v1和history_spectral仍暂停，未改原忠实基线、LoRM或它们的运行源码。
+
+方法：完整保留共享RRS、历史原始矩求和/QR、任务内固定A、原Muon/SSB更新B、
+样本数加权B-FedAvg、任务结束单次BA合并。保留余弦头scale16，旧头冻结，
+每客户端/每轮当前类CE与AdamW lr.001/wd0/reset。每轮收集各本地端点编码器
+在当前训练数据上的归一化CLS原始Gram；无标签进入求解。统计沿用确定性变换，
+额外Gram前向恢复Python/NumPy/Torch CPU/CUDA RNG和module模式。RRS沿用原
+前向流程，不冒充全局共同编码器Gram；每轮按alpha=.5缩减非对角项，再调用
+原已验收的单位行约束求解器。部署方向使用原始FedAvg各行范数，不引入原型、
+ridge或新校准。代理目标最优不等于全局编码器分类风险最优。
+
+从既有head_regmean_round_20261025/runs/cosine/round1.pt导入。该checkpoint
+保留原basic repair第一轮的A/B、10客户端动量、RNG、调度round=1、pending矩，
+仅当前头由约束RegMean替换。先核源协议、manifest/weight身份和证书，逐元素
+核导入模型/RNG；不再运行R1训练。接续T1剩余4轮，然后T2/T3各5轮。固定
+CIFAR100/n10/alpha.05/seed0/IN21K/QV-r32/5epoch/batch16和原五轮cosine调度。
+新增140客户端轮、350000图像训练访问。旧FedAvg R2+端点不可复用。
+
+每客户端完成后恢复全局B/head并保存动量、部分聚合量、原始头/Gram和next_client，
+避免恢复时重放已保存客户端。每轮聚合生效后保存紧凑B/head/证书；任务评估、
+merge、history commit、next-task各有原子checkpoint阶段。历史提交一次，RRS只在
+新任务开始时统计。头Gram不进入RRS历史。完整任务checkpoint按hardlink保留。
+不自动重试；中途未完成的客户端若失败会保留之前边界，任何恢复都保持原时钟。
+
+评估：所有已见类共同argmax，逐任务矩阵、平均阶段准确率可从矩阵计算；旧类/
+新类准确率和最佳历史减最终的平均遗忘。任务标签仅用于离线restricted诊断，
+不用于正式预测。保留完整混淆和旧到新/新到旧错误率。最终重载已merge checkpoint
+再次核完整混淆；不按测试选择头、学习率或checkpoint。原三方pilot结果只作
+既有参照，不重跑，不把不同标准配置比较当单机制消融。
+
+时钟：新的限定接续授权不重置来源时钟。总deadline使用basic repair监督器、
+原T1训练边界和Head-RegMean R1原始起点中的最早时间+85500秒，仍少于24小时。
+已完成单轮诊断的原7200秒phase receipt保持不变；本次新授权扩大的是后续工作
+范围，不把已用时间清零。新目录12GB guard，预计3GB；来源basic repair、单轮
+head诊断及接续目录合计45GB guard，不删除历史。GPU3启动前核显存，中性e17入口，
+所有路径/配置走环境。原GPU6作业保持。唯一fcl heartbeat更新跟进，T3后不自动扩展。
+
+逻辑通信记录：RRS原始矩、A广播、B上传/下载、当前头上传/下载、每客户端每轮
+FP64 Gram、任务末全局B/head同步。续跑账本与复用R1开销分别报告，最终汇总须
+加回R1（包括当时RRS），不得把续跑数字冒充完整三任务成本。不测真实网络延迟。
+
+代码：research/head_regmean/pilot.py、原solver.py；scripts/head_regmean_pilot.py
+和head_regmean_pilot_job.py；测试tests/test_head_regmean_pilot.py。
+不发布checkpoint、原始Gram、特征、数据或附件原文。
