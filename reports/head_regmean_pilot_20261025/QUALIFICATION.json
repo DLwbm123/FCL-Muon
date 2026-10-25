@@ -1,0 +1,38 @@
+{
+  "qualified": true,
+  "new_training_clients": 140,
+  "new_image_visits": 350000,
+  "new_optimizer_steps": 22210,
+  "imported_R1_training_clients": 10,
+  "tasks_completed": 3,
+  "merge_counts": [
+    0,
+    1,
+    2
+  ],
+  "history_commits": [
+    0,
+    1,
+    2
+  ],
+  "checkpoint_reload_confusion_equal": true,
+  "source_checkpoint_unchanged": true,
+  "numerical_certificates_passed": 14,
+  "communication_continuation_bytes": {
+    "B_download": 330301440,
+    "current_head_download": 4300800,
+    "head_Gram_upload": 660602880,
+    "B_upload": 330301440,
+    "current_head_upload": 4300800,
+    "task_end_B_download": 70778880,
+    "task_end_head_download": 921600,
+    "RRS_raw_upload": 1132462080,
+    "A_broadcast": 23592960
+  },
+  "statistics_samples": 80000,
+  "clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  },
+  "completed": 1792937625.1162095
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "source": "head_regmean_round_20261025/runs/cosine/round1.pt",
+  "model_exact": true,
+  "RNG_exact": true,
+  "round": 1,
+  "task": 0,
+  "history_commits": 0,
+  "original_clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  }
+}

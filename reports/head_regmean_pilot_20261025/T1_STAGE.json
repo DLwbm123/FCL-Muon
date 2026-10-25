@@ -1,0 +1,31 @@
+{
+  "task1_boundary": {
+    "task": 1,
+    "round": 0,
+    "phase": "task_start",
+    "merges": [
+      0
+    ],
+    "history": [
+      0
+    ],
+    "pending_count": 0,
+    "head_count": 1,
+    "B_all_zero": true,
+    "merged_flags": [
+      true
+    ],
+    "matrix": [
+      [
+        0.99
+      ]
+    ],
+    "new_training_clients": 40,
+    "new_image_visits": 100000,
+    "all_certificates_passed": true
+  },
+  "observed_at": "2026-10-25T13:44Z",
+  "pilot_complete": false,
+  "ongoing_stage": "T2R2",
+  "task1_accuracy": 0.99
+}

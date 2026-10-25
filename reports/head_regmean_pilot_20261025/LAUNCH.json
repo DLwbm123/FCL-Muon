@@ -1,0 +1,13 @@
+{
+  "started": 1792926949.7496953,
+  "deadline": 1793012449.7496953,
+  "continuation_launched": 1792934842.5312057,
+  "status": "running",
+  "gpu": "3",
+  "gpu_free_mib": 72830,
+  "new_storage_limit": 12000000000,
+  "lineage_storage_limit": 45000000000,
+  "lineage_before_bytes": 5107359744,
+  "previous_head_phase_deadline": 1792937939.5144522,
+  "pid": 75621
+}

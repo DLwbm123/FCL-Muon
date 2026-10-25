@@ -16,8 +16,8 @@
   "cuda_rng_resume": "passed on actual CUDA device",
   "public_delivery": {
     "repository": "https://github.com/DLwbm123/FCL-Muon",
-    "branch": "codex/head-regmean-one-round",
-    "scope": "Original results, original-head diagnosis, and authorized one-round head RegMean comparison; no private weights/Gram/features"
+    "branch": "codex/head-regmean-pilot-release",
+    "scope": "Completed cosine Head-RegMean three-task continuation, source, protocol, audit, and results; excludes paused v1 and private tensors"
   },
   "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
   "last_health_check": "2026-10-25T11:38:49Z",
@@ -147,5 +147,25 @@
     "task_complete": false,
     "round_complete": true,
     "additional_training_started": false
+  },
+  "head_regmean_pilot": {
+    "status": "completed_exit0_qualified",
+    "branch": "codex/head-regmean-pilot-release",
+    "source_implementation_commit": "99e5b5c",
+    "protocol": "research/head_regmean/PILOT_PROTOCOL.json",
+    "report": "head_regmean_pilot_20261025/RESULTS_ZH.txt",
+    "comparison": "head_regmean_pilot_20261025/COMPARISON.json",
+    "tests_passed": 16,
+    "source_R1_import_verified": true,
+    "scope": "T1 remaining4 rounds then T2/T3 x5 rounds; no tuning",
+    "new_training_image_visits": 350000,
+    "final_accuracy": 0.9113333333333333,
+    "old_accuracy": 0.9415,
+    "new_accuracy": 0.851,
+    "average_forgetting": 0.0135,
+    "history_spectral_resumed": false,
+    "ridge_v1_resumed": false,
+    "checkpoint_reload_confusion_equal": true,
+    "auto_continue_after_task3": false
   }
 }

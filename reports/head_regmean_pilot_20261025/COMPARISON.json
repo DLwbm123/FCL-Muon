@@ -1,0 +1,128 @@
+{
+  "scope": "completed CIFAR100 first3 tasks, n10 alpha.05 seed0, all-seen classification; no test tuning",
+  "head_regmean": {
+    "matrix": [
+      [
+        0.99
+      ],
+      [
+        0.979,
+        0.92
+      ],
+      [
+        0.977,
+        0.906,
+        0.851
+      ]
+    ],
+    "stage_accuracy": [
+      0.99,
+      0.9495,
+      0.9113333333333333
+    ],
+    "final_all_seen": 0.9113333333333333,
+    "final_old": 0.9415,
+    "final_new": 0.851,
+    "forgetting": 0.013500000000000012,
+    "mean_stage_accuracy": 0.9502777777777777,
+    "final_restricted": [
+      0.989,
+      0.982,
+      0.971
+    ],
+    "new_to_old_rate": 0.145,
+    "old_to_new_rate": 0.013
+  },
+  "lorm_official_reused": {
+    "matrix": [
+      [
+        0.977
+      ],
+      [
+        0.875,
+        0.948
+      ],
+      [
+        0.82,
+        0.902,
+        0.94
+      ]
+    ],
+    "final_all_seen": 0.8873333333333333,
+    "final_old": 0.861,
+    "final_new": 0.94,
+    "forgetting": 0.10149999999999998,
+    "final_restricted": [
+      0.966,
+      0.975,
+      0.974
+    ]
+  },
+  "original_mulora_reused": {
+    "final_micro": 0.6716666666666666,
+    "new_accuracy": 0.557,
+    "old_micro": 0.729,
+    "average_forgetting": 0.023999999999999966
+  },
+  "differences_vs_lorm_pp": {
+    "overall": 2.400000000000002,
+    "old": 8.05,
+    "new": -8.899999999999997,
+    "forgetting": -8.799999999999997
+  },
+  "new_class_arithmetic_error_decomposition": {
+    "head_regmean_within_task_error": 0.029000000000000026,
+    "head_regmean_extra_competition_error": 0.12,
+    "lorm_within_task_error": 0.026000000000000023,
+    "lorm_extra_competition_error": 0.034,
+    "extra_competition_gap_pp": 8.6,
+    "warning": "Arithmetic decomposition, not a mechanism causal attribution; restricted uses task labels and is not deployable FCIL accuracy."
+  },
+  "communication": {
+    "continuation_logical_payload_bytes": {
+      "B_download": 330301440,
+      "current_head_download": 4300800,
+      "head_Gram_upload": 660602880,
+      "B_upload": 330301440,
+      "current_head_upload": 4300800,
+      "task_end_B_download": 70778880,
+      "task_end_head_download": 921600,
+      "RRS_raw_upload": 1132462080,
+      "A_broadcast": 23592960
+    },
+    "reused_R1_logical_payload_bytes": {
+      "RRS_raw_upload": 566231040,
+      "A_broadcast": 11796480,
+      "B_download": 23592960,
+      "B_upload": 23592960,
+      "current_head_download": 307200,
+      "current_head_upload": 307200,
+      "head_Gram_upload": 47185920
+    },
+    "continuation_total_bytes": 2557562880,
+    "reused_R1_total_bytes": 673013760,
+    "full_three_task_total_bytes": 3230576640,
+    "includes": "raw RRS, A broadcast, B both directions, current head both directions, endpoint Gram, task-end sync",
+    "excludes": "protocol metadata and physical network overhead; actual serial simulation"
+  },
+  "budget": {
+    "new_training_image_visits": 350000,
+    "reused_training_image_visits": 25000,
+    "full_training_image_visits": 375000,
+    "new_optimizer_steps": 22210,
+    "full_optimizer_steps": 23800,
+    "new_statistics_image_visits": 80000,
+    "full_statistics_image_visits": 90000,
+    "continuation_wall_seconds": 2793.0654406547546,
+    "original_lineage_elapsed_seconds": 10685.846951007843,
+    "new_allocated_bytes": 1648603136,
+    "lineage_allocated_bytes": 6755692544
+  },
+  "limitations": [
+    "single seed, three tasks only",
+    "LoRM standard rank/modules/head/optimizer/precision and statistics costs differ",
+    "source R1 reused; old baseline later-round endpoints not reused",
+    "no per-round T1 diagnostic evaluation (user deferred it)",
+    "no automatic further experiment; v1/history_spectral paused"
+  ]
+}

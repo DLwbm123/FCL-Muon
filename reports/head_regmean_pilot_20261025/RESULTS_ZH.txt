@@ -1,0 +1,80 @@
+MuLoRA-FL（Head-RegMean）前三任务结果 — 2026-10-25
+
+结论
+限定三任务pilot完成exit0，未调参、未自动追加训练。保留MuLoRA原核心、余弦头
+与B-FedAvg，仅将每轮当前头聚合改为约束RegMean。该seed最终总体91.13%，
+比既有官方LoRM的88.73%高2.40个百分点；优势来自旧类保留，T3新类仍低8.90点。
+这不是“所有指标都超过LoRM”，也不是完整十任务/多seed结论。
+
+固定数据与预算
+CIFAR100，原n10/Dirichlet alpha=.05/seed0 manifest，前三任务每任务10类。
+相同IN21K权重，QV-r32，5通信轮×每客户端5epoch，batch16，FP32。
+保留共享RRS、原历史矩求和/QR、任务内固定A、原SSB、任务末单次BA merge。
+头scale16、当前类CE、旧头冻结、AdamW .001/wd0、每客户端每轮reset。
+本地终点归一化CLS Gram、alpha=.5、单位行约束求解；部署保留原始FedAvg行范数。
+统计不用测试集、不用标签拟合头，额外统计前向隔离RNG。
+原LoRM为官方rank16、A/B交替、线性头、RegMean与16-mixed配置；结构/优化器/
+精度/额外统计成本不同，是固定标准方法比较，不是单机制消融。
+
+所有以下正式准确率均在当时全部已见类中判断（百分比）
+                         T1完成     T2完成(T1,T2)     T3完成(T1,T2,T3)
+Head-RegMean             99.0       97.9,92.0          97.7,90.6,85.1
+原MuLoRA-FL（已存结果） 83.3       79.3,67.3          79.5,66.3,55.7
+官方LoRM（已存结果）    97.7       87.5,94.8          82.0,90.2,94.0
+
+T3指标                  Head-RegMean   原MuLoRA-FL    官方LoRM
+总体准确率               91.13          67.17         88.73
+旧类准确率(T1+T2)        94.15          72.90         86.10
+新类准确率(T3)           85.10          55.70         94.00
+平均遗忘(百分点)          1.35           2.40         10.15
+Head-RegMean的T1最终下降1.3点，T2最终下降1.4点；二者平均1.35点。
+原MuLoRA的低遗忘不能脱离其较低学习起点来解释。平均阶段总体准确率：
+Head-RegMean95.03%，LoRM92.53%。
+
+剩余问题：T3新旧类竞争
+最终各任务限定十类的诊断准确率（使用任务标签掩码，仅诊断，不是FCIL成绩）：
+Head-RegMean T1/T2/T3=98.9/98.2/97.1%；LoRM=96.6/97.5/97.4%。
+T3从限定十类到全三十类：Head-RegMean97.1→85.1%，下降12.0点；
+LoRM97.4→94.0%，下降3.4点。两方法新类任务内差0.3点，额外竞争损失差8.6点，
+算术相加为8.9点的新类差距。这个分解不是机制因果证明，也不授权按测试调校。
+Head-RegMean的1000个新类样本中145被判为旧类、4被判为错误的新类；旧类2000
+样本中26被判为新类。现有证据指向新类受旧类竞争较强，但不能仅凭此认定唯一
+原因是bias、norm或温度。T1/T2任务内判别仍高，不能说编码器已严重遗忘。
+用户已取消额外T2逐轮T1评估；本报告只使用训练预定阶段评估及已完成LoRM诊断，
+没有启动该逐轮评估。
+
+验收与实际预算
+16项数学/生产生命周期测试通过，涵盖完整客户端/任务边界恢复、R1导入一致性、
+旧头冻结、范数保留、RNG隔离、时钟检查和all-seen/restricted指标区分。
+复用已验收余弦R1，不重跑R1，不复用旧FedAvg R2+端点；新增140客户端轮、
+350000训练图像访问、22210更新步，完整预算加回R1后为150客户端轮、375000
+图像访问、23800更新步。新增统计前向80000图像，完整计入R1后90000。
+14个新增FP32证书均通过：最大单位平方范数误差2.402e-7、stationarity相对残差
+3.198e-8、绝对dual gap1.453e-9；R1原证书也通过。证书针对收缩Gram代理目标。
+最终checkpoint为task3/round0/complete、3个头、3次merge/3次历史提交、B全零，
+矩阵与日志一致；独立重载已merge checkpoint再评估的完整混淆完全一致。
+监督器真实exit0，监督/训练进程均已退出。续跑2793.07秒（46分33秒），保留
+最早来源时钟总历时10685.85秒（2小时58分6秒），未重置时间。新增实际占用
+1,648,603,136字节，来源+接续合计6,755,692,544字节，均在既定guard内。
+通信：续跑逻辑payload2,557,562,880字节，加回R1的673,013,760字节后完整
+三任务3,230,576,640字节，含RRS/A/B/head/Gram/任务末同步；不含协议元数据
+及真实网络开销，不将串行模拟耗时当真实联邦通信延迟。
+
+运行与可恢复产物
+来源：head_regmean_round_20261025/runs/cosine/round1.pt（只读未改）。
+独立运行根：pro5000:/data/bmw/FCL-Muon/head_regmean_pilot_20261025。
+源实现提交99e5b5c；公开发布用独立干净分支，从已公开e286234取该实现，避免
+混入暂停中的v1源码/结果。后续公开提交号以GitHub链接为准。
+入口（这是已执行命令的复现说明，不能直接在现有有job.json的目录重复执行）：
+PROJECT_ROOT=<isolated_run_root> EXPERIMENT_ROOT=<existing_FCL_root>
+ENTRY_FILE=scripts/head_regmean_pilot_job.py CUDA_VISIBLE_DEVICES=3
+PYTHONPATH=<existing_FCL_root>/deps /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py
+参数只走环境；实际主/子进程argv已核中性。PILOT_PROTOCOL.json固定了完整设置。
+私有checkpoint位于runs/pilot/latest.pt、task1.pt/task2.pt/task3.pt及逐轮B/head。
+公开metrics/QUALIFICATION/COMPLETE/FINAL_AUDIT/COMPARISON和源码；不公开权重、
+Gram、数据、逐样本特征或第三方附件。
+
+未完成/暂停范围
+没有多seed、十任务、参数搜索或新的校准/训练；T3后按协议结束。ridge/v1和
+history_spectral仍暂停；旧GPU6队列保持，不因本结果改协议。新增机制如要归因，
+应在相同Head-RegMean基础上比较，而不能把这次头聚合收益算给新Muon机制。
