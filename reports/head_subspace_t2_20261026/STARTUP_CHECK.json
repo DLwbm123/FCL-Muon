@@ -1,0 +1,120 @@
+{
+  "checked": 1792972072.6745498,
+  "job_status": "running",
+  "all_actual_first_batches_ready": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "pid": 2024001,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 1,
+      "new_client_records": 1,
+      "new_train_visits": 1985,
+      "head_constraint": "old_head_orthogonal_complement",
+      "old_response_coefficient": 1.0,
+      "old_span_rank": 10,
+      "complement_dimension": 758,
+      "saved_head_cosine_leak": 4.9960772223132e-09,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "first_batch_event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792972033.20239,
+        "task": 1,
+        "round": 0,
+        "head_complement_projected": true,
+        "initial_preservation_loss_zero": true
+      },
+      "preservation_training_saved": {
+        "visits": 1985,
+        "batches": 125,
+        "ce_sum": 387.1496167257428,
+        "mse_sum": 0.8788845794981626,
+        "positive_mse_batches": 124,
+        "max_mse": 0.0010699343401938677
+      },
+      "certificates_passed": true
+    },
+    {
+      "seed": 1,
+      "pid": 2024002,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 1,
+      "new_client_records": 1,
+      "new_train_visits": 2250,
+      "head_constraint": "old_head_orthogonal_complement",
+      "old_response_coefficient": 1.0,
+      "old_span_rank": 10,
+      "complement_dimension": 758,
+      "saved_head_cosine_leak": 5.500361069591716e-09,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "first_batch_event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792972032.5791838,
+        "task": 1,
+        "round": 0,
+        "head_complement_projected": true,
+        "initial_preservation_loss_zero": true
+      },
+      "preservation_training_saved": {
+        "visits": 2250,
+        "batches": 145,
+        "ce_sum": 464.0256212139502,
+        "mse_sum": 0.9452235721191755,
+        "positive_mse_batches": 144,
+        "max_mse": 0.0022093995939940214
+      },
+      "certificates_passed": true
+    },
+    {
+      "seed": 2,
+      "pid": 2024003,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 1,
+      "new_client_records": 1,
+      "new_train_visits": 2515,
+      "head_constraint": "old_head_orthogonal_complement",
+      "old_response_coefficient": 1.0,
+      "old_span_rank": 10,
+      "complement_dimension": 758,
+      "saved_head_cosine_leak": 5.77869619024841e-09,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "first_batch_event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792972033.4204226,
+        "task": 1,
+        "round": 0,
+        "head_complement_projected": true,
+        "initial_preservation_loss_zero": true
+      },
+      "preservation_training_saved": {
+        "visits": 2515,
+        "batches": 160,
+        "ce_sum": 579.5971319884993,
+        "mse_sum": 1.6852476733324693,
+        "positive_mse_batches": 159,
+        "max_mse": 0.0017279634485021234
+      },
+      "certificates_passed": true
+    }
+  ],
+  "clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  },
+  "process_commands": "2018657       1 Ssl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2024001 2018657 Rsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2024002 2018657 Rsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2024003 2018657 Rsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n",
+  "gpu_processes": [
+    "2024001, /data/bmw/envs/n3/bin/python, 2912 MiB",
+    "2024002, /data/bmw/envs/n3/bin/python, 2902 MiB",
+    "2024003, /data/bmw/envs/n3/bin/python, 3102 MiB"
+  ],
+  "new_allocated_bytes": 1488400384
+}

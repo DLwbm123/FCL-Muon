@@ -1,0 +1,6 @@
+正交补新头T2实验三种子已实际开始，且各完成首个客户端训练；尚无性能结论。
+源码cbf8682ead8ef5c544cc86d96136aae04987cb73；监督2018657，子2024001/2024002/2024003，GPU1/5/7。31项CPU数学、梯度、受限实际FP32部署和生命周期检查通过。
+真实预检旧头rank10/正交补758维，初始新头投影同时保持原raw行范数；相同已投影新头参考下B梯度exact、头梯度等于手工投影且确实改变，teacher penalty0。实际训练首批全匹配。初始化旧span投影范数约5e-9，阈值2e-6。
+STARTUP_CHECK1792972072：三seed均T2R1/next1，各1条完成client记录，新增训练访问1985/2250/2515，步数125/145/160；旧响应MSE已非零。保存的server新头此时是首轮global起点，不能把其极小leak当作训练后的最终证书；完整本地及部署可行性按协议验收。
+GPU约2.9至3.1GB，ps和GPU命令行中性。初始root1445888/lineage34712948736bytes；检查时newroot1488400384bytes，原clock/root6GB/lineage45GB硬守护不改。
+每seed只T2，三seed新增375000train+375000teacherforward/75000stats/15新受限证书，首批96backward+96teacher，终点重载12000图。原响应约束及更早科学门槛失败仍保留，不扫rank或系数，不重跑对照、不扩full10。

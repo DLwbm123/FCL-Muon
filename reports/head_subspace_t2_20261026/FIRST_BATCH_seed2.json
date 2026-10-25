@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "checks": {
+    "input_exact": true,
+    "labels_exact": true,
+    "B_gradient_matches_same_projected_head_reference": true,
+    "head_gradient_equals_projected_reference": true,
+    "head_gradient_changed": true,
+    "initial_new_head_changed": true,
+    "initial_raw_norm_preserved": true,
+    "initial_old_head_exact": true,
+    "initial_head_feasible": true,
+    "initial_preservation_loss_zero": true
+  },
+  "initial_projection": {
+    "old_span_rank": 10,
+    "complement_dimension": 758,
+    "initial_new_head_changed": true,
+    "initial_raw_norm_preserved": true,
+    "initial_old_head_exact": true,
+    "old_span_cosine_leak": 5.778696173967344e-09,
+    "initial_preservation_loss_zero": true
+  },
+  "optimizer_steps": 0,
+  "backward_images": 32,
+  "extra_teacher_forward_images": 32,
+  "reference_scope": "Preflight reference has the same intentionally projected new head; it is not a retrained unconstrained control."
+}
