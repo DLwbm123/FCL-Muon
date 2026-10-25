@@ -16,8 +16,8 @@
   "cuda_rng_resume": "passed on actual CUDA device",
   "public_delivery": {
     "repository": "https://github.com/DLwbm123/FCL-Muon",
-    "branch": "codex/basic-t1-repair",
-    "scope": "Completed pilots, audits, verified T1 prototype-head repair, and first original formal run"
+    "branch": "codex/original-head-diagnosis",
+    "scope": "Original results and read-only original-head aggregation diagnosis; prototype-head results retained only as rejected method-changing diagnostic variant"
   },
   "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
   "last_health_check": "2026-10-25T11:38:49Z",
@@ -101,6 +101,21 @@
     "test_selected": false,
     "repair_verified_correct": 991,
     "repair_verified_n": 1000,
-    "full_fcl_repair": "not_run"
+    "full_fcl_repair": "not_run",
+    "mainline_adoption": false,
+    "user_correction": "Prototype head is a method-changing diagnostic variant, explicitly rejected for the original-method mainline. Prior repair wording must not imply a faithful-method fix."
+  },
+  "original_head_diagnosis": {
+    "status": "completed_exit0",
+    "branch": "codex/original-head-diagnosis",
+    "scope": "6 global boundaries and50 local endpoints; original heads only; deterministic matched-data CE/accuracy and aggregation accounting",
+    "training": false,
+    "replacement_heads": false,
+    "regmean_implementation_authorized": false,
+    "report": "original_head_diagnosis_20261025/CONCLUSIONS_ZH.txt",
+    "aggregation_reconstruction_max_abs": 0,
+    "final_test_accuracy": 0.832,
+    "elapsed_seconds": 412.87927985191345,
+    "conclusion": "Head aggregation dominates endpoint loss increase; weighted FedAvg implementation matches checkpoints exactly; no new aggregation implemented."
   }
 }

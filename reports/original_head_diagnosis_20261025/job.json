@@ -1,0 +1,12 @@
+{
+  "status": "completed",
+  "started": 1792929120.16289,
+  "deadline": 1792931820.16289,
+  "gpu": "3",
+  "gpu_free_mib": 72830,
+  "storage_limit": 1000000000,
+  "pid": 4024069,
+  "exit_code": 0,
+  "ended": 1792929550.1951098,
+  "allocated_bytes": 111996928
+}

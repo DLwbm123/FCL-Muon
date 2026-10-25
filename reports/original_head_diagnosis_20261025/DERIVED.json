@@ -1,0 +1,55 @@
+{
+  "symmetric_decomposition": [
+    {
+      "round": 1,
+      "symmetric_head_ce_contribution": 0.7781417666425919,
+      "symmetric_encoder_ce_contribution": 0.16139695368897167,
+      "head_share": 0.8282168151281571,
+      "interpretation": "Symmetric average of two exact endpoint accounting paths; not a claim about all causal factors during optimization"
+    },
+    {
+      "round": 2,
+      "symmetric_head_ce_contribution": 0.618948932489921,
+      "symmetric_encoder_ce_contribution": 0.09473483157647634,
+      "head_share": 0.8672593712421028,
+      "interpretation": "Symmetric average of two exact endpoint accounting paths; not a claim about all causal factors during optimization"
+    },
+    {
+      "round": 3,
+      "symmetric_head_ce_contribution": 0.5730948092544987,
+      "symmetric_encoder_ce_contribution": 0.05373719202789183,
+      "head_share": 0.9142717794912276,
+      "interpretation": "Symmetric average of two exact endpoint accounting paths; not a claim about all causal factors during optimization"
+    },
+    {
+      "round": 4,
+      "symmetric_head_ce_contribution": 0.5545110453512048,
+      "symmetric_encoder_ce_contribution": 0.023721040100779228,
+      "head_share": 0.9589766104344809,
+      "interpretation": "Symmetric average of two exact endpoint accounting paths; not a claim about all causal factors during optimization"
+    },
+    {
+      "round": 5,
+      "symmetric_head_ce_contribution": 0.5899639604568069,
+      "symmetric_encoder_ce_contribution": 0.005314949319903706,
+      "head_share": 0.9910714973559245,
+      "interpretation": "Symmetric average of two exact endpoint accounting paths; not a claim about all causal factors during optimization"
+    }
+  ],
+  "final_class6_margin": -2.594279711575628,
+  "client8_contribution": 1.3257431791312746,
+  "other_clients_contribution": -3.9200228907069024,
+  "errors_by_class": [
+    2,
+    0,
+    59,
+    2,
+    5,
+    0,
+    100,
+    0,
+    0,
+    0
+  ],
+  "class2_plus_class6_error_share": 0.9464285714285714
+}
