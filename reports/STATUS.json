@@ -10,13 +10,16 @@
   "weights": "exact IN21K identity pinned and downloaded",
   "cifar100": "official archive downloaded and torchvision built-in check passed",
   "real_smoke": "both methods completed; final task-boundary checkpoint audit passed",
-  "pilot": "mulora_fl running; combination queued",
-  "formal": "36 runs queued, not_started",
-  "results": "smoke_summary.json contains tiny real-data engineering smoke scores only",
+  "pilot": "mulora_fl completed (exit0 and qualification receipt); mulora_fl_fedmuon running, task1 round2 snapshot",
+  "formal": "36 runs queued; not started at latest check",
+  "results": "one completed three-task pilot, paired comparison pending; see pilot_mulora_fl_summary.json",
   "cuda_rng_resume": "passed on actual CUDA device",
   "public_delivery": {
     "repository": "https://github.com/DLwbm123/FCL-Muon",
     "branch": "codex/fcl-baselines",
     "scope": "implementation, fixed configs, partition manifests, audit, 2 smoke summaries; formal results pending"
-  }
+  },
+  "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
+  "last_health_check": "2026-10-25T08:07:27Z",
+  "resource_snapshot": "6.2 GiB project disk use; original clock and guards active"
 }

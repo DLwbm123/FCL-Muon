@@ -1,0 +1,13 @@
+{
+  "train": {
+    "samples": 24000,
+    "classes": 200,
+    "all_yaml_paths_available": true
+  },
+  "test": {
+    "samples": 6000,
+    "classes": 200,
+    "all_yaml_paths_available": true
+  },
+  "checked_at": 1792915686.841338
+}

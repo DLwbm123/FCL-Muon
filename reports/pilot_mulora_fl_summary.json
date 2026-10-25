@@ -1,0 +1,191 @@
+{
+  "method": "mulora_fl",
+  "stage": "pilot",
+  "configuration": {
+    "dataset": "seq-cifar100",
+    "clients": 10,
+    "alpha": 0.05,
+    "seed": 0,
+    "tasks": 3,
+    "rounds": 5,
+    "epochs": 5,
+    "batch": 16,
+    "rank": 32,
+    "lr": 0.0002,
+    "method": "mulora_fl",
+    "output": "runs/pilot_mulora_fl",
+    "cosine_scale": 16
+  },
+  "metrics": {
+    "matrix": [
+      [
+        0.833
+      ],
+      [
+        0.793,
+        0.673
+      ],
+      [
+        0.795,
+        0.663,
+        0.557
+      ]
+    ],
+    "stage_micro": [
+      0.833,
+      0.733,
+      0.6716666666666666
+    ],
+    "final_micro": 0.6716666666666666,
+    "final_task_macro": 0.6716666666666667,
+    "mean_stage_micro": 0.7458888888888889,
+    "average_forgetting": 0.023999999999999966,
+    "old_micro": 0.729,
+    "new_accuracy": 0.557
+  },
+  "qualification": {
+    "qualified": true,
+    "purpose": "numerical/completion qualification, no test-score ranking",
+    "client_records": 150,
+    "final_micro": 0.6716666666666666,
+    "old_micro": 0.729,
+    "new_accuracy": 0.557,
+    "average_forgetting": 0.023999999999999966
+  },
+  "elapsed_seconds": 2311.7527475357056,
+  "peak_torch_allocated_gpu_bytes": 1648389120,
+  "rounds": [
+    {
+      "task": 0,
+      "round": 0,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1590,
+      "sample_weighted_local_train_CE": 0.13777034222089451
+    },
+    {
+      "task": 0,
+      "round": 1,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1590,
+      "sample_weighted_local_train_CE": 0.07102490268617519
+    },
+    {
+      "task": 0,
+      "round": 2,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1590,
+      "sample_weighted_local_train_CE": 0.06048140699164542
+    },
+    {
+      "task": 0,
+      "round": 3,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1590,
+      "sample_weighted_local_train_CE": 0.05731130216649006
+    },
+    {
+      "task": 0,
+      "round": 4,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1590,
+      "sample_weighted_local_train_CE": 0.053005206078655755
+    },
+    {
+      "task": 1,
+      "round": 0,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.1386184604562819
+    },
+    {
+      "task": 1,
+      "round": 1,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.06428050646278861
+    },
+    {
+      "task": 1,
+      "round": 2,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.05885344711629208
+    },
+    {
+      "task": 1,
+      "round": 3,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.05958375030012045
+    },
+    {
+      "task": 1,
+      "round": 4,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.05615007555883465
+    },
+    {
+      "task": 2,
+      "round": 0,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.12755983063260326
+    },
+    {
+      "task": 2,
+      "round": 1,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.06316325153957965
+    },
+    {
+      "task": 2,
+      "round": 2,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.05174474053257145
+    },
+    {
+      "task": 2,
+      "round": 3,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.052241952659104716
+    },
+    {
+      "task": 2,
+      "round": 4,
+      "clients": 10,
+      "visited": 25000,
+      "steps": 1585,
+      "sample_weighted_local_train_CE": 0.049446874313142763
+    }
+  ],
+  "forgetting_per_old_task": [
+    0.03799999999999992,
+    0.010000000000000009
+  ],
+  "analysis": [
+    "First complete three-task pilot; alpha=.05 seed0, not a ten-task final result.",
+    "Final all-seen accuracy 67.17%; old classes 72.9%, current new classes 55.7%.",
+    "Old-task forgetting is 3.8 and 1.0 percentage points; mean 2.4 points.",
+    "Local current-class training CE falls in all three tasks. Low local CE does not establish global all-seen new-class generalization under Non-IID partitions.",
+    "Later-task new-class accuracy is lower; task difficulty, competition among heads and adaptation limits are possible explanations, not identified causes.",
+    "FedMuon paired pilot remains incomplete: no paired performance conclusion."
+  ]
+}
