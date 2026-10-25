@@ -1,0 +1,83 @@
+MuLoRA核心保持：第一任务、单通信轮的分类头RegMean比较
+2026-10-25；协议预注册提交71c5bce
+
+主要结果
+相同CIFAR100 n10/alpha.05/seed0，第一任务10类，测试1000张。
+各客户端5epoch，原5round学习率调度的第一段。所有结果固定且完整报告。
+
+头类型 / 聚合             训练准确率  测试准确率  测试CE
+原余弦头 / FedAvg           73.66%      73.4%       0.950982
+原余弦头 / 约束RegMean      98.08%      98.5%       0.090762
+线性无bias / FedAvg         69.74%      69.2%       1.111832
+线性无bias / RegMean        98.38%      98.6%       0.062251
+
+在同一种头内部，两种聚合共享完全相同的客户端模型和B聚合结果。
+余弦：RegMean比原FedAvg提高25.1个百分点；线性：提高29.4个百分点。
+仅更换线性头、仍用FedAvg，下降4.2个百分点，不能解释为换线性头即可解决。
+两种RegMean相差0.1个百分点，即1张测试图；单seed/单轮不足以认定线性更好。
+当前证据支持优先保留余弦头并适配聚合，不支持为了性能必须更换线性头。
+
+逐类定位
+原余弦FedAvg的class2为2/100、class6为0/100；约束RegMean后分别97/100、
+94/100。两组使用相同编码器和相同原客户端训练产物，改善直接来自本次
+固定聚合干预，而不是新增原型、重训编码器或额外监督拟合。
+线性FedAvg的class2为5/100、class6为3/100；RegMean后分别97/100、95/100。
+完整10类准确率与混淆矩阵均保存在results.json，不只汇报改善类别。
+
+到底改了什么
+MuLoRA共享RRS、历史原始统计、QR、固定A、B-only SSB与B的样本数FedAvg
+保持不变。复用原初始化边界；本次只结束第1轮而非整个任务，因此BA合并
+与历史提交次数均为0，pending统计保留，未提前标记任务结束。
+余弦仍为16*normalize(CLS)*normalize(W)^T；聚合变为单位行约束二次问题。
+线性组改为raw CLS*W^T，无bias，无归一化，无scale，头AdamW lr.001/wd0
+不变，B仍原MuLoRA Eq3。它不是LoRM官方完整模型或官方线性头配置。
+这些均是明确命名的MuLoRA-FL聚合变体，不替换原忠实基线的历史成绩。
+
+训练与计算预算
+余弦组直接复用原T1R1的10个客户端checkpoint，没有重复训练。
+线性组新增且仅新增一次10客户端、各5epoch训练，共25000图像访问；实际
+step数及每客户端完整预算见QUALIFICATION.json和results.json。
+两种头内部再计算FedAvg不需额外训练。没有prototype/ridge/global-head拟合。
+每组RegMean额外完整前向5000当前训练样本收集Gram；测试不参与求解。
+每组额外原始统计上行47,185,920 bytes，头下发307,200 bytes；原B/RRS/A
+通信仍按既定协议计算。复用历史产物只节省本次实际计算，不意味着算法
+免去原训练或RRS成本。全流程含监督器约250.1秒，新增实际1,025,019,904
+bytes；在7200秒/6GB硬限制内，exit0，COMPLETE与GPU进程退出均核实。
+
+数学与数值验收
+10项合成数学测试在本机与服务器CPU均通过：直接最小二乘对照、单客户端
+余弦等价、正行缩放不变性、圆周穷举对照、hard case/零Gram、正交变换、
+原始矩可加性（防止重复样本加权）、真实768维FP32部署。
+余弦使用alpha=.5（固定LoRM head默认）的收缩Gram、归一化特征和单位行
+约束，FP64谱分解+secular全局求解，FP32部署后再检查：
+  最大||u||²误差：1.9051e-7；最大相对stationarity残差：2.2659e-8；
+  最大绝对对偶gap：4.4626e-10；最小H+lambda I特征值：0.00206472。
+线性普通RegMean：FP32相对stationarity残差6.0125e-10，目标gap3.2244e-14。
+两组证书均通过；这些证书验证的是固定代理目标，不证明泛化或遗忘界限。
+alpha收缩改变了原始经验logit平方误差目标，文档未声称两者完全相同。
+
+生命周期与结果验收
+原余弦FedAvg的第一轮测试混淆与前次诊断完全一致。
+训练末Python/NumPy/CPU Torch/CUDA RNG状态与原余弦第一轮逐项完全相同，
+结合相同采样/增强调用流程，支持两组使用相同批次和增强随机流。
+所有源checkpoint size/mtime未改变；原基线、旧历史结果与history研究
+源文件不覆盖。共享A/冻结base逐元素不变，B只做原样本数FedAvg。
+两组round1 checkpoint分别独立重载，完整测试混淆与聚合评估一致。
+保留客户端端点、私有Gram、头、完整round1状态与原时钟；不自动续跑。
+权重/Gram/数据不发布，公开源码、协议、数学测试和指标汇总。
+
+实际命令（已完成，不重复执行）
+PROJECT_ROOT=/data/bmw/FCL-Muon/head_regmean_round_20261025 \
+EXPERIMENT_ROOT=/data/bmw/FCL-Muon ENTRY_FILE=scripts/head_regmean_job.py \
+PYTHONPATH=/data/bmw/FCL-Muon/deps CUDA_VISIBLE_DEVICES=3 \
+OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 \
+nohup /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py \
+  > /data/bmw/FCL-Muon/head_regmean_round_20261025/reports/supervisor.log 2>&1 < /dev/null &
+
+限制与未做事项
+只完成一个通信轮，不是完整T1，更不是完整FCL。没有旧类，不能讨论遗忘
+改善；没有追加轮次、后续任务、多seed、超参搜索或基于测试集选头。
+两种头训练产生不同B，头类型之间不是仅更换聚合的单因素对照。
+没有同轮、相同头配置的LoRM新实验；不能把此处98.5/98.6与其5轮T1结果
+直接当公平优劣结论。history_spectral仍暂停，未训练/校准/评估。
+结果支持聚合适配方向，但后续任务稳定性、全任务收益仍未验证。

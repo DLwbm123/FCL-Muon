@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "torch": "2.7.1+cu128",
+  "scope": "10 synthetic CPU solver tests; no training"
+}

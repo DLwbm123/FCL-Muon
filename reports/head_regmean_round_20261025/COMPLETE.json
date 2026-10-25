@@ -1,0 +1,9 @@
+{
+  "completed": 1792930979.0632546,
+  "elapsed_seconds": 236.96370935440063,
+  "new_training_clients": 10,
+  "new_optimizer_epochs_per_client": 5,
+  "cosine_clients_reused": 10,
+  "task_complete": false,
+  "round_complete": true
+}

@@ -16,8 +16,8 @@
   "cuda_rng_resume": "passed on actual CUDA device",
   "public_delivery": {
     "repository": "https://github.com/DLwbm123/FCL-Muon",
-    "branch": "codex/original-head-diagnosis",
-    "scope": "Original results and read-only original-head aggregation diagnosis; prototype-head results retained only as rejected method-changing diagnostic variant"
+    "branch": "codex/head-regmean-one-round",
+    "scope": "Original results, original-head diagnosis, and authorized one-round head RegMean comparison; no private weights/Gram/features"
   },
   "imagenetr": "official archive extracted; frozen YAML 24000/6000 paths and 200-label identity validated",
   "last_health_check": "2026-10-25T11:38:49Z",
@@ -119,13 +119,33 @@
     "conclusion": "Head aggregation dominates endpoint loss increase; weighted FedAvg implementation matches checkpoints exactly; no new aggregation implemented."
   },
   "head_regmean_one_round": {
-    "status": "preflight",
+    "status": "completed_exit0",
     "branch": "codex/head-regmean-one-round",
     "protocol": "research/head_regmean/PROTOCOL.json",
     "scope": "User authorized T1 one communication round, two head types; cosine endpoints reused, one new linear local training run",
     "training_budget": "10 clients x 5 epochs, original5-round schedule interval0",
     "B_aggregation": "unchanged sample weighted FedAvg",
     "history_spectral_resumed": false,
-    "further_rounds_authorized": false
+    "further_rounds_authorized": false,
+    "remote_directory": "pro5000:/data/bmw/FCL-Muon/head_regmean_round_20261025",
+    "gpu": 3,
+    "math_tests": "10 passed locally and on deployment CPU",
+    "job": "reports/job.json",
+    "original_started": 1792930739.5144522,
+    "deadline": 1792937939.5144522,
+    "training_pid": 4102662,
+    "storage_limit_bytes": 6000000000,
+    "report": "head_regmean_round_20261025/RESULTS_ZH.txt",
+    "results": "head_regmean_round_20261025/results.json",
+    "qualification": "head_regmean_round_20261025/QUALIFICATION.json",
+    "test_accuracy": {
+      "cosine_fedavg": 0.734,
+      "cosine_constrained_regmean": 0.985,
+      "linear_fedavg": 0.692,
+      "linear_regmean": 0.986
+    },
+    "task_complete": false,
+    "round_complete": true,
+    "additional_training_started": false
   }
 }

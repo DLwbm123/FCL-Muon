@@ -1,0 +1,23 @@
+{
+  "qualified": true,
+  "training_clients": 10,
+  "new_optimizer_steps": 1590,
+  "new_training_image_visits": 25000,
+  "cosine_fedavg_original_R1_full_confusion_exact_match": true,
+  "solver_certificates_passed": true,
+  "checkpoint_reload_full_confusions_verified": true,
+  "input_signatures_unchanged": true,
+  "model_BA_merge_count": 0,
+  "history_commits": 0,
+  "task_finished": false,
+  "process_exit_verified": true,
+  "supervisor_elapsed_seconds": 250.05253553390503,
+  "allocated_bytes": 1025019904,
+  "no_additional_round_authorized": true,
+  "original_cosine_vs_new_linear_end_of_training_rng_equal": {
+    "python": true,
+    "numpy": true,
+    "torch_cpu": true,
+    "torch_cuda": true
+  }
+}
