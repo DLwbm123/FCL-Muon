@@ -1,0 +1,134 @@
+{
+  "qualified": true,
+  "audit_time": 1792940511.5960555,
+  "scope": "Existing original formal MuLoRA+FedMuon queue item, read-only saved-state/budget audit; no inference/retraining/tuning",
+  "queue_state": {
+    "status": "completed",
+    "started": 1792926449.198246,
+    "gpu": "6",
+    "deadline": 1793012849.198246,
+    "pid": 3886449,
+    "exit_code": 0,
+    "ended": 1792934370.459653
+  },
+  "source_original_start": 1792926456.1664495,
+  "elapsed_seconds": 7921.2614068984985,
+  "client_records": 500,
+  "rounds": 50,
+  "training_visits": 1250000,
+  "optimizer_steps": 79350,
+  "checkpoint_boundary": {
+    "task": 10,
+    "round": 0,
+    "initialized": false,
+    "history_commits": 10,
+    "pending_empty": true,
+    "B_zero": true
+  },
+  "metrics": {
+    "matrix": [
+      [
+        0.686
+      ],
+      [
+        0.732,
+        0.483
+      ],
+      [
+        0.763,
+        0.44,
+        0.243
+      ],
+      [
+        0.763,
+        0.408,
+        0.267,
+        0.374
+      ],
+      [
+        0.747,
+        0.403,
+        0.253,
+        0.377,
+        0.366
+      ],
+      [
+        0.714,
+        0.362,
+        0.274,
+        0.372,
+        0.333,
+        0.48
+      ],
+      [
+        0.68,
+        0.342,
+        0.277,
+        0.37,
+        0.327,
+        0.49,
+        0.289
+      ],
+      [
+        0.646,
+        0.407,
+        0.275,
+        0.356,
+        0.346,
+        0.492,
+        0.255,
+        0.236
+      ],
+      [
+        0.593,
+        0.334,
+        0.308,
+        0.336,
+        0.351,
+        0.491,
+        0.347,
+        0.327,
+        0.282
+      ],
+      [
+        0.569,
+        0.293,
+        0.293,
+        0.303,
+        0.348,
+        0.439,
+        0.244,
+        0.233,
+        0.296,
+        0.543
+      ]
+    ],
+    "stage_micro": [
+      0.686,
+      0.6075,
+      0.482,
+      0.453,
+      0.4292,
+      0.4225,
+      0.3964285714285714,
+      0.376625,
+      0.37433333333333335,
+      0.3561
+    ],
+    "final_micro": 0.3561,
+    "final_task_macro": 0.35609999999999997,
+    "mean_stage_micro": 0.45836869047619044,
+    "average_forgetting": 0.08233333333333334,
+    "old_micro": 0.3353333333333333,
+    "new_accuracy": 0.543
+  },
+  "manifest_identity": "db56592c855bbc970a179d5860a377268ed49376d4dfcaabc1ef79740eda0762",
+  "weight_identity": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+  "allocated_run_bytes": 413544448,
+  "peak_gpu_bytes": 1648637440,
+  "limitations": [
+    "Original cosine FedAvg head; not Head-RegMean candidate",
+    "Run directory bytes are not total lifetime peak or shared-resource cost",
+    "No new checkpoint forward evaluation; verifies saved metrics and complete state only"
+  ]
+}
