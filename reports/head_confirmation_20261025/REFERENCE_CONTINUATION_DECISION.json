@@ -1,0 +1,8 @@
+{
+  "decision": "Run only original unstarted LoRM seed1/2 references; both head exact-pair gates remain failed",
+  "no_training_replay": true,
+  "no_configuration_change": true,
+  "original_clock_preserved": true,
+  "gate_failure": "heads and B differ already in first client; A/counts/end RNG match; cause not yet established",
+  "diagnostic": "Separate bounded synthetic CUDA repeatability probe, no real-data rerun"
+}

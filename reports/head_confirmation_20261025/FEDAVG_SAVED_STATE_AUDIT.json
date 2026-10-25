@@ -1,0 +1,32 @@
+{
+  "checked": 1792947488.8891602,
+  "scope": "Saved completed FedAvg state only, no inference or training",
+  "runs": {
+    "1": {
+      "phase_complete": true,
+      "task3": true,
+      "round0": true,
+      "three_heads": true,
+      "three_merges": true,
+      "history_three": true,
+      "matrix_matches": true,
+      "merged": true,
+      "B_zero": true,
+      "150_records": true,
+      "375000_visits": true
+    },
+    "2": {
+      "phase_complete": true,
+      "task3": true,
+      "round0": true,
+      "three_heads": true,
+      "three_merges": true,
+      "history_three": true,
+      "matrix_matches": true,
+      "merged": true,
+      "B_zero": true,
+      "150_records": true,
+      "375000_visits": true
+    }
+  }
+}

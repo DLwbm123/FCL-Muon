@@ -1,0 +1,202 @@
+{
+  "status": "FOUR_RUNS_COMPLETED_EXACT_PAIR_GATE_FAILED",
+  "rows": [
+    {
+      "method": "regmean",
+      "seed": 1,
+      "run_qualified": true,
+      "pair_qualified": false,
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.971,
+          0.94
+        ],
+        [
+          0.966,
+          0.925,
+          0.879
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.964,
+          0.952
+        ],
+        [
+          0.96,
+          0.942,
+          0.916
+        ]
+      ],
+      "raw_final": 0.9233333333333333,
+      "raw_old": 0.9455,
+      "raw_new": 0.879,
+      "raw_forgetting": 0.01749999999999996,
+      "restricted": [
+        0.986,
+        0.985,
+        0.972
+      ],
+      "centered_final": 0.9393333333333334,
+      "centered_old": 0.951,
+      "centered_new": 0.916,
+      "centered_forgetting": 0.018000000000000016
+    },
+    {
+      "method": "regmean",
+      "seed": 2,
+      "run_qualified": true,
+      "pair_qualified": false,
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.962,
+          0.934
+        ],
+        [
+          0.942,
+          0.886,
+          0.911
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.979,
+          0.948
+        ],
+        [
+          0.971,
+          0.924,
+          0.933
+        ]
+      ],
+      "raw_final": 0.913,
+      "raw_old": 0.914,
+      "raw_new": 0.911,
+      "raw_forgetting": 0.04800000000000004,
+      "restricted": [
+        0.99,
+        0.98,
+        0.978
+      ],
+      "centered_final": 0.9426666666666667,
+      "centered_old": 0.9475,
+      "centered_new": 0.933,
+      "centered_forgetting": 0.021499999999999964
+    },
+    {
+      "method": "fedavg",
+      "seed": 1,
+      "run_qualified": true,
+      "pair_qualified": false,
+      "raw_matrix": [
+        [
+          0.844
+        ],
+        [
+          0.752,
+          0.75
+        ],
+        [
+          0.753,
+          0.698,
+          0.605
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.844
+        ],
+        [
+          0.754,
+          0.801
+        ],
+        [
+          0.752,
+          0.741,
+          0.751
+        ]
+      ],
+      "raw_final": 0.6853333333333333,
+      "raw_old": 0.7255,
+      "raw_new": 0.605,
+      "raw_forgetting": 0.07150000000000001,
+      "restricted": [
+        0.853,
+        0.878,
+        0.898
+      ],
+      "centered_final": 0.748,
+      "centered_old": 0.7465,
+      "centered_new": 0.751,
+      "centered_forgetting": 0.07600000000000001
+    },
+    {
+      "method": "fedavg",
+      "seed": 2,
+      "run_qualified": true,
+      "pair_qualified": false,
+      "raw_matrix": [
+        [
+          0.777
+        ],
+        [
+          0.701,
+          0.491
+        ],
+        [
+          0.586,
+          0.461,
+          0.694
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.777
+        ],
+        [
+          0.699,
+          0.6
+        ],
+        [
+          0.617,
+          0.604,
+          0.73
+        ]
+      ],
+      "raw_final": 0.5803333333333334,
+      "raw_old": 0.5235,
+      "raw_new": 0.694,
+      "raw_forgetting": 0.11050000000000001,
+      "restricted": [
+        0.782,
+        0.775,
+        0.952
+      ],
+      "centered_final": 0.6503333333333333,
+      "centered_old": 0.6105,
+      "centered_new": 0.73,
+      "centered_forgetting": 0.08000000000000002
+    }
+  ],
+  "causal_ablation_claim_allowed": false,
+  "reason": "Saved first-round heads and B differ for both seeds; A, sample counts and all saved RNG states match. Difference already exists at first client. Unique cause unresolved.",
+  "centering_gate": {
+    "mean_new_gain_pp": 2.95,
+    "required_gain_pp": 5,
+    "passed": false
+  },
+  "standard_references": "Original never-started LoRM seed1/2 continued with unchanged configurations and original clock. Their results cannot repair failed pairing.",
+  "next": "Separate shared-state head-only all-seen CE versus matched current CE, 3 seeds, no rerun of failed FedAvg trajectories."
+}

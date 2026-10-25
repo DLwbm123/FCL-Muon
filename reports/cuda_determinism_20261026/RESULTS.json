@@ -1,0 +1,101 @@
+{
+  "scope": "Synthetic random-input/model actual ViT-B/QV-r32; no real-data training or test evaluation",
+  "torch": "2.7.1+cu128",
+  "fused_attention": true,
+  "workspace_config": ":4096:8",
+  "modes": {
+    "default_sdpa": {
+      "losses": [
+        2.216888427734375,
+        2.216888427734375,
+        2.216888427734375
+      ],
+      "gradient_repeats": [
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        },
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        }
+      ],
+      "SSB_repeats": [
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        },
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        }
+      ]
+    },
+    "deterministic_flag": {
+      "losses": [
+        2.216888427734375,
+        2.216888427734375,
+        2.216888427734375
+      ],
+      "gradient_repeats": [
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        },
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        }
+      ],
+      "SSB_repeats": [
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        },
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        }
+      ]
+    },
+    "math_deterministic": {
+      "losses": [
+        2.216888904571533,
+        2.216888904571533,
+        2.216888904571533
+      ],
+      "gradient_repeats": [
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        },
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        }
+      ],
+      "SSB_repeats": [
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        },
+        {
+          "exact": true,
+          "max_abs": 0.0,
+          "relative_norm_max": 0.0
+        }
+      ]
+    }
+  }
+}

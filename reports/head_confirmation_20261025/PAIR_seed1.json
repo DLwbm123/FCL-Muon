@@ -1,0 +1,13 @@
+{
+  "passed": false,
+  "checks": {
+    "heads": false,
+    "B": false,
+    "A": true,
+    "sizes": true,
+    "torch_rng": true,
+    "cuda_rng": true,
+    "python_rng": true,
+    "numpy_rng": true
+  }
+}

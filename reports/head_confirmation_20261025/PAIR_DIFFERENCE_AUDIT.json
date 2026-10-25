@@ -1,0 +1,876 @@
+{
+  "checked": 1792945957.8907685,
+  "scope": "Read-only saved first-round tensors; no new training or relaxation of exact-pair gate",
+  "seeds": {
+    "1": {
+      "heads": [
+        {
+          "equal": false,
+          "max_abs": 0.001122770830988884,
+          "relative_norm": 0.008415090849399245,
+          "reference_norm": 1.8845542936357278,
+          "difference_norm": 0.015858695591570073,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 1.16005539894104e-05,
+          "relative_norm": 5.592247573240781e-05,
+          "reference_norm": 1.9142828762980164,
+          "difference_norm": 0.00010705143769473964,
+          "nonzero_elements": 7673,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00031331926584243774,
+          "relative_norm": 0.002000949276540248,
+          "reference_norm": 1.9324510175802554,
+          "difference_norm": 0.003866736465576678,
+          "nonzero_elements": 7678,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 1.1175870895385742e-07,
+          "relative_norm": 4.3946025971114253e-07,
+          "reference_norm": 1.8699523298576395,
+          "difference_norm": 8.217697365266943e-07,
+          "nonzero_elements": 6402,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00042633339762687683,
+          "relative_norm": 0.0017978949780516542,
+          "reference_norm": 1.9560724268679668,
+          "difference_norm": 0.003516812792971229,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 5.250796675682068e-05,
+          "relative_norm": 0.0001694134473483366,
+          "reference_norm": 1.9514201965966795,
+          "difference_norm": 0.00033059682273061227,
+          "nonzero_elements": 7676,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0006263721734285355,
+          "relative_norm": 0.0037030874502401246,
+          "reference_norm": 1.9260842444233812,
+          "difference_norm": 0.007132458393629456,
+          "nonzero_elements": 7679,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00041672028601169586,
+          "relative_norm": 0.0022282288242689774,
+          "reference_norm": 1.9354653049804176,
+          "difference_norm": 0.0043126595809299135,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.003030061721801758,
+          "relative_norm": 0.022434664341877002,
+          "reference_norm": 1.96360942281014,
+          "difference_norm": 0.04405291829929233,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00233328714966774,
+          "relative_norm": 0.010643704267273206,
+          "reference_norm": 1.9557475756177547,
+          "difference_norm": 0.02081639881631192,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        }
+      ],
+      "B": [
+        {
+          "equal": false,
+          "max_abs": 0.000976976822130382,
+          "relative_norm": 0.5109911323169717,
+          "reference_norm": 0.03150929759032006,
+          "difference_norm": 0.016100971654190076,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0018529013905208558,
+          "relative_norm": 0.4134158623149668,
+          "reference_norm": 0.03788424716740186,
+          "difference_norm": 0.01566194871086478,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0006458028656197712,
+          "relative_norm": 0.449684416882306,
+          "reference_norm": 0.0322179015136147,
+          "difference_norm": 0.01448788825532139,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.001389083859976381,
+          "relative_norm": 0.37562762724814486,
+          "reference_norm": 0.03739835327878323,
+          "difference_norm": 0.014047854705097222,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0009414982559974305,
+          "relative_norm": 0.3886475041693462,
+          "reference_norm": 0.035757293569510774,
+          "difference_norm": 0.013896982901640974,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0008907266601454467,
+          "relative_norm": 0.28520479882951283,
+          "reference_norm": 0.04152431935654759,
+          "difference_norm": 0.0118429351486166,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.001312140047957655,
+          "relative_norm": 0.31571789720738186,
+          "reference_norm": 0.037911437522394675,
+          "difference_norm": 0.011969319334679481,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0004350066592451185,
+          "relative_norm": 0.16616476782483128,
+          "reference_norm": 0.04424087665584721,
+          "difference_norm": 0.007351274997885849,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.000573313456698088,
+          "relative_norm": 0.19441803857000445,
+          "reference_norm": 0.04233957849050963,
+          "difference_norm": 0.008231577804005632,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0007655347872059792,
+          "relative_norm": 0.1085441470192776,
+          "reference_norm": 0.049594863435728616,
+          "difference_norm": 0.005383232148168722,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0004276412073522806,
+          "relative_norm": 0.09308702906842804,
+          "reference_norm": 0.042120848232352265,
+          "difference_norm": 0.003920904623791821,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00023098395467968658,
+          "relative_norm": 0.05570158431042531,
+          "reference_norm": 0.050193141499359877,
+          "difference_norm": 0.0027958375030317016,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0006045883055776358,
+          "relative_norm": 0.10094439282359016,
+          "reference_norm": 0.04068182796787607,
+          "difference_norm": 0.004106602423170998,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0002543417795095593,
+          "relative_norm": 0.045863923398481235,
+          "reference_norm": 0.052615829121187584,
+          "difference_norm": 0.0024131683563617255,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00016144581604748964,
+          "relative_norm": 0.05531606504970453,
+          "reference_norm": 0.046669918740657054,
+          "difference_norm": 0.00258159626092261,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00012418944606906734,
+          "relative_norm": 0.03899856592351277,
+          "reference_norm": 0.056044340875726996,
+          "difference_norm": 0.002185648922281861,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00011655385605990887,
+          "relative_norm": 0.058995942738182934,
+          "reference_norm": 0.04475284775181334,
+          "difference_norm": 0.0026402364433365986,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 9.776811930350959e-05,
+          "relative_norm": 0.037048517396332546,
+          "reference_norm": 0.05669624880738192,
+          "difference_norm": 0.0021005119602470874,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00011578912381082773,
+          "relative_norm": 0.050520301051044034,
+          "reference_norm": 0.051144304517021344,
+          "difference_norm": 0.0025838256612461894,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 8.014100603759289e-05,
+          "relative_norm": 0.03352698544933269,
+          "reference_norm": 0.06282338928491124,
+          "difference_norm": 0.0021062788584329823,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0001906898687593639,
+          "relative_norm": 0.05099381676862824,
+          "reference_norm": 0.05773051902518027,
+          "difference_norm": 0.0029438995091278495,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 9.438302367925644e-05,
+          "relative_norm": 0.031113884164027404,
+          "reference_norm": 0.06620245972295563,
+          "difference_norm": 0.0020598156631937313,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00016885169316083193,
+          "relative_norm": 0.05265156439212729,
+          "reference_norm": 0.057863379794725694,
+          "difference_norm": 0.003046597467208117,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0001023218355840072,
+          "relative_norm": 0.03567770121113101,
+          "reference_norm": 0.07172257033017855,
+          "difference_norm": 0.00255889643433444,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        }
+      ],
+      "A": [
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.65685423299993,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854256198741,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.65685424247314,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.65685424073458,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854252554146,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854248296346,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854240515262,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.65685424675963,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854245189586,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854252249533,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854256733993,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854246599375,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        }
+      ],
+      "sizes": [
+        835,
+        190,
+        426,
+        43,
+        322,
+        267,
+        699,
+        538,
+        975,
+        705
+      ],
+      "first_client_head_equal": false
+    },
+    "2": {
+      "heads": [
+        {
+          "equal": false,
+          "max_abs": 0.0017355720920022577,
+          "relative_norm": 0.008914765097244341,
+          "reference_norm": 1.9059481791265245,
+          "difference_norm": 0.016991080304433546,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.001301004085689783,
+          "relative_norm": 0.007196168321520988,
+          "reference_norm": 1.9193013435151491,
+          "difference_norm": 0.013811615527656388,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.001027669757604599,
+          "relative_norm": 0.005690111883278139,
+          "reference_norm": 1.944712295030957,
+          "difference_norm": 0.01106563053951275,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 2.637505531311035e-06,
+          "relative_norm": 1.2292922356686634e-05,
+          "reference_norm": 1.9400801207451792,
+          "difference_norm": 2.3849254290071718e-05,
+          "nonzero_elements": 7624,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0037525519728660583,
+          "relative_norm": 0.018503593166809114,
+          "reference_norm": 1.934997054189813,
+          "difference_norm": 0.03580439826970239,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0005070772022008896,
+          "relative_norm": 0.0025768703849285957,
+          "reference_norm": 1.9044966958470313,
+          "difference_norm": 0.004907641133722578,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 1.3597309589385986e-07,
+          "relative_norm": 6.873197998861499e-07,
+          "reference_norm": 1.8773421744527363,
+          "difference_norm": 1.2903344476626841e-06,
+          "nonzero_elements": 7237,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 5.9330835938453674e-05,
+          "relative_norm": 0.00036330544854949986,
+          "reference_norm": 1.935229196002454,
+          "difference_norm": 0.0007030793110997595,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0005919437389820814,
+          "relative_norm": 0.0026211342425996676,
+          "reference_norm": 1.9024611794249413,
+          "difference_norm": 0.004986606142607264,
+          "nonzero_elements": 7680,
+          "elements": 7680
+        },
+        {
+          "equal": false,
+          "max_abs": 6.565824151039124e-08,
+          "relative_norm": 1.979890749756482e-07,
+          "reference_norm": 1.8223332971604593,
+          "difference_norm": 3.6080208380212235e-07,
+          "nonzero_elements": 5311,
+          "elements": 7680
+        }
+      ],
+      "B": [
+        {
+          "equal": false,
+          "max_abs": 0.0014036348438821733,
+          "relative_norm": 0.5462177365296413,
+          "reference_norm": 0.03244061948100277,
+          "difference_norm": 0.01771964174453272,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0010388795053586364,
+          "relative_norm": 0.4101574715933947,
+          "reference_norm": 0.03905809542256725,
+          "difference_norm": 0.01601996966377373,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0006719515367876738,
+          "relative_norm": 0.44136898026047094,
+          "reference_norm": 0.035412066183052274,
+          "difference_norm": 0.01562978754013009,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.001942987262737006,
+          "relative_norm": 0.36205656940573017,
+          "reference_norm": 0.04109964245186909,
+          "difference_norm": 0.014880395549925835,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.000963005717494525,
+          "relative_norm": 0.3590182704470269,
+          "reference_norm": 0.03796496470182344,
+          "difference_norm": 0.013630115964831078,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0007769174844725057,
+          "relative_norm": 0.2648077285664822,
+          "reference_norm": 0.04410290267895894,
+          "difference_norm": 0.01167878948160374,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0015076604759087786,
+          "relative_norm": 0.2925844169333176,
+          "reference_norm": 0.0407452207469001,
+          "difference_norm": 0.011921416655051082,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00041683108429424465,
+          "relative_norm": 0.15265646164580332,
+          "reference_norm": 0.04712205118009958,
+          "difference_norm": 0.007193485598646452,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00038680279976688325,
+          "relative_norm": 0.17335731342354774,
+          "reference_norm": 0.045146955303146524,
+          "difference_norm": 0.007826554880606473,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0006676812190562487,
+          "relative_norm": 0.09875699479105365,
+          "reference_norm": 0.05339821775462662,
+          "difference_norm": 0.00527344751264521,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0005068129394203424,
+          "relative_norm": 0.10539887983947913,
+          "reference_norm": 0.0451615172733807,
+          "difference_norm": 0.004759973332465613,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00018629802798386663,
+          "relative_norm": 0.05487518062089441,
+          "reference_norm": 0.055641313548321865,
+          "difference_norm": 0.0030533271309479814,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0006204317323863506,
+          "relative_norm": 0.0978696786865248,
+          "reference_norm": 0.04659672956264497,
+          "difference_norm": 0.004560406950138954,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00023546218289993703,
+          "relative_norm": 0.048398095862320356,
+          "reference_norm": 0.06047936508584398,
+          "difference_norm": 0.0029270861091169474,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00020733202109113336,
+          "relative_norm": 0.062048932421340484,
+          "reference_norm": 0.05419067051741017,
+          "difference_norm": 0.0033624732528019117,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00013820204185321927,
+          "relative_norm": 0.037499130001593946,
+          "reference_norm": 0.06658854447619843,
+          "difference_norm": 0.002497012485929885,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00022714759688824415,
+          "relative_norm": 0.06482413596685992,
+          "reference_norm": 0.052311342022360215,
+          "difference_norm": 0.003391037547866391,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00010317279520677403,
+          "relative_norm": 0.036329366636312775,
+          "reference_norm": 0.06847063746295083,
+          "difference_norm": 0.0024874948922135936,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.0001832887064665556,
+          "relative_norm": 0.055545425272404234,
+          "reference_norm": 0.05927615398933005,
+          "difference_norm": 0.0032925191818498584,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00010032858699560165,
+          "relative_norm": 0.03434510715675932,
+          "reference_norm": 0.07451009007114322,
+          "difference_norm": 0.0025590570277532025,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00026370235718786716,
+          "relative_norm": 0.056901570015317926,
+          "reference_norm": 0.06416884252222989,
+          "difference_norm": 0.003651307885580574,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00013561885862145573,
+          "relative_norm": 0.03484896611047753,
+          "reference_norm": 0.07805590556984676,
+          "difference_norm": 0.0027201676079262244,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00022381986491382122,
+          "relative_norm": 0.05640487589798572,
+          "reference_norm": 0.06958786148515866,
+          "difference_norm": 0.003925094691076595,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        },
+        {
+          "equal": false,
+          "max_abs": 0.00019079566118307412,
+          "relative_norm": 0.03814454233761721,
+          "reference_norm": 0.08521703764208322,
+          "difference_norm": 0.0032505649002247624,
+          "nonzero_elements": 24576,
+          "elements": 24576
+        }
+      ],
+      "A": [
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.65685423299993,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854256059575,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854241998994,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854240315121,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854245187001,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854249305905,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.6568542423147665,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854245669051,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854246478086,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854251430105,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854256387593,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        },
+        {
+          "equal": true,
+          "max_abs": 0.0,
+          "relative_norm": 0.0,
+          "reference_norm": 5.656854244565835,
+          "difference_norm": 0.0,
+          "nonzero_elements": 0,
+          "elements": 24576
+        }
+      ],
+      "sizes": [
+        673,
+        721,
+        569,
+        169,
+        1183,
+        722,
+        61,
+        389,
+        489,
+        24
+      ],
+      "first_client_head_equal": false
+    }
+  }
+}

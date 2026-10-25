@@ -1,0 +1,14 @@
+{
+  "started": 1792946247.449283,
+  "deadline": 1792947447.449283,
+  "status": "completed",
+  "gpu": "3",
+  "gpu_free_mib": 72830,
+  "baseline_allocated_bytes": 135168,
+  "storage_limit_bytes": 1000000000,
+  "protocol": "research/head_regmean/CUDA_PROBE_PROTOCOL.json",
+  "pid": 570400,
+  "ended": 1792946257.451362,
+  "exit_code": 0,
+  "allocated_bytes": 176128
+}

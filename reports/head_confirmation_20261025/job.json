@@ -1,7 +1,7 @@
 {
   "started": 1792939753.19282,
   "deadline": 1793025253.19282,
-  "status": "running",
+  "status": "failed",
   "lanes": [
     {
       "seed": 1,
@@ -16,5 +16,11 @@
   ],
   "storage_limit_bytes": 20000000000,
   "baseline_allocated_bytes": 1789952,
-  "protocol": "research/head_regmean/CONFIRMATION_PROTOCOL.json"
+  "protocol": "research/head_regmean/CONFIRMATION_PROTOCOL.json",
+  "ended": 1792945935.388851,
+  "exit_codes": [
+    1,
+    1
+  ],
+  "allocated_bytes": 6624153600
 }

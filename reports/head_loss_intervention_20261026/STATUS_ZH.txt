@@ -1,0 +1,4 @@
+状态：已启动，尚无完整科学结果。
+三个种子、每种子current CE→head-only all-seen CE两条T2-T3分支。三种子共同保存起点与真实首批预检均通过；当前对照分支实际首批也均通过，实际checkpoint已记录新客户端训练。all-seen分支尚排队，不能声称其已训练或完成。
+21项CPU测试通过。固定协议HEAD_LOSS_PROTOCOL.json在启动前冻结，源码80eb665。B直接使用current CE、头部使用detach特征current或allseen CE，旧头冻结；同一数值模式和匹配对照，原配对失败仍保留。
+总新增训练150万visits；继承最早来源clock，root20GB/lineage45GB硬约束，未重置时间。完整结果尚待产生，不先宣称性能提升。
