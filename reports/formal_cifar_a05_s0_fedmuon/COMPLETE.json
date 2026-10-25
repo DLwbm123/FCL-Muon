@@ -1,0 +1,1 @@
+{"end": 1792954783.513799, "elapsed": 9724.858209609985, "config": {"dataset": "seq-cifar100", "clients": 10, "alpha": 0.5, "seed": 0, "tasks": 10, "rounds": 5, "epochs": 5, "batch": 16, "rank": 32, "lr": 0.0002, "method": "mulora_fl_fedmuon", "output": "runs/seq-cifar100_a0.5_s0_mulora_fl_fedmuon", "cosine_scale": 16}}

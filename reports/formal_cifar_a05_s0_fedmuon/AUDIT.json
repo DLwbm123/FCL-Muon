@@ -1,0 +1,135 @@
+{
+  "qualified": true,
+  "audit_time": 1792954956.2167616,
+  "scope": "Original formal MuLoRA+FedMuon alpha.5 seed0 saved-state and budget audit; no inference/training/tuning",
+  "queue_state": {
+    "status": "completed",
+    "started": 1792945043.3770936,
+    "gpu": "6",
+    "deadline": 1793031443.3770936,
+    "pid": 510500,
+    "exit_code": 0,
+    "ended": 1792954793.7064474
+  },
+  "source_original_start": 1792945058.6555898,
+  "elapsed_seconds": 9750.329353809357,
+  "client_records": 500,
+  "rounds": 50,
+  "training_visits": 1250000,
+  "optimizer_steps": 79250,
+  "checkpoint_boundary": {
+    "task": 10,
+    "round": 0,
+    "initialized": false,
+    "history_commits": 10,
+    "pending_empty": true,
+    "B_tensors_checked": 24,
+    "B_zero": true
+  },
+  "metrics": {
+    "matrix": [
+      [
+        0.988
+      ],
+      [
+        0.99,
+        0.874
+      ],
+      [
+        0.977,
+        0.865,
+        0.924
+      ],
+      [
+        0.976,
+        0.867,
+        0.915,
+        0.824
+      ],
+      [
+        0.967,
+        0.867,
+        0.893,
+        0.799,
+        0.9
+      ],
+      [
+        0.943,
+        0.785,
+        0.881,
+        0.772,
+        0.892,
+        0.841
+      ],
+      [
+        0.94,
+        0.778,
+        0.879,
+        0.775,
+        0.896,
+        0.816,
+        0.788
+      ],
+      [
+        0.938,
+        0.764,
+        0.86,
+        0.768,
+        0.876,
+        0.793,
+        0.761,
+        0.906
+      ],
+      [
+        0.935,
+        0.784,
+        0.856,
+        0.758,
+        0.88,
+        0.796,
+        0.765,
+        0.883,
+        0.92
+      ],
+      [
+        0.901,
+        0.748,
+        0.845,
+        0.685,
+        0.765,
+        0.745,
+        0.719,
+        0.822,
+        0.866,
+        0.931
+      ]
+    ],
+    "stage_micro": [
+      0.988,
+      0.932,
+      0.922,
+      0.8955,
+      0.8852,
+      0.8523333333333334,
+      0.8388571428571429,
+      0.83325,
+      0.8418888888888889,
+      0.8027
+    ],
+    "final_micro": 0.8027,
+    "final_task_macro": 0.8027,
+    "mean_stage_micro": 0.8791729365079366,
+    "average_forgetting": 0.0967777777777778,
+    "old_micro": 0.7884444444444444,
+    "new_accuracy": 0.931
+  },
+  "manifest_identity": "05c7f277def0a181c3f5230e3e7bd468b5c116f82e6fc537ee42aac8056f6839",
+  "weight_identity": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+  "allocated_run_bytes": 413548544,
+  "limitations": [
+    "Original cosine FedAvg head; not Head-RegMean/head-loss mainline",
+    "Single seed and development evidence; no statistical superiority claim",
+    "Directory allocated bytes are not lifetime peak or shared-resource cost",
+    "No new forward evaluation; verifies saved metrics and complete state only"
+  ]
+}

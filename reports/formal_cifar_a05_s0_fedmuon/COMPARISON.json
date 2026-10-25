@@ -1,0 +1,10 @@
+{
+  "reference": "Original MuLoRA same alpha.5 seed0",
+  "fedmuon_minus_mulora_pp": {
+    "final_micro": -3.6700000000000066,
+    "old_micro": -4.233333333333333,
+    "new_accuracy": 1.4000000000000012,
+    "average_forgetting": 5.011111111111111
+  },
+  "limitation": "Single-seed original configuration comparison, not new Head-RegMean/head-loss study or statistical superiority evidence"
+}
