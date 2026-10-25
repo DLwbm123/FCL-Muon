@@ -1,0 +1,8 @@
+{
+  "checked": 1792958764.234742,
+  "storage_path": "/data/bmw/FCL-Muon/head_centered_loss_20261026",
+  "free_bytes": 14937389391872,
+  "probe_passed": true,
+  "filesystem": "Filesystem     Type   1K-blocks       Used   Available Use% Mounted on\n/dev/sdc1      ext4 19453053208 3889151344 14587294328  22% /data\n",
+  "gpu": "0, NVIDIA RTX PRO 5000 72GB Blackwell, 29195 MiB\n1, NVIDIA RTX PRO 5000 72GB Blackwell, 60682 MiB\n2, NVIDIA RTX PRO 5000 72GB Blackwell, 15937 MiB\n3, NVIDIA RTX PRO 5000 72GB Blackwell, 29195 MiB\n4, NVIDIA RTX PRO 5000 72GB Blackwell, 36277 MiB\n5, NVIDIA RTX PRO 5000 72GB Blackwell, 69855 MiB\n6, NVIDIA RTX PRO 5000 72GB Blackwell, 49084 MiB\n7, NVIDIA RTX PRO 5000 72GB Blackwell, 16401 MiB\n"
+}

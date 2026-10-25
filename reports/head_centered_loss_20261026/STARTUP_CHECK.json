@@ -1,0 +1,32 @@
+{
+  "checked": 1792958897.0458324,
+  "lanes": {
+    "0": {
+      "actual_first_batch_verified": true,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_visits": 0
+    },
+    "1": {
+      "actual_first_batch_verified": true,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_visits": 0
+    },
+    "2": {
+      "actual_first_batch_verified": true,
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_visits": 0
+    }
+  },
+  "new_allocated_bytes": 1459417088,
+  "process_argv": "1240147 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1240635 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1240636 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1240637 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n",
+  "neutral_argv": true
+}

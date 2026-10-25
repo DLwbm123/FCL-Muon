@@ -1,0 +1,6 @@
+已启动三条centered-all-seen头部损失分支，尚无完整结果。
+复用上一轮的精确T2共同起点和已合格current对照，不重跑对照、不重新做commonRRS/T1重放；同seed保持相同GPU与数值模式。
+23项CPU检查及三seed真实预检/实际首个训练batch检查均通过。首次启动检查checkpoint尚处首client进行中，不能将预检或启动当完整训练结果。
+只改头部损失为按固定任务块去均值后的all-seen CE；B直接current CE、feature detach、旧头冻结；无校准参数搜索。
+新增预算750000训练visits、165000统计visits、96首批backward；root12GB与lineage45GB守护、继承最早父deadline1793012449.7496953，不重置时间。
+两套门槛均在运行前冻结：沿用原raw新+5pp/旧损<=1pp/每旧任务损<=2pp；另要求centered对centered均值总体+.5pp、新+1pp且旧类保持。两者均通过才考虑full10，旧all-seen失败判定保持不变。
