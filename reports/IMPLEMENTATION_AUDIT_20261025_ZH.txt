@@ -1,0 +1,80 @@
+MuLoRA-FL / Takezawa组合 / LoRM：实现与官方配置审计
+2026-10-25；范围：源码、论文/官方代码、已完成pilot日志。未调参、未重跑、未新增模型评估。
+
+结论
+本次检查没有发现能直接解释差距的RRS转置、B重置/重复合并、FedMuon控制变量
+更新、标签偏移、训练预算或LoRM官方配置错误。但这不等于证明全部实现无误。
+已核实的关键问题是结果解读和配置来源：低的新类all-seen准确率不能直接叫
+“本地拟合失败”；本项目MuLoRA-FL包含明确的联邦化/数值补全，FedMuon是组合
+适配，均不能称为已逐项复现原论文实验配置，也不能据此宣称原方法本身无效。
+
+1. 运行源码和数据身份
+远程实际fcl/math.py、model.py、train.py、lorm_train.py逐个核对，均与基线
+提交00b6508对应文件一致。新增history_spectral源码没有覆盖这些运行文件。
+三方checkpoint的manifest/weight身份、最终矩阵和训练访问预算已通过前一轮
+离线审计（pilot_completion_audit.json），本轮不重新推理或读取训练图像。
+同一随机seed不意味着三种标准架构的分类头初始化、随机增强序列完全相同。
+
+2. MuLoRA核心实现
+附件§3.1：H=history+epsilon I，H=LL^T，Swhite=L^-1 S L^-T；取主特征子空间，
+Z=L^-T U，thin QR，A=Q^T。fcl/math.py实现的两次三角求解与该式一致；并非
+错写L^-T S L^-1，也未在映回后遗漏QR。精确eigh取代论文RSVD是已声明选择。
+逐客户端原始X^T X直接相加，未再次乘样本数；共享A任务内固定；轮间从当前
+全局B继续且保留每客户端原始m；任务末仅合并一次BA、提交一次历史。Q/V共享
+同一输入统计，统计仅来自当前训练patch，不用旧样本或测试图像。
+Eq.3没有维度缩放；本实现不乘sqrt维度是正确的，不能为追数值静默加回。
+附件公布rank32、cosine head、CIFAR学习率2e-4、20epochs/batch48/cosine；本项目
+5round×5epoch/batch16及head scale16、head AdamW1e-3、旧行冻结、current-only CE、
+Q/V placement、epsilon、beta.9和NS具体系数/次数属于用户协议/补全，不能标成
+全部来自MuLoRA官方代码。尚无经本项目确认的官方MuLoRA实现。
+
+3. Takezawa FedMuon组合
+论文Algorithm1及官方fedmuon_optimizer.py保留跨轮原始m，整轮固定c，先做
+h=m-c_local+c_global再送入算子，轮末c_local=m_end。当前实现与此一致；全参与
+下以样本数加权替代uniform以及变长本地步数，属于已声明FCIL适配。
+官方源码的双重参数循环重复更新问题已在独立实现中避开；没有把该bug照搬。
+官方muon_update乘sqrt(max(shape))。对于768×32的B，缩放为27.7128；同样基础
+lr=2e-4不等于同样更新幅度。任务1第1轮首个Q矩阵、各客户端首步F范数均值：
+MuLoRA 0.001056006，FedMuon 0.029264901，比例约27.71。任务1最后聚合B范数
+分别0.063524与2.126778；这里仅指第一块Q，不能泛化为每层全部更新。
+组合采用MuLoRA项目lr/cosine和独立AdamW头，不是Takezawa CIFAR10/ResNet或
+FashionMNIST实验的整套官方超参数。官方实验入口get_lr返回常数，并区分
+muon_lr与辅助参数lr；不存在已核实的官方ViT-Q/V-r32-CIFAR100-FCIL配置。
+所以该尺度差是高优先级解释候选，但没有做尺度对照，不能断言它就是原因。
+
+4. LoRM官方标准配置
+固定上游6d57b5d的README alpha.05行与本配置对应：r16、lr5e-4、wd0、5轮×5epochs、
+batch16、head RegMean alpha.5/backbone alpha0、FP32 Gram/FP64求解、A/B交替；
+构造器默认AdamW、regmean_rounds1、48个适配位置；主入口默认16-mixed和
+matmul medium。本项目直接调用原方法，没有把算法改为MuLoRA更新。
+训练CE也只覆盖当前任务，所以不能声称LoRM通过all-seen训练CE获得优势。
+其当前任务adapter在原骨干上独立学习，历史adapter通过官方时序RegMean参与
+最终推理；这与MuLoRA每任务合并后继续训练的路径不同。LoRM还训练A并覆盖
+QKV/注意力输出/MLP、用线性头与RegMean空间聚合。rank较小不意味着整体适配
+能力更小。这些均是标准方法差异，而非已发现的实现错误。
+
+5. 现有日志能支持什么
+任务3最后一轮、按实际样本访问数加权的客户端训练CE：
+MuLoRA 0.04945；FedMuon组合0.06595；LoRM0.05948。
+但聚合后任务3测试样本在全部30类中竞争的准确率分别55.7%、22.3%、94.0%。
+这些CE是多个客户端训练过程均值，不是同一最终全局模型的训练损失；且它们
+只衡量当前10类，不能与30类测试准确率直接等同。日志支持“本地任务损失低，
+全局all-seen表现差距大”，不能直接证明纯欠拟合或纯跨任务校准失败。
+alpha.05存在强异质性：前三任务每客户端每轮实际步数范围分别5–495、25–385、
+5–335；本地偏差、FedAvg与RegMean聚合差异可能重要，但并非已量化的因果解释。
+任务1就有83.3%/74.1%/97.7%的差距，因此全部差距不能由后续旧类竞争解释。
+
+未解决的诊断边界
+旧基线日志没有逐样本预测/全量logits，也未记录新类被误判为旧类的比例、
+最终全局模型current-only准确率或分类头聚合前后的准确率。遵照不重跑，
+本次不新增评估，因此无法把总差距分解成局部拟合、聚合损失与跨任务混淆。
+已有单客户端等价测试是核心合成测试，不等于真实ViT官方实现端到端等价。
+本次只增补审计与日志汇总脚本/报告；未修改训练算法、配置、结果或启动任务。
+history_spectral继续等待Pro审查，之前数值验收未通过的事实保持不变。
+
+证据入口
+PROTOCOL_ZH.txt §§5–7；SOURCE_AUDIT.md；fcl/math.py；fcl/train.py；fcl/model.py；
+fcl/lorm_train.py；固定LoRM README/_models/lorm.py/_models/lora_pre.py；
+附件MuLoRA Eq1–3和Appendix D；Takezawa Algorithm1及官方补充包optimizer文件；
+https://arxiv.org/html/2509.26337v1 （公式另与已保存会议版提取文本核对）。
+新汇总PILOT_LOG_AUDIT.json仅读取既有events，不含新的训练/评估结果。

@@ -1,5 +1,7 @@
 # MuLoRA-FL (Shared-RRS + FedAvg)
 
+**Review and results:** [Pro text/source bundle and audit index](review/README.md), [completed three-method pilot comparison](reports/PILOT_COMPARISON_ZH.txt), [implementation/configuration audit](reports/IMPLEMENTATION_AUDIT_20261025_ZH.txt). The new history_spectral experiments remain user-paused pending Pro review; their numerical qualification has not passed.
+
 Reconstruction of the user-provided MuLoRA paper's core mechanisms with minimal FCIL adaptation, plus the independently specified Takezawa FedMuon combination. This does not reproduce original paper tables. See [SOURCE_AUDIT.md](SOURCE_AUDIT.md), [IMPLEMENTATION_NOTES.md](IMPLEMENTATION_NOTES.md) and the frozen user prompt in `PROTOCOL_ZH.txt`; the later user correction recorded in SOURCE_AUDIT supersedes its shared-operator clause.
 
 Code: `fcl.math`, `fcl.model`, `fcl.data`, `fcl.train`. Model registry names are `mulora_fl` and `mulora_fl_fedmuon`. The dedicated trainer replaces LoRM's training mechanics and uses the pinned upstream split and preprocessing.

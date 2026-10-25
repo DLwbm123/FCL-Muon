@@ -1,0 +1,2876 @@
+FCL history_spectral — Pro correctness review
+Commit: 97ba2b663c34ca89a9ded13c958b62a47c14e0a7
+Baseline parent: 00b6508dd5c62d1f5c4fa4494e0846233614043b
+Experiments are USER-PAUSED. This is implementation review, NOT approval to run experiments.
+
+
+
+======================== research/history_spectral/REVIEW_FOR_PRO.txt ========================
+
+请先审查实现正确性；用户已要求在 Pro 审查前不再开展实验。
+
+阅读顺序：
+1. PROTOCOL_v1_1.txt：用户完整规范。
+2. SOURCE_AUDIT.txt：来源、与忠实基线的区别、已运行与未运行状态。
+3. fcl/functional_history.py：C/R/e/z/n、共享 Q/V 的 C、归一化、重心移动和登记事务。
+4. fcl/spectral_qp.py：PSD 审计、compact polar、谱球投影、QR 小空间求解、原空间证书、Frobenius 奇异处理。
+5. fcl/history_optimizer.py：当前方向与历史项分离、eta 只计一次、实际增量证书、同状态几何诊断。
+6. fcl/history_extension.py：任务生命周期、核心广播、训练数据尺度校准、缓存与恢复。
+7. fcl/history_train.py 和 fcl/train.py：复用原训练器的可选 hooks；diff 对比原 baseline00b6508。
+8. tests/test_history_math.py 与 tests/test_history_lifecycle.py；reports/history_spectral/ 下的测试和审查状态。
+
+核心数学：
+q(B)=q0+<F,B>+1/2 tr(BHB^T)
+G=M+lambda(F+BH), Hhat=lambda H
+D=argmin_{||D||op<=eta} <G,D>+1/2 tr(DHhatD^T)
+实际执行 B<-B+D；不再套 Muon、不再次乘 LR。
+历史客户端权重默认均匀；FedAvg 当前训练样本权重独立。每层权重1/24。
+任务末必须先用旧 C/R/e 重心移动，merge并清零B，再在最终模型的当前训练数据上登记新C与锚点能量。
+
+重点审查问题：
+A. C/R/e 的中心移动及“新数据零残差”是否正确，有无先加新C造成的错误风险？
+B. 不同任务的表示漂移只作为固定输入统计代理处理，代码与论文性质是否被严格区分？
+C. 谱QP降维、单调加速重启、奇异/秩亏情形、warm-start坐标运输与原空间gap是否严谨？
+D. 实际FP32参数相加后，证书是否诚实？这是目前明确的数值未通过项：spectral smoke192更新中35个 actual-step 判据未通过，最大 relative gap1.55e-4（目标1e-4）、最大operator feasibility residual1.86e-9。请检查应怎样处理精度、最终迭代和容差，而不是隐藏失败。
+E. 校准使用当前训练数据并恢复RNG，但它只是训练尺度诊断，不是验证集选出的最优lambda；后续正式选择协议是否足够？
+F. checkpoint 是否完整恢复 raw banks、中心身份、task/round、A/B/head、raw m/FedMuon c、核心、cache和RNG？本次只保证通信轮边界恢复，不声称中途minibatch可恢复。
+G. exact-polar/一阶风险/二次谱/Frobenius 分支是否只改变指定的研究几何？faithful finite-NS基线保持独立。
+
+当前不是“已验证方法优于baseline”的交付。数学/生命周期测试通过，但FP32实步数值资格尚未通过；所有新方法pilot、验证集调参和正式矩阵均未运行。已有缩减smoke仅用于工程验证，不能当benchmark。
+
+运行保护：reports/USER_PAUSE.json 和 research队列入口均阻止新实验启动；既有主基线/LoRM运行不变。请给出可定位到函数/代码行的正确性意见，不要求Codex先跑新实验。
+
+
+======================== research/history_spectral/SOURCE_AUDIT.txt ========================
+
+History-spectral v1.1 source and scope audit
+
+Baseline parent: 00b6508dd5c62d1f5c4fa4494e0846233614043b, branch codex/fcl-baselines. Research: codex/history-spectral-v1. Initial working change was only a monitoring STATUS.json snapshot; preserved. Remote faithful trainers, configs and running processes were not overwritten. Research deploys into a separate directory, sharing immutable pretrained weights and the established data/partition sources. Existing faithful baseline and LoRM jobs continue independently.
+
+The full 777-line user implementation specification is PROTOCOL_v1_1.txt. It defines this research optimizer; it is not a published official OSD/QSD algorithm. MuLoRA PDF and fixed arXiv v1 establish shared RRS, historical whitening, inverse mapping and QR, fixed A, B optimization, and task-end merge. Existing finite-NS faithful optimizer choices remain unchanged. Research mechanisms use exact compact polar or a spectral QP, not the original finite-NS oracle.
+
+QSD: https://arxiv.org/html/2609.07597v1 inspected for quadratic spectral objective and FW gap. Our implementation uses QR-reduced projected gradient with monotone restart and optional feasible unconstrained candidate, not QSD's full K-FAC optimizer. These mathematical ideas are attributed to prior work.
+
+OSD: user supplied the anonymous 25-page ICLR2027 full PDF, title Orthogonal Spectral Descent for Continual Learning in Large Language Models. Inspected Algorithm1 and method/PEFT limitations (pp5-6 and14), including dual warm starts and full-matrix constraints. OpenReview PoqSsLXms7 required a browser challenge; it was not bypassed. No OSD hard orthogonality constraint, dual optimizer, DRO, sketch or extra head is implemented. This is not an OSD reproduction or a novelty claim.
+
+Statistics: CPU FP64 raw C,R,e,z,n. Q/V share exactly one C per client's fused-QKV input; residual cross-moment and anchor energy remain projection-specific. Cores normalize only during projection, use uniform nonempty historical clients, and apply 1/24 layer weights once. Current-task FedAvg uses sample counts, a separate weighting rule. RRS pre-task statistics and post-merge historical risk registration are separate.
+
+Precision: frozen ViT/head training and B/momentum are FP32 for research mechanisms, matching the established project's FP32 training convention. QP QR/SVD/gap are FP32 in smoke, FP64 in reference tests. No optimizer decay on B, no update post-normalization, and eta contains the actual LR and only the selected provider's existing shape multiplier. Actual B_after-B_before receives the final certificate. Effective rank for research is singular-value amplitude entropy; faithful historical logger used energy entropy, which must not be directly compared as the same statistic.
+
+Lambda: fixed once from the first task with historical data, using current-training deterministic batches, current-task labels, and a preserved/restored Python/NumPy/torch/CUDA RNG state. The value is one predeclared training curvature reference, not validation-selected, not optimal. No test-driven tuning or validation search has run. Pilot comparisons and any validation-selected lambda remain unexecuted and are now explicitly paused.
+
+Dependencies and weights: existing reports/environment.json and weights.json identity; HF timm/vit_base_patch16_224.augreg_in21k revision bb70896cd6bffdd579c3d4f7284f39d0c4ab46c3, safetensors SHA256 2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049; torch2.7.1+cu128, torchvision0.22.1+cu128, timm1.0.22. No new data split or alternate backbone.
+
+Honest pre-review status: 29 tests passed, including actual CUDA optimizer/history/cache/RNG checkpoint round-trip. Before the latest pause arrived, exact-polar and first-order historical real-data smoke completed, and spectral smoke was in flight. The research supervisor was stopped and its child was signaled; spectral smoke completed its final boundary during shutdown. No Frobenius smoke or any research pilot/formal training was started. In the FP32 spectral smoke, 35/192 actual increments were flagged not converged/feasible under the configured certificate, maximum relative gap approximately1.5491e-4 vs target1e-4 and maximum absolute operator feasibility residual1.8576e-9. This fails the predeclared <=1% numerical qualification rule; no scientific conclusion is drawn and pilot must not auto-launch. Mathematical passing does not establish the whole real-valued implementation is numerically qualified.
+
+Remaining numerical review: distinguish reduced-solver stopping error from QR reconstruction and FP32 parameter-addition rounding in actual-step gap and feasibility. Do not silently loosen tolerance or substitute proposed-step certificates for actual ones. Source/config fingerprints were added for future reviewed checkpoints after the pause; pre-review smoke checkpoints must not retrospectively be described as carrying these new fields.
+
+
+======================== research/history_spectral/PROTOCOL_v1_1.txt ========================
+
+Codex 实现 Prompt
+共享累计历史功能风险下的谱下降：MuLoRA-FL 对齐版本
+版本：v1.1（阅读 OSD 全文后修订）
+日期：2026-10-25
+
+将本文件整体作为实现任务交给 Codex。以下是实现规范，不是已有论文官方算法，也不包含已经完成真实 FCL 训练的结论。
+
+============================================================
+0. 你的任务、范围与工作方式
+============================================================
+
+你是当前 FCL 研究仓库的实现负责人。在已经启动的完整 MuLoRA-FL 与 Takezawa FedMuon 复现基础上，增量实现一个研究优化器：shared historical-risk spectral descent，代码简称 history_spectral。
+
+核心：
+保留共享 RRS、固定行正交 A、只训练 B 的完整 MuLoRA 参数化；使用跨客户端共享的、相对历次最终全局模型锚点的累计历史响应风险；每个实际矩阵更新解一个谱范数受限凸二次问题。
+
+本次完成：
+1. 审计并保护现有复现分支；
+2. 精确历史充分统计与联邦状态生命周期；
+3. 小矩阵谱 QP 求解器、可检查的证书及正确热启动；
+4. 统一精度的机制对照；
+5. 有意义的代数/生命周期测试；
+6. 能运行的配置、CLI、检查点、日志、smoke 和小型 pilot；
+7. 可复现实验命令及说明。
+
+不要只返回计划、伪代码或“可以继续”。在现有权限和本地资源内把本次范围做完。遵守仓库工作说明；保留用户已有修改，必要时使用独立分支或 worktree。不要通过修改既有实验定义来让测试通过。
+
+不要求本次自动启动全部正式实验矩阵。代码和配置覆盖正式协议，实际执行先完成单元验证、真实数据 smoke；资源具备时完成下文限定的 pilot。资源缺失要明确记录，并完成不受影响的工作，不能把随机数据结果称为 benchmark 结果。
+
+第一版明确不加入：
+- OSD 的额外硬正交约束；
+- 每客户端×每历史任务的硬预算；
+- 低秩 sketch 压缩；
+- softmax/DRO 的完整实现；
+- 新分类头校准方法；
+- 梯度可靠性门控；
+- 自动逐步变化的 lambda；
+- 未经验证的固定 1–3 次近似求解。
+
+这些不属于本次核心，最多保留干净接口，不实现占位“功能”。
+
+============================================================
+1. 来源、归因与基线身份
+============================================================
+
+先阅读仓库中的 AGENTS.md、README、已有实现、配置和实验 manifest，记录当前 git commit 和工作区状态。用 rg / rg --files 查找相关文件。
+
+相关材料：
+A. MuLoRA:
+https://arxiv.org/html/2610.02283v1
+完整机制包括 RRS 与 B 更新的谱平衡。不要缩减为“普通 LoRA + Muon”。
+B. Takezawa et al. FedMuon，ICLR 2026:
+https://proceedings.iclr.cc/paper_files/paper/2026/hash/427f20d90386fd27804f1831d6a3d48f-Abstract-Conference.html
+https://arxiv.org/html/2509.26337v1
+不要与其他同名 FedMuon 工作混淆。
+C. QSD:
+https://arxiv.org/html/2609.07597v1
+借用谱球上的二次目标及可计算 gap 思想。
+D. OSD: Orthogonal Spectral Descent for Continual Learning in Large Language Models.
+用户提供的 25 页 ICLR 2027 投稿全文；OpenReview id PoqSsLXms7:
+https://openreview.net/forum?id=PoqSsLXms7
+借用对实际更新几何的强调、跨步 warm start 和受控几何比较。
+E. 原 FCL 框架:
+https://github.com/aimagelab/fed-mammoth
+既定参考 commit:
+6d57b5d361f743f3ff0cd1371409bd7a1158de64
+
+这是我们的研究实现，不是 OSD 的忠实复现。OSD 本文主问题是：
+min <G,Delta> s.t. ||Delta||op <= eta, <C_i,Delta>=0，
+其具体保护结构为 U^T Delta V=0。
+本文 p.6 和 p.14 明确 LoRA/PEFT 扩展尚未完成。
+
+不要把以下内容声称为新发现：
+- Muon 的谱球 LMO 解释；
+- QSD 的二次谱优化框架；
+- OSD 的受约束谱下降或 warm start；
+- 历史响应匹配/二次正则本身；
+- 凸性导致的 FedAvg Jensen 不等式。
+
+需要实现与验证的是这些机制组成的具体 FCL 优化器。
+
+保存 source_audit.md（按仓库规范放置）：
+- 哪些配置来自论文/官方代码；
+- 哪些是已经确定的项目选择；
+- 本次新增选择；
+- 未知或无法核实的细节；
+- 当前依赖和预训练权重版本/hash。
+
+若现有仓库的锁定版本与本 prompt 的参考 commit 不同，不要破坏现有复现。记录差异，新增配置应使用现有已审计的数据 manifest；未经核对不能声称与参考协议完全一致。
+
+============================================================
+2. 现有实验协议：保持一致
+============================================================
+
+正式协议：
+- CIFAR-100：10 个任务，每任务 10 类；初始任务与后续任务等规模。
+- ImageNet-R：10 个任务，每任务 20 类；初始任务与后续任务等规模。
+- 10 个客户端，100% 客户端参与。
+- Dirichlet alpha = 0.5 / 0.1 / 0.05。
+- 每任务 5 个通信轮，每轮 5 个本地 epoch，batch size = 16。
+- backbone: ViT-B/16 ImageNet-21K，
+  timm 标识 vit_base_patch16_224.augreg_in21k。
+- 输入 224，rank = 32。
+- seeds = 0, 1, 2（项目选择）。
+- 不保留或回放旧原始训练样本；服务器没有图像数据。
+- 推理在全部已见类别上进行，不能提供真实任务 ID。
+- 完整实验使用既有数据 manifest、类别顺序、client partition、augmentation、checkpoint 初始化。
+
+已有项目建模选择，须与完整 MuLoRA-FL baseline 保持相同：
+- 12 个 Transformer block 中分别适配 Q 和 V，共 24 个矩阵。
+- LoRA scale s=1，实际权重 W=W0+B A。
+- 其余 backbone 参数冻结。
+- cosine head，固定 scale=16，无 bias。
+- 训练当前任务类别对应的新行，旧行冻结；当前任务 CE；推理全部已见类。
+- head AdamW lr=1e-3，weight_decay=0，样本数加权聚合，每个通信轮重置 head optimizer state。
+- B 的 weight_decay=0。
+- B 初始学习率参考：CIFAR-100 2e-4，ImageNet-R 1e-4；任务内连续 cosine，不能每个通信轮重新启动 schedule。
+以上是既定项目选择，不要称为 MuLoRA 原文完整披露的官方细节。如果实际基线已经采用另一个经用户确认的设定，以其配置为对齐依据并明确记录，不要悄悄改变头部或适配层。
+
+数据实现：
+- 继承 fed-mammoth 已锁定的类别/数据划分；seed 不应自行引入新类别重排。
+- ImageNet-R 复用原官方 train/test 清单及映射，不自行重划分或按 WNID 排序重编号。
+- 数据划分 RNG 与模型、DataLoader、诊断和校准 RNG 分离。
+- 训练/验证/测试用途明确，测试集不得参与参数或 lambda 选择。
+- 若需要内部验证集，从当前训练数据建立固定 manifest；所有方法使用同一选择与预算，不覆盖正式数据划分。
+- 不能在后续任务用旧训练图像重算历史统计；历史任务测试集只进入既定评估函数。
+
+原 RRS 必须保持完整：
+- 当前 raw X^T X 与历史 raw 二阶统计；
+- 历史白化、相对响应特征方向、回映射；
+- 欧氏 QR，最终保证 A A^T=I；
+- task 内 A 固定，B 在任务开始清零，任务末合并一次。
+不要省略 QR。新风险统计与 RRS 统计分别维护，因为采样时点、权重可能不同。
+
+============================================================
+3. 方法的数学定义
+============================================================
+
+先说明单层；全模型为各适配矩阵块的和。
+
+W = W0 + B A
+A: [r, d_in]
+B: [d_out, r]
+A A^T = I_r
+D: B 的实际增量
+DeltaW = D A
+
+因此 ||DeltaW||op = ||D||op，||DeltaW||F = ||D||F。
+
+默认 LoRA scale s=1，初始化时 assert。若今后支持 s!=1，必须一致修改：
+DeltaW=s D A，
+H=s^2 A C A^T / Z，
+F=s R A^T / Z，
+并转换 B 空间与权重空间谱半径。第一版不默默支持非单位 scale。
+
+历史风险：
+q_k(B) = q0_k + <F_k,B> + 0.5 tr(B H_k B^T)，H_k PSD。
+k 表示客户端；它汇总该客户端的全部历史阶段，不是每个历史任务的单独最坏风险。
+
+默认对有历史数据的客户端均匀加权 pi_k=1/K_history；当前任务 FedAvg 仍按训练样本数加权。
+这两种权重的作用不同，不能混用。
+全模型历史目标为各适配层归一化风险的平均，层权重 a_l=1/L，L=24。
+可配置 client risk weighting，但默认及改变必须写进 metadata。
+
+对每层：
+H_l = a_l sum_k pi_k H_kl
+F_l = a_l sum_k pi_k F_kl
+q0_l = a_l sum_k pi_k q0_kl
+
+服务器广播同一组 H_l,F_l,q0_l 给所有客户端，任务内固定。
+
+M = 当前任务方向估计，使用既定 baseline 即将送入 polar/NS 的矩阵。
+M 不包含历史风险修正。若使用 FedMuon，M 包含其原有控制变量校正。
+
+在每个本地 minibatch，对每个 B 解：
+D* = argmin_{||D||op <= eta} phi(D)
+phi(D) = <M,D> + lambda_history [q(B+D)-q(B)]
+
+令：
+G = M + lambda_history (F + B H)
+Hhat = lambda_history H
+
+则：
+phi(D) = <G,D> + 0.5 tr(D Hhat D^T)
+
+执行：
+B <- B + D
+
+eta 是实际 B 增量的谱半径，已经包含该研究分支的学习率和确定性 shape scaling。
+不要在返回 D 后再次乘 lr。
+不要在返回 D 后再做 polar、NS、奇异值均衡、RMS 归一化、额外 shape scaling 或未纳入目标的 decay。
+分类头沿用原训练流程，相关保证只针对上述适配矩阵代理。
+
+这是软历史代价 + 硬谱步幅。不要报告“每个旧任务风险都不增长”或“严格无遗忘”。
+
+============================================================
+4. 精确累计历史统计与归一化
+============================================================
+
+采用数值较稳定的、以本任务全局 W0 为中心的充分统计。
+每客户端、每层存原始累计量：
+
+C_k = sum_history x x^T                     [d_in,d_in]
+R_k = sum_history (W0 x - y_anchor) x^T      [d_out,d_in]
+e_k = 0.5 sum_history ||W0 x-y_anchor||^2    scalar
+z_k = sum_history ||y_anchor||^2            scalar
+n_k = historical token count               scalar
+
+x 是登记历史时的层输入；y_anchor 是对应阶段最终全局模型的该矩阵输出 W_anchor x。
+不保留 x、y 或 W_anchor，只保留这些统计。
+若模块有 bias，这里的 y_anchor 只取线性部分 W_anchor x，不直接使用含 bias 的模块输出；否则会破坏新锚点残差为零的定义。
+对 fused QKV 模块，准确提取 Q/V 权重切片以及它们共同的原始输入，不能误用 attention 混合后的输出。
+
+保存额外 metadata：
+- task_id、center/base model version/hash；
+- layer/projection 标识；
+- 统计 transform 与 token 选择；
+- 数值 dtype、累计 token 数；
+- normalization rule；
+- schema_version。
+
+默认 Z_k = max(z_k, energy_floor * n_k * d_out)，energy_floor 可配置，首版数值默认 1e-12。
+若 n_k=0，返回空历史零 core，不除以零。
+统计归一化只在构造 core 时进行，原始累计量不提前除均值。
+Z 的值及是否触发 floor 要记录；这只是防止数值除零，不是额外历史正则。
+
+任务开始时，用当前共同 A 投影：
+H_k = A C_k A^T / Z_k
+F_k = R_k A^T / Z_k
+q0_k = e_k / Z_k
+
+于是：
+q_k(B) = [e_k + <R_k A^T,B> + 0.5 tr(B A C_k A^T B^T)] / Z_k
+
+同一客户端 Q/V 的实际输入完全相同时，允许共享 C；R,e,z 按投影分别存。
+不要仅因维度一样就共享不同输入的统计。
+
+精度：
+- CPU 累计统计建议 FP64 参考模式，或者 FP32 累计配合明确误差测试；
+- 训练 core 与 solver 至少 FP32，不在 BF16/FP16 下求解 QR/SVD 和 gap；
+- 使用 AMP 时，先 unscale 当前梯度，再构造方向 M；overflow/skip step 的处理沿用原训练器，不能更新一个事实上未执行的 solver cache；
+- B 或其实际用于更新的 master parameter 使用 FP32；若保存/计算 dtype 产生额外舍入，最终审计实际执行的 B_after-B_before，不能把提议 D 的证书冒称为另一个实际更新的证书；
+- 测试使用 FP64；
+- H 显式对称化，检查 PSD；
+- 只允许按数值容差修正微小负特征值；明显非 PSD 要报错定位，不能直接大幅裁剪掩盖状态错误；
+- e 与 q 理论非负，记录因舍入出现的小负数；不要用大范围 clamp 让错误消失。
+
+任务内 C,R,e,z 和 center W0 不变。
+B 是从该任务 W0 出发的累计位移。
+FedAvg 轮之间更新 B，不重新移动历史中心。
+
+============================================================
+5. 任务边界的更新顺序：必须严格实现
+============================================================
+
+当前任务最后一轮聚合得到全局 B_end，A 仍是本任务共同基。
+
+步骤 1：用旧历史状态重心更新。
+DeltaW = B_end A
+
+使用旧 C、旧 R、旧 e 计算：
+e_new = e_old + <R_old,DeltaW>
+        + 0.5 tr(DeltaW C_old DeltaW^T)
+R_new = R_old + DeltaW C_old
+
+等价可用旧 H_raw=A C_old A^T、F_raw=R_old A^T：
+e_new = e_old + <F_raw,B_end>
+        + 0.5 tr(B_end H_raw B_end^T)
+
+先计算 e_new，再覆盖 R，或显式使用 old 状态。
+不要误用已经归一化的 H/F 更新原始 e。
+
+步骤 2：合并。
+W0_new = W0_old + B_end A
+更新历史 state 的 center_id，使它与这个最终全局模型一致。
+在统计前向之前，立即禁用/移除当前 adapter 或把已合并的 B 清零，确保有效权重只包含一次 B_end A；不要在 W0_new 上再次叠加未清除的 adapter。
+验证合并前最终全局模型与合并后统计模型的前向输出在容差内相同。
+
+步骤 3：用最终全局合并模型登记当前任务数据。
+每个客户端对自己仍可访问的当前训练数据做一次 deterministic、eval-mode、no_grad 前向。
+默认 patch tokens only、排除 CLS；沿用明确的统计预处理，并记录。
+只使用当前训练 split，不能用 test 或旧训练样本。
+对每个被适配矩阵收集：
+C_current = sum x x^T
+z_current = sum ||W0_new x||^2
+n_current = number of tokens
+
+新数据以 W0_new 为锚点，所以它给 R_new、e_new 的新增项为零。
+因此：
+C <- C_old + C_current
+R <- R_new
+e <- e_new
+z <- z_old + z_current
+n <- n_old + n_current
+
+必须先完成旧历史重心更新，再把 C_current 加入。
+如果先加 C_current 再计算旧历史变化，会错误地给新登记数据制造风险。
+
+步骤 4：下一任务。
+按原 MuLoRA RRS 重选 A_new，B=0，投影新的历史 core。
+按 baseline 规则重置任务相关动量/FedMuon控制状态。
+清除 solver warm-start cache。
+保留累计 C,R,e,z,n，不能跟随 optimizer reset 一起清空。
+
+如果某客户端本任务没有数据，它仍需按全局 DeltaW 移动其旧历史中心，只是不登记新数据。
+正式主协议100%参与，但不要把这种基本状态一致性写错。
+
+============================================================
+6. 小矩阵谱 QP 求解器
+============================================================
+
+接口建议：
+solve_spectral_qp(G, Hhat, eta, previous_delta=None, config=...)
+  -> actual_delta, diagnostics
+
+不要把整个训练器、动量和历史统计塞进求解器。
+
+输入：
+G [d_out,r]，Hhat [r,r] PSD，eta>=0。
+目标：
+phi(D)=<G,D>+0.5 tr(D Hhat D^T)，||D||op<=eta。
+
+特殊情况：
+- eta=0：返回零，并正确计算诊断；
+- G=0：选择零最优解；
+- Hhat=0：返回 -eta * compact_polar(G)；
+- compact_polar 在零奇异值上取零，G=0不能返回任意正交矩阵；
+- 任何使用 rank tolerance 的近似都须记录，并用原始 G 复核 gap；
+- Hhat 可以奇异，不要默认逆矩阵存在。
+
+一般情形：
+1. reduced QR: G=Q T，Q^T Q=I。
+2. 存在最优解 D=Q X。
+3. 解 r×r 问题：
+   min <T,X> + 0.5 tr(X Hhat X^T)
+   s.t. ||X||op<=eta。
+4. 还原 D=Q X，并在原始 d_out×r 空间复核目标、谱半径与 gap。
+
+谱球投影：
+Z=U diag(s) V^T
+Proj(Z)=U diag(min(s,eta)) V^T
+逐个裁剪奇异值，不是统一 Frobenius normalization。
+
+推荐参考算法：
+- projected gradient，或带目标单调检查/restart 的加速 projected gradient；
+- 梯度 T+X Hhat；
+- Lipschitz 常数 L=lambda_max(Hhat)，L=0使用线性问题特殊分支；
+- 保存 best feasible iterate；
+- 加速导致目标上升时重启，不以最后一步无条件覆盖最优可行点；
+- optional: Hhat 正定且条件允许时先求无约束解 -G Hhat^{-1}，用 solve 而不是显式 inv；若可行直接采用；
+- 不默认添加 ridge/damping。若支持，作为改变目标的显式配置，默认0。
+
+停止与证书：
+原始空间 K=G+D Hhat，
+FW gap = <K,D> + eta * ||K||_*。
+
+对可行 D，gap 是此凸问题的最优性差距上界。
+小空间的对应公式可以用于内循环，但最终用原始空间复核。
+记录：
+- objective phi；
+- gap、relative_gap；
+- actual operator norm 与 feasibility residual；
+- iterations；
+- converged；
+- zero_step；
+- warm_start_used；
+- warm_start_objective；
+- elapsed time；
+- numeric precision。
+
+建议实现可配置默认值，而不是把它们当论文官方值：
+max_iter=200；
+FP32 reference pilot: gap_rtol=1e-4，gap_atol=1e-10；
+FP64 tests: 根据问题尺度使用更严格阈值。
+relative scale 可用 eta*||G||_*，并明确数值下限。
+真实训练前检查容差与该分支实际量级是否相容。
+
+达到 max_iter：
+返回 best feasible，标注 converged=false；
+不要声称精确解；
+不要悄悄无限加迭代；
+记录未收敛比例，必要时在有限诊断上改容差/算法。
+同时记录零步比例，不能靠总返回0伪装成功。
+
+代理非增：
+D=0 可行、phi(0)=0。
+返回的 best feasible 应满足 phi<=数值容差；否则回退0并记录 numerical_failure。
+这是代理证书，不是旧风险单独不增或真实 CE 不增。
+
+============================================================
+7. 借鉴 OSD 后增加：有检查的热启动
+============================================================
+
+OSD 使用跨步 warm start；我们借用原则，不复制其硬约束对偶变量。
+
+每步 QR 的 Q 会变化，禁止直接复用旧 X。
+每客户端、每层保存上一个“实际 D_prev”，以及 task/basis identity。
+
+本步：
+X_warm = Q_new^T D_prev
+X_warm <- 谱球投影(X_warm, eta_current)
+
+计算本步新目标 phi_warm：
+- 若可行且 phi_warm <= 0，从 warm start 开始；
+- 否则从0开始；
+- 不能因为上一目标下降，就默认在当前目标仍下降；
+- 可比较零点和其他可行候选，选本步目标最小者。
+
+FedAvg 广播或学习率变化后仍需重新验证；任务/basis更换时清空 cache。
+solver cache、momentum、FedMuon controls、历史统计是不同生命周期的状态。
+
+支持 warm_start=off/on 开关。
+验证两种初始化都解同一个问题；不能用精度更差的warm start假冒加速。
+报告实际 wall time、平均迭代数与最终 gap。
+
+============================================================
+8. 动量、半径、lambda：不要混淆尺度
+============================================================
+
+保留现有 faithful MuLoRA-FL / FedMuon 的实现和配置。
+新增研究分支有独立 method name。
+
+尤其注意：
+beta*m + g 与 beta*m + (1-beta)*g，
+bias correction，
+Nesterov，
+FedMuon correction，
+在纯 polar 中可能有等价的整体尺度关系，在历史 QP 中会改变 lambda 的意义。
+
+direction_provider 必须输出：
+- baseline 原本将送入 polar/NS 的 M；
+- 当前实际 eta（包含外部确定性缩放）；
+- momentum/scaling convention 的 metadata。
+
+历史项仅在 G=M+lambda(F+BH) 处加入一次。
+禁止先把历史 risk 放入训练 loss/momentum，再在 QP 中重复加一次。
+
+FedMuon 组合模式：
+- 只在当前梯度/动量上使用原定义的 control correction；
+- raw momentum 和 local/global controls 维持其原语义；
+- 历史风险修正不能写回这些 controls；
+- 按既定 task boundary 重置；
+- 不自动继承原 FedMuon 的收敛定理，当前算法发生了变化。
+
+已有审计提醒：
+Takezawa supplementary 的实际 fedmuon_optimizer.py 与 standalone muon.py 并不相同。
+若官方实现存在参数嵌套循环导致同一参数重复更新等明显实现错误，沿用项目此前按公式修正并记录的分支；不要为了“忠实”重新引入错误。
+也不要强行让 MuLoRA 的 faithful 分支使用 Takezawa 的 NS 系数与缩放。
+
+lambda_history 为固定、可配置实验超参数。
+第一版不做在线自适应lambda，按各自方向估计约定调参。
+至少记录：
+r_grad = lambda*||F+B H||F/(||M||F+eps)
+D_mu = -eta*compact_polar(M)
+r_curv = [lambda/2 * tr(D_mu H D_mu^T)] /
+         [-<M,D_mu>+eps]
+history linear term = lambda*<F+B H,D_mu>
+总量与逐层量都可统计。
+
+不要不看风险归一化就只搜0.1/1/10。
+提供 training-only 校准工具：
+- 在第一个拥有有效历史统计的任务起点（通常任务2）校准；任务1无历史、曲率分母为零是预期情况。校准后在本次run后续任务固定lambda，不逐任务重校准；
+- 不同lambda分支可复用同一任务1结束checkpoint，不能用任务2或未来数据反过来影响任务1训练；
+- 从固定当前训练批次的 M,H 和 eta 得到尺度建议；
+- 例如非退化批次上 lambda_ref = median(
+  sum_l[-<M_l,D_mu_l>] /
+  sum_l[0.5 tr(D_mu_l H_l D_mu_l^T)]
+  )，剔除零分母并完整记录；
+- H_l 已含层权重和客户端权重，不能重复计入；
+- 这仅给尺度参考，随后可在 lambda_ref×{0.1,1,10} 上用固定验证协议选择；
+- 校准保存恢复模型、optimizer、RNG和DataLoader/sampler状态，或明确计入训练预算；
+- 不能读取旧训练数据或测试标签；
+- 不在任务/通信轮中悄悄重校准；
+- 校准值、来源批次及是否成功均写入配置快照。
+若数据/验证条件不足，先完成工具和机制诊断，不输出“最优lambda”。
+
+============================================================
+9. 方法注册与实验对照
+============================================================
+
+至少提供清楚分离的名称/配置，实际文件名可按仓库风格调整：
+
+1. mulora_fl
+完整忠实基线，不改它的 NS、momentum 或历史 RRS。
+2. mulora_fedmuon_fl
+现有 MuLoRA 参数化 + Takezawa FedMuon 的 FCL 适配，准确命名。
+3. mulora_fl_exact_polar
+机制参考：同数据、A、M、eta，使用 exact compact polar。
+4. history_grad_muon
+同样历史统计：
+G=M+lambda(F+BH)，D=-eta*compact_polar(G)。
+这里是同一当前M上的历史一阶修正；不把history反复累计进momentum。
+5. history_spectral
+主方法：完整有限步历史二次谱 QP。
+6. history_frobenius_qp
+同样历史统计和G/Hhat，但解：
+min <G,D>+0.5 tr(D Hhat D^T)，||D||F<=rho。
+
+第6项：
+D=-G(Hhat+mu I)^{-1}，mu>=0，
+可用特征分解及单调一维搜索mu。
+Hhat奇异时正确处理边界和线性nullspace，不无条件使用inv。
+当无约束解存在且可行时mu=0。
+训练时rho有单独可调配置与公平验证预算。
+
+主方法可切换 direction_provider=mulora/fedmuon；
+先确保mulora provider的机制对照闭环，再运行fedmuon组合。
+不要把provider变化和history目标变化混成同一个消融。
+
+忠实复现与机制参考要分开：
+lambda=0/no_history 的严格退化对象是 exact-polar Muon（第3项），
+不保证逐位恢复 finite-NS 原基线。
+每个结果表同时列 oracle/precision/momentum/shape_scale，避免用求解精度差异冒充方法收益。
+
+可选：OSD-style baseline 接口说明即可，第一版不实现。
+若后续添加，全权重约束应变为 U^T D(A V)=0，
+不能写成 U^T D V=0 或 D V=0；
+必须单独定义保护统计来源，并报告 constraint residual；
+只能称适配基线，不能称原 OSD 复现。
+
+============================================================
+10. 借鉴 OSD 后增加：同状态的更新几何诊断
+============================================================
+
+实现 paired_update_audit，固定同一个 checkpoint、同一个 minibatch、同一个 B/M/H/F。
+不更新训练状态、不推进RNG或保存恢复相关状态。
+比较上述各更新，记录：
+- 当前预测收益 -<M,D>；
+- 精确代理历史变化 q(B+D)-q(B)；
+- 完整代理phi；
+- ||D||F、||D||op；
+- top singular value、stable rank、effective rank；
+- ||D A||F/op 与 B-space 是否相等；
+- 与普通Muon的方向夹角；
+- 是否主要等价于普通Muon统一缩放。
+
+提供 matched-energy 方向诊断：
+G=M+lambda(F+BH)
+D_frob_matched = -||D_spectral||F * G/||G||F
+G=0时显式处理。
+它只是匹配能量的方向对照，不是完整 Frobenius QP 最优解。
+
+可额外使用 rho=||D_spectral||F 求完整 Frobenius QP；
+这只匹配允许预算，不能保证最终实际范数一定相等。
+
+严格禁止把主方法D事后放大到baseline norm以“公平比较”。
+那会改变原问题、可能破坏谱半径和代理证书。
+所有额外缩放的对照必须单独命名。
+
+有效秩定义明确固定：
+p_i=sigma_i/sum sigma；
+effective_rank=exp(-sum p_i log p_i)；
+stable_rank=sum sigma_i^2/max sigma_i^2。
+零矩阵按明确约定返回0。
+不要混用奇异值能量概率和奇异值幅度概率。
+不声称更高有效秩必然更好。
+
+============================================================
+11. 联邦协调、通信与保存恢复
+============================================================
+
+推荐状态分工：
+client:
+- 当前任务训练数据视图；
+- 原baseline momentum/controls；
+- 原始累计 C,R,e,z,n；
+- solver D_prev cache；
+server:
+- 当前task共享A、全局B与head；
+- 所有已上传客户端当前历史core或聚合core；
+- 原FedMuon全局controls（组合模式）；
+- task/round版本信息。
+
+任务内 history core固定，普通通信轮不重新广播完整历史统计。
+所有客户端对同一公共q负责，而非各自只用自己的q。
+多层目标按预先固定a_l构成均值，可逐层独立解QP。
+
+共同A时：
+mean_k(W0+B_k A)=W0+(mean_k B_k)A。
+必须用测试验证；不平均不同客户端的A/B因子乘积。
+
+记录真实通信字节：
+- RRS统计；
+- 新历史core；
+- B和head；
+- FedMuon controls；
+- 上传/下行及总量。
+不要只报LoRA参数字节。
+历史统计前向、QR/SVD、求解器与eval时间分开记录。
+
+checkpoint包括：
+- 模型、A、B、head；
+- global base/center identity；
+- task/round/epoch/minibatch位置；
+- 每客户端history bank与normalization元数据；
+- momentum、FedMuon controls；
+- scheduler、AMP scaler（若有）；
+- solver cache；
+- python/numpy/torch/cuda RNG；
+- 数据partition manifest和sampler状态；
+- source/config hash。
+resume不能重新登记同一任务历史数据，也不能漏做或重复做recenter。
+
+============================================================
+12. 真正需要的验收测试
+============================================================
+
+实现针对数学语义和状态风险的测试，不写只镜像实现细节的测试。
+
+A. 充分统计一致性
+随机小矩阵，至少3历史阶段、不同全局锚点、非等权样本；
+显式sum ||W x-y||^2与 C/R/e 表示一致；
+q梯度与有限差分一致；
+归一化、客户端聚合和层权重只计入一次。
+
+B. 任务边界递推
+至少跨两个任务：
+recenter前后同一实际W的历史q一致；
+新登记数据初始风险0；
+之后更换A重新投影，仍与显式历史响应一致；
+每round不能重复recenter；
+先加新C的错误应被此测试发现。
+
+C. 解析二维例子
+M=diag(2,1)，F=0，B=0，H=diag(100,1)，lambda=eta=1。
+期望D=diag(-0.02,-1)，phi=-0.52。
+普通Muon D=-I 的phi=47.5。
+统一缩放Muon的最优alpha=3/101，phi=-9/202。
+这是优化单元测试，不是FCL精度结果。
+
+D. solver语义
+PSD且奇异H、零G、零eta、很小eta、各向异性H；
+||D||op可行；
+phi不高于零（在数值容差内）；
+FW gap达要求或诚实converged=false；
+QR降维与原始目标一致；
+精确compactpolar的rank-def/zero输入不注入任意nullspace更新。
+
+E. warm start
+Q坐标变化、eta变化、FedAvg改变B后的情况；
+旧实际D运输正确；
+坏warm start回退0；
+与从0求出的高精度目标一致；
+新任务清cache但保留history。
+
+F. Muon退化
+lambda=0和空history在exact研究分支匹配exact-polar基线；
+eta/shape scaling只作用一次；
+s=1下||DA||与||D||一致。
+不要把finite-NS精确逐位匹配写成这条断言。
+
+G. 共同历史目标与聚合
+同A下实际权重平均恒等式；
+公共凸q满足Jensen；
+所有客户端的core hash相同。
+
+H. checkpoint与无旧样本访问
+中断恢复与不中断过程在可重复容差内一致；
+history只登记一次；
+新任务训练/统计collector不能读取旧train index；
+评测访问与训练访问分离。
+不要为了通过测试把所有数据一起放进训练loader。
+
+============================================================
+13. 实验执行顺序与资源范围
+============================================================
+
+阶段0：只做数学与生命周期测试，CPU即可。
+阶段1：真实数据smoke：
+2 clients、2 tasks、2 rounds、每个本地阶段少量真实batch；
+验证训练、聚合、任务末登记、resume、日志和统计。
+smoke使用自己的清楚配置，不能覆盖正式设定。
+使用合适的小rank/dim的单元测试不算真实benchmark。
+
+阶段2：限定pilot：
+CIFAR-100，前3个完整任务，10 clients，seed0，
+alpha=0.5和0.05，
+正式的round/epoch/batch/模型/头部设定。
+优先运行已存在基线结果或直接复用完全相同manifest与代码版本的已完成结果，不重复花费计算。
+核心对比：
+exact-polar Muon、history_grad_muon、history_spectral。
+Frobenius QP 完成可运行配置，资源允许再加入该pilot。
+lambda用training-only尺度诊断和统一验证预算选择，避免整套无效小lambda实验。
+
+若实际环境缺GPU或数据：
+完成CPU测试、配置、命令和数据检查；
+明确哪一步未跑、原因、所需资源；
+不能捏造训练结果或声称方法优于基线。
+
+阶段3：生成完整正式矩阵配置及运行脚本：
+CIFAR-100/ImageNet-R × alpha三档 × seeds三档 × methods。
+原两基线的36个正式组合继续保留；
+新增方法的组合单独列出，不混入原复现结果。
+本次不默认自动提交全部昂贵长作业。
+
+============================================================
+14. 指标与判断方法是否有效
+============================================================
+
+保存完整accuracy matrix A[t,i]，同时报告：
+- 当前已见类别的micro accuracy；
+- task-macro accuracy；
+- 每阶段current/new与old accuracy；
+- 最终准确率；
+- 全阶段平均准确率；
+- forgetting：明确是否用历史max或首次学完值，不混用；
+- 每客户端累计历史测试集的指标（如有一致测试划分）；
+- old→old与old→new错分率。
+
+训练诊断：
+- 归一化历史q及每步/每轮变化；
+- r_grad、r_curv；
+- solver gap、非收敛比例、零步比例；
+- 更新奇异值、Frobenius/operator norm；
+- 旧模型响应代理与held-out真实表现的关系；
+- 新类学习是否被过度抑制；
+- 实测总训练时间、统计收集时间、内步时间；
+- 峰值GPU显存、CPU统计存储、通信字节。
+
+预先定义解释原则：
+- 若history_spectral与history_grad_muon无差别，不能强称有限步曲率有效；
+- 若主要只是统一缩小步长，报告该发现；
+- 若proxy下降但真实遗忘不改善，检查冻结特征代理与分类头竞争，不堆新模块掩盖；
+- 若求解器常不收敛，先解决数值实现再评价方法；
+- 若原完整MuLoRA更好，如实报告，不能削弱baseline；
+- 小pilot仅用于机制验证，不声称SOTA。
+
+============================================================
+15. 第一版不做的鲁棒扩展：只保留数据接口
+============================================================
+
+未来可用：
+R_tau(B)=tau log sum_k pi_k exp(q_k(B)/tau)
+来强调历史响应风险较高的客户端。
+
+注意：
+- q_k是该客户端全部历史的平均代理，不是每client×task最坏风险；
+- 权重必须随候选终点B+D变化；
+- 固定当前权重只做一次QP，不等于解完整softmax目标；
+- 多层softmax使用共同客户端权重，不能各层独立挑最差客户端后仍声称同一全模型目标；
+- 广播所有客户端cores通信成本更高。
+第一版只保留per-client bank/core与明确接口，不把此项作为主方法必要模块。
+
+============================================================
+16. 建议交付物与最终汇报
+============================================================
+
+在仓库风格下实现对应职责，文件路径可调整：
+- historical_state / functional_history：原始bank、归一化与recenter/register；
+- historical_coordinator：公共core与task lifecycle；
+- spectral_qp：小矩阵QP、compactpolar、谱球投影、gap、warmstart；
+- history_optimizer：direction provider与B实际更新；
+- frobenius_qp / paired_update_audit；
+- configs、CLI、checkpoint schema；
+- 上述有意义的tests；
+- source_audit、method说明、精确运行命令与结果汇总脚本。
+
+先审计已有项目再复用其组件，不创建第二套数据划分或不相容训练器。
+如发现 baseline 审计问题，单独修正并记录，不把它与方法收益混在一起。
+
+最终回复至少说明：
+1. 修改了什么、为什么；
+2. 哪些基线保持原定义，哪些是研究适配；
+3. 数学/生命周期测试是否通过；
+4. 哪些真实实验已跑、哪些未跑；
+5. 训练和求解器指标，包含失败与不收敛情况；
+6. 完整复现命令、配置与manifest位置；
+7. 风险代理的限制，以及下一步最有信息的实验。
+
+不要宣称：
+- 本方法已经有端到端无遗忘保证；
+- OSD/QSD/FedMuon的原定理自动适用于组合；
+- 已经过真实FCL验证，除非确实完成并报告结果；
+- 已建立新颖性或顶会录用保证。
+
+现在开始执行：先读取现有仓库和复现进度，保护基线，再按上面顺序完成独立的history_spectral实现、测试和资源允许的smoke/pilot。
+
+
+
+======================== fcl/functional_history.py ========================
+
+"""Exact centered sufficient statistics; Q/V share only their identical input C."""
+import torch
+from .spectral_qp import checked_psd
+
+
+class InputHistory:
+    schema_version=1
+    def __init__(self,din,dout,center='initial',energy_floor=1e-12):
+        self.C=torch.zeros(din,din,dtype=torch.float64)
+        self.risks={p:{'R':torch.zeros(dout,din,dtype=torch.float64),'e':0.,'z':0.} for p in ['q','v']}
+        self.n=0;self.center=center;self.energy_floor=energy_floor;self.registered=set();self.moved=set()
+        self.metadata={'schema_version':1,'token_policy':'patch_only_no_CLS','transform':'upstream deterministic test-form on current train',
+                       'dtype':'torch.float64','normalization':'max(anchor_energy, energy_floor*n*dout)'}
+    def recenter(self,task,deltas,new_center):
+        if task in self.moved:raise ValueError('Repeated historical recenter')
+        for p,d in deltas.items():
+            d=d.detach().cpu().double();risk=self.risks[p]
+            value=risk['e']+float((risk['R']*d).sum())+.5*float(((d@self.C)*d).sum())
+            tolerance=1e-10*max(risk['z'],abs(risk['e']),1e-30)
+            if value < -tolerance:raise ValueError('Negative raw historical residual energy')
+            risk['e']=value  # Preserve tiny rounding negatives, do not hide them.
+            risk['R']=risk['R']+d@self.C
+        self.center=new_center;self.moved.add(task)
+    def register(self,task,c,energies,n,center):
+        if task not in self.moved or center!=self.center:raise ValueError('Must recenter old history before registration')
+        if task in self.registered:raise ValueError('Repeated historical registration')
+        if n<0:raise ValueError('Negative token count')
+        self.C+=c.detach().cpu().double();self.n+=n
+        for p in self.risks:self.risks[p]['z']+=float(energies[p])
+        self.registered.add(task)
+    def project(self,a,p):
+        risk=self.risks[p];a=a.detach().cpu().double()
+        if self.n==0:return {'H':a@self.C@a.T,'F':risk['R']@a.T,'q0':0.,'Z':0.,'floor_active':False,'n':0}
+        floor=self.energy_floor*self.n*risk['R'].shape[0];z=max(risk['z'],floor)
+        h,_,correction=checked_psd(a@self.C@a.T/z)
+        return {'H':h,'F':risk['R']@a.T/z,'q0':risk['e']/z,'Z':z,'floor_active':risk['z']<floor,'n':self.n,'psd_correction':correction}
+
+
+def risk_value(core,b):
+    return core['q0']+(core['F']*b).sum()+.5*((b@core['H'])*b).sum()
+
+
+def common_core(banks,bases,client_weights=None):
+    """Uniform nonempty historical clients; a_l=1/(2*number of blocks)."""
+    output=[];metadata=[];layer_weight=1/(2*len(bases))
+    for name,a in bases.items():
+        active=[k for k in banks if banks[k][name].n>0]
+        weights={k:1/len(active) for k in active} if client_weights is None else client_weights
+        for p in ['q','v']:
+            projected=[(k,banks[k][name].project(a,p)) for k in active]
+            zeroH=torch.zeros(a.shape[0],a.shape[0],dtype=torch.float64)
+            dout=banks[next(iter(banks))][name].risks[p]['R'].shape[0]
+            zeroF=torch.zeros(dout,a.shape[0],dtype=torch.float64)
+            core={'H':zeroH,'F':zeroF,'q0':0.}
+            for k,c in projected:
+                factor=layer_weight*weights[k];core['H']+=factor*c['H'];core['F']+=factor*c['F'];core['q0']+=factor*c['q0']
+                metadata.append({'block':name,'projection':p,'client':k,'Z':c['Z'],'floor_active':c['floor_active'],'n':c['n'],'client_weight':weights[k],'layer_weight':layer_weight})
+            output.append(core)
+    return output,metadata
+
+
+======================== fcl/spectral_qp.py ========================
+
+"""Spectral-ball convex QP. Every certificate is evaluated on the returned step."""
+import time
+from dataclasses import dataclass
+import torch
+
+
+@dataclass
+class SolverConfig:
+    max_iter:int=200
+    gap_rtol:float=1e-4
+    gap_atol:float=1e-10
+    warm_start:bool=True
+
+
+def checked_psd(h):
+    h=(h+h.T)/2
+    values,vectors=torch.linalg.eigh(h)
+    scale=max(float(values.abs().max()),1e-30)
+    tol=64*torch.finfo(h.dtype).eps*h.shape[0]*scale
+    if float(values.min()) < -tol:raise ValueError('Historical Hessian is materially non-PSD')
+    correction=max(0.,-float(values.min()))
+    if correction:h=(vectors*values.clamp_min(0))@vectors.T
+    return h,values.clamp_min(0),correction
+
+
+def compact_polar(g):
+    u,s,v=torch.linalg.svd(g,full_matrices=False)
+    tol=max(g.shape)*torch.finfo(g.dtype).eps*(float(s.max()) if s.numel() else 0)
+    keep=s>tol
+    return u[:,keep]@v[keep],tol
+
+
+def spectral_project(x,radius):
+    u,s,v=torch.linalg.svd(x,full_matrices=False)
+    return (u*s.clamp_max(radius))@v
+
+
+def objective(g,h,d):return (g*d).sum()+.5*((d@h)*d).sum()
+
+
+def certificate(g,h,d,eta,config):
+    k=g+d@h
+    singular=torch.linalg.svdvals(k)
+    scale=max(float(eta*torch.linalg.svdvals(g).sum()),1e-30)
+    gap=float((k*d).sum()+eta*singular.sum())
+    norm=float(torch.linalg.matrix_norm(d,ord=2)) if d.numel() else 0.
+    phi=float(objective(g,h,d))
+    numeric=64*torch.finfo(g.dtype).eps*scale
+    return {'objective':phi,'gap':gap,'relative_gap':gap/scale,'relative_scale':scale,
+            'operator_norm':norm,'feasibility_residual':max(0.,norm-eta),
+            'converged':gap<=config.gap_atol+config.gap_rtol*scale and gap>=-numeric and norm<=eta+64*torch.finfo(g.dtype).eps*max(eta,1e-30),
+            'zero_step':not bool(torch.count_nonzero(d)),'numeric_precision':str(g.dtype)}
+
+
+@torch.no_grad()
+def solve_spectral_qp(g,h,eta,previous_delta=None,config=None):
+    config=config or SolverConfig();started=time.perf_counter()
+    if g.dtype not in [torch.float32,torch.float64]:raise TypeError('QP requires FP32/FP64')
+    if eta<0 or not torch.isfinite(g).all() or not torch.isfinite(h).all():raise ValueError('Invalid QP input')
+    h,ev,correction=checked_psd(h)
+    warm_used=False;warm_obj=None;rank_tol=0.;iterations=0
+    if eta==0 or not torch.count_nonzero(g):d=torch.zeros_like(g)
+    elif not torch.count_nonzero(h):
+        polar,rank_tol=compact_polar(g);d=-eta*polar
+    else:
+        q,t=torch.linalg.qr(g,mode='reduced')
+        x=torch.zeros_like(t);best=x.clone();best_phi=0.
+        if config.warm_start and previous_delta is not None:
+            warm=spectral_project(q.T@previous_delta.to(g),eta)
+            warm_obj=float(objective(t,h,warm))
+            if warm_obj<=0:x=warm;best=x.clone();best_phi=warm_obj;warm_used=True
+        polar,rank_tol=compact_polar(t)
+        candidate=-eta*polar
+        if float(objective(t,h,candidate))<best_phi:best=candidate;best_phi=float(objective(t,h,best))
+        # The unconstrained optimum is an exact candidate only if H is positive definite.
+        if float(ev.min())>float(ev.max())*torch.finfo(h.dtype).eps*32:
+            free=-torch.linalg.solve(h,t.T).T
+            candidate=spectral_project(free,eta)
+            phi=float(objective(t,h,candidate))
+            if phi<best_phi:best=candidate;best_phi=phi
+        x=best.clone();y=x.clone();accel=1.;lip=float(ev.max())
+        threshold=config.gap_atol+config.gap_rtol*max(float(eta*torch.linalg.svdvals(t).sum()),1e-30)
+        for iterations in range(config.max_iter+1):
+            k=t+best@h
+            gap=float((k*best).sum()+eta*torch.linalg.svdvals(k).sum())
+            if gap<=threshold:break
+            if iterations==config.max_iter:break
+            nxt=spectral_project(y-(t+y@h)/lip,eta)
+            phi=float(objective(t,h,nxt))
+            if phi>float(objective(t,h,x)):
+                y=x;accel=1.;nxt=spectral_project(y-(t+y@h)/lip,eta);phi=float(objective(t,h,nxt))
+            if phi<best_phi:best=nxt.clone();best_phi=phi
+            new_accel=(1+(1+4*accel*accel)**.5)/2
+            y=nxt+(accel-1)/new_accel*(nxt-x);x=nxt;accel=new_accel
+        d=q@best
+    diagnostic=certificate(g,h,d,eta,config)
+    failure=diagnostic['objective']>config.gap_atol+64*torch.finfo(g.dtype).eps*diagnostic['relative_scale']
+    if failure:d=torch.zeros_like(d);diagnostic=certificate(g,h,d,eta,config)
+    diagnostic.update(iterations=iterations,warm_start_used=warm_used,warm_start_objective=warm_obj,
+                      numerical_failure=failure,rank_tolerance=rank_tol,psd_correction=correction,elapsed_seconds=time.perf_counter()-started)
+    return d,diagnostic
+
+
+@torch.no_grad()
+def solve_frobenius_qp(g,h,rho):
+    if rho<0:raise ValueError('Negative Frobenius radius')
+    h,values,_=checked_psd(h)
+    values,vectors=torch.linalg.eigh(h);values=values.clamp_min(0)
+    gv=g@vectors
+    if rho==0 or not torch.count_nonzero(g):return torch.zeros_like(g),{'mu':0.,'iterations':0}
+    tol=torch.finfo(g.dtype).eps*max(float(values.max()),1e-30)*32
+    positive=values>tol
+    free=torch.zeros_like(gv);free[:,positive]=-gv[:,positive]/values[positive]
+    if not torch.count_nonzero(gv[:,~positive]) and float(free.norm())<=rho:return free@vectors.T,{'mu':0.,'iterations':0}
+    low=0.;high=max(float(g.norm())/rho,float(values.max()),1e-30)
+    for _ in range(100):
+        if float((gv/(values+high)).norm())<=rho:break
+        high*=2
+    for it in range(100):
+        mid=(low+high)/2
+        if float((gv/(values+mid)).norm())>rho:low=mid
+        else:high=mid
+        if high-low<max(high,1e-30)*1e-12:break
+    return (-gv/(values+high))@vectors.T,{'mu':high,'iterations':it+1}
+
+
+======================== fcl/history_optimizer.py ========================
+
+"""Research updates: current direction state never contains historical correction."""
+import math
+import torch
+from .spectral_qp import SolverConfig,solve_spectral_qp,solve_frobenius_qp,compact_polar,certificate
+
+METHODS=['mulora_fl_exact_polar','history_grad_muon','history_spectral','history_frobenius_qp']
+
+
+def update_geometry(d):
+    s=torch.linalg.svdvals(d);mass=s.sum();energy=s.square()
+    if not float(mass):return {'fro':0.,'operator':0.,'stable_rank':0.,'effective_rank':0.}
+    prob=s/mass
+    return {'fro':float(d.norm()),'operator':float(s.max()),'stable_rank':float(energy.sum()/energy.max()),
+            'effective_rank':float(torch.exp(-(prob*prob.clamp_min(1e-30).log()).sum())),
+            'effective_rank_definition':'singular_value_amplitude_entropy'}
+
+
+def propose(method,m,b,core,eta,lam,previous=None,solver=None,rho_factor=1.):
+    solver=solver or SolverConfig()
+    h=core['H'];f=core['F'];g=m+lam*(f+b@h);hh=lam*h
+    if method=='history_spectral':d,diagnostic=solve_spectral_qp(g,hh,eta,previous,solver)
+    elif method=='history_grad_muon':
+        d=-eta*compact_polar(g)[0];diagnostic={'oracle':'exact_polar_corrected_gradient'}
+    elif method=='mulora_fl_exact_polar':
+        d=-eta*compact_polar(m)[0];diagnostic={'oracle':'exact_polar_current_direction'}
+    elif method=='history_frobenius_qp':
+        d,diagnostic=solve_frobenius_qp(g,hh,eta*rho_factor)
+    else:raise ValueError(method)
+    return d,diagnostic,g,hh
+
+
+def paired_update_audit(m,b,core,eta,lam,a,config=None):
+    result={};d0=-eta*compact_polar(m)[0]
+    ds,_,_,_=propose('history_spectral',m,b,core,eta,lam,solver=config)
+    g=m+lam*(core['F']+b@core['H'])
+    matched=-ds.norm()*g/g.norm() if float(g.norm()) else torch.zeros_like(g)
+    candidates={name:propose(name,m,b,core,eta,lam,solver=config,rho_factor=max(1,b.shape[-1]**.5))[0] for name in METHODS}
+    candidates['matched_energy_gradient_direction']=matched
+    candidates['matched_budget_frobenius_qp']=solve_frobenius_qp(g,lam*core['H'],float(ds.norm()))[0]
+    for name,d in candidates.items():
+        benefit=-float((m*d).sum());change=float(((core['F']+b@core['H'])*d).sum()+.5*((d@core['H'])*d).sum())
+        factor=float((d*d0).sum()/d0.square().sum()) if float(d0.norm()) else 0.
+        result[name]={**update_geometry(d),'predicted_current_gain':benefit,'historical_q_change':change,
+                      'phi':-benefit+lam*change,'weight_space_fro':float((d@a).norm()),
+                      'weight_space_operator':float(torch.linalg.matrix_norm(d@a,ord=2)),
+                      'cosine_vs_muon':float((d*d0).sum()/(d.norm()*d0.norm()).clamp_min(1e-30)),
+                      'best_uniform_scale_vs_muon':factor,'uniform_scale_residual':float((d-factor*d0).norm()/d.norm().clamp_min(1e-30))}
+    return result
+
+
+class HistoryOptimizer:
+    def __init__(self,parameters,state,local_c,global_c,extension,client):
+        self.parameters=list(parameters);self.state=state;self.local_c=local_c;self.global_c=global_c
+        self.ext=extension;self.client=client;self.corrected=extension.provider=='fedmuon'
+        self.diag=[];self.steps=0;self.audits=[]
+    @torch.no_grad()
+    def step(self,lr):
+        updates=[]
+        for i,b in enumerate(self.parameters):
+            self.state[i].mul_(.9).add_(b.grad.float(),alpha=.1)
+            m=self.state[i]-self.local_c[i]+self.global_c[i] if self.corrected else self.state[i]
+            eta=lr*(max(b.shape)**.5 if self.corrected else 1.)
+            core=self.ext.cores[i];lam=0. if self.ext.method=='mulora_fl_exact_polar' else self.ext.lam
+            before=b.detach().clone();previous=self.ext.caches[self.client][i]
+            d,diagnostic,g,hh=propose(self.ext.method,m,b,core,eta,lam,previous,self.ext.solver,self.ext.rho_factor)
+            if self.ext.audit_enabled and self.client==0 and self.ext.task not in self.ext.audited_tasks and self.steps==0 and i==0:
+                a=list(self.ext.model.adapters.values())[0].A
+                self.audits.append(paired_update_audit(m,b,core,eta,lam,a,self.ext.solver))
+                self.ext.audited_tasks.add(self.ext.task)
+            b.add_(d);actual=b-before
+            if self.ext.method=='history_spectral':
+                actual_diag=certificate(g,hh,actual,eta,self.ext.solver)
+                diagnostic.update(actual_diag)
+                diagnostic['certificate_for']='actual_B_after_minus_before'
+            self.ext.caches[self.client][i]=actual.clone()
+            mu=-eta*compact_polar(m)[0];gradient=core['F']+before@core['H']
+            gain=-float((m*mu).sum());curve=.5*float(((mu@core['H'])*mu).sum())
+            q0=float(core['q0']+(core['F']*before).sum()+.5*((before@core['H'])*before).sum())
+            change=float((gradient*actual).sum()+.5*((actual@core['H'])*actual).sum())
+            self.diag.append({'layer':i,'step':self.steps,'eta':eta,'lambda':lam,**diagnostic,
+                              'r_grad':lam*float(gradient.norm())/max(float(m.norm()),1e-30),
+                              'r_curv':lam*curve/max(gain,1e-30),'history_linear_term':lam*float((gradient*mu).sum()),
+                              'q_before':q0,'q_change':change,'actual_update':update_geometry(actual)})
+            updates.append(actual)
+        self.steps+=1
+        return updates
+    def flush(self,task,round_idx):
+        ds=self.diag;n=len(ds)
+        self.ext.event('history_solver_client',task=task,round=round_idx,client=self.client,updates=n,
+            lambda_history=self.ext.lam,qp_certificate_applicable=self.ext.method=='history_spectral',mean_iterations=sum(d.get('iterations',0) for d in ds)/max(n,1),
+            nonconverged=sum(not d.get('converged',True) for d in ds),zero_steps=sum(d.get('zero_step',d['actual_update']['fro']==0) for d in ds),
+            max_relative_gap=max((d.get('relative_gap',0) for d in ds),default=0),
+            max_feasibility_residual=max((d.get('feasibility_residual',0) for d in ds),default=0),
+            max_objective=max((d.get('objective',0) for d in ds),default=0),
+            solver_seconds=sum(d.get('elapsed_seconds',0) for d in ds),
+            mean_r_grad=sum(d['r_grad'] for d in ds)/max(n,1),mean_r_curv=sum(d['r_curv'] for d in ds)/max(n,1),
+            mean_history_q=sum(d['q_before'] for d in ds)/max(n,1),history_q_change_sum=sum(d['q_change'] for d in ds),
+            first_step_per_layer=ds[:len(self.parameters)],paired_first_layer_audit=self.audits)
+
+
+======================== fcl/history_extension.py ========================
+
+"""Research lifecycle hooks for the existing FCIL trainer and data manifests."""
+import hashlib,json,time
+import torch
+import torch.nn.functional as F
+from .functional_history import InputHistory,common_core
+from .history_optimizer import HistoryOptimizer,update_geometry
+from .spectral_qp import SolverConfig,compact_polar
+from .checkpoint import rng_state,restore_rng
+from .data import loader,current_training_indices
+
+
+class HistoricalCoordinator:
+    def __init__(self,cfg):
+        self.cfg=cfg;self.method=cfg['method'];self.provider=cfg.get('direction_provider','mulora')
+        if self.provider not in ['mulora','fedmuon']:raise ValueError('Unknown direction provider')
+        self.solver=SolverConfig(**cfg.get('solver',{}));self.rho_factor=cfg.get('rho_factor',1.)
+        self.lam=cfg.get('lambda_history',0.);self.calibrated=False;self.banks={};self.cores=[];self.caches={};self.task=-1
+        self.audit_enabled=cfg.get('paired_audit',True);self.calibration={};self.basis_identity=None;self.audited_tasks=set()
+    def attach(self,model,raw,manifest,train_tf,test_tf,event,root):
+        self.model=model;self.raw=raw;self.manifest=manifest;self.train_tf=train_tf;self.test_tf=test_tf;self.event=event;self.root=root
+        if self.cfg.get('lora_scale',1)!=1:raise ValueError('Only unit LoRA scale is supported')
+        if not self.banks:
+            self.banks={k:{i:InputHistory(a.A.shape[1],a.Bq.shape[0],energy_floor=self.cfg.get('energy_floor',1e-12)) for i,a in model.adapters.items()} for k in range(self.cfg['clients'])}
+    def spectrum(self,x):return update_geometry(x)
+    def basis_hash(self):
+        value=hashlib.sha256()
+        for a in self.model.adapters.values():value.update(a.A.detach().cpu().numpy().tobytes())
+        return value.hexdigest()
+    def checkpoint_state(self):
+        return {'banks':self.banks,'cores':[{k:(v.cpu() if torch.is_tensor(v) else v) for k,v in c.items()} for c in self.cores],
+                'caches':{k:[v.cpu() if v is not None else None for v in values] for k,values in self.caches.items()},
+                'task':self.task,'lambda':self.lam,'calibrated':self.calibrated,'calibration':self.calibration,
+                'schema_version':1,'audited_tasks':self.audited_tasks,'basis_identity':self.basis_identity,'center_ids':{k:{i:b.center for i,b in banks.items()} for k,banks in self.banks.items()},
+                'position':'communication_round_boundary; epoch0/minibatch0; default sampler uses checkpointed main RNG'}
+    def restore_state(self,state):
+        self.audited_tasks=state['audited_tasks'];self.banks=state['banks'];self.cores=[{k:(v.cuda() if torch.is_tensor(v) else v) for k,v in c.items()} for c in state['cores']]
+        self.caches={k:[v.cuda() if v is not None else None for v in values] for k,values in state['caches'].items()}
+        self.basis_identity=state['basis_identity']
+        if self.basis_identity is not None:assert self.basis_identity==self.basis_hash(),'Solver basis identity mismatch'
+        self.task=state['task'];self.lam=state['lambda'];self.calibrated=state['calibrated'];self.calibration=state['calibration']
+    def begin_task(self,t):
+        started=time.perf_counter();self.task=t;self.basis_identity=self.basis_hash()
+        cores,metadata=common_core(self.banks,{i:a.A for i,a in self.model.adapters.items()})
+        self.cores=[{k:(v.cuda().float() if torch.is_tensor(v) else v) for k,v in c.items()} for c in cores]
+        self.caches={k:[None]*len(self.cores) for k in self.banks}
+        fingerprint=hashlib.sha256()
+        for c in cores:
+            for name in ['H','F']:fingerprint.update(c[name].numpy().tobytes())
+            fingerprint.update(str(c['q0']).encode())
+        self.event('historical_core',task=t,core_hash=fingerprint.hexdigest(),shared_identically_by_all_clients=True,
+                   metadata=metadata,seconds=time.perf_counter()-started,
+                   client_upload_bytes=sum((a.A.shape[0]**2+a.Bq.numel()+1)*8 for a in self.model.adapters.values())*2*len(self.banks),
+                   server_broadcast_bytes=sum((c['H'].numel()+c['F'].numel()+1)*4 for c in cores)*len(self.banks))
+        if t>0 and not self.calibrated and self.cfg.get('lambda_mode')=='training_curvature_reference' and self.method!='mulora_fl_exact_polar':self.calibrate(t)
+    def calibrate(self,t):
+        saved=rng_state();before=time.perf_counter();ratios=[];batches=[]
+        cpt=self.manifest['cpt'];allowed=set(current_training_indices(self.manifest,t))
+        try:
+            # Fixed current train identities, deterministic transform; no update to B,
+            # head, momentum, controls, history, cache or training sampler.
+            for k in range(min(self.cfg['clients'],self.cfg.get('calibration_clients',2))):
+                ids=self.manifest['partitions']['train'][t][k]
+                for number,(x,y) in enumerate(loader(self.raw[0],ids,self.cfg['batch'],False)):
+                    if number>=self.cfg.get('calibration_batches',2):break
+                    used=ids[number*self.cfg['batch']:(number+1)*self.cfg['batch']];assert set(used)<=allowed
+                    self.model.zero_grad(set_to_none=True)
+                    loss=F.cross_entropy(self.model(self.test_tf(x.cuda()))[:,t*cpt:(t+1)*cpt],y.cuda()-t*cpt);loss.backward()
+                    gain=curve=0.
+                    for p,core in zip(self.model.b_parameters(),self.cores):
+                        m=.1*p.grad.float();eta=self.cfg['lr']*(max(p.shape)**.5 if self.provider=='fedmuon' else 1.)
+                        d=-eta*compact_polar(m)[0];gain-=float((m*d).sum());curve+=.5*float(((d@core['H'])*d).sum())
+                    if curve>0 and gain>0:ratios.append(gain/curve)
+                    batches.append({'client':k,'indices':used,'gain':gain,'curvature_cost':curve,'valid_denominator':curve>0})
+            if not ratios:raise RuntimeError('Training-only lambda calibration has no nondegenerate batch')
+            reference=float(torch.tensor(ratios,dtype=torch.float64).median())
+            self.lam=reference*self.cfg.get('lambda_multiplier',1.);self.calibrated=True
+            self.calibration={'task':t,'reference':reference,'multiplier':self.cfg.get('lambda_multiplier',1.),'lambda':self.lam,
+                              'selection':'predeclared training-scale diagnostic, not validation-selected or optimal lambda','batches':batches}
+            self.event('lambda_calibration',seconds=time.perf_counter()-before,**self.calibration)
+        finally:self.model.zero_grad(set_to_none=True);restore_rng(saved)
+    def optimizer(self,bs,momentum,old_c,server_c,client):return HistoryOptimizer(bs,momentum,old_c,server_c,self,client)
+    def before_merge(self,t):
+        ids=self.manifest['partitions']['train'][t][0][:self.cfg['batch']]
+        assert set(ids)<=set(current_training_indices(self.manifest,t))
+        self.probe_input=self.test_tf(next(iter(loader(self.raw[0],ids,self.cfg['batch'])))[0].cuda())
+        with torch.no_grad():self.probe_output=self.model(self.probe_input).clone()
+        center=f"{self.cfg['output']}:task{t}:merged"
+        for k,banks in self.banks.items():
+            for i,a in self.model.adapters.items():banks[i].recenter(t,{'q':a.Bq@a.A,'v':a.Bv@a.A},center)
+    @torch.no_grad()
+    def after_merge(self,t):
+        started=time.perf_counter()
+        torch.testing.assert_close(self.model(self.probe_input),self.probe_output,atol=5e-5,rtol=5e-5)
+        del self.probe_input,self.probe_output
+        for k,banks in self.banks.items():
+            ids=self.manifest['partitions']['train'][t][k]
+            cap=self.cfg.get('history_stats_batches')
+            if cap:ids=ids[:cap*self.cfg['batch']]
+            if not set(ids)<=set(current_training_indices(self.manifest,t)):raise ValueError('Non-current training data in history registration')
+            for a in self.model.adapters.values():
+                assert a.merged and not torch.count_nonzero(a.Bq) and not torch.count_nonzero(a.Bv)
+                a.collect=True;a.tokens=0;a.stat=torch.zeros(a.A.shape[1],a.A.shape[1],device='cuda',dtype=torch.float64)
+            for x,y in loader(self.raw[0],ids,self.cfg['batch']):self.model.backbone.forward_features(self.test_tf(x.cuda()))
+            for i,a in self.model.adapters.items():
+                a.collect=False;c=a.stat;d=a.Bq.shape[0]
+                energies={p:float(((a.base.weight[s:s+d].double()@c)*a.base.weight[s:s+d].double()).sum()) for p,s in [('q',0),('v',2*d)]}
+                banks[i].register(t,c,energies,a.tokens,f"{self.cfg['output']}:task{t}:merged")
+                a.stat=None
+            self.event('history_registration',task=t,client=k,samples=len(ids),tokens_per_block={i:b.n for i,b in banks.items()},
+                       new_anchor_residual_contribution=0.,old_history_recentered_before_new_C=True)
+        self.caches={k:[None]*len(self.cores) for k in self.banks}
+        state_bytes=sum(b.C.numel()*8+sum(r['R'].numel()*8+16 for r in b.risks.values()) for bs in self.banks.values() for b in bs.values())
+        self.event('history_boundary',task=t,seconds=time.perf_counter()-started,bank_bytes=state_bytes,adapter_merge_forward_check='passed')
+
+
+======================== fcl/history_train.py ========================
+
+"""Research registry and lifecycle extension, reusing the existing FCIL trainer."""
+import argparse,json,os
+from pathlib import Path
+from .model import MODELS,MuLoRAFL
+from .history_optimizer import METHODS
+from .history_extension import HistoricalCoordinator
+from . import train
+
+
+def main():
+    p=argparse.ArgumentParser(add_help=False);p.add_argument('--config',default=os.environ.get('RUN_CONFIG'));args,_=p.parse_known_args()
+    if not args.config:
+        train.main();return
+    cfg=json.loads(Path(args.config).read_text());assert cfg['method'] in METHODS
+    MODELS.update({name:MuLoRAFL for name in METHODS})
+    train.main(HistoricalCoordinator(cfg))
+
+if __name__=='__main__':main()
+
+
+======================== fcl/train.py ========================
+
+import argparse
+import copy
+import hashlib
+import json
+import math
+import os
+import random
+import signal
+import time
+from pathlib import Path
+import numpy as np
+import torch
+import torch.nn.functional as F
+import timm
+from safetensors.torch import load_file
+from .data import load_raw,manifest,loader,transforms,current_training_indices
+from .model import MODELS
+from .math import rrs,History,ClientMuon,spectrum
+from .checkpoint import atomic_save,rng_state,restore_rng
+
+STOP=False
+
+def stop(*_):
+    global STOP
+    STOP=True
+
+
+def digest(path):
+    h=hashlib.sha256()
+    with open(path,'rb') as f:
+        for x in iter(lambda:f.read(8*1024*1024),b''):h.update(x)
+    return h.hexdigest()
+
+
+def main(extension=None):
+    p=argparse.ArgumentParser()
+    p.add_argument('--config',default=os.environ.get('RUN_CONFIG'))
+    p.add_argument('--resume',default=os.environ.get('RESUME'))
+    p.add_argument('--fork-task1',default=os.environ.get('FORK_TASK1'))
+    args=p.parse_args()
+    cfg=json.loads(Path(args.config).read_text())
+    assert cfg['method'] in MODELS
+    root=Path(os.environ.get('PROJECT_ROOT','.')).resolve()
+    out=root/cfg['output'];out.mkdir(parents=True,exist_ok=True)
+    if extension and (root/'reports/USER_PAUSE.json').exists():
+        raise RuntimeError('Research experiments are paused by the user for Pro review')
+    source_digest=hashlib.sha256()
+    if extension:
+        for path in sorted((Path(__file__).parent).glob('*.py')):
+            source_digest.update(path.name.encode());source_digest.update(path.read_bytes())
+    signal.signal(signal.SIGTERM,stop);signal.signal(signal.SIGINT,stop)
+    torch.set_num_threads(4)
+    torch.manual_seed(cfg['seed']);np.random.seed(cfg['seed']);random.seed(cfg['seed'])
+    torch.backends.cudnn.benchmark=False
+    torch.backends.cudnn.deterministic=True
+    torch.backends.cuda.matmul.allow_tf32=False
+    torch.backends.cudnn.allow_tf32=False
+    raw,cpt,classes=load_raw(cfg['dataset'],root/'data')
+    mf=root/'manifests'/f"{cfg['dataset']}_n{cfg['clients']}_a{cfg['alpha']}_s{cfg['seed']}.json"
+    m=manifest(raw,cpt,classes,cfg,mf)
+    wmeta=json.loads((root/'weights.json').read_text())
+    assert digest(wmeta['path'])==wmeta['sha256']
+    backbone=timm.create_model('vit_base_patch16_224.augreg_in21k',pretrained=False,num_classes=0)
+    weights=load_file(wmeta['path'])
+    weights={k:v for k,v in weights.items() if not k.startswith('head.')}
+    backbone.load_state_dict(weights,strict=True)
+    model=MODELS[cfg['method']](backbone,classes,cfg['rank'],cfg.get('cosine_scale',16)).cuda()
+    train_tf,test_tf=transforms();train_tf=train_tf.cuda();test_tf=test_tf.cuda()
+    hist=History();pending={};client_states={};server_c=[];matrix=[];stage_micro=[]
+    task=0;round_idx=0;initialized=False
+    start=time.time();original_start=start
+    log=(out/'events.jsonl').open('a',buffering=1)
+    def event(kind,**data):
+        log.write(json.dumps({'kind':kind,'time':time.time(),**data})+'\n')
+        print(kind,json.dumps(data),flush=True)
+    if extension:extension.attach(model,raw,m,train_tf,test_tf,event,root)
+    if args.resume or args.fork_task1:
+        s=torch.load(args.resume or args.fork_task1,map_location='cpu',weights_only=False)
+        if args.fork_task1:
+            assert extension and s['task']==1 and not s['initialized'] and s['head_count']==1
+            for key in ['dataset','seed','alpha','clients','tasks','rounds','epochs','batch','rank','lr','cosine_scale','direction_provider','train_batches','test_batches','stats_batches','history_stats_batches']:
+                assert s['config'].get(key)==cfg.get(key),('Fork protocol mismatch',key)
+        else:assert s['config']==cfg
+        assert s['manifest_hash']==digest(mf) and s['weight_hash']==wmeta['sha256']
+        for _ in range(s['head_count']):model.add_head(cpt)
+        model.load_state_dict(s['model']);hist=s['history'];pending=s['pending'];client_states=s['client_states'];server_c=s['server_c']
+        task=s['task'];round_idx=s['round'];initialized=s['initialized'];matrix=s['matrix'];stage_micro=s['stage_micro'];original_start=s['original_start']
+        for a in model.adapters.values():a.merged=not initialized
+        if extension:extension.restore_state(s['research'])
+        restore_rng(s['rng'])
+    measure_spectrum=extension.spectrum if extension else spectrum
+    model.eval()
+    event('start',config=cfg,weight=wmeta,manifest=str(mf),trainable_B=sum(p.numel() for p in model.b_parameters()),
+          matrices={f'blocks.{i}.attn.{q}':list(getattr(a,'B'+q).shape) for i,a in model.adapters.items() for q in ['q','v']},
+          A_bytes=sum(a.A.numel()*a.A.element_size() for a in model.adapters.values()),
+          operator={'name':'Takezawa scaled NS' if cfg['method']=='mulora_fl_fedmuon' else 'MuLoRA Eq.3 SSB',
+                    'dimension_multiplier':cfg['method']=='mulora_fl_fedmuon','beta':.9,'nesterov':False,'NS_steps':5,
+                    'coefficients':[3.4445,-4.7750,2.0315],'normalization_epsilon':1e-7},
+          cosine_scale=cfg.get('cosine_scale',16),precision='FP32 training, FP64 statistics and RRS')
+    def save():
+        state={'config':cfg,'model':model.state_dict(),'head_count':len(model.rows),'history':hist,'pending':pending,
+               'client_states':client_states,'server_c':server_c,'task':task,'round':round_idx,'initialized':initialized,
+               'matrix':matrix,'stage_micro':stage_micro,'rng':rng_state(),'manifest_hash':digest(mf),
+               'weight_hash':wmeta['sha256'],'original_start':original_start,'scheduler':{'round':round_idx},
+               'research':extension.checkpoint_state() if extension else None,'checkpoint_position':{'epoch':0,'minibatch':0},
+               'source_revision':cfg.get('source_revision','baseline-preserved'),
+               'source_hash':source_digest.hexdigest() if extension else None,
+               'config_hash':hashlib.sha256(json.dumps(cfg,sort_keys=True).encode()).hexdigest()}
+        atomic_save(state,out/'latest.pt')
+        if extension and cfg.get('export_task1') and task==1 and not initialized and not (out/'task1_shared.pt').exists():
+            # Hard link retains the exact boundary snapshot; no copy during export.
+            os.link(out/'latest.pt',out/'task1_shared.pt')
+    def budget():
+        if time.time()-original_start>85000:return False
+        # New project resources shared with runs; conservative full-root allocated bytes.
+        total=sum(p.stat().st_blocks*512 for p in root.rglob('*') if p.is_file() and not p.is_symlink())
+        return total<45_000_000_000
+    def indices(split,t,k=None):
+        clients=m['partitions'][split][t]
+        return clients[k] if k is not None else [i for client in clients for i in client]
+    for t in range(task,cfg['tasks']):
+        task=t
+        if not initialized:
+            began=time.time();model.add_head(cpt);pending={}
+            for a in model.adapters.values():
+                a.collect=True;a.tokens=0
+            stat_ids=current_training_indices(m,t)
+            selected=set(stat_ids[:cfg['stats_batches']*cfg['batch']]) if cfg.get('stats_batches') else None
+            total_stats={i:torch.zeros(a.A.shape[1],a.A.shape[1],dtype=torch.float64) for i,a in model.adapters.items()}
+            stat_samples=0;stat_tokens={i:0 for i in model.adapters}
+            # Explicit client-local raw sums; server never reweights by N.
+            for k in range(cfg['clients']):
+                client_ids=indices('train',t,k)
+                if selected is not None:client_ids=[i for i in client_ids if i in selected]
+                for a in model.adapters.values():
+                    a.stat=torch.zeros(a.A.shape[1],a.A.shape[1],dtype=torch.float64,device='cuda');a.tokens=0
+                with torch.no_grad():
+                    for x,y in loader(raw[0],client_ids,cfg['batch']):
+                        model.backbone.forward_features(test_tf(x.cuda()))
+                for i,a in model.adapters.items():
+                    total_stats[i].add_(a.stat.cpu());stat_tokens[i]+=a.tokens
+                stat_samples+=len(client_ids)
+                event('statistics_communication',task=t,client=k,samples=len(client_ids),
+                      raw_moments_upload_bytes=sum(v.numel()*8 for v in total_stats.values()),
+                      shared_A_download_bytes=sum(a.A.numel()*4 for a in model.adapters.values()))
+            for i,a in model.adapters.items():a.stat=total_stats[i];a.tokens=stat_tokens[i]
+            event('statistics',task=t,seconds=time.time()-began,samples=stat_samples,tokens={i:a.tokens for i,a in model.adapters.items()})
+            began=time.time()
+            for i,a in model.adapters.items():
+                a.collect=False;pending[i]=a.stat.cpu();a.stat=None
+                basis,details=rrs(pending[i].cuda(),hist.raw.get(i,torch.zeros_like(pending[i])).cuda(),cfg['rank'])
+                a.start(basis);event('rrs',task=t,layer=i,**details)
+            event('rrs_end',task=t,seconds=time.time()-began)
+            bs=model.b_parameters()
+            client_states={k:{'m':[torch.zeros_like(b,device='cpu') for b in bs],'c':[torch.zeros_like(b,device='cpu') for b in bs]} for k in range(cfg['clients'])}
+            server_c=[torch.zeros_like(b,device='cpu') for b in bs]
+            round_idx=0;initialized=True
+            if extension:extension.begin_task(t)
+            save()
+        bs=model.b_parameters()
+        for r in range(round_idx,cfg['rounds']):
+            if STOP or not budget():save();event('budget_or_signal_stop',task=t,round=r);return
+            began=time.time();torch.cuda.reset_peak_memory_stats()
+            global_bs=[b.detach().clone() for b in bs];global_head=model.rows[-1].detach().clone()
+            sizes=[len(indices('train',t,k)) for k in range(cfg['clients'])]
+            probs=[n/sum(sizes) for n in sizes]
+            agg=[torch.zeros_like(b) for b in bs];agghead=torch.zeros_like(global_head);newc=[torch.zeros_like(b,device='cpu') for b in bs]
+            for k in range(cfg['clients']):
+                with torch.no_grad():
+                    for b,g in zip(bs,global_bs):b.copy_(g)
+                    model.rows[-1].copy_(global_head)
+                ids=indices('train',t,k)
+                if cfg.get('train_batches'):ids=ids[:cfg['train_batches']*cfg['batch']]
+                dl=loader(raw[0],ids,cfg['batch'],True)
+                steps_per_round=cfg['epochs']*len(dl);steps=0;loss_sum=0.;seen=0
+                state=client_states[k]
+                momentum=[v.cuda() for v in state['m']];old_c=[v.cuda() for v in state['c']]
+                opt=extension.optimizer(bs,momentum,old_c,[v.cuda() for v in server_c],k) if extension else ClientMuon(bs,momentum,old_c,[v.cuda() for v in server_c],cfg['method']=='mulora_fl_fedmuon')
+                headopt=torch.optim.AdamW([model.rows[-1]],lr=.001,weight_decay=0)
+                lr_values=[];first_update=None;delta_diag=[];client_started=time.time()
+                for ep in range(cfg['epochs']):
+                    for x,y in dl:
+                        progress=(r*steps_per_round+steps)/max(cfg['rounds']*steps_per_round-1,1)
+                        lr=cfg['lr']*.5*(1+math.cos(math.pi*progress));lr_values.append(lr)
+                        model.zero_grad(set_to_none=True)
+                        logits=model(train_tf(x.cuda()))[:,t*cpt:(t+1)*cpt]
+                        loss=F.cross_entropy(logits,y.cuda()-t*cpt)
+                        if not torch.isfinite(loss):raise RuntimeError('Nonfinite loss')
+                        loss.backward();updates=opt.step(lr);headopt.step()
+                        if first_update is None:
+                            first_update=measure_spectrum(updates[0])
+                            delta_diag=[measure_spectrum(u) for u in updates]
+                        loss_sum+=loss.item()*len(y);seen+=len(y);steps+=1
+                if extension:opt.flush(t,r)
+                state['m']=[v.cpu() for v in momentum]
+                state['c']=[v.clone() for v in state['m']]
+                with torch.no_grad():
+                    for j,b in enumerate(bs):
+                        if not torch.isfinite(b).all():raise RuntimeError('Nonfinite B')
+                        agg[j].add_(b,alpha=probs[k]);newc[j].add_(state['c'][j],alpha=probs[k])
+                    agghead.add_(model.rows[-1],alpha=probs[k])
+                event('client',task=t,round=r,client=k,N=sizes[k],visited=seen,steps=steps,lr=lr_values,
+                      loss=loss_sum/seen,training_seconds=time.time()-client_started,first_delta_B=first_update,
+                      first_step_delta_B_all_matrices=delta_diag,local_cumulative_B=measure_spectrum(bs[0]),
+                      local_cumulative_B_all_matrices=[measure_spectrum(b) for b in bs],
+                      communication_bytes={'B_upload':sum(b.numel()*4 for b in bs),'B_download':sum(b.numel()*4 for b in bs),
+                      'control_each_direction':sum(b.numel()*4 for b in bs) if opt.corrected else 0,'head_each_direction':global_head.numel()*4})
+            with torch.no_grad():
+                for b,a in zip(bs,agg):b.copy_(a)
+                model.rows[-1].copy_(agghead)
+            aggregate_started=time.time()
+            server_c=newc;round_idx=r+1;save()
+            event('round',task=t,round=r,seconds=time.time()-began,aggregate_B=measure_spectrum(bs[0]),aggregate_B_all_matrices=[measure_spectrum(b) for b in bs],
+                  checkpoint_seconds=time.time()-aggregate_started,persistent_tensor_bytes=sum(p.numel()*p.element_size() for p in model.state_dict().values())+sum(v.numel()*8 for v in hist.raw.values())+sum(v.numel()*8 for v in pending.values())+sum(v.numel()*4 for state in client_states.values() for key in ['m','c'] for v in state[key])+sum(v.numel()*4 for v in server_c),peak_gpu_bytes=torch.cuda.max_memory_allocated(),checkpoint_bytes=(out/'latest.pt').stat().st_size)
+        # Evaluate stage before merge, using all seen logits for every test task.
+        began=time.time();row=[];counts=[];corrects=[];confusion=[];group_results=[]
+        with torch.no_grad():
+            for i in range(t+1):
+                test_ids=indices('test',i)
+                if cfg.get('test_batches'):test_ids=test_ids[:cfg['test_batches']*cfg['batch']]
+                correct=total=old_to_new=old_to_old_wrong=0
+                client_ids={idx:k for k,ids in enumerate(m['partitions']['test'][i]) for idx in ids}
+                group_counts={k:[0,0] for k in range(cfg['clients'])};offset=0
+                for x,y in loader(raw[1],test_ids,cfg['batch']):
+                    pred=model(test_tf(x.cuda())).argmax(-1).cpu()
+                    correct+=int((pred==y).sum());total+=len(y)
+                    if extension:
+                        if i<t:
+                            old_to_new+=int((pred>=t*cpt).sum());old_to_old_wrong+=int(((pred!=y)&(pred<t*cpt)).sum())
+                        for pos,idx in enumerate(test_ids[offset:offset+len(y)]):
+                            k=client_ids[idx];group_counts[k][0]+=int(pred[pos]==y[pos]);group_counts[k][1]+=1
+                        offset+=len(y)
+                row.append(correct/total);counts.append(total);corrects.append(correct)
+                if extension:
+                    confusion.append({'task':i,'old_to_new':old_to_new,'old_to_old_wrong':old_to_old_wrong,'total':total})
+                    group_results.append(group_counts)
+        matrix.append(row);stage_micro.append(sum(corrects)/sum(counts))
+        metrics={'matrix':matrix,'stage_micro':stage_micro,'final_micro':stage_micro[-1],
+                 'final_task_macro':sum(row)/len(row),'mean_stage_micro':sum(stage_micro)/len(stage_micro),
+                 'average_forgetting':sum(max(matrix[j][i] for j in range(i,t+1))-row[i] for i in range(t))/t if t else 0.,
+                 'old_micro':sum(corrects[:-1])/sum(counts[:-1]) if t else None,'new_accuracy':row[-1]}
+        if extension:
+            metrics['old_to_new_error_rate']=sum(c['old_to_new'] for c in confusion)/sum(counts[:-1]) if t else None
+            metrics['old_to_old_error_rate']=sum(c['old_to_old_wrong'] for c in confusion)/sum(counts[:-1]) if t else None
+            metrics['client_seen_accuracy']={k:sum(g[k][0] for g in group_results)/max(sum(g[k][1] for g in group_results),1) for k in range(cfg['clients'])}
+        (out/'metrics.json').write_text(json.dumps(metrics,indent=2))
+        event('evaluation',task=t,seconds=time.time()-began,**metrics)
+        if extension:extension.before_merge(t)
+        for a in model.adapters.values():a.merge()
+        if extension:extension.after_merge(t)
+        hist.commit(t,pending);pending={};client_states={};server_c=[]
+        task=t+1;round_idx=0;initialized=False;save()
+    (out/'COMPLETE.json').write_text(json.dumps({'end':time.time(),'elapsed':time.time()-original_start,'config':cfg}))
+    event('complete',elapsed=time.time()-original_start)
+
+if __name__=='__main__':main()
+
+
+======================== fcl/model.py ========================
+
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+
+class QVAdapter(nn.Module):
+    def __init__(self, linear, rank):
+        super().__init__()
+        self.base = linear
+        d = linear.in_features
+        self.register_buffer('A', torch.zeros(rank,d))
+        self.Bq = nn.Parameter(torch.zeros(d,rank))
+        self.Bv = nn.Parameter(torch.zeros(d,rank))
+        self.merged = True
+        self.collect = False
+        self.stat = None
+        self.tokens = 0
+    def forward(self, x):
+        if self.collect:
+            patches = x.detach()[:,1:,:].reshape(-1,x.shape[-1]).double()
+            self.stat.add_(patches.T@patches)
+            self.tokens += patches.shape[0]
+        y = self.base(x)
+        low = F.linear(x,self.A)
+        dq,dv = F.linear(low,self.Bq),F.linear(low,self.Bv)
+        q,k,v = y.chunk(3,dim=-1)
+        return torch.cat((q+dq,k,v+dv),dim=-1)
+    @torch.no_grad()
+    def start(self,a):
+        if not self.merged:
+            raise ValueError('Unmerged previous task')
+        self.A.copy_(a)
+        self.Bq.zero_(); self.Bv.zero_()
+        self.merged=False
+    @torch.no_grad()
+    def merge(self):
+        if self.merged:
+            raise ValueError('Duplicate merge')
+        d=self.Bq.shape[0]
+        self.base.weight[:d].add_(self.Bq@self.A)
+        self.base.weight[2*d:].add_(self.Bv@self.A)
+        self.Bq.zero_();self.Bv.zero_()
+        self.merged=True
+
+
+class ContinualViT(nn.Module):
+    def __init__(self, backbone, classes, rank=32, scale=16):
+        super().__init__()
+        self.backbone=backbone
+        self.backbone.requires_grad_(False)
+        self.adapters={}
+        for i,b in enumerate(backbone.blocks):
+            a=QVAdapter(b.attn.qkv,rank)
+            b.attn.qkv=a
+            # Non-owning lookup avoids duplicate state_dict aliases.
+            self.adapters[str(i)]=a
+        self.rows=nn.ParameterList()
+        self.classes=classes
+        self.scale=scale
+    def add_head(self,cpt):
+        for row in self.rows:
+            row.requires_grad_(False)
+        row=nn.Parameter(torch.empty(cpt,self.backbone.num_features,device=next(self.parameters()).device))
+        nn.init.normal_(row,std=0.02)
+        self.rows.append(row)
+    def b_parameters(self):
+        return [p for a in self.adapters.values() for p in (a.Bq,a.Bv)]
+    def forward(self,x):
+        features=self.backbone.forward_features(x)[:,0]
+        weights=torch.cat(list(self.rows))
+        return self.scale*F.linear(F.normalize(features,dim=-1),F.normalize(weights,dim=-1))
+
+
+class MuLoRAFL(ContinualViT):
+    method='mulora_fl'
+
+class MuLoRAFLFedMuon(ContinualViT):
+    method='mulora_fl_fedmuon'
+
+MODELS={c.method:c for c in (MuLoRAFL,MuLoRAFLFedMuon)}
+
+
+======================== fcl/math.py ========================
+
+"""Shared explicit operators. No automatic parameter dispatch by shape."""
+import math
+import torch
+
+
+def mulora_ssb(g, steps=5):
+    assert g.ndim == 2
+    x = g.float()
+    transpose = x.shape[0] > x.shape[1]
+    if transpose:
+        x = x.T
+    x = x / (x.norm() + 1e-7)
+    for _ in range(steps):
+        gram = x @ x.T
+        x = 3.4445*x + (-4.7750*gram + 2.0315*(gram@gram))@x
+    return x.T if transpose else x
+
+
+def muon_operator(g, steps=5):
+    """Takezawa operator: includes dimension scaling, unlike MuLoRA Eq.3."""
+    return mulora_ssb(g, steps) * math.sqrt(max(g.shape))
+
+
+def compact_polar(g):
+    u, s, vh = torch.linalg.svd(g, full_matrices=False)
+    tol = max(g.shape)*torch.finfo(g.dtype).eps*s.max()
+    keep = s > tol
+    return u[:, keep] @ vh[keep]
+
+
+def rrs(s, history, rank, epsilon_relative=1e-6):
+    s, history = s.double(), history.double()
+    # Training-only scale; explicit, deterministic first-task regularization.
+    scale = max(float(history.diag().mean()), float(s.diag().mean()), 1e-12)
+    epsilon = epsilon_relative * scale
+    eye = torch.eye(s.shape[0], dtype=s.dtype, device=s.device)
+    for attempt in range(8):
+        jitter = epsilon * 10**attempt
+        l, info = torch.linalg.cholesky_ex((history+history.T)/2 + jitter*eye)
+        if int(info) == 0:
+            break
+    else:
+        raise RuntimeError('Historical metric failed Cholesky')
+    tmp = torch.linalg.solve_triangular(l, s, upper=False)
+    white = torch.linalg.solve_triangular(l, tmp.T, upper=False).T
+    values, vectors = torch.linalg.eigh((white+white.T)/2)
+    z = torch.linalg.solve_triangular(l.T, vectors[:, -rank:], upper=True)
+    q, _ = torch.linalg.qr(z, mode='reduced')
+    return q.T.float(), {'epsilon': epsilon, 'jitter': jitter, 'eigenvalues': values[-rank:].tolist()}
+
+
+def aggregate(bs, bases, weights):
+    if not all(torch.equal(bases[0], a) for a in bases[1:]):
+        raise ValueError('Client A mismatch')
+    if abs(sum(weights)-1) > 1e-6:
+        raise ValueError('Weights must sum to one')
+    return sum(p*b for p,b in zip(weights,bs))
+
+
+class History:
+    def __init__(self):
+        self.raw = {}
+        self.committed = set()
+    def commit(self, task, stats):
+        if task in self.committed:
+            raise ValueError('Historical statistics already committed')
+        for name, s in stats.items():
+            self.raw[name] = self.raw.get(name, torch.zeros_like(s)) + s
+        self.committed.add(task)
+
+
+class ClientMuon:
+    def __init__(self, parameters, state, local_c, global_c, corrected):
+        self.parameters = list(parameters)
+        self.state = state
+        self.local_c = local_c
+        self.global_c = global_c
+        self.corrected = corrected
+    @torch.no_grad()
+    def step(self, lr):
+        updates = []
+        for i,p in enumerate(self.parameters):
+            if p.grad is None:
+                raise RuntimeError('Missing B gradient')
+            self.state[i].mul_(0.9).add_(p.grad.float(), alpha=0.1)
+            h = self.state[i]
+            if self.corrected:
+                h = h - self.local_c[i] + self.global_c[i]
+            operator = muon_operator if self.corrected else mulora_ssb
+            update = -lr*operator(h)
+            p.add_(update)
+            updates.append(update)
+        return updates
+
+
+def spectrum(x):
+    s = torch.linalg.svdvals(x.float())
+    energy = s.square()
+    p = energy / energy.sum().clamp_min(1e-30)
+    return {'fro': float(x.norm()), 'stable_rank': float(energy.sum()/energy.max().clamp_min(1e-30)),
+            'effective_rank': float(torch.exp(-(p*p.clamp_min(1e-30).log()).sum())) if float(energy.sum()) else 0.0}
+
+
+======================== fcl/data.py ========================
+
+"""Pinned upstream split executed on indices instead of duplicating image arrays."""
+import ast
+import json
+import random
+from pathlib import Path
+from types import SimpleNamespace
+import numpy as np
+import torch
+from torch.utils.data import Dataset,DataLoader
+
+UPSTREAM=Path(__file__).resolve().parents[1]/'sources/fed-mammoth'
+
+
+def upstream_split(train_labels,test_labels,cpt,clients,alpha,seed):
+    # Reuse the actual upstream function without importing its unrelated NLP deps.
+    source=(UPSTREAM/'_datasets/_utils.py').read_text()
+    tree=ast.parse(source)
+    cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='BaseDataset')
+    fn=next(n for n in cls.body if isinstance(n,ast.FunctionDef) and n.name=='_split_fcil')
+    module=ast.Module(body=[fn],type_ignores=[])
+    ns={'np':np,'torch':torch}
+    exec(compile(ast.fix_missing_locations(module),str(UPSTREAM/'_datasets/_utils.py'),'exec'),ns)
+    obj=SimpleNamespace(N_CLASSES_PER_TASK=cpt,N_TASKS=10,train_data=[],train_targets=[],test_data=[],test_targets=[])
+    for split,labels in [('train',train_labels),('test',test_labels)]:
+        setattr(obj,split+'_dataset',SimpleNamespace(data=np.arange(len(labels)),targets=np.array(labels)))
+    np_state,torch_state=np.random.get_state(),torch.get_rng_state()
+    try:
+        np.random.seed(seed);torch.manual_seed(seed)
+        ns['_split_fcil'](obj,clients,'distribution',alpha)
+    finally:
+        np.random.set_state(np_state);torch.set_rng_state(torch_state)
+    return {split:[[x.tolist() for x in task] for task in getattr(obj,split+'_data')] for split in ['train','test']}
+
+
+def load_raw(dataset,root):
+    from torchvision.datasets import CIFAR100
+    from PIL import Image
+    import yaml
+    if dataset=='seq-cifar100':
+        return [CIFAR100(root,train=t,download=True) for t in (True,False)],10,100
+    class Images(Dataset):
+        def __init__(self,split):
+            cfg=yaml.safe_load((UPSTREAM/f'imagenet_r_utils/imagenet-r_{split}.yaml').read_text())
+            self.paths=[Path(root)/p.removeprefix('data/') for p in cfg['data']]
+            self.targets=cfg['targets']
+            assert len(self.paths)==(24000 if split=='train' else 6000)
+            missing=next((p for p in self.paths if not p.is_file()),None)
+            if missing: raise FileNotFoundError(missing)
+        def __len__(self):return len(self.targets)
+        def __getitem__(self,i):
+            with Image.open(self.paths[i]) as im:return im.convert('RGB'),self.targets[i]
+    return [Images('train'),Images('test')],20,200
+
+
+class Indexed(Dataset):
+    def __init__(self,raw,indices):
+        from torchvision import transforms as T
+        self.raw,self.indices=raw,indices
+        self.base=T.Compose([T.Resize((224,224),interpolation=T.InterpolationMode.BICUBIC),T.ToTensor()])
+    def __len__(self):return len(self.indices)
+    def __getitem__(self,i):
+        x,y=self.raw[self.indices[i]]
+        return self.base(x),y
+
+
+def loader(raw,indices,batch,shuffle=False):
+    return DataLoader(Indexed(raw,indices),batch_size=batch,shuffle=shuffle,drop_last=False,num_workers=0)
+
+
+def transforms():
+    from kornia import augmentation as K
+    train=K.AugmentationSequential(K.RandomResizedCrop((224,224),resample='bicubic'),K.RandomHorizontalFlip(p=.5),K.Normalize((.5,)*3,(.5,)*3))
+    test=K.AugmentationSequential(K.Resize((256,256),resample='bicubic'),K.CenterCrop((224,224)),K.Normalize((.5,)*3,(.5,)*3))
+    return train,test
+
+
+def manifest(raw,cpt,classes,cfg,path):
+    path=Path(path)
+    identity={k:cfg[k] for k in ('dataset','seed','alpha','clients')}
+    if path.exists():
+        m=json.loads(path.read_text())
+        assert m['identity']==identity
+        return m
+    m={'identity':identity,'class_order':list(range(classes)),'cpt':cpt,
+       'partitions':upstream_split(raw[0].targets,raw[1].targets,cpt,cfg['clients'],cfg['alpha'],cfg['seed']),
+       'labels':{'train':list(map(int,raw[0].targets)),'test':list(map(int,raw[1].targets))}}
+    for split in ('train','test'):
+        ids=[i for task in m['partitions'][split] for client in task for i in client]
+        assert sorted(ids)==list(range(len(raw[0 if split=='train' else 1])))
+    path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_text(json.dumps(m))
+    return m
+
+
+def current_training_indices(m, task):
+    ids=[i for client in m['partitions']['train'][task] for i in client]
+    low,high=task*m['cpt'],(task+1)*m['cpt']
+    if any(not low <= m['labels']['train'][i] < high for i in ids):
+        raise ValueError('Future/old class in current training statistics')
+    return ids
+
+
+======================== fcl/checkpoint.py ========================
+
+import os
+import random
+from pathlib import Path
+import numpy as np
+import torch
+
+
+def rng_state():
+    return {'python':random.getstate(),'numpy':np.random.get_state(),'torch':torch.get_rng_state(),
+            'cuda':torch.cuda.get_rng_state_all() if torch.cuda.is_available() else []}
+
+
+def restore_rng(s):
+    random.setstate(s['python']);np.random.set_state(s['numpy']);torch.set_rng_state(s['torch'])
+    if s['cuda']:torch.cuda.set_rng_state_all(s['cuda'])
+
+
+def atomic_save(state,path):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    temp=path.with_suffix('.tmp')
+    with temp.open('wb') as f:
+        torch.save(state,f);f.flush();os.fsync(f.fileno())
+    os.replace(temp,path)
+
+
+======================== tests/test_history_math.py ========================
+
+import copy
+import pytest
+import torch
+from fcl.functional_history import InputHistory,common_core,risk_value
+from fcl.spectral_qp import SolverConfig,solve_spectral_qp,solve_frobenius_qp,compact_polar,objective
+from fcl.history_optimizer import paired_update_audit,propose
+
+CFG=SolverConfig(max_iter=200,gap_rtol=1e-9,gap_atol=1e-12)
+
+
+def test_three_anchors_exact_centering_and_new_basis():
+    torch.manual_seed(4);d=5;o=4
+    w={p:torch.randn(o,d,dtype=torch.float64) for p in ['q','v']}
+    bank=InputHistory(d,o);explicit=[]
+    for t,n in enumerate([3,11,6]):
+        delta={p:torch.randn(o,d,dtype=torch.float64)*.1 for p in w}
+        bank.recenter(t,delta,f'c{t}')
+        w={p:w[p]+delta[p] for p in w}
+        x=torch.randn(n,d,dtype=torch.float64)*torch.linspace(.3,2,n)[:,None]
+        anchors={p:x@w[p].T for p in w};c=x.T@x
+        prior_e={p:bank.risks[p]['e'] for p in w}
+        bank.register(t,c,{p:float(anchors[p].square().sum()) for p in w},n,f'c{t}')
+        assert all(bank.risks[p]['e']==prior_e[p] for p in w)
+        explicit.append((x,anchors))
+        a=torch.linalg.qr(torch.randn(d,3,dtype=torch.float64)).Q.T;b=torch.randn(o,3,dtype=torch.float64)*.05
+        for p in w:
+            core=bank.project(a,p)
+            expected=sum(.5*((xx@(w[p]+b@a).T)-yy[p]).square().sum() for xx,yy in explicit)/core['Z']
+            torch.testing.assert_close(risk_value(core,b),expected)
+            grad=core['F']+b@core['H'];eps=1e-6;direction=torch.randn_like(b)
+            fd=(risk_value(core,b+eps*direction)-risk_value(core,b-eps*direction))/(2*eps)
+            torch.testing.assert_close(fd,(grad*direction).sum(),atol=1e-8,rtol=1e-6)
+        with pytest.raises(ValueError):bank.recenter(t,delta,'bad')
+        with pytest.raises(ValueError):bank.register(t,c,{'q':0,'v':0},n,f'c{t}')
+
+
+def test_reference_center_and_shared_uniform_core_jensen():
+    torch.manual_seed(3);a=torch.linalg.qr(torch.randn(5,2,dtype=torch.float64)).Q.T
+    banks={k:{'0':InputHistory(5,5)} for k in range(2)}
+    for k,n in enumerate([2,19]):
+        x=torch.randn(n,5,dtype=torch.float64);bank=banks[k]['0'];z=float(x.square().sum())
+        bank.recenter(0,{'q':torch.zeros(5,5),'v':torch.zeros(5,5)},'one');bank.register(0,x.T@x,{'q':z,'v':z},n,'one')
+    cores,metadata=common_core(banks,{'0':a})
+    expected=sum(banks[k]['0'].project(a,'q')['H'] for k in banks)/4
+    torch.testing.assert_close(cores[0]['H'],expected)
+    assert all(x['client_weight']==.5 and x['layer_weight']==.5 for x in metadata)
+    b1,b2=torch.randn(5,2,dtype=torch.float64),torch.randn(5,2,dtype=torch.float64)
+    assert risk_value(cores[0],.2*b1+.8*b2)<=.2*risk_value(cores[0],b1)+.8*risk_value(cores[0],b2)+1e-12
+    torch.testing.assert_close((.2*b1+.8*b2)@a,.2*(b1@a)+.8*(b2@a))
+
+
+def test_analytic_qp_and_uniform_scaling_counterexample():
+    g=torch.diag(torch.tensor([2.,1.],dtype=torch.float64));h=torch.diag(torch.tensor([100.,1.],dtype=torch.float64))
+    d,info=solve_spectral_qp(g,h,1.,config=CFG)
+    torch.testing.assert_close(d,torch.diag(torch.tensor([-.02,-1.],dtype=torch.float64)),atol=1e-9,rtol=1e-9)
+    assert info['converged'] and abs(info['objective']+.52)<1e-10
+    assert float(objective(g,h,-torch.eye(2,dtype=torch.float64)))==47.5
+    alpha=3/101;assert abs(float(objective(g,h,-alpha*torch.eye(2,dtype=torch.float64)))+9/202)<1e-12
+
+
+@pytest.mark.parametrize('mode',['singular','anisotropic','zero_h','zero_g','zero_eta','tiny_eta'])
+def test_solver_degenerate_and_feasible(mode):
+    torch.manual_seed(6);g=torch.randn(7,3,dtype=torch.float64);h=torch.diag(torch.tensor([0.,1.,20.],dtype=torch.float64));eta=.4
+    if mode=='anisotropic':h=torch.diag(torch.tensor([1e-8,1.,1e4],dtype=torch.float64))
+    if mode=='zero_h':h.zero_()
+    if mode=='zero_g':g.zero_()
+    if mode=='zero_eta':eta=0
+    if mode=='tiny_eta':eta=1e-12
+    d,info=solve_spectral_qp(g,h,eta,config=CFG)
+    assert float(torch.linalg.matrix_norm(d,ord=2))<=eta+1e-12
+    assert info['objective']<=1e-12
+    assert info['converged'] or info['iterations']==CFG.max_iter
+    if mode in ['zero_g','zero_eta']:assert not torch.count_nonzero(d)
+
+
+def test_warm_transport_new_q_new_radius_and_bad_objective():
+    torch.manual_seed(19);g=torch.randn(8,3,dtype=torch.float64);h=torch.eye(3,dtype=torch.float64)
+    d0,info=solve_spectral_qp(g,h,.4,config=CFG)
+    g2=g+.02*torch.randn_like(g)
+    cold,c=solve_spectral_qp(g2,h,.2,config=CFG)
+    warm,w=solve_spectral_qp(g2,h,.2,previous_delta=d0,config=CFG)
+    assert w['warm_start_used'];torch.testing.assert_close(objective(g2,h,cold),objective(g2,h,warm),atol=1e-9,rtol=1e-8)
+    _,bad=solve_spectral_qp(g,h,.4,previous_delta=-d0,config=CFG)
+    assert not bad['warm_start_used'] and bad['warm_start_objective']>0
+
+
+def test_frobenius_singular_nullspace_and_psd_rejection():
+    g=torch.diag(torch.tensor([2.,1.],dtype=torch.float64));h=torch.diag(torch.tensor([0.,3.],dtype=torch.float64))
+    d,info=solve_frobenius_qp(g,h,.7)
+    assert float(d.norm())<=.7+1e-12 and info['mu']>0
+    torch.testing.assert_close(g+d@(h+info['mu']*torch.eye(2,dtype=torch.float64)),torch.zeros_like(g),atol=1e-10,rtol=1e-10)
+    with pytest.raises(ValueError):solve_spectral_qp(g,-torch.eye(2,dtype=torch.float64),1.)
+
+
+def test_no_history_exact_polar_actual_radius_and_paired_audit():
+    torch.manual_seed(8);m=torch.randn(5,2,dtype=torch.float64);a=torch.linalg.qr(torch.randn(6,2,dtype=torch.float64)).Q.T
+    b=torch.zeros_like(m);core={'H':torch.zeros(2,2,dtype=torch.float64),'F':torch.zeros_like(m),'q0':0.}
+    exact=propose('mulora_fl_exact_polar',m,b,core,.003,0)[0]
+    d=propose('history_spectral',m,b,core,.003,100,solver=CFG)[0]
+    torch.testing.assert_close(d,exact)
+    torch.testing.assert_close(torch.linalg.svdvals(d@a)[:2],torch.linalg.svdvals(d))
+    assert not torch.count_nonzero(compact_polar(torch.zeros_like(m))[0])
+    rank1=torch.zeros_like(m);rank1[0,0]=1;assert int(torch.linalg.matrix_rank(compact_polar(rank1)[0]))==1
+    before=torch.get_rng_state().clone();audit=paired_update_audit(m,b,core,.003,1,a,CFG)
+    assert torch.equal(before,torch.get_rng_state());assert len(audit)==6
+
+
+def test_center_move_same_actual_weight_and_registration_order():
+    torch.manual_seed(45);a=torch.linalg.qr(torch.randn(4,2,dtype=torch.float64)).Q.T
+    w=torch.randn(4,4,dtype=torch.float64);x=torch.randn(9,4,dtype=torch.float64);c=x.T@x
+    bank=InputHistory(4,4);bank.recenter(0,{'q':w*0,'v':w*0},'zero');bank.register(0,c,{'q':float((x@w.T).square().sum()),'v':1.},9,'zero')
+    b=torch.randn(4,2,dtype=torch.float64)*.1;before=risk_value(bank.project(a,'q'),b)
+    bank.recenter(1,{'q':b@a,'v':w*0},'next');after=risk_value(bank.project(a,'q'),b*0)
+    torch.testing.assert_close(before,after)
+    with pytest.raises(ValueError):InputHistory(4,4).register(0,c,{'q':1,'v':1},9,'wrong')
+
+
+def test_empty_history_floor_and_raw_negative_not_hidden():
+    a=torch.eye(3,dtype=torch.float64)[:2];bank=InputHistory(3,3)
+    assert bank.project(a,'q')['q0']==0
+    bank.recenter(0,{'q':torch.zeros(3,3),'v':torch.zeros(3,3)},'z');bank.register(0,torch.eye(3),{'q':0,'v':0},3,'z')
+    assert bank.project(a,'q')['floor_active']
+    bank.risks['q']['e']=-1.
+    with pytest.raises(ValueError):bank.recenter(1,{'q':torch.zeros(3,3),'v':torch.zeros(3,3)},'bad')
+
+
+======================== tests/test_history_lifecycle.py ========================
+
+import copy
+from types import SimpleNamespace
+import numpy as np
+import pytest
+import torch
+from fcl.model import QVAdapter
+from fcl.history_extension import HistoricalCoordinator
+from fcl.checkpoint import atomic_save,rng_state,restore_rng
+
+
+def test_collector_rejects_old_train_indices_before_access():
+    cfg={'method':'history_spectral','clients':1,'batch':2}
+    ext=HistoricalCoordinator(cfg)
+    manifest={'cpt':2,'partitions':{'train':[[[0,1]],[[0,2]]]},'labels':{'train':[0,1,2]}}
+    model=SimpleNamespace(adapters={'0':QVAdapter(torch.nn.Linear(3,9),2)})
+    ext.attach(model,[None,None],manifest,None,None,lambda *a,**kw:None,None)
+    with pytest.raises(ValueError):ext.before_merge(1)
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(),reason='CUDA lifecycle check')
+def test_actual_optimizer_bank_cache_rng_checkpoint_roundtrip(tmp_path):
+    torch.manual_seed(91);np.random.seed(91)
+    class Model(torch.nn.Module):
+        def __init__(self):
+            super().__init__();self.block=QVAdapter(torch.nn.Linear(6,18),2);self.adapters={'0':self.block}
+            self.block.start(torch.linalg.qr(torch.randn(6,2)).Q.T)
+        def b_parameters(self):return [self.block.Bq,self.block.Bv]
+    model=Model().cuda();cfg={'method':'history_spectral','clients':2,'lambda_history':.5,'paired_audit':False}
+    events=[]
+    ext=HistoricalCoordinator(cfg);ext.attach(model,None,None,None,None,lambda *a,**kw:events.append((a,kw)),None)
+    for k in range(2):
+        bank=ext.banks[k]['0'];x=torch.randn(7+k,6,dtype=torch.float64)
+        bank.recenter(0,{'q':torch.zeros(6,6),'v':torch.zeros(6,6)},'c0');bank.register(0,x.T@x,{'q':12.,'v':20.},len(x),'c0')
+    ext.begin_task(1)
+    parameters=model.b_parameters();m=[torch.zeros_like(p) for p in parameters];controls=[torch.zeros_like(p) for p in parameters]
+    opt=ext.optimizer(parameters,m,controls,controls,0)
+    for p in parameters:p.grad=torch.randn_like(p)
+    opt.step(.001)
+    assert ext.caches[0][0] is not None
+    snapshot={'model':copy.deepcopy(model.state_dict()),'research':ext.checkpoint_state(),'m':copy.deepcopy(m),'rng':rng_state()}
+    atomic_save(snapshot,tmp_path/'state.pt')
+    for p in parameters:p.grad=torch.randn_like(p)*np.random.rand()
+    expected=opt.step(.0007);expected_m=copy.deepcopy(m)
+    state=torch.load(tmp_path/'state.pt',map_location='cpu',weights_only=False)
+    other=Model().cuda();other.load_state_dict(state['model'])
+    restored=HistoricalCoordinator(cfg);restored.attach(other,None,None,None,None,lambda *a,**kw:None,None);restored.restore_state(state['research'])
+    restored_m=[v.cuda() for v in state['m']];other_opt=restored.optimizer(other.b_parameters(),restored_m,controls,controls,0)
+    restore_rng(state['rng'])
+    for p in other.b_parameters():p.grad=torch.randn_like(p)*np.random.rand()
+    actual=other_opt.step(.0007)
+    for x,y in zip(actual,expected):torch.testing.assert_close(x,y,atol=2e-7,rtol=1e-5)
+    for x,y in zip(restored_m,expected_m):torch.testing.assert_close(x,y)
+    assert restored.banks[0]['0'].registered=={0}
+    old_c=restored.banks[0]['0'].C.clone()
+    restored.begin_task(2)
+    assert all(v is None for v in restored.caches[0]);torch.testing.assert_close(restored.banks[0]['0'].C,old_c)
+    assert ext.optimizer(parameters,m,controls,controls,1).ext.cores is opt.ext.cores
+
+
+======================== tests/test_core.py ========================
+
+import copy
+import random
+import numpy as np
+import pytest
+import torch
+from fcl.math import rrs,History,aggregate,muon_operator,compact_polar,ClientMuon
+from fcl.model import QVAdapter
+from fcl.checkpoint import atomic_save,rng_state,restore_rng
+
+
+def test_statistics_rrs_and_commit():
+    torch.manual_seed(13)
+    xs=[torch.randn(7,9,dtype=torch.float64),torch.randn(23,9,dtype=torch.float64)]
+    s=sum(x.T@x for x in xs);x=torch.cat(xs)
+    torch.testing.assert_close(s,x.T@x)
+    h=torch.randn(9,9,dtype=torch.float64);h=h.T@h
+    a,details=rrs(s,h,4)
+    torch.testing.assert_close(a@a.T,torch.eye(4),atol=3e-6,rtol=1e-6)
+    metric=h+details['jitter']*torch.eye(9,dtype=torch.float64)
+    # Selected original-space subspace must be invariant under H^-1 S.
+    q=a.T.double();action=torch.linalg.solve(metric,s@q)
+    torch.testing.assert_close(action,q@(q.T@action),atol=1e-5,rtol=1e-5)
+    hist=History();hist.commit(0,{'x':s})
+    with pytest.raises(ValueError):hist.commit(0,{'x':s})
+    torch.testing.assert_close(hist.raw['x'],s)
+
+
+def test_spectrum_aggregation_and_mismatch():
+    torch.manual_seed(1);a=torch.linalg.qr(torch.randn(8,3)).Q.T
+    bs=[torch.randn(6,3),torch.randn(6,3)];w=[.2,.8]
+    b=aggregate(bs,[a,a.clone()],w)
+    torch.testing.assert_close(b@a,sum(p*(x@a) for p,x in zip(w,bs)))
+    for x in [b,bs[1]-bs[0]]:
+        torch.testing.assert_close(torch.linalg.svdvals(x),torch.linalg.svdvals(x@a)[:3])
+    with pytest.raises(ValueError):aggregate(bs,[a,a+1],w)
+
+
+def test_qv_zero_k_merge_and_round_continuity():
+    torch.manual_seed(4);base=torch.nn.Linear(8,24);layer=QVAdapter(base,3)
+    x=torch.randn(2,5,8);original=base(x).detach()
+    a=torch.linalg.qr(torch.randn(8,3)).Q.T;layer.start(a)
+    torch.testing.assert_close(layer(x),original)
+    with torch.no_grad():layer.Bq.normal_();layer.Bv.normal_()
+    before=layer(x).detach();torch.testing.assert_close(before[...,8:16],original[...,8:16])
+    # A round replaces B with aggregate; it must not call task start/reset.
+    old=layer.Bq.detach().clone()
+    with torch.no_grad():layer.Bq.copy_(.3*old+.7*(old+.1))
+    assert layer.Bq.norm()>0
+    before=layer(x).detach();layer.merge();torch.testing.assert_close(layer(x),before)
+    with pytest.raises(ValueError):layer.merge()
+
+
+def ns_reference(g):
+    # Deliberately larger Gram, independent polynomial expression.
+    x=g.float()/(g.float().norm()+1e-7)
+    for _ in range(5):x=3.4445*x-4.7750*x@(x.T@x)+2.0315*x@(x.T@x)@(x.T@x)
+    return x*max(g.shape)**.5
+
+
+def test_two_clients_two_matrices_two_rounds_reference():
+    torch.manual_seed(8)
+    shapes=[(5,2),(3,4)];weights=[.5,.5]
+    server=[torch.zeros(s) for s in shapes];c=[torch.zeros(s) for s in shapes]
+    ms=[[torch.zeros(s) for s in shapes] for _ in range(2)]
+    cs=copy.deepcopy(ms);rm=copy.deepcopy(ms);rc=copy.deepcopy(cs);rs=copy.deepcopy(server);rg=copy.deepcopy(c)
+    for r in range(2):
+        ends=[];refs=[]
+        for k in range(2):
+            params=[torch.nn.Parameter(v.clone()) for v in server];ref=[v.clone() for v in rs]
+            opt=ClientMuon(params,ms[k],cs[k],c,True)
+            frozen=copy.deepcopy(cs[k])
+            for step in range(3):
+                for j,p in enumerate(params):
+                    grad=torch.randn_like(p);p.grad=grad.clone()
+                    rm[k][j]=.9*rm[k][j]+.1*grad
+                    ref[j]-=.002*ns_reference(rm[k][j]-rc[k][j]+rg[j])
+                opt.step(.002)
+                for j,p in enumerate(params):
+                    torch.testing.assert_close(p,ref[j],atol=1e-6,rtol=1e-5)
+                    torch.testing.assert_close(cs[k][j],frozen[j])
+                    torch.testing.assert_close(ms[k][j],rm[k][j])
+            ends.append([p.detach().clone() for p in params]);refs.append(ref)
+        cs=copy.deepcopy(ms);rc=copy.deepcopy(rm)
+        c=[sum(weights[k]*cs[k][j] for k in range(2)) for j in range(2)]
+        rg=[sum(weights[k]*rc[k][j] for k in range(2)) for j in range(2)]
+        server=[sum(weights[k]*ends[k][j] for k in range(2)) for j in range(2)]
+        rs=[sum(weights[k]*refs[k][j] for k in range(2)) for j in range(2)]
+
+
+@pytest.mark.parametrize('shape',[(9,3),(3,9),(5,5)])
+def test_polar_rank_deficiency(shape):
+    x=torch.zeros(shape,dtype=torch.float64)
+    torch.testing.assert_close(compact_polar(x),x)
+    x[0,0]=1.;x[1,1]=1e-9
+    q=compact_polar(x)
+    assert int(torch.linalg.matrix_rank(q))==2
+    assert torch.count_nonzero(q[2:])==0
+    torch.testing.assert_close(q[:2,:2],torch.eye(2,dtype=torch.float64))
+    y=torch.randn(shape,dtype=torch.float64)
+    polar=compact_polar(y)
+    torch.testing.assert_close(torch.linalg.svdvals(polar),torch.ones(min(shape),dtype=torch.float64))
+
+
+def test_checkpoint_next_round(tmp_path):
+    torch.manual_seed(9);np.random.seed(9);random.seed(9)
+    state={'B':torch.randn(4,2),'m':[torch.randn(4,2)],'c':[torch.randn(4,2)],'server':[torch.randn(4,2)],
+           'history':History(),'pending':{'0':torch.eye(4)},'rng':rng_state()}
+    state['history'].commit(0,{'0':torch.eye(4)})
+    atomic_save(state,tmp_path/'c.pt')
+    def next_round(s):
+        b=torch.nn.Parameter(s['B'].clone());m=copy.deepcopy(s['m'])
+        opt=ClientMuon([b],m,s['c'],s['server'],True)
+        for _ in range(3):
+            b.grad=torch.randn_like(b)*(np.random.rand()+random.random());opt.step(.01)
+        return b,m
+    expected=next_round(state)
+    loaded=torch.load(tmp_path/'c.pt',weights_only=False);restore_rng(loaded['rng'])
+    actual=next_round(loaded)
+    torch.testing.assert_close(actual[0],expected[0],rtol=0,atol=0)
+    torch.testing.assert_close(actual[1][0],expected[1][0],rtol=0,atol=0)
+    assert loaded['history'].committed=={0}
+
+
+def test_single_client_centralized_degeneracy():
+    # Central reference independently follows Eq.3, preserves momentum across rounds.
+    from fcl.math import mulora_ssb
+    torch.manual_seed(33)
+    fed=QVAdapter(torch.nn.Linear(7,21),3)
+    central=copy.deepcopy(fed)
+    fh,ch=History(),History()
+    for task in range(2):
+        x=torch.randn(17,7,dtype=torch.float64);s=x.T@x
+        a,_=rrs(s,fh.raw.get('x',torch.zeros_like(s)),3)
+        ac,_=rrs(s,ch.raw.get('x',torch.zeros_like(s)),3)
+        fed.start(a);central.start(ac)
+        fm=[torch.zeros_like(fed.Bq),torch.zeros_like(fed.Bv)]
+        cm=copy.deepcopy(fm);zeros=copy.deepcopy(fm)
+        params=[fed.Bq,fed.Bv];refs=[central.Bq,central.Bv]
+        opt=ClientMuon(params,fm,zeros,zeros,False)
+        for rnd in range(3):
+            for step in range(2):
+                lr=.002*(1+np.cos(np.pi*(rnd*2+step)/5))/2
+                batch=torch.randn(2,4,7);target=torch.randn(2,4,21)
+                for model in [fed,central]:
+                    model.zero_grad();((model(batch)-target)**2).mean().backward()
+                opt.step(lr)
+                with torch.no_grad():
+                    for j,p in enumerate(refs):
+                        cm[j]=.9*cm[j]+.1*p.grad
+                        # Independent no-dimension-multiplier reference.
+                        p.add_(ns_reference(cm[j])/max(p.shape)**.5,alpha=-lr)
+                for p,q in zip(params,refs):torch.testing.assert_close(p,q,atol=1e-6,rtol=1e-5)
+            # FedAvg with one participant is identity, no reset at round boundary.
+            for p in params:
+                with torch.no_grad():p.copy_(aggregate([p.detach().clone()],[a],[1.]))
+        fed.merge();central.merge();fh.commit(task,{'x':s});ch.commit(task,{'x':s})
+        torch.testing.assert_close(fed.base.weight,central.base.weight,atol=1e-6,rtol=1e-5)
+        assert fh.committed==ch.committed==set(range(task+1))
+
+
+def test_statistics_access_guard_and_all_seen_contract():
+    from fcl.data import current_training_indices
+    from fcl.model import ContinualViT
+    m={'cpt':2,'partitions':{'train':[[[0,1]],[[2,3]]],'test':[[[999]]]},
+       'labels':{'train':[0,1,2,3],'test':None}}
+    assert current_training_indices(m,0)==[0,1]
+    m['partitions']['train'][0][0].append(2)
+    with pytest.raises(ValueError):current_training_indices(m,0)
+    class Backbone(torch.nn.Module):
+        num_features=7
+        blocks=[]
+        def __init__(self):
+            super().__init__();self.dummy=torch.nn.Parameter(torch.zeros(1))
+        def forward_features(self,x):return x
+    model=ContinualViT(Backbone(),4,rank=3)
+    model.add_head(2);model.add_head(2)
+    x=torch.randn(3,1,7)
+    assert model(x).shape==(3,4)
+    with pytest.raises(TypeError):model(x,task_id=0)
+    assert not model.rows[0].requires_grad
+
+
+def test_model_history_rng_resume_next_round(tmp_path):
+    torch.manual_seed(53)
+    model=QVAdapter(torch.nn.Linear(8,24),3)
+    a=torch.linalg.qr(torch.randn(8,3)).Q.T;model.start(a)
+    head=torch.nn.Parameter(torch.randn(4,8));m=[torch.zeros_like(model.Bq),torch.zeros_like(model.Bv)]
+    controls=[torch.randn_like(v) for v in m];server=copy.deepcopy(controls)
+    h=History();h.commit(0,{'0':torch.eye(8)})
+    state={'model':copy.deepcopy(model.state_dict()),'head':head.detach().clone(),'m':copy.deepcopy(m),
+           'c':controls,'server':server,'history':h,'pending':{'0':2*torch.eye(8)},'rng':rng_state()}
+    atomic_save(state,tmp_path/'round.pt')
+    def run(mod,hd,mom):
+        opt=ClientMuon([mod.Bq,mod.Bv],mom,controls,server,True)
+        ho=torch.optim.AdamW([hd],lr=.001,weight_decay=0)
+        for step in range(3):
+            x=torch.randn(2,3,8);y=torch.randn(2,3,4)
+            mod.zero_grad();ho.zero_grad()
+            z=mod(x)[...,:8]@hd.T;loss=(z-y).square().mean();loss.backward()
+            opt.step(.001*(3-step)/3);ho.step()
+        return mod.state_dict(),hd.detach().clone(),mom
+    expected=run(model,head,m)
+    loaded=torch.load(tmp_path/'round.pt',weights_only=False)
+    other=QVAdapter(torch.nn.Linear(8,24),3);other.load_state_dict(loaded['model']);other.merged=False
+    hd=torch.nn.Parameter(loaded['head']);restore_rng(loaded['rng'])
+    actual=run(other,hd,loaded['m'])
+    for key,value in expected[0].items():torch.testing.assert_close(actual[0][key],value,atol=0,rtol=0)
+    torch.testing.assert_close(actual[1],expected[1],atol=0,rtol=0)
+    assert loaded['history'].committed=={0}
+    torch.testing.assert_close(loaded['pending']['0'],2*torch.eye(8))
+
+
+def test_cuda_rng_restore_when_available():
+    if not torch.cuda.is_available():pytest.skip('CUDA unavailable')
+    state=rng_state()
+    expected=torch.randn(7,device='cuda')
+    restore_rng(state)
+    torch.testing.assert_close(torch.randn(7,device='cuda'),expected,rtol=0,atol=0)
+
+
+======================== configs/history_spectral/smoke_history_spectral.json ========================
+
+{
+  "dataset": "seq-cifar100",
+  "seed": 0,
+  "alpha": 0.05,
+  "clients": 2,
+  "tasks": 2,
+  "rounds": 2,
+  "epochs": 1,
+  "batch": 16,
+  "rank": 32,
+  "lr": 0.0002,
+  "cosine_scale": 16,
+  "direction_provider": "mulora",
+  "lora_scale": 1,
+  "lambda_history": 0.0,
+  "lambda_mode": "training_curvature_reference",
+  "lambda_multiplier": 1.0,
+  "calibration_clients": 2,
+  "calibration_batches": 1,
+  "energy_floor": 1e-12,
+  "paired_audit": true,
+  "rho_factor": 5.656854249492381,
+  "source_revision": "history-spectral-v1-audit-baseline-00b6508",
+  "solver": {
+    "max_iter": 200,
+    "gap_rtol": 0.0001,
+    "gap_atol": 1e-10,
+    "warm_start": true
+  },
+  "method": "history_spectral",
+  "stats_batches": 2,
+  "train_batches": 2,
+  "test_batches": 2,
+  "history_stats_batches": 1,
+  "output": "runs/smoke_history_spectral",
+  "export_task1": false
+}
+
+======================== configs/history_spectral/pilot_a0.05_history_spectral.json ========================
+
+{
+  "dataset": "seq-cifar100",
+  "seed": 0,
+  "alpha": 0.05,
+  "clients": 10,
+  "tasks": 3,
+  "rounds": 5,
+  "epochs": 5,
+  "batch": 16,
+  "rank": 32,
+  "lr": 0.0002,
+  "cosine_scale": 16,
+  "direction_provider": "mulora",
+  "lora_scale": 1,
+  "lambda_history": 0.0,
+  "lambda_mode": "training_curvature_reference",
+  "lambda_multiplier": 1.0,
+  "calibration_clients": 2,
+  "calibration_batches": 2,
+  "energy_floor": 1e-12,
+  "paired_audit": true,
+  "rho_factor": 5.656854249492381,
+  "source_revision": "history-spectral-v1-audit-baseline-00b6508",
+  "solver": {
+    "max_iter": 200,
+    "gap_rtol": 0.0001,
+    "gap_atol": 1e-10,
+    "warm_start": true
+  },
+  "method": "history_spectral",
+  "output": "runs/pilot_a0.05_history_spectral",
+  "export_task1": false
+}
+
+======================== configs/history_spectral/pilot_a0.5_history_spectral.json ========================
+
+{
+  "dataset": "seq-cifar100",
+  "seed": 0,
+  "alpha": 0.5,
+  "clients": 10,
+  "tasks": 3,
+  "rounds": 5,
+  "epochs": 5,
+  "batch": 16,
+  "rank": 32,
+  "lr": 0.0002,
+  "cosine_scale": 16,
+  "direction_provider": "mulora",
+  "lora_scale": 1,
+  "lambda_history": 0.0,
+  "lambda_mode": "training_curvature_reference",
+  "lambda_multiplier": 1.0,
+  "calibration_clients": 2,
+  "calibration_batches": 2,
+  "energy_floor": 1e-12,
+  "paired_audit": true,
+  "rho_factor": 5.656854249492381,
+  "source_revision": "history-spectral-v1-audit-baseline-00b6508",
+  "solver": {
+    "max_iter": 200,
+    "gap_rtol": 0.0001,
+    "gap_atol": 1e-10,
+    "warm_start": true
+  },
+  "method": "history_spectral",
+  "output": "runs/pilot_a0.5_history_spectral",
+  "export_task1": false
+}
+
+======================== research/history_spectral/smoke_queue.json ========================
+
+[
+  {
+    "config": "configs/history_spectral/smoke_mulora_fl_exact_polar.json",
+    "fork_task1": null
+  },
+  {
+    "config": "configs/history_spectral/smoke_history_grad_muon.json",
+    "fork_task1": "runs/smoke_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/smoke_history_spectral.json",
+    "fork_task1": "runs/smoke_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/smoke_history_frobenius_qp.json",
+    "fork_task1": "runs/smoke_mulora_fl_exact_polar/task1_shared.pt"
+  }
+]
+
+======================== research/history_spectral/pilot_queue.json ========================
+
+[
+  {
+    "config": "configs/history_spectral/pilot_a0.05_mulora_fl_exact_polar.json",
+    "fork_task1": null
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.05_history_grad_muon.json",
+    "fork_task1": "runs/pilot_a0.05_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.05_history_spectral.json",
+    "fork_task1": "runs/pilot_a0.05_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.5_mulora_fl_exact_polar.json",
+    "fork_task1": null
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.5_history_grad_muon.json",
+    "fork_task1": "runs/pilot_a0.5_mulora_fl_exact_polar/task1_shared.pt"
+  },
+  {
+    "config": "configs/history_spectral/pilot_a0.5_history_spectral.json",
+    "fork_task1": "runs/pilot_a0.5_mulora_fl_exact_polar/task1_shared.pt"
+  }
+]
+
+======================== scripts/research_job.py ========================
+
+"""Bounded research queue. No formal matrix submissions, no failed-run auto retry."""
+import json,os,signal,subprocess,sys,time
+from pathlib import Path
+root=Path(os.environ['PROJECT_ROOT']);os.chdir(root)
+watch=root.parent
+statepath=root/'reports/research-state.json'
+if (root/'reports/USER_PAUSE.json').exists():raise SystemExit('User paused research experiments for Pro implementation review')
+states=json.loads(statepath.read_text()) if statepath.exists() else {}
+phase=os.environ.get('RESEARCH_PHASE','smoke')
+queue=json.loads((root/'research/history_spectral'/f'{phase}_queue.json').read_text())
+
+def record():
+    tmp=statepath.with_suffix('.tmp');tmp.write_text(json.dumps(states,indent=2));tmp.replace(statepath)
+
+def qualify(cfg,out):
+    events=[json.loads(x) for x in (out/'events.jsonl').read_text().splitlines()]
+    records={(e['task'],e['round'],e['client']):e for e in events if e['kind']=='client'}
+    first_task=1 if cfg['method']!='mulora_fl_exact_polar' else 0
+    expected=(cfg['tasks']-first_task)*cfg['rounds']*cfg['clients']
+    assert len(records)==expected,(len(records),expected)
+    if not cfg.get('train_batches'):
+        assert all(e['steps']==cfg['epochs']*((e['N']+cfg['batch']-1)//cfg['batch']) and e['visited']==cfg['epochs']*e['N'] for e in records.values())
+    diagnostics=[e for e in events if e['kind']=='history_solver_client']
+    updates=sum(e['updates'] for e in diagnostics);nonconverged=sum(e['nonconverged'] for e in diagnostics)
+    ratio=nonconverged/max(updates,1)
+    result={'qualified':cfg['method']!='history_spectral' or ratio<=.01,'updates':updates,'nonconverged':nonconverged,
+            'nonconverged_fraction':ratio,'zero_steps':sum(e['zero_steps'] for e in diagnostics),
+            'max_relative_gap':max((e['max_relative_gap'] for e in diagnostics),default=0),'rule':'spectral QP <=1% actual-step nonconvergence; numerical qualification only'}
+    (out/'QUALIFICATION.json').write_text(json.dumps(result,indent=2))
+    return result['qualified']
+
+for item in queue:
+    if (root/'reports/USER_PAUSE.json').exists():raise SystemExit('User pause: research queue disabled')
+    name=item['config'];cfg=json.loads((root/name).read_text());out=root/cfg['output'];s=states.setdefault(name,{'status':'not_started','phase':phase})
+    if (out/'COMPLETE.json').exists():
+        s['status']='completed' if qualify(cfg,out) else 'qualification_failed';record()
+        if s['status']!='completed':break
+        continue
+    if s['status'] in ['failed','qualification_failed','budget_exhausted','blocked']:break
+    if s.get('pid'):
+        try:os.kill(s['pid'],0)
+        except ProcessLookupError:pass
+        else:raise SystemExit('Prior research child still exists; refusing duplicate')
+    free=int(subprocess.check_output(['nvidia-smi','--query-gpu=memory.free','--format=csv,noheader,nounits','-i',os.environ['CUDA_VISIBLE_DEVICES']],text=True).strip())
+    if free<16000:s.update(status='blocked',reason='Insufficient free GPU memory');record();break
+    env=dict(os.environ,ENTRY_MODULE='fcl.history_train',RUN_CONFIG=str(root/name));env.pop('ENTRY_FILE',None);env.pop('RESUME',None);env.pop('FORK_TASK1',None)
+    if (out/'latest.pt').exists():env['RESUME']=str(out/'latest.pt')
+    elif item.get('fork_task1'):
+        fork=root/item['fork_task1']
+        if not fork.exists():s.update(status='blocked',reason='Shared task1 checkpoint unavailable');record();break
+        env['FORK_TASK1']=str(fork)
+    started=s.setdefault('started',time.time());s.update(status='running',deadline=started+86400,gpu=os.environ['CUDA_VISIBLE_DEVICES'])
+    out.mkdir(parents=True,exist_ok=True)
+    with (out/'console.log').open('a') as log:
+        child=subprocess.Popen([sys.executable,'/data/bmw/workers/e17.py'],env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+        s['pid']=child.pid;record()
+        while child.poll() is None:
+            # Whole-project budget is deliberately stricter than per-run storage.
+            allocated=sum(p.stat().st_blocks*512 for p in watch.rglob('*') if p.is_file() and not p.is_symlink())
+            if time.time()>started+85500 or allocated>37_000_000_000:
+                os.killpg(child.pid,signal.SIGTERM)
+                try:child.wait(timeout=60)
+                except subprocess.TimeoutExpired:os.killpg(child.pid,signal.SIGKILL);child.wait()
+                s.update(status='budget_exhausted',allocated_bytes=allocated);break
+            time.sleep(15)
+    s['exit_code']=child.returncode;s['ended']=time.time()
+    if (out/'COMPLETE.json').exists():s['status']='completed' if qualify(cfg,out) else 'qualification_failed'
+    elif s['status']!='budget_exhausted':s['status']='failed'
+    record()
+    if s['status']!='completed':break
+
+
+======================== reports/USER_PAUSE.json ========================
+
+{
+  "auto_launch_allowed": false,
+  "scope": "history_spectral research family",
+  "reason": "User requested implementation review by Pro before any further experiments",
+  "requires_explicit_user_resume": true,
+  "existing_faithful_baseline_and_LoRM_jobs": "unchanged"
+}
+
+
+======================== reports/history_spectral/PRE_REVIEW_STATUS.json ========================
+
+{
+  "status": "PAUSED_BY_USER_FOR_PRO_REVIEW",
+  "no_pilot_started": true,
+  "runs": {
+    "smoke_history_grad_muon": {
+      "completed_receipt": true,
+      "updates": 192,
+      "nonconverged_actual_steps": null,
+      "max_relative_gap": null,
+      "max_feasibility_residual": 0,
+      "solver_seconds": 0,
+      "mean_iterations": 0.0,
+      "zero_steps": 48,
+      "warning": "Pre-review abbreviated smoke; no benchmark conclusion",
+      "calibration": [
+        {
+          "kind": "lambda_calibration",
+          "time": 1792919119.8209805,
+          "seconds": 0.5063426750712097,
+          "task": 1,
+          "reference": 3650846.7592847347,
+          "multiplier": 1.0,
+          "lambda": 3650846.7592847347,
+          "selection": "predeclared training-scale diagnostic, not validation-selected or optimal lambda",
+          "batches": [
+            {
+              "client": 0,
+              "indices": [
+                3,
+                37,
+                46,
+                114,
+                181,
+                228,
+                242,
+                254,
+                273,
+                355,
+                367,
+                387,
+                559,
+                563,
+                599,
+                672
+              ],
+              "gain": 0.000746821761197225,
+              "curvature_cost": 1.1220300043422661e-10,
+              "valid_denominator": true
+            },
+            {
+              "client": 1,
+              "indices": [
+                244,
+                307,
+                328,
+                385,
+                532,
+                889,
+                942,
+                966,
+                1173,
+                1355,
+                1489,
+                1579,
+                1587,
+                1645,
+                1799,
+                1897
+              ],
+              "gain": 0.0004092100223260786,
+              "curvature_cost": 1.1208633210511692e-10,
+              "valid_denominator": true
+            }
+          ]
+        }
+      ],
+      "qp_certificate_applicable": false,
+      "certificate_note": "No spectral-QP certificate applies to this exact-polar or first-order control; zero placeholder values in raw logs are not QP convergence evidence."
+    },
+    "smoke_history_spectral": {
+      "completed_receipt": true,
+      "updates": 192,
+      "nonconverged_actual_steps": 35,
+      "max_relative_gap": 0.0001549093792780329,
+      "max_feasibility_residual": 1.8575927242540837e-09,
+      "solver_seconds": 3.547496672719717,
+      "mean_iterations": 15.3125,
+      "zero_steps": 48,
+      "warning": "Pre-review abbreviated smoke; no benchmark conclusion",
+      "calibration": [
+        {
+          "kind": "lambda_calibration",
+          "time": 1792919149.7380905,
+          "seconds": 0.47366214194335043,
+          "task": 1,
+          "reference": 3650847.9002227955,
+          "multiplier": 1.0,
+          "lambda": 3650847.9002227955,
+          "selection": "predeclared training-scale diagnostic, not validation-selected or optimal lambda",
+          "batches": [
+            {
+              "client": 0,
+              "indices": [
+                3,
+                37,
+                46,
+                114,
+                181,
+                228,
+                242,
+                254,
+                273,
+                355,
+                367,
+                387,
+                559,
+                563,
+                599,
+                672
+              ],
+              "gain": 0.0007468218951771632,
+              "curvature_cost": 1.1220298773614394e-10,
+              "valid_denominator": true
+            },
+            {
+              "client": 1,
+              "indices": [
+                244,
+                307,
+                328,
+                385,
+                532,
+                889,
+                942,
+                966,
+                1173,
+                1355,
+                1489,
+                1579,
+                1587,
+                1645,
+                1799,
+                1897
+              ],
+              "gain": 0.00040921006399230464,
+              "curvature_cost": 1.1208630848941484e-10,
+              "valid_denominator": true
+            }
+          ]
+        }
+      ],
+      "actual_step_nonconverged_fraction": 0.18229166666666666,
+      "numerically_qualified": false,
+      "qualification_rule": "<=1% actual-step failures; failed with 35/192",
+      "exit_status": "completion receipt present, process gone after user pause; supervisor interrupted before collecting exit code",
+      "qp_certificate_applicable": true
+    },
+    "smoke_mulora_fl_exact_polar": {
+      "completed_receipt": true,
+      "updates": 384,
+      "nonconverged_actual_steps": null,
+      "max_relative_gap": null,
+      "max_feasibility_residual": 0,
+      "solver_seconds": 0,
+      "mean_iterations": 0.0,
+      "zero_steps": 96,
+      "warning": "Pre-review abbreviated smoke; no benchmark conclusion",
+      "calibration": [],
+      "qp_certificate_applicable": false,
+      "certificate_note": "No spectral-QP certificate applies to this exact-polar or first-order control; zero placeholder values in raw logs are not QP convergence evidence."
+    }
+  },
+  "experiments_paused_by_user": true,
+  "pilot_started": false,
+  "formal_started": false,
+  "tests_before_pause": "29 passed including CUDA lifecycle",
+  "tests_after_pause_cpu_only": "...........s.s...............                                            [100%]\n27 passed, 2 skipped in 4.09s"
+}
+
+======================== reports/history_spectral/all-tests.log ========================
+
+.............................                                            [100%]
+29 passed in 4.53s
+
+
+======================== reports/history_spectral/post-pause-cpu-tests.log ========================
+
+...........s.s...............                                            [100%]
+27 passed, 2 skipped in 4.09s
+
+
+======================== BASELINE TRAINER DIFF ========================
+diff --git a/fcl/train.py b/fcl/train.py
+index c1461fe..251ec3d 100644
+--- a/fcl/train.py
++++ b/fcl/train.py
+@@ -32,15 +32,22 @@ def digest(path):
+     return h.hexdigest()
+ 
+ 
+-def main():
++def main(extension=None):
+     p=argparse.ArgumentParser()
+     p.add_argument('--config',default=os.environ.get('RUN_CONFIG'))
+     p.add_argument('--resume',default=os.environ.get('RESUME'))
++    p.add_argument('--fork-task1',default=os.environ.get('FORK_TASK1'))
+     args=p.parse_args()
+     cfg=json.loads(Path(args.config).read_text())
+     assert cfg['method'] in MODELS
+     root=Path(os.environ.get('PROJECT_ROOT','.')).resolve()
+     out=root/cfg['output'];out.mkdir(parents=True,exist_ok=True)
++    if extension and (root/'reports/USER_PAUSE.json').exists():
++        raise RuntimeError('Research experiments are paused by the user for Pro review')
++    source_digest=hashlib.sha256()
++    if extension:
++        for path in sorted((Path(__file__).parent).glob('*.py')):
++            source_digest.update(path.name.encode());source_digest.update(path.read_bytes())
+     signal.signal(signal.SIGTERM,stop);signal.signal(signal.SIGINT,stop)
+     torch.set_num_threads(4)
+     torch.manual_seed(cfg['seed']);np.random.seed(cfg['seed']);random.seed(cfg['seed'])
+@@ -66,14 +73,22 @@ def main():
+     def event(kind,**data):
+         log.write(json.dumps({'kind':kind,'time':time.time(),**data})+'\n')
+         print(kind,json.dumps(data),flush=True)
+-    if args.resume:
+-        s=torch.load(args.resume,map_location='cpu',weights_only=False)
+-        assert s['config']==cfg and s['manifest_hash']==digest(mf) and s['weight_hash']==wmeta['sha256']
++    if extension:extension.attach(model,raw,m,train_tf,test_tf,event,root)
++    if args.resume or args.fork_task1:
++        s=torch.load(args.resume or args.fork_task1,map_location='cpu',weights_only=False)
++        if args.fork_task1:
++            assert extension and s['task']==1 and not s['initialized'] and s['head_count']==1
++            for key in ['dataset','seed','alpha','clients','tasks','rounds','epochs','batch','rank','lr','cosine_scale','direction_provider','train_batches','test_batches','stats_batches','history_stats_batches']:
++                assert s['config'].get(key)==cfg.get(key),('Fork protocol mismatch',key)
++        else:assert s['config']==cfg
++        assert s['manifest_hash']==digest(mf) and s['weight_hash']==wmeta['sha256']
+         for _ in range(s['head_count']):model.add_head(cpt)
+         model.load_state_dict(s['model']);hist=s['history'];pending=s['pending'];client_states=s['client_states'];server_c=s['server_c']
+         task=s['task'];round_idx=s['round'];initialized=s['initialized'];matrix=s['matrix'];stage_micro=s['stage_micro'];original_start=s['original_start']
+         for a in model.adapters.values():a.merged=not initialized
++        if extension:extension.restore_state(s['research'])
+         restore_rng(s['rng'])
++    measure_spectrum=extension.spectrum if extension else spectrum
+     model.eval()
+     event('start',config=cfg,weight=wmeta,manifest=str(mf),trainable_B=sum(p.numel() for p in model.b_parameters()),
+           matrices={f'blocks.{i}.attn.{q}':list(getattr(a,'B'+q).shape) for i,a in model.adapters.items() for q in ['q','v']},
+@@ -86,8 +101,15 @@ def main():
+         state={'config':cfg,'model':model.state_dict(),'head_count':len(model.rows),'history':hist,'pending':pending,
+                'client_states':client_states,'server_c':server_c,'task':task,'round':round_idx,'initialized':initialized,
+                'matrix':matrix,'stage_micro':stage_micro,'rng':rng_state(),'manifest_hash':digest(mf),
+-               'weight_hash':wmeta['sha256'],'original_start':original_start,'scheduler':{'round':round_idx}}
++               'weight_hash':wmeta['sha256'],'original_start':original_start,'scheduler':{'round':round_idx},
++               'research':extension.checkpoint_state() if extension else None,'checkpoint_position':{'epoch':0,'minibatch':0},
++               'source_revision':cfg.get('source_revision','baseline-preserved'),
++               'source_hash':source_digest.hexdigest() if extension else None,
++               'config_hash':hashlib.sha256(json.dumps(cfg,sort_keys=True).encode()).hexdigest()}
+         atomic_save(state,out/'latest.pt')
++        if extension and cfg.get('export_task1') and task==1 and not initialized and not (out/'task1_shared.pt').exists():
++            # Hard link retains the exact boundary snapshot; no copy during export.
++            os.link(out/'latest.pt',out/'task1_shared.pt')
+     def budget():
+         if time.time()-original_start>85000:return False
+         # New project resources shared with runs; conservative full-root allocated bytes.
+@@ -132,7 +154,9 @@ def main():
+             bs=model.b_parameters()
+             client_states={k:{'m':[torch.zeros_like(b,device='cpu') for b in bs],'c':[torch.zeros_like(b,device='cpu') for b in bs]} for k in range(cfg['clients'])}
+             server_c=[torch.zeros_like(b,device='cpu') for b in bs]
+-            round_idx=0;initialized=True;save()
++            round_idx=0;initialized=True
++            if extension:extension.begin_task(t)
++            save()
+         bs=model.b_parameters()
+         for r in range(round_idx,cfg['rounds']):
+             if STOP or not budget():save();event('budget_or_signal_stop',task=t,round=r);return
+@@ -151,7 +175,7 @@ def main():
+                 steps_per_round=cfg['epochs']*len(dl);steps=0;loss_sum=0.;seen=0
+                 state=client_states[k]
+                 momentum=[v.cuda() for v in state['m']];old_c=[v.cuda() for v in state['c']]
+-                opt=ClientMuon(bs,momentum,old_c,[v.cuda() for v in server_c],cfg['method']=='mulora_fl_fedmuon')
++                opt=extension.optimizer(bs,momentum,old_c,[v.cuda() for v in server_c],k) if extension else ClientMuon(bs,momentum,old_c,[v.cuda() for v in server_c],cfg['method']=='mulora_fl_fedmuon')
+                 headopt=torch.optim.AdamW([model.rows[-1]],lr=.001,weight_decay=0)
+                 lr_values=[];first_update=None;delta_diag=[];client_started=time.time()
+                 for ep in range(cfg['epochs']):
+@@ -164,9 +188,10 @@ def main():
+                         if not torch.isfinite(loss):raise RuntimeError('Nonfinite loss')
+                         loss.backward();updates=opt.step(lr);headopt.step()
+                         if first_update is None:
+-                            first_update=spectrum(updates[0])
+-                            delta_diag=[spectrum(u) for u in updates]
++                            first_update=measure_spectrum(updates[0])
++                            delta_diag=[measure_spectrum(u) for u in updates]
+                         loss_sum+=loss.item()*len(y);seen+=len(y);steps+=1
++                if extension:opt.flush(t,r)
+                 state['m']=[v.cpu() for v in momentum]
+                 state['c']=[v.clone() for v in state['m']]
+                 with torch.no_grad():
+@@ -176,8 +201,8 @@ def main():
+                     agghead.add_(model.rows[-1],alpha=probs[k])
+                 event('client',task=t,round=r,client=k,N=sizes[k],visited=seen,steps=steps,lr=lr_values,
+                       loss=loss_sum/seen,training_seconds=time.time()-client_started,first_delta_B=first_update,
+-                      first_step_delta_B_all_matrices=delta_diag,local_cumulative_B=spectrum(bs[0]),
+-                      local_cumulative_B_all_matrices=[spectrum(b) for b in bs],
++                      first_step_delta_B_all_matrices=delta_diag,local_cumulative_B=measure_spectrum(bs[0]),
++                      local_cumulative_B_all_matrices=[measure_spectrum(b) for b in bs],
+                       communication_bytes={'B_upload':sum(b.numel()*4 for b in bs),'B_download':sum(b.numel()*4 for b in bs),
+                       'control_each_direction':sum(b.numel()*4 for b in bs) if opt.corrected else 0,'head_each_direction':global_head.numel()*4})
+             with torch.no_grad():
+@@ -185,27 +210,44 @@ def main():
+                 model.rows[-1].copy_(agghead)
+             aggregate_started=time.time()
+             server_c=newc;round_idx=r+1;save()
+-            event('round',task=t,round=r,seconds=time.time()-began,aggregate_B=spectrum(bs[0]),aggregate_B_all_matrices=[spectrum(b) for b in bs],
++            event('round',task=t,round=r,seconds=time.time()-began,aggregate_B=measure_spectrum(bs[0]),aggregate_B_all_matrices=[measure_spectrum(b) for b in bs],
+                   checkpoint_seconds=time.time()-aggregate_started,persistent_tensor_bytes=sum(p.numel()*p.element_size() for p in model.state_dict().values())+sum(v.numel()*8 for v in hist.raw.values())+sum(v.numel()*8 for v in pending.values())+sum(v.numel()*4 for state in client_states.values() for key in ['m','c'] for v in state[key])+sum(v.numel()*4 for v in server_c),peak_gpu_bytes=torch.cuda.max_memory_allocated(),checkpoint_bytes=(out/'latest.pt').stat().st_size)
+         # Evaluate stage before merge, using all seen logits for every test task.
+-        began=time.time();row=[];counts=[];corrects=[]
++        began=time.time();row=[];counts=[];corrects=[];confusion=[];group_results=[]
+         with torch.no_grad():
+             for i in range(t+1):
+                 test_ids=indices('test',i)
+                 if cfg.get('test_batches'):test_ids=test_ids[:cfg['test_batches']*cfg['batch']]
+-                correct=total=0
++                correct=total=old_to_new=old_to_old_wrong=0
++                client_ids={idx:k for k,ids in enumerate(m['partitions']['test'][i]) for idx in ids}
++                group_counts={k:[0,0] for k in range(cfg['clients'])};offset=0
+                 for x,y in loader(raw[1],test_ids,cfg['batch']):
+                     pred=model(test_tf(x.cuda())).argmax(-1).cpu()
+                     correct+=int((pred==y).sum());total+=len(y)
++                    if extension:
++                        if i<t:
++                            old_to_new+=int((pred>=t*cpt).sum());old_to_old_wrong+=int(((pred!=y)&(pred<t*cpt)).sum())
++                        for pos,idx in enumerate(test_ids[offset:offset+len(y)]):
++                            k=client_ids[idx];group_counts[k][0]+=int(pred[pos]==y[pos]);group_counts[k][1]+=1
++                        offset+=len(y)
+                 row.append(correct/total);counts.append(total);corrects.append(correct)
++                if extension:
++                    confusion.append({'task':i,'old_to_new':old_to_new,'old_to_old_wrong':old_to_old_wrong,'total':total})
++                    group_results.append(group_counts)
+         matrix.append(row);stage_micro.append(sum(corrects)/sum(counts))
+         metrics={'matrix':matrix,'stage_micro':stage_micro,'final_micro':stage_micro[-1],
+                  'final_task_macro':sum(row)/len(row),'mean_stage_micro':sum(stage_micro)/len(stage_micro),
+                  'average_forgetting':sum(max(matrix[j][i] for j in range(i,t+1))-row[i] for i in range(t))/t if t else 0.,
+                  'old_micro':sum(corrects[:-1])/sum(counts[:-1]) if t else None,'new_accuracy':row[-1]}
++        if extension:
++            metrics['old_to_new_error_rate']=sum(c['old_to_new'] for c in confusion)/sum(counts[:-1]) if t else None
++            metrics['old_to_old_error_rate']=sum(c['old_to_old_wrong'] for c in confusion)/sum(counts[:-1]) if t else None
++            metrics['client_seen_accuracy']={k:sum(g[k][0] for g in group_results)/max(sum(g[k][1] for g in group_results),1) for k in range(cfg['clients'])}
+         (out/'metrics.json').write_text(json.dumps(metrics,indent=2))
+         event('evaluation',task=t,seconds=time.time()-began,**metrics)
++        if extension:extension.before_merge(t)
+         for a in model.adapters.values():a.merge()
++        if extension:extension.after_merge(t)
+         hist.commit(t,pending);pending={};client_states={};server_c=[]
+         task=t+1;round_idx=0;initialized=False;save()
+     (out/'COMPLETE.json').write_text(json.dumps({'end':time.time(),'elapsed':time.time()-original_start,'config':cfg}))

@@ -1,0 +1,534 @@
+{
+  "scope": "Read-only existing logs; no new experimental measurements",
+  "methods": {
+    "mulora_fl": {
+      "tasks": [
+        {
+          "task": 1,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.13777034222089451,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.0010560061316937208,
+              "first_matrix_aggregate_B_fro": 0.03869492560625076
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.07102490268617519,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.0009545035602059216,
+              "first_matrix_aggregate_B_fro": 0.05513773858547211
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.06048140699164542,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.000667536910623312,
+              "first_matrix_aggregate_B_fro": 0.060996294021606445
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.05731130216649006,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.0003535803291015327,
+              "first_matrix_aggregate_B_fro": 0.06315968185663223
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.053005206078655755,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 9.50162961089518e-05,
+              "first_matrix_aggregate_B_fro": 0.0635240226984024
+            }
+          ]
+        },
+        {
+          "task": 2,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.1386184604562819,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.0010298003791831434,
+              "first_matrix_aggregate_B_fro": 0.0332547128200531
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.06428050646278861,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.0009250220784451813,
+              "first_matrix_aggregate_B_fro": 0.04512966424226761
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.05885344711629208,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.0006688236026093364,
+              "first_matrix_aggregate_B_fro": 0.050176724791526794
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.05958375030012045,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.0003530777874402702,
+              "first_matrix_aggregate_B_fro": 0.052220940589904785
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.05615007555883465,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 9.607120300643146e-05,
+              "first_matrix_aggregate_B_fro": 0.05244334414601326
+            }
+          ]
+        },
+        {
+          "task": 3,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.12755983063260326,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.0010165567859075964,
+              "first_matrix_aggregate_B_fro": 0.029142849147319794
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.06316325153957965,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.000921608874341473,
+              "first_matrix_aggregate_B_fro": 0.03833353519439697
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.05174474053257145,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.000663893495220691,
+              "first_matrix_aggregate_B_fro": 0.042356234043836594
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.052241952659104716,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.00034484997449908407,
+              "first_matrix_aggregate_B_fro": 0.04352201521396637
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.049446874313142763,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 9.098062146222219e-05,
+              "first_matrix_aggregate_B_fro": 0.04356648027896881
+            }
+          ]
+        }
+      ],
+      "rrs_records": 36,
+      "rrs_jitter_escalations": 0
+    },
+    "mulora_fl_fedmuon": {
+      "tasks": [
+        {
+          "task": 1,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.15767636404033422,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.029264900647103787,
+              "first_matrix_aggregate_B_fro": 0.9464439749717712
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.20517745188645553,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.02619721330702305,
+              "first_matrix_aggregate_B_fro": 1.7447272539138794
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.2174559742883779,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.01919427830725908,
+              "first_matrix_aggregate_B_fro": 2.088798999786377
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.14163205435084658,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.00964506845921278,
+              "first_matrix_aggregate_B_fro": 2.1284236907958984
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.09374322741080518,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590,
+              "first_matrix_first_step_fro_client_mean": 0.0026627423707395793,
+              "first_matrix_aggregate_B_fro": 2.1267776489257812
+            }
+          ]
+        },
+        {
+          "task": 2,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.14479127778943104,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.028242156282067298,
+              "first_matrix_aggregate_B_fro": 0.8853859901428223
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.10550281500346348,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.02540871724486351,
+              "first_matrix_aggregate_B_fro": 1.3187944889068604
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.09380304571302019,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.018601344712078572,
+              "first_matrix_aggregate_B_fro": 1.4998265504837036
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.07942126022359837,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.009720611292868853,
+              "first_matrix_aggregate_B_fro": 1.5486761331558228
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.07016278625805752,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.0026372532127425076,
+              "first_matrix_aggregate_B_fro": 1.553652286529541
+            }
+          ]
+        },
+        {
+          "task": 3,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.12529522918570984,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.028353182971477507,
+              "first_matrix_aggregate_B_fro": 0.7970899939537048
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.0968281818095759,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.025859771110117436,
+              "first_matrix_aggregate_B_fro": 1.3775311708450317
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.07357648194250781,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.018425138853490352,
+              "first_matrix_aggregate_B_fro": 1.5250030755996704
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.0675873750400677,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.009564629569649697,
+              "first_matrix_aggregate_B_fro": 1.551335334777832
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.06594595361076136,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585,
+              "first_matrix_first_step_fro_client_mean": 0.0025464628823101522,
+              "first_matrix_aggregate_B_fro": 1.5525754690170288
+            }
+          ]
+        }
+      ],
+      "rrs_records": 36,
+      "rrs_jitter_escalations": 0
+    },
+    "lorm_official": {
+      "tasks": [
+        {
+          "task": 1,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.11933433767561173,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.05092693575894821,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.05812885008220212,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.03544651944146536,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.05333049691179919,
+              "client_steps_min_max": [
+                5,
+                495
+              ],
+              "total_steps": 1590
+            }
+          ]
+        },
+        {
+          "task": 2,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.12679423232604115,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.049969775851662616,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.0656140876929183,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.038156210352691344,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.06379594199924872,
+              "client_steps_min_max": [
+                25,
+                385
+              ],
+              "total_steps": 1585
+            }
+          ]
+        },
+        {
+          "task": 3,
+          "rounds": [
+            {
+              "round": 1,
+              "sample_weighted_local_train_ce": 0.10998410806238768,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 2,
+              "sample_weighted_local_train_ce": 0.048267603759050016,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 3,
+              "sample_weighted_local_train_ce": 0.06228498112097945,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 4,
+              "sample_weighted_local_train_ce": 0.037801931070566896,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585
+            },
+            {
+              "round": 5,
+              "sample_weighted_local_train_ce": 0.0594830399348996,
+              "client_steps_min_max": [
+                5,
+                335
+              ],
+              "total_steps": 1585
+            }
+          ]
+        }
+      ],
+      "rrs_records": 0,
+      "rrs_jitter_escalations": 0
+    }
+  },
+  "norm_scope": "First Q matrix only; not a claim about all layers or every update"
+}
