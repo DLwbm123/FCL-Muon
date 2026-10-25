@@ -1,0 +1,5 @@
+未完成：原正式队列CIFAR100 alpha=.5 seed1 MuLoRA触发存储守护退出，不能当作十任务结果。
+退出receipt为budget_exhausted、exit-9，原始起点1792954794.025567，结束1792958934.8009021，4140.775秒；记录的触发占用45433139200bytes，阈值45000000000。
+实际scripts/queue.py对整个PROJECT_ROOT递归统计所有非symlink文件，包含共享资源、历史run和后来嵌套创建的独立研究目录；并非只统计此配置的新增输出。这个共享目录布局与旧守护统计范围发生冲突。当前本run输出目录513945600bytes，不能声称该单次实验使用了45GB。
+保存checkpoint可读：task4/r0/initializedtrue，五个head、历史提交四任务，四行已评估矩阵与partial_metrics一致。日志有204个完成client、509630训练访问、32310优化器步；这只是已记录成本下界，部分第五任务客户端进度可能未进入已保存round checkpoint，不能宣称无损续跑。
+保留checkpoint、部分结果、原时钟和预算停止记录。未重跑、未清空状态、未调高阈值、未删除历史，未修改/重启原队列。当前独立centered-head-loss三种子仍在原协议/独立守护下运行。此异常不转为额外baseline调参或重复训练。

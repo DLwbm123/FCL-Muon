@@ -1,0 +1,53 @@
+{
+  "status": "INCOMPLETE_STORAGE_GUARD_STOP",
+  "checked": 1792960404.1189277,
+  "queue_receipt": {
+    "status": "budget_exhausted",
+    "started": 1792954794.025567,
+    "gpu": "6",
+    "deadline": 1793041194.025567,
+    "pid": 1025196,
+    "allocated_bytes": 45433139200,
+    "exit_code": -9,
+    "ended": 1792958934.8009021
+  },
+  "elapsed_seconds": 4140.775335073471,
+  "checkpoint": {
+    "task": 4,
+    "round": 0,
+    "initialized": true,
+    "heads": 5,
+    "committed_tasks": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "completed_metric_rows": 4,
+    "matrix_matches_saved_metrics": true
+  },
+  "completed_client_log_records": 204,
+  "logged_training_visits_lower_bound": 509630,
+  "logged_optimizer_steps_lower_bound": 32310,
+  "last_logged_client": {
+    "task": 4,
+    "round": 0,
+    "client": 3,
+    "N": 534,
+    "visited": 2670,
+    "steps": 170
+  },
+  "run_directory_allocated_bytes": 513945600,
+  "guard_scope": "scripts/queue.py sums every nonsymlink file under PROJECT_ROOT recursively; it includes nested independent head-loss and other research roots, shared assets and historical runs rather than just this config output.",
+  "trigger_bytes": 45433139200,
+  "guard_bytes": 45000000000,
+  "diagnosis": "Aggregate-root guard triggered. This receipt does not show this individual run used45GB; its output directory is measured separately. Keep the stop and original clock intact.",
+  "action": "No automatic costly retry, no queue-state clearing, no threshold increase, no historical deletion, no queue/script modification. Active separate head-centered-loss mainline continues under its own frozen guard.",
+  "limitations": [
+    "No ten-task result or completion qualification",
+    "Logs count only completed client records; interrupted work may add unrecorded cost",
+    "Checkpoint is at a saved round boundary and may not include clients logged after that boundary",
+    "Partial metrics are retained without treating them as full-run performance",
+    "No new inference, training or checkpoint hashing"
+  ]
+}
