@@ -1,0 +1,50 @@
+{
+  "raw": {
+    "n": 1000,
+    "all_seen_accuracy": 0.986,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.986,
+        "all_seen_accuracy": 0.986,
+        "restricted_correct_but_other_task_wins": 0
+      }
+    ],
+    "task_group_confusion": [
+      [
+        1000
+      ]
+    ],
+    "current_all_seen_accuracy": 0.986,
+    "current_restricted_accuracy": 0.986,
+    "current_to_first_task": null,
+    "current_to_old": null,
+    "old_all_seen_accuracy": null,
+    "old_to_current": null
+  },
+  "centered": {
+    "n": 1000,
+    "all_seen_accuracy": 0.986,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.986,
+        "all_seen_accuracy": 0.986,
+        "restricted_correct_but_other_task_wins": 0
+      }
+    ],
+    "task_group_confusion": [
+      [
+        1000
+      ]
+    ],
+    "current_all_seen_accuracy": 0.986,
+    "current_restricted_accuracy": 0.986,
+    "current_to_first_task": null,
+    "current_to_old": null,
+    "old_all_seen_accuracy": null,
+    "old_to_current": null
+  }
+}

@@ -1,0 +1,408 @@
+{
+  "status": "SIX_ORIGINAL_RUNS_COMPLETED_INDIVIDUALLY_QUALIFIED_EXACT_PAIR_GATE_FAILED",
+  "rows": [
+    {
+      "method": "regmean",
+      "seed": 1,
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.971,
+          0.94
+        ],
+        [
+          0.966,
+          0.925,
+          0.879
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.964,
+          0.952
+        ],
+        [
+          0.96,
+          0.942,
+          0.916
+        ]
+      ],
+      "raw_final": 0.9233333333333333,
+      "raw_old": 0.9455,
+      "raw_new": 0.879,
+      "raw_forgetting": 0.01749999999999996,
+      "restricted": [
+        0.986,
+        0.985,
+        0.972
+      ],
+      "raw_new_to_old": 0.112,
+      "raw_old_to_new": 0.013,
+      "centered_final": 0.9393333333333334,
+      "centered_old": 0.951,
+      "centered_new": 0.916,
+      "centered_forgetting": 0.018000000000000016,
+      "centered_new_to_old": 0.068,
+      "centered_old_to_new": 0.0125,
+      "training_visits": 375000,
+      "optimizer_steps": 23750,
+      "individual_run_qualified": true,
+      "exact_regmean_fedavg_pair_qualified": false
+    },
+    {
+      "method": "regmean",
+      "seed": 2,
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.962,
+          0.934
+        ],
+        [
+          0.942,
+          0.886,
+          0.911
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.979,
+          0.948
+        ],
+        [
+          0.971,
+          0.924,
+          0.933
+        ]
+      ],
+      "raw_final": 0.913,
+      "raw_old": 0.914,
+      "raw_new": 0.911,
+      "raw_forgetting": 0.04800000000000004,
+      "restricted": [
+        0.99,
+        0.98,
+        0.978
+      ],
+      "raw_new_to_old": 0.081,
+      "raw_old_to_new": 0.0445,
+      "centered_final": 0.9426666666666667,
+      "centered_old": 0.9475,
+      "centered_new": 0.933,
+      "centered_forgetting": 0.021499999999999964,
+      "centered_new_to_old": 0.057,
+      "centered_old_to_new": 0.02,
+      "training_visits": 375000,
+      "optimizer_steps": 23825,
+      "individual_run_qualified": true,
+      "exact_regmean_fedavg_pair_qualified": false
+    },
+    {
+      "method": "fedavg",
+      "seed": 1,
+      "raw_matrix": [
+        [
+          0.844
+        ],
+        [
+          0.752,
+          0.75
+        ],
+        [
+          0.753,
+          0.698,
+          0.605
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.844
+        ],
+        [
+          0.754,
+          0.801
+        ],
+        [
+          0.752,
+          0.741,
+          0.751
+        ]
+      ],
+      "raw_final": 0.6853333333333333,
+      "raw_old": 0.7255,
+      "raw_new": 0.605,
+      "raw_forgetting": 0.07150000000000001,
+      "restricted": [
+        0.853,
+        0.878,
+        0.898
+      ],
+      "raw_new_to_old": 0.39,
+      "raw_old_to_new": 0.0555,
+      "centered_final": 0.748,
+      "centered_old": 0.7465,
+      "centered_new": 0.751,
+      "centered_forgetting": 0.07600000000000001,
+      "centered_new_to_old": 0.23,
+      "centered_old_to_new": 0.0675,
+      "training_visits": 375000,
+      "optimizer_steps": 23750,
+      "individual_run_qualified": true,
+      "exact_regmean_fedavg_pair_qualified": false
+    },
+    {
+      "method": "fedavg",
+      "seed": 2,
+      "raw_matrix": [
+        [
+          0.777
+        ],
+        [
+          0.701,
+          0.491
+        ],
+        [
+          0.586,
+          0.461,
+          0.694
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.777
+        ],
+        [
+          0.699,
+          0.6
+        ],
+        [
+          0.617,
+          0.604,
+          0.73
+        ]
+      ],
+      "raw_final": 0.5803333333333334,
+      "raw_old": 0.5235,
+      "raw_new": 0.694,
+      "raw_forgetting": 0.11050000000000001,
+      "restricted": [
+        0.782,
+        0.775,
+        0.952
+      ],
+      "raw_new_to_old": 0.3,
+      "raw_old_to_new": 0.1645,
+      "centered_final": 0.6503333333333333,
+      "centered_old": 0.6105,
+      "centered_new": 0.73,
+      "centered_forgetting": 0.08000000000000002,
+      "centered_new_to_old": 0.261,
+      "centered_old_to_new": 0.0875,
+      "training_visits": 375000,
+      "optimizer_steps": 23825,
+      "individual_run_qualified": true,
+      "exact_regmean_fedavg_pair_qualified": false
+    },
+    {
+      "method": "lorm",
+      "seed": 1,
+      "raw_matrix": [
+        [
+          0.977
+        ],
+        [
+          0.797,
+          0.963
+        ],
+        [
+          0.762,
+          0.931,
+          0.931
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.977
+        ],
+        [
+          0.867,
+          0.956
+        ],
+        [
+          0.833,
+          0.917,
+          0.935
+        ]
+      ],
+      "raw_final": 0.8746666666666667,
+      "raw_old": 0.8465,
+      "raw_new": 0.931,
+      "raw_forgetting": 0.12349999999999994,
+      "restricted": [
+        0.944,
+        0.984,
+        0.975
+      ],
+      "raw_new_to_old": 0.053,
+      "raw_old_to_new": 0.0465,
+      "centered_final": 0.895,
+      "centered_old": 0.875,
+      "centered_new": 0.935,
+      "centered_forgetting": 0.09149999999999997,
+      "centered_new_to_old": 0.047,
+      "centered_old_to_new": 0.049,
+      "training_visits": 375000,
+      "optimizer_steps": 23750,
+      "individual_run_qualified": true,
+      "exact_regmean_fedavg_pair_qualified": false
+    },
+    {
+      "method": "lorm",
+      "seed": 2,
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.919,
+          0.961
+        ],
+        [
+          0.857,
+          0.929,
+          0.952
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.963,
+          0.961
+        ],
+        [
+          0.933,
+          0.933,
+          0.955
+        ]
+      ],
+      "raw_final": 0.9126666666666666,
+      "raw_old": 0.893,
+      "raw_new": 0.952,
+      "raw_forgetting": 0.08049999999999996,
+      "restricted": [
+        0.988,
+        0.985,
+        0.982
+      ],
+      "raw_new_to_old": 0.037,
+      "raw_old_to_new": 0.06,
+      "centered_final": 0.9403333333333334,
+      "centered_old": 0.933,
+      "centered_new": 0.955,
+      "centered_forgetting": 0.040499999999999925,
+      "centered_new_to_old": 0.035,
+      "centered_old_to_new": 0.039,
+      "training_visits": 375000,
+      "optimizer_steps": 23825,
+      "individual_run_qualified": true,
+      "exact_regmean_fedavg_pair_qualified": false
+    }
+  ],
+  "means_seeds1_2": {
+    "regmean": {
+      "raw_final": 0.9181666666666667,
+      "raw_old": 0.9297500000000001,
+      "raw_new": 0.895,
+      "raw_forgetting": 0.03275,
+      "centered_final": 0.9410000000000001,
+      "centered_old": 0.9492499999999999,
+      "centered_new": 0.9245000000000001,
+      "centered_forgetting": 0.01974999999999999
+    },
+    "fedavg": {
+      "raw_final": 0.6328333333333334,
+      "raw_old": 0.6245,
+      "raw_new": 0.6495,
+      "raw_forgetting": 0.09100000000000001,
+      "centered_final": 0.6991666666666667,
+      "centered_old": 0.6785000000000001,
+      "centered_new": 0.7404999999999999,
+      "centered_forgetting": 0.07800000000000001
+    },
+    "lorm": {
+      "raw_final": 0.8936666666666666,
+      "raw_old": 0.86975,
+      "raw_new": 0.9415,
+      "raw_forgetting": 0.10199999999999995,
+      "centered_final": 0.9176666666666666,
+      "centered_old": 0.904,
+      "centered_new": 0.9450000000000001,
+      "centered_forgetting": 0.06599999999999995
+    }
+  },
+  "regmean_minus_lorm_pp": {
+    "raw_final": 2.4500000000000077,
+    "raw_old": 6.000000000000005,
+    "raw_new": -4.649999999999999,
+    "raw_forgetting": -6.924999999999995,
+    "centered_final": 2.333333333333343,
+    "centered_old": 4.52499999999999,
+    "centered_new": -2.0499999999999963,
+    "centered_forgetting": -4.624999999999996
+  },
+  "total_new_training_visits": 2250000,
+  "standard_lorm_final_reload_audit_images": 6000,
+  "original_job_status": "failed at exact-pair gate, retained",
+  "remaining_reference_job": {
+    "started": 1792939753.19282,
+    "deadline": 1793025253.19282,
+    "launched": 1792946325.9335632,
+    "storage_limit_bytes": 20000000000,
+    "status": "completed",
+    "runs": [
+      {
+        "seed": 1,
+        "gpu": 0,
+        "pid": 574717,
+        "status": "completed",
+        "exit_code": 0
+      },
+      {
+        "seed": 2,
+        "gpu": 3,
+        "pid": 574718,
+        "status": "completed",
+        "exit_code": 0
+      }
+    ],
+    "reason": "Continue two original, unstarted standard references; no replay or relaxation of failed head-pair audit",
+    "allocated_before_bytes": 6624194560,
+    "ended": 1792948517.4055157,
+    "allocated_bytes": 10455932928
+  },
+  "centering_gate": {
+    "mean_new_gain_pp": 2.950000000000008,
+    "minimum_gain_pp": 5,
+    "passed": false
+  },
+  "limitations": [
+    "RegMean/FedAvg exact first-round endpoint match failed; no strict causal one-factor conclusion.",
+    "LoRM differs in rank16 A/B alternation, linear head, AMP and standard optimizer; standard method comparison only.",
+    "Seeds share the test set and follow development feedback, not independent heldout validation.",
+    "seed0 was development and is not pooled into the two-new-seed mean.",
+    "Raw and centered inference both prespecified; no best-rule selection."
+  ],
+  "decision": "Do not expand full10 on this failed gate. Continue already-running shared-state head-only all-seen CE study with its frozen matched control. No additional baseline tuning or replays."
+}

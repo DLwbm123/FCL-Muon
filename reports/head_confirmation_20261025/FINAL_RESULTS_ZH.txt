@@ -1,0 +1,21 @@
+原三方法×两个新种子的六条三任务运行均已完成；各运行自身验收通过，RegMean/FedAvg严格配对验收仍失败。
+
+方法 seed | raw 总体/旧/新/遗忘pp | centered 总体/旧/新/遗忘pp
+regmean 1 | 92.3333/94.5500/87.9000/1.7500 | 93.9333/95.1000/91.6000/1.8000
+regmean 2 | 91.3000/91.4000/91.1000/4.8000 | 94.2667/94.7500/93.3000/2.1500
+fedavg 1 | 68.5333/72.5500/60.5000/7.1500 | 74.8000/74.6500/75.1000/7.6000
+fedavg 2 | 58.0333/52.3500/69.4000/11.0500 | 65.0333/61.0500/73.0000/8.0000
+lorm 1 | 87.4667/84.6500/93.1000/12.3500 | 89.5000/87.5000/93.5000/9.1500
+lorm 2 | 91.2667/89.3000/95.2000/8.0500 | 94.0333/93.3000/95.5000/4.0500
+
+两个新seed均值（seed0开发结果不混入）：
+regmean | raw_final=91.8167 / raw_old=92.9750 / raw_new=89.5000 / raw_forgetting=3.2750 / centered_final=94.1000 / centered_old=94.9250 / centered_new=92.4500 / centered_forgetting=1.9750
+fedavg | raw_final=63.2833 / raw_old=62.4500 / raw_new=64.9500 / raw_forgetting=9.1000 / centered_final=69.9167 / centered_old=67.8500 / centered_new=74.0500 / centered_forgetting=7.8000
+lorm | raw_final=89.3667 / raw_old=86.9750 / raw_new=94.1500 / raw_forgetting=10.2000 / centered_final=91.7667 / centered_old=90.4000 / centered_new=94.5000 / centered_forgetting=6.6000
+
+RegMean相对标准LoRM，raw总体+2.4500pp、旧类+6.0000pp、新类-4.6500pp；双方固定去均值后，总体+2.3333pp、旧类+4.5250pp、新类-2.0500pp。
+总体/旧类优势和新类劣势同时存在，不能称全面优于LoRM。此比较包含rank、优化器、精度及头结构等差异，不是单机制消融。
+RegMean固定去均值的新类平均增益仍为2.95pp，未达冻结5pp门槛；不得因为LoRM完成而改变门槛。两个RegMean/FedAvg首轮端点差异原因仍未确定，原失败receipt和逐张量审计保留；没有重跑完成轨迹。
+LoRM每seed150客户端轮/375000训练访问，标准配置未调参。两份实际最终checkpoint task3/r0/未初始化，矩阵一致；生产验收对每份重载3000测试图像，raw及centered预测均一致。
+全部原六条合计2250000训练访问。原group started1792939753.19282；两条LoRM仅恢复原未启动工作，沿用该起点/20GB上限。剩余对照监督exit0结束，目录分配10455932928bytes；原配对监督failed不改为completed。
+下一步已在执行：三seed shared-state head-only all-seen CE与matched current CE，完整2×2结果未出，不先做科学结论，不额外开展baseline调参或full10扩展。

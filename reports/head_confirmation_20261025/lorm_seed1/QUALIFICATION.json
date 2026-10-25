@@ -1,0 +1,11 @@
+{
+  "qualified": true,
+  "client_rounds": 150,
+  "training_visits": 375000,
+  "optimizer_steps": 23750,
+  "checkpoint_boundary_complete": true,
+  "final_checkpoint_raw_predictions_equal": true,
+  "final_checkpoint_centered_predictions_equal": true,
+  "audit_images": 3000,
+  "original_exact_head_pair_gate": "FAILED and retained; independent official reference does not repair it"
+}

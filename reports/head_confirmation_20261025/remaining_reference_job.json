@@ -3,21 +3,25 @@
   "deadline": 1793025253.19282,
   "launched": 1792946325.9335632,
   "storage_limit_bytes": 20000000000,
-  "status": "running",
+  "status": "completed",
   "runs": [
     {
       "seed": 1,
       "gpu": 0,
       "pid": 574717,
-      "status": "running"
+      "status": "completed",
+      "exit_code": 0
     },
     {
       "seed": 2,
       "gpu": 3,
       "pid": 574718,
-      "status": "running"
+      "status": "completed",
+      "exit_code": 0
     }
   ],
   "reason": "Continue two original, unstarted standard references; no replay or relaxation of failed head-pair audit",
-  "allocated_before_bytes": 6624194560
+  "allocated_before_bytes": 6624194560,
+  "ended": 1792948517.4055157,
+  "allocated_bytes": 10455932928
 }
