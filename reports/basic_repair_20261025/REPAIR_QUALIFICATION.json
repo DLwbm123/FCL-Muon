@@ -1,0 +1,12 @@
+{
+  "qualified": true,
+  "checkpoint": "runs/head_diagnostics/t1_repaired_H1.pt",
+  "accuracy": 0.9909999966621399,
+  "correct": 991,
+  "n": 1000,
+  "full_confusion_matches_head_diagnostic": true,
+  "local_snapshots": 50,
+  "global_boundary_snapshots": 7,
+  "merged_B_zero": true,
+  "test_selected": false
+}

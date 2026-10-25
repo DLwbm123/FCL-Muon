@@ -87,14 +87,20 @@
     "history_spectral_remains_paused": true
   },
   "basic_repair": {
-    "status": "T1_training_started",
+    "status": "completed_exit0_with_verified_H1_checkpoint",
     "branch": "codex/basic-t1-repair",
     "protocol": "research/basic_repair/LOCKED_PROTOCOL.json",
-    "head_diagnostics": "pending",
+    "head_diagnostics": "completed: H0=.832 H1=.991 H2=.995 H3=.992; pretrained H1=.966 H3=.982",
     "centering": "completed; reports/basic_repair_20261025/task_block_centering.json",
     "centering_mulora_all_seen": 0.7383333333333333,
     "history_training_resumed": false,
     "scope": "One faithful MuLoRA T1 recovery then fixed readouts; no new FedMuon or LoRM training",
-    "tests": "3 preflight tests passed"
+    "tests": "3 preflight tests passed",
+    "report": "basic_repair_20261025/RESULTS_ZH.txt",
+    "repair_checkpoint": "pro5000:/data/bmw/FCL-Muon/basic_repair_20261025/runs/head_diagnostics/t1_repaired_H1.pt",
+    "test_selected": false,
+    "repair_verified_correct": 991,
+    "repair_verified_n": 1000,
+    "full_fcl_repair": "not_run"
   }
 }

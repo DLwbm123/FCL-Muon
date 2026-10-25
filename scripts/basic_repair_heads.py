@@ -140,10 +140,14 @@ def main():
         z = z / np.linalg.norm(z,axis=1,keepdims=True)  # same FP64 normalization as the statistic helpers
         values = {'H1':metrics(16*z@h1.T,y), 'H3':metrics(np.c_[z,np.ones(len(z))]@h3,y)}
         if encoder=='adapted':
-            values['H0']=metrics((16*zt@F.normalize(original_head.cpu(),dim=1).T).numpy(),y)
-            values['H2']=metrics((16*zt@F.normalize(h2.cpu(),dim=1).T).numpy(),y)
+            def cosine_scores(w):
+                # Match the original CUDA FP32 readout arithmetic for checkpoint validation.
+                with torch.inference_mode():
+                    return (16*F.linear(zt.cuda(),F.normalize(w.cuda(),dim=1))).cpu().numpy()
+            values['H0']=metrics(cosine_scores(original_head),y)
+            values['H2']=metrics(cosine_scores(h2),y)
             # Verify the actual saved FP32 H1 checkpoint function, not just FP64 formula.
-            values['H1_checkpoint_fp32']=metrics((16*zt@F.normalize(torch.from_numpy(h1).float(),dim=1).T).numpy(),y)
+            values['H1_checkpoint_fp32']=metrics(cosine_scores(torch.from_numpy(h1).float()),y)
             assert values['H0']['accuracy']==checkpoint['matrix'][0][0]
             local_heads=[]
             local_readouts=[]
@@ -152,7 +156,7 @@ def main():
                 w=local['head']
                 local_heads.append(w)
                 local_readouts.append({'client':k,'n_train':len(ids),
-                    'on_common_final_encoder':metrics((16*zt@F.normalize(w,dim=1).T).numpy(),y),
+                    'on_common_final_encoder':metrics(cosine_scores(w),y),
                     'row_norms':w.norm(dim=1).tolist()})
             average=sum(len(ids)/5000*w for ids,w in zip(train_parts,local_heads))
             torch.testing.assert_close(average,original_head.cpu(),atol=1e-6,rtol=1e-5)

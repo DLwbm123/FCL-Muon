@@ -1,0 +1,115 @@
+基础修复闭环：T1真实结果与固定logit干预（2026-10-25）
+
+主要结论
+同一个MuLoRA T1最终编码器，原头83.2%，无调参全局原型余弦头99.1%，
+同结构全局拟合余弦头99.5%，ridge线性读出99.2%。不改变编码器即可恢复
+15.9个百分点，因此原来的第一任务低成绩主要受分类头学习/聚合路径限制；
+不能据此把RRS、Q/V-only或MuLoRA编码器判为缺乏分类能力。
+本轮已保存并独立加载验证一个任务末H1原型头修复checkpoint，991/1000正确。
+这是第一任务的基础链路修复，不是history_spectral新方法性能结果。
+
+1. 数据、训练身份与固定规则
+原CIFAR100 n10/alpha.05/seed0 manifest、原IN21K权重、Q/V-r32、共享RRS、
+固定A训练B、Eq.3无维度乘数、样本加权FedAvg、任务末单次merge均保持。
+只补一次原MuLoRA T1，5round×5完整epoch、batch16、lr2e-4及原cosine schedule。
+编码器训练和头拟合均用原5000张T1训练图；测试为原1000张T1测试图。
+没有从已参与编码器训练的数据事后划一个所谓独立validation。
+额外头部计算与原训练预算分开记录；没有按测试选择超参、头或停止点。
+同seed与相同算法不代表逐位相同轨迹：补跑83.2%，旧pilot T1为83.3%，差1张图；
+RRS特征值与原日志一致，训练过程存在小量数值差异，未重跑来追83.3%。
+
+代码从00b6508导出到独立目录，仅新增无RNG的端点保存和轮末快照保留。
+新增的模型特征前向发生在T1训练之后。三个预检通过：raw-stat/pooling、
+不等客户端全局梯度与pooled目标等价、端点序列化不推进Torch/NumPy RNG。
+运行前锁定的research/basic_repair/LOCKED_PROTOCOL.json完整记录全部选择。
+
+2. 真实完整结果表（准确率%，同一测试集）
+编码器                  H0原头    H1全局原型    H2全局拟合cosine   H3ridge
+原始冻结IN21K           不适用     96.6          未在本轮范围内     98.2
+MuLoRA T1适配后          83.2       99.1          99.5               99.2
+LoRM原官方T1结果         97.7（复用旧记录；不是以上两编码器的读出）
+
+H0：原训练得到的cosine scale16头；保持原checkpoint不变。
+H1：向客户端广播同一个最终global encoder，确定性变换提取归一化CLS，
+逐类原始向量和/计数直接求和，归一化最终类和。每类500个训练样本。
+没有先平均各客户端prototype，也没有把raw sums再乘一次客户端样本数。
+H2：相同cosine函数类与scale16，从H0初始化，仅一个server head/AdamW状态。
+每步汇总所有客户端样本梯度sum/N，再更新一次。固定1000步、lr.001、wd0，
+不早停。固定编码器下全局训练CE由0.59804降至末步前0.01416。
+H3：特征加截距，lambda.01，截距不惩罚，FP64 solve，不做显式inverse，
+不对解出的线性权重归一化。预训练/适配后共用相同规则。
+
+H2多了1000步便宜的全局头计算；H1/H3多了训练特征前向与统计计算。
+因此不能把99.5%说成在原faithful总计算预算内获得，也不能用这个单seed、
+单任务诊断表宣称完整FCL或新优化器已优于LoRM。
+预训练H1/H3至适配后分别提升2.5和1.0个百分点，没有观察到特征被训练损坏。
+H2与H0函数类相同，能排除“必须增加线性头函数类才能达到高准确率”的解释。
+
+3. class6定位与聚合证据
+补跑T1的原H0：class6 0/100正确，98张被判class7。
+相同编码器H1/H2/H3：class6均99/100正确，1张被判class7。
+class6训练样本500张，其中498张在client8；client8样本总权重为11.66%。
+把最后一轮各客户端头放到同一个最终global encoder上做诊断：client8的头
+对class6是100%，加权聚合后的原头则是0%。聚合权重计算本身没有发现错误；
+由保留的客户端头重建server原头，最大元素差仅7.45e-9。
+
+这些证据表明本地分类头与聚合后的功能表现可以严重不同。它们并未单独分离
+行范数敏感性、标签偏斜、多步本地优化、局部编码器耦合等贡献，不能称为
+证明某一行代码或单一norm因素是唯一原因。样本加权本身不是数学错误。
+
+4. 已实现的最小修复
+候选名：mulora_t1_global_prototype_head（任务末H1刷新）。
+权重路径（服务器，仅私有保存）：
+pro5000:/data/bmw/FCL-Muon/basic_repair_20261025/runs/head_diagnostics/t1_repaired_H1.pt
+原头模型仍保留在runs/t1_original/latest.pt。修复只替换当前10类头的行，
+编码器、RRS/SSB训练、A/B参数化和merge流程均不改。
+H1在看新测试成绩前就锁定为唯一修复候选，并无条件保存；没有因H2更高
+而把修复名称转给H2。H2/H3是读出诊断，没有另训ViT或选择最好head交付。
+
+独立验收：重新从文件加载修复模型，strict load，确认B已清零、无重复merge，
+在固定1000测试样本重做一次推理。991正确，本次候选类别仅为T1的10类，
+完整10×10混淆矩阵与固定特征H1诊断完全相同。见REPAIR_QUALIFICATION.json。
+保留50个客户端B/head端点、7个全局边界快照（初始、五轮、任务末）。
+H1读出FP64参考和实际FP32 checkpoint准确率一致。
+merge前后logits最大绝对差2.53e-5，满足预声明5e-5容差；无额外BA合并。
+ridge正规方程F残差：适配后1.13e-16，预训练2.07e-16。
+
+5. T3固定块去均值：有效但不等于T1修复
+只用旧private logits，未重做三方全模型推理，输入hash前后不变。
+每个样本对所有固定训练任务块减块均值，不使用真实样本taskID。
+                  全3000原→干预   旧2000原→干预   新1000原→干预
+MuLoRA            67.17→73.83      72.90→78.50      55.70→64.50
+LoRM              88.73→90.80      86.10→89.30      94.00→93.80
+FedMuon旧logits*   46.77→68.90      59.00→72.60      22.30→61.50
+*只按包内规则完整列出既有logits运算，没有追加其训练或调参。
+任务内argmax全部保持不变；class6→7的全局错分数MuLoRA80→92、LoRM1→9、
+FedMuon78→62，已完整报告，未隐藏变差项。见CENTERING_ZH.txt。
+单任务减同一常数不改变argmax，因此这项干预不参与99.1%的T1修复成绩。
+
+6. 执行、预算、未运行事项
+centering、T1训练和固定头诊断均exit0，总流水线约860.3秒；T1约780.3秒，
+头诊断阶段约70.0秒。独立checkpoint验证另计数秒，仍在同一原始24h预算内。
+新目录约4.08GB（按文件计数保守包含hard-link重复），低于12GB内部guard和
+50GB用户上限；原共享数据/预训练权重无新副本。GPU3进程均已退出。
+实际训练50条client记录的visited/steps均通过完整5epoch预算检查。
+
+未运行：修复后T2/T3/10任务、多seed、history_spectral、其他头/步长搜索、
+新的FedMuon或LoRM训练。没有把H1临时特征库接入后续旧任务回放。
+history_spectral的USER_PAUSE未改，auto_launch_allowed仍false。
+下一阶段是否将这个已验证的T1头修复纳入主线，需与后续任务协议分开；
+本轮没有自动启动后续pilot或把原基线结果覆盖成修复结果。
+
+7. 来源与运行命令
+Pro分享URL读取超时；完整读取并采用用户提供ZIP中的prompt与NumPy工具。
+源码及完整锁定规则位于research/basic_repair；执行脚本：
+scripts/prepare_basic_repair.py、basic_repair_job.py、basic_repair_centering.py、
+basic_repair_heads.py、verify_basic_repair.py。统计、配置、训练身份与退出证据
+在本目录JSON中；private features/logits/checkpoints仅留服务器，不发布。
+
+实际后台启动（已结束，不要重复执行）：
+PROJECT_ROOT=/data/bmw/FCL-Muon/basic_repair_20261025 \
+EXPERIMENT_ROOT=/data/bmw/FCL-Muon ENTRY_FILE=scripts/basic_repair_job.py \
+PYTHONPATH=/data/bmw/FCL-Muon/deps CUDA_VISIBLE_DEVICES=3 \
+nohup /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py \
+  > /data/bmw/FCL-Muon/basic_repair_20261025/reports/supervisor.log 2>&1 < /dev/null &
+独立验证使用同一中性入口，ENTRY_FILE=scripts/verify_basic_repair.py，timeout120。

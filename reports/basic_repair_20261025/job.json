@@ -1,0 +1,32 @@
+{
+  "started": 1792926949.7496953,
+  "deadline": 1793012449.7496953,
+  "status": "completed",
+  "gpu": "3",
+  "gpu_free_mib_at_launch": 72830,
+  "storage_limit": 12000000000,
+  "phases": [
+    {
+      "name": "centering",
+      "started": 1792926949.7500317,
+      "pid": 3909990,
+      "exit_code": 0,
+      "ended": 1792926959.752179
+    },
+    {
+      "name": "original_T1",
+      "started": 1792926959.752801,
+      "pid": 3910472,
+      "exit_code": 0,
+      "ended": 1792927740.0126536
+    },
+    {
+      "name": "fixed_encoder_heads",
+      "started": 1792927740.0227003,
+      "pid": 3953284,
+      "exit_code": 0,
+      "ended": 1792927810.0478842
+    }
+  ],
+  "ended": 1792927810.048308
+}
