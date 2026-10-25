@@ -13,7 +13,8 @@
       "merged": true,
       "B_zero": true,
       "150_records": true,
-      "375000_visits": true
+      "375000_visits": true,
+      "B_tensors_checked": 24
     },
     "2": {
       "phase_complete": true,
@@ -26,7 +27,12 @@
       "merged": true,
       "B_zero": true,
       "150_records": true,
-      "375000_visits": true
+      "375000_visits": true,
+      "B_tensors_checked": 24
     }
+  },
+  "B_check_correction": {
+    "time": 1792947795.17305,
+    "reason": "Previous ad-hoc .B suffix selected no tensors; now explicitly checks 24 .Bq/.Bv tensors per completed checkpoint. Individual production final reload qualifications and failed pair gates are unchanged."
   }
 }

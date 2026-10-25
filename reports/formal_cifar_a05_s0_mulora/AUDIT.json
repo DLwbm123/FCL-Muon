@@ -1,0 +1,138 @@
+{
+  "qualified": true,
+  "audit_time": 1792947795.1523988,
+  "scope": "Original formal MuLoRA alpha.5 seed0 saved-state/budget audit; no inference/training/tuning",
+  "queue_state": {
+    "status": "completed",
+    "started": 1792934370.7869053,
+    "gpu": "6",
+    "deadline": 1793020770.7869053,
+    "pid": 67674,
+    "exit_code": 0,
+    "ended": 1792945043.0271952
+  },
+  "source_original_start": 1792934378.596288,
+  "elapsed_seconds": 10672.240289926529,
+  "client_records": 500,
+  "rounds": 50,
+  "training_visits": 1250000,
+  "optimizer_steps": 79250,
+  "checkpoint_boundary": {
+    "task": 10,
+    "round": 0,
+    "initialized": false,
+    "history_commits": 10,
+    "pending_empty": true,
+    "B_tensors_checked": 24,
+    "B_zero": true
+  },
+  "metrics": {
+    "matrix": [
+      [
+        0.991
+      ],
+      [
+        0.978,
+        0.933
+      ],
+      [
+        0.978,
+        0.913,
+        0.906
+      ],
+      [
+        0.977,
+        0.907,
+        0.902,
+        0.831
+      ],
+      [
+        0.974,
+        0.891,
+        0.889,
+        0.811,
+        0.906
+      ],
+      [
+        0.971,
+        0.863,
+        0.879,
+        0.78,
+        0.9,
+        0.83
+      ],
+      [
+        0.971,
+        0.859,
+        0.87,
+        0.778,
+        0.897,
+        0.822,
+        0.736
+      ],
+      [
+        0.97,
+        0.859,
+        0.859,
+        0.776,
+        0.893,
+        0.811,
+        0.723,
+        0.881
+      ],
+      [
+        0.967,
+        0.866,
+        0.855,
+        0.773,
+        0.89,
+        0.808,
+        0.718,
+        0.879,
+        0.883
+      ],
+      [
+        0.965,
+        0.858,
+        0.86,
+        0.741,
+        0.846,
+        0.783,
+        0.704,
+        0.856,
+        0.864,
+        0.917
+      ]
+    ],
+    "stage_micro": [
+      0.991,
+      0.9555,
+      0.9323333333333333,
+      0.90425,
+      0.8942,
+      0.8705,
+      0.8475714285714285,
+      0.8465,
+      0.8487777777777777,
+      0.8394
+    ],
+    "final_micro": 0.8394,
+    "final_task_macro": 0.8394,
+    "mean_stage_micro": 0.893003253968254,
+    "average_forgetting": 0.04666666666666668,
+    "old_micro": 0.8307777777777777,
+    "new_accuracy": 0.917
+  },
+  "manifest_identity": "05c7f277def0a181c3f5230e3e7bd468b5c116f82e6fc537ee42aac8056f6839",
+  "weight_identity": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+  "allocated_run_bytes": 413593600,
+  "audit_attempts": [
+    "First ad-hoc audit used nonexistent .B suffix; nonempty assertion failed before qualification. Corrected to actual .Bq/.Bv and checked exactly 24 tensors. No experiment changes."
+  ],
+  "limitations": [
+    "Original cosine FedAvg head, not new Head-RegMean/head-loss mainline",
+    "Single seed, different alpha from .05; not a controlled explanation of alpha effects",
+    "Run directory bytes are not total lifetime peak or shared-resource cost",
+    "No new checkpoint forward evaluation; saved metrics and complete state only"
+  ]
+}
