@@ -1,0 +1,47 @@
+{
+  "qualified": true,
+  "new_training_visits": 250000,
+  "new_client_rounds": 100,
+  "new_optimizer_steps": 15850,
+  "new_statistics_visits": 55000,
+  "common_RRS_images_separately_counted": 5000,
+  "preflight_backward_images_per_mode": 16,
+  "new_communication_bytes": {
+    "B_download": 235929600,
+    "current_head_download": 3072000,
+    "head_Gram_upload": 471859200,
+    "B_upload": 235929600,
+    "current_head_upload": 3072000,
+    "task_end_B_download": 47185920,
+    "task_end_head_download": 614400,
+    "RRS_raw_upload": 566231040,
+    "A_broadcast": 11796480
+  },
+  "new_certificates_passed": 10,
+  "actual_first_batch_matches_preflight": true,
+  "final_checkpoint_reload_confusion_equal": true,
+  "centered_matrix": [
+    [
+      0.99
+    ],
+    [
+      0.981,
+      0.949
+    ],
+    [
+      0.979,
+      0.934,
+      0.906
+    ]
+  ],
+  "centered_forgetting": 0.012999999999999956,
+  "clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  },
+  "source_clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  },
+  "head_loss_mode": "current"
+}

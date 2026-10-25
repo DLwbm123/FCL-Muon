@@ -1,0 +1,41 @@
+{
+  "previous_gate": {
+    "mean_new_gain_pp": 5.300000000000004,
+    "new_gain_at_least_5pp": true,
+    "mean_old_change_pp": -3.5833333333333273,
+    "mean_old_loss_at_most_1pp": false,
+    "per_seed_old_task_change": [
+      {
+        "seed": 0,
+        "raw_old_task_deltas_pp": [
+          -5.999999999999995,
+          2.7000000000000024
+        ],
+        "new_gain_pp": 6.600000000000006,
+        "old_gain_pp": -1.649999999999996
+      },
+      {
+        "seed": 1,
+        "raw_old_task_deltas_pp": [
+          -7.099999999999995,
+          0.10000000000000009
+        ],
+        "new_gain_pp": 4.900000000000004,
+        "old_gain_pp": -3.500000000000003
+      },
+      {
+        "seed": 2,
+        "raw_old_task_deltas_pp": [
+          -12.4,
+          1.200000000000001
+        ],
+        "new_gain_pp": 4.399999999999993,
+        "old_gain_pp": -5.600000000000005
+      }
+    ],
+    "no_old_task_loss_over_2pp": false,
+    "passed": false
+  },
+  "decision": "Do not expand full10. Freeze a separate centered-all-seen training hypothesis with reused matched controls.",
+  "old_failure_unchanged": true
+}

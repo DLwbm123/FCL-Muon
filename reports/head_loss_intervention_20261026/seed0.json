@@ -1,0 +1,21 @@
+{
+  "seed": 0,
+  "status": "completed",
+  "branches": [
+    {
+      "mode": "current",
+      "status": "completed",
+      "started": 1792947508.238798,
+      "ended": 1792952311.2240956
+    },
+    {
+      "mode": "all_seen",
+      "status": "completed",
+      "started": 1792952317.1172023,
+      "ended": 1792956960.6034796
+    }
+  ],
+  "source": "head_regmean_pilot_20261025/runs/pilot/task1.pt",
+  "ended": 1792956960.8056958,
+  "source_signature_unchanged": true
+}

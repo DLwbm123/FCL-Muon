@@ -1,0 +1,712 @@
+{
+  "status": "SIX_BRANCHES_COMPLETED_QUALIFIED_SCIENTIFIC_GATE_FAILED",
+  "rows": [
+    {
+      "seed": 0,
+      "mode": "current",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.979,
+          0.92
+        ],
+        [
+          0.977,
+          0.906,
+          0.851
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.981,
+          0.949
+        ],
+        [
+          0.979,
+          0.934,
+          0.906
+        ]
+      ],
+      "raw_final": 0.9113333333333333,
+      "raw_old": 0.9415,
+      "raw_new": 0.851,
+      "raw_forgetting": 0.013500000000000012,
+      "restricted": [
+        0.989,
+        0.982,
+        0.971
+      ],
+      "raw_new_to_old": 0.145,
+      "raw_old_to_new": 0.013,
+      "centered_final": 0.9396666666666667,
+      "centered_old": 0.9565,
+      "centered_new": 0.906,
+      "centered_forgetting": 0.012999999999999956,
+      "centered_new_to_old": 0.079,
+      "centered_old_to_new": 0.0105,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15850,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400,
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.981,
+            0.949
+          ],
+          [
+            0.979,
+            0.934,
+            0.906
+          ]
+        ],
+        "centered_forgetting": 0.012999999999999956,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "head_loss_mode": "current"
+      }
+    },
+    {
+      "seed": 0,
+      "mode": "all_seen",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.941,
+          0.966
+        ],
+        [
+          0.917,
+          0.933,
+          0.917
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.976,
+          0.955
+        ],
+        [
+          0.971,
+          0.938,
+          0.908
+        ]
+      ],
+      "raw_final": 0.9223333333333333,
+      "raw_old": 0.925,
+      "raw_new": 0.917,
+      "raw_forgetting": 0.052999999999999936,
+      "restricted": [
+        0.989,
+        0.979,
+        0.966
+      ],
+      "raw_new_to_old": 0.067,
+      "raw_old_to_new": 0.0385,
+      "centered_final": 0.939,
+      "centered_old": 0.9545,
+      "centered_new": 0.908,
+      "centered_forgetting": 0.018000000000000016,
+      "centered_new_to_old": 0.073,
+      "centered_old_to_new": 0.0145,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15850,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400,
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.976,
+            0.955
+          ],
+          [
+            0.971,
+            0.938,
+            0.908
+          ]
+        ],
+        "centered_forgetting": 0.018000000000000016,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "head_loss_mode": "all_seen"
+      }
+    },
+    {
+      "seed": 1,
+      "mode": "current",
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.971,
+          0.94
+        ],
+        [
+          0.966,
+          0.925,
+          0.879
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.964,
+          0.952
+        ],
+        [
+          0.96,
+          0.942,
+          0.916
+        ]
+      ],
+      "raw_final": 0.9233333333333333,
+      "raw_old": 0.9455,
+      "raw_new": 0.879,
+      "raw_forgetting": 0.01749999999999996,
+      "restricted": [
+        0.986,
+        0.985,
+        0.972
+      ],
+      "raw_new_to_old": 0.112,
+      "raw_old_to_new": 0.013,
+      "centered_final": 0.9393333333333334,
+      "centered_old": 0.951,
+      "centered_new": 0.916,
+      "centered_forgetting": 0.018000000000000016,
+      "centered_new_to_old": 0.068,
+      "centered_old_to_new": 0.0125,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15825,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.986
+          ],
+          [
+            0.964,
+            0.952
+          ],
+          [
+            0.96,
+            0.942,
+            0.916
+          ]
+        ],
+        "centered_forgetting": 0.018000000000000016,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792939753.19282,
+          "deadline": 1793025253.19282
+        },
+        "head_loss_mode": "current"
+      }
+    },
+    {
+      "seed": 1,
+      "mode": "all_seen",
+      "raw_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.92,
+          0.973
+        ],
+        [
+          0.895,
+          0.926,
+          0.928
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.986
+        ],
+        [
+          0.959,
+          0.957
+        ],
+        [
+          0.952,
+          0.933,
+          0.917
+        ]
+      ],
+      "raw_final": 0.9163333333333333,
+      "raw_old": 0.9105,
+      "raw_new": 0.928,
+      "raw_forgetting": 0.06899999999999995,
+      "restricted": [
+        0.986,
+        0.984,
+        0.958
+      ],
+      "raw_new_to_old": 0.043,
+      "raw_old_to_new": 0.043,
+      "centered_final": 0.934,
+      "centered_old": 0.9425,
+      "centered_new": 0.917,
+      "centered_forgetting": 0.02899999999999997,
+      "centered_new_to_old": 0.055,
+      "centered_old_to_new": 0.021,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15825,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.986
+          ],
+          [
+            0.959,
+            0.957
+          ],
+          [
+            0.952,
+            0.933,
+            0.917
+          ]
+        ],
+        "centered_forgetting": 0.02899999999999997,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792939753.19282,
+          "deadline": 1793025253.19282
+        },
+        "head_loss_mode": "all_seen"
+      }
+    },
+    {
+      "seed": 2,
+      "mode": "current",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.962,
+          0.934
+        ],
+        [
+          0.942,
+          0.886,
+          0.911
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.979,
+          0.948
+        ],
+        [
+          0.971,
+          0.924,
+          0.933
+        ]
+      ],
+      "raw_final": 0.913,
+      "raw_old": 0.914,
+      "raw_new": 0.911,
+      "raw_forgetting": 0.04800000000000004,
+      "restricted": [
+        0.99,
+        0.98,
+        0.978
+      ],
+      "raw_new_to_old": 0.081,
+      "raw_old_to_new": 0.0445,
+      "centered_final": 0.9426666666666667,
+      "centered_old": 0.9475,
+      "centered_new": 0.933,
+      "centered_forgetting": 0.021499999999999964,
+      "centered_new_to_old": 0.057,
+      "centered_old_to_new": 0.02,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15875,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.979,
+            0.948
+          ],
+          [
+            0.971,
+            0.924,
+            0.933
+          ]
+        ],
+        "centered_forgetting": 0.021499999999999964,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792939753.19282,
+          "deadline": 1793025253.19282
+        },
+        "head_loss_mode": "current"
+      }
+    },
+    {
+      "seed": 2,
+      "mode": "all_seen",
+      "raw_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.893,
+          0.967
+        ],
+        [
+          0.818,
+          0.898,
+          0.955
+        ]
+      ],
+      "centered_matrix": [
+        [
+          0.99
+        ],
+        [
+          0.959,
+          0.956
+        ],
+        [
+          0.94,
+          0.924,
+          0.94
+        ]
+      ],
+      "raw_final": 0.8903333333333333,
+      "raw_old": 0.858,
+      "raw_new": 0.955,
+      "raw_forgetting": 0.1205,
+      "restricted": [
+        0.991,
+        0.974,
+        0.971
+      ],
+      "raw_new_to_old": 0.023,
+      "raw_old_to_new": 0.0855,
+      "centered_final": 0.9346666666666666,
+      "centered_old": 0.932,
+      "centered_new": 0.94,
+      "centered_forgetting": 0.04099999999999998,
+      "centered_new_to_old": 0.042,
+      "centered_old_to_new": 0.03,
+      "qualification": {
+        "qualified": true,
+        "new_training_visits": 250000,
+        "new_client_rounds": 100,
+        "new_optimizer_steps": 15875,
+        "new_statistics_visits": 55000,
+        "common_RRS_images_separately_counted": 5000,
+        "preflight_backward_images_per_mode": 16,
+        "new_communication_bytes": {
+          "RRS_raw_upload": 566231040,
+          "A_broadcast": 11796480,
+          "B_download": 235929600,
+          "current_head_download": 3072000,
+          "head_Gram_upload": 471859200,
+          "B_upload": 235929600,
+          "current_head_upload": 3072000,
+          "task_end_B_download": 47185920,
+          "task_end_head_download": 614400
+        },
+        "new_certificates_passed": 10,
+        "actual_first_batch_matches_preflight": true,
+        "final_checkpoint_reload_confusion_equal": true,
+        "centered_matrix": [
+          [
+            0.99
+          ],
+          [
+            0.959,
+            0.956
+          ],
+          [
+            0.94,
+            0.924,
+            0.94
+          ]
+        ],
+        "centered_forgetting": 0.04099999999999998,
+        "clock": {
+          "started": 1792926949.7496953,
+          "deadline": 1793012449.7496953
+        },
+        "source_clock": {
+          "started": 1792939753.19282,
+          "deadline": 1793025253.19282
+        },
+        "head_loss_mode": "all_seen"
+      }
+    }
+  ],
+  "means": {
+    "current": {
+      "raw_final": 0.9158888888888889,
+      "raw_old": 0.9336666666666666,
+      "raw_new": 0.8803333333333333,
+      "raw_forgetting": 0.026333333333333337,
+      "centered_final": 0.9405555555555556,
+      "centered_old": 0.9516666666666667,
+      "centered_new": 0.9183333333333333,
+      "centered_forgetting": 0.017499999999999977
+    },
+    "all_seen": {
+      "raw_final": 0.9096666666666666,
+      "raw_old": 0.8978333333333334,
+      "raw_new": 0.9333333333333333,
+      "raw_forgetting": 0.0808333333333333,
+      "centered_final": 0.9358888888888889,
+      "centered_old": 0.9430000000000001,
+      "centered_new": 0.9216666666666666,
+      "centered_forgetting": 0.029333333333333322
+    }
+  },
+  "all_seen_minus_current_pp": {
+    "raw_final": -0.622222222222224,
+    "raw_old": -3.5833333333333273,
+    "raw_new": 5.300000000000004,
+    "raw_forgetting": 5.449999999999997,
+    "centered_final": -0.4666666666666708,
+    "centered_old": -0.86666666666666,
+    "centered_new": 0.33333333333332993,
+    "centered_forgetting": 1.1833333333333345
+  },
+  "primary_gate": {
+    "mean_new_gain_pp": 5.300000000000004,
+    "new_gain_at_least_5pp": true,
+    "mean_old_change_pp": -3.5833333333333273,
+    "mean_old_loss_at_most_1pp": false,
+    "per_seed_old_task_change": [
+      {
+        "seed": 0,
+        "raw_old_task_deltas_pp": [
+          -5.999999999999995,
+          2.7000000000000024
+        ],
+        "new_gain_pp": 6.600000000000006,
+        "old_gain_pp": -1.649999999999996
+      },
+      {
+        "seed": 1,
+        "raw_old_task_deltas_pp": [
+          -7.099999999999995,
+          0.10000000000000009
+        ],
+        "new_gain_pp": 4.900000000000004,
+        "old_gain_pp": -3.500000000000003
+      },
+      {
+        "seed": 2,
+        "raw_old_task_deltas_pp": [
+          -12.4,
+          1.200000000000001
+        ],
+        "new_gain_pp": 4.399999999999993,
+        "old_gain_pp": -5.600000000000005
+      }
+    ],
+    "no_old_task_loss_over_2pp": false,
+    "passed": false
+  },
+  "all_seen_raw_vs_current_centered_pp": {
+    "final": -3.0888888888888966,
+    "old": -5.383333333333329,
+    "new": 1.5000000000000013
+  },
+  "job": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953,
+    "intervention_launched": 1792947400.84771,
+    "status": "completed",
+    "lanes": [
+      {
+        "seed": 0,
+        "gpu": 1,
+        "pid": 634933
+      },
+      {
+        "seed": 1,
+        "gpu": 5,
+        "pid": 634934
+      },
+      {
+        "seed": 2,
+        "gpu": 7,
+        "pid": 634935
+      }
+    ],
+    "storage_limit_bytes": 20000000000,
+    "lineage_limit_bytes": 45000000000,
+    "new_before_bytes": 507904,
+    "lineage_before_bytes": 17209679872,
+    "source_clocks": [
+      {
+        "started": 1792926949.7496953,
+        "deadline": 1793012449.7496953
+      },
+      {
+        "started": 1792939753.19282,
+        "deadline": 1793025253.19282
+      },
+      {
+        "started": 1792939753.19282,
+        "deadline": 1793025253.19282
+      }
+    ],
+    "ended": 1792956971.92425,
+    "exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "new_allocated_bytes": 8869539840,
+    "lineage_allocated_bytes": 26081259520
+  },
+  "total_new_training_visits": 1500000,
+  "total_new_optimizer_steps": 95100,
+  "new_statistics_visits_excluding_common_RRS": 330000,
+  "common_RRS_visits": 15000,
+  "preflight_backward_visits": 96,
+  "source_T1_replay_test_visits": 3000,
+  "limitation": "Shared test-set development evidence; fixed three seeds and full matrices, no heldout claim. Original RegMean/FedAvg pair failure remains unresolved and failed.",
+  "next_hypothesis": "Center logits within each task block inside the all-seen head loss, matching the fixed centered inference. Reuse qualified common start and current controls, no control rerun, no fitted offsets or hyperparameter search."
+}

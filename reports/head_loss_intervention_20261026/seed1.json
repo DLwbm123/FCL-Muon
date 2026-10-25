@@ -1,0 +1,21 @@
+{
+  "seed": 1,
+  "status": "completed",
+  "branches": [
+    {
+      "mode": "current",
+      "status": "completed",
+      "started": 1792947471.2041554,
+      "ended": 1792950442.7073832
+    },
+    {
+      "mode": "all_seen",
+      "status": "completed",
+      "started": 1792950449.132176,
+      "ended": 1792953157.3777897
+    }
+  ],
+  "source": "head_confirmation_20261025/runs/regmean_seed1/task1.pt",
+  "ended": 1792953157.5189016,
+  "source_signature_unchanged": true
+}
