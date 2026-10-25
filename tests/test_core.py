@@ -208,3 +208,11 @@ def test_model_history_rng_resume_next_round(tmp_path):
     torch.testing.assert_close(actual[1],expected[1],atol=0,rtol=0)
     assert loaded['history'].committed=={0}
     torch.testing.assert_close(loaded['pending']['0'],2*torch.eye(8))
+
+
+def test_cuda_rng_restore_when_available():
+    if not torch.cuda.is_available():pytest.skip('CUDA unavailable')
+    state=rng_state()
+    expected=torch.randn(7,device='cuda')
+    restore_rng(state)
+    torch.testing.assert_close(torch.randn(7,device='cuda'),expected,rtol=0,atol=0)
