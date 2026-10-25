@@ -1,0 +1,6 @@
+T2冻结编码器机制实验三个种子已实际进入训练，尚未完成或证明性能收益。
+源码8e21b6de7560b19a40138af2c08a121f1e0a80a4；GPU1/5/7，监督1585633，子1589565/1589567/1589571。
+25项CPU检查通过，三seed真实预检输入/标签/head梯度与可训练B参考完全相同、冻结B无梯度；实际训练首批也全部匹配，详见ACTUAL_FIRST_BATCH_CHECK.json。早期STARTUP_CHECK的seed0事件尚未出现，后续专项记录确认通过，未重训或重复完整checkpoint读取。
+初始实际检查点仍处T2R1首client，尚无完整client记录；24个Bq/Bv均零、冻结配置已确认。新增目录在该次检查时1459970048bytes；启动基线1175552bytes/lineage29792047104bytes。继承原clock和deadline，root6GB/lineage45GB硬守护，不删除历史。
+每seed只跑T2，合计375000新增训练访问、75000统计、96首批backward及3000源旧类不变性forward；无control重训、commonRRS或旧数据训练。已有centered-head-loss T2为主对照。
+仅机制实验，旧三任务门槛仍失败；三seed全完成并通过完整函数不变性/终点重载后才作机制决策，不据部分种子扩展。

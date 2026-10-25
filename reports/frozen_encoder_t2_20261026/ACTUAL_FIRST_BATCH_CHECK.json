@@ -1,0 +1,42 @@
+{
+  "checked": 1792964781.7956161,
+  "all_actual_first_batches_passed": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "passed": true,
+      "event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792964746.0143266,
+        "task": 1,
+        "round": 0,
+        "encoder_frozen": true,
+        "b_optimizer_steps": 0
+      }
+    },
+    {
+      "seed": 1,
+      "passed": true,
+      "event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792964738.4216738,
+        "task": 1,
+        "round": 0,
+        "encoder_frozen": true,
+        "b_optimizer_steps": 0
+      }
+    },
+    {
+      "seed": 2,
+      "passed": true,
+      "event": {
+        "kind": "actual_first_batch_verified",
+        "time": 1792964745.7038238,
+        "task": 1,
+        "round": 0,
+        "encoder_frozen": true,
+        "b_optimizer_steps": 0
+      }
+    }
+  ]
+}

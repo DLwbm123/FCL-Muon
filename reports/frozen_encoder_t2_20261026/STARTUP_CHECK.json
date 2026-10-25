@@ -1,0 +1,68 @@
+{
+  "checked": 1792964744.867869,
+  "job_status": "running",
+  "clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  },
+  "seeds": [
+    {
+      "seed": 0,
+      "pid": 1589565,
+      "lane_status": "running",
+      "task": 1,
+      "round": 0,
+      "phase": "round_start",
+      "next_client": 0,
+      "new_client_records": 0,
+      "new_train_visits": 0,
+      "B_tensor_count": 24,
+      "B_all_zero": true,
+      "config_encoder_frozen": true,
+      "preflight_passed": true,
+      "actual_first_batch_verified": false,
+      "all_recorded_B_steps_zero": true,
+      "certificates_passed": true
+    },
+    {
+      "seed": 1,
+      "pid": 1589567,
+      "lane_status": "running",
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_client_records": 0,
+      "new_train_visits": 0,
+      "B_tensor_count": 24,
+      "B_all_zero": true,
+      "config_encoder_frozen": true,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "all_recorded_B_steps_zero": true,
+      "certificates_passed": true
+    },
+    {
+      "seed": 2,
+      "pid": 1589571,
+      "lane_status": "running",
+      "task": 1,
+      "round": 0,
+      "phase": "clients",
+      "next_client": 0,
+      "new_client_records": 0,
+      "new_train_visits": 0,
+      "B_tensor_count": 24,
+      "B_all_zero": true,
+      "config_encoder_frozen": true,
+      "preflight_passed": true,
+      "actual_first_batch_verified": true,
+      "all_recorded_B_steps_zero": true,
+      "certificates_passed": true
+    }
+  ],
+  "process_commands": "1585633       1 Ssl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1589565 1585633 Rsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1589567 1585633 Rsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n1589571 1585633 Rsl  /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n",
+  "gpu_processes": "1589565, /data/bmw/envs/n3/bin/python, 1184 MiB\n1589567, /data/bmw/envs/n3/bin/python, 1184 MiB\n1589571, /data/bmw/envs/n3/bin/python, 1184 MiB\n",
+  "new_allocated_bytes": 1459970048,
+  "gpu_process_scope": "Only this experiment workers; unrelated processes omitted"
+}

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checks": {
+    "input_exact": true,
+    "labels_exact": true,
+    "frozen_B_no_gradients": true,
+    "reference_B_has_gradients": true,
+    "head_gradient_exact": true
+  },
+  "optimizer_steps": 0,
+  "backward_images": 32,
+  "reused_control_qualified": true,
+  "original_failure_retained": true
+}
