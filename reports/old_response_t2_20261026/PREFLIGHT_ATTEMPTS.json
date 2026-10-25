@@ -1,0 +1,9 @@
+[
+  {
+    "passed": false,
+    "exit_code": 1,
+    "checked": 1792967872.3996267,
+    "scope": "Head solver/lifecycle and gradient separation; frozen invariance; old-response zero-start equivalence, perturbed B-only gradient effect, offset invariance, teacher freeze and full lifecycle",
+    "failure": "New test reference gradient did not clear gradients inherited from toy T1; 27 tests passed, zero-start comparison failed. No real-data training was launched."
+  }
+]

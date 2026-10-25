@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "checked": 1792967904.7571745,
+  "scope": "Existing25 tests passed in first run; all3 old-response tests rerun after clearing inherited gradients in test setup",
+  "total_unique_tests": 28
+}

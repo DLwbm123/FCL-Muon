@@ -1,0 +1,72 @@
+{
+  "checked": 1792967789.8754404,
+  "all_passed": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "task": 2,
+      "round": 0,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "new_visits": 125000,
+      "B_steps": 0,
+      "matrix_exact": true,
+      "qualified": true,
+      "all_frozen_invariance_checks_passed": true
+    },
+    {
+      "seed": 1,
+      "task": 2,
+      "round": 0,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "new_visits": 125000,
+      "B_steps": 0,
+      "matrix_exact": true,
+      "qualified": true,
+      "all_frozen_invariance_checks_passed": true
+    },
+    {
+      "seed": 2,
+      "task": 2,
+      "round": 0,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "new_visits": 125000,
+      "B_steps": 0,
+      "matrix_exact": true,
+      "qualified": true,
+      "all_frozen_invariance_checks_passed": true
+    }
+  ]
+}

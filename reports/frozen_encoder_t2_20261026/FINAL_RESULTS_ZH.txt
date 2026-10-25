@@ -1,0 +1,7 @@
+冻结编码器T2三种子全部完成并通过精确不变性验收，但它不是整体性能胜出或完整方法成功。
+seed0/1/2 centered旧类97.9/96.3/95.9%，新类95.0/94.6/95.1%；相对可训练B对照，旧类+.6/+.8/+.6pp，新类-.6/-1.3/-.8pp。
+均值centered旧+.6667pp、新-.9pp、总体-.1167pp；raw旧+.8667pp、新-1.8pp、总体-.4667pp。
+编码器、旧头、1000张旧样本原始旧列全部精确不变，但centered旧类restricted→allseen仍损失1.1/2.3/3.1pp，证明此条件下新头竞争仍存在。冻结与可训练B之差也包含头轨迹/Gram变化，不能当纯粹漂移因果分解。
+预声明分支条件“每seed centered旧改善且平均新损失<=1pp”通过，选择保留B学习并约束旧头响应的下一实验。旧三任务BOTH门槛仍失败，不扩full10。
+新增375000训练访问/75000统计/96首批backward/3000源旧样本不变性forward/12000T2评估及重载forward，15新证书；无control重训、commonRRS或旧数据训练。jobexit[0,0,0]，ended1792966148.1055708，newroot2460344320/lineage32251215872bytes，原clock保留。
+下一项仅T2：同起点的current-data旧响应MSE约束，固定系数1，教师为任务起点冻结模型，保持centered头目标与B FedAvg。新增teacher计算单列，单设协议先冻结再运行，不恢复暂停的ridge/v1或history_spectral。
