@@ -117,5 +117,15 @@
     "final_test_accuracy": 0.832,
     "elapsed_seconds": 412.87927985191345,
     "conclusion": "Head aggregation dominates endpoint loss increase; weighted FedAvg implementation matches checkpoints exactly; no new aggregation implemented."
+  },
+  "head_regmean_one_round": {
+    "status": "preflight",
+    "branch": "codex/head-regmean-one-round",
+    "protocol": "research/head_regmean/PROTOCOL.json",
+    "scope": "User authorized T1 one communication round, two head types; cosine endpoints reused, one new linear local training run",
+    "training_budget": "10 clients x 5 epochs, original5-round schedule interval0",
+    "B_aggregation": "unchanged sample weighted FedAvg",
+    "history_spectral_resumed": false,
+    "further_rounds_authorized": false
   }
 }

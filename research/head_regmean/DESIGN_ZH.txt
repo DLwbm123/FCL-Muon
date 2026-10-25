@@ -1,0 +1,56 @@
+一次通信轮：余弦头如何适配RegMean（2026-10-25，预先固定）
+
+范围与名称
+保留完整MuLoRA的共享RRS、历史原始矩、QR、固定A、B-only SSB、任务末
+单次合并。B仍按N_k/N做FedAvg。只有头的函数与头聚合发生明确命名的变化：
+  MuLoRA-FL + cosine-constrained head RegMean
+  MuLoRA-FL + linear(no-bias) head RegMean
+原Shared-RRS+FedAvg不覆盖，LoRM不重训，history_spectral不恢复。
+用户明确选择T1的1个通信轮，各客户端5epoch，原5轮调度只执行第一轮。
+这是尚未结束任务的round1边界，因此不merge BA、不commit历史。
+
+数学目标
+余弦头本地logit为16 z U_k^T，z=h/||h||，U_k[c]=W_k[c]/||W_k[c]||。
+客户端在自己的当前训练样本上、用自己的训练结束编码器计算
+G_k=sum z z^T。服务器不接收图片或标签，只求和二阶矩及头的函数参数。
+遵循LoRM固定head默认alpha=.5，令G'_k=.5G_k+.5diag(G_k)。这是修改过
+的RegMean二次代理目标，不将它说成未经修改的原始经验logit误差。
+H=sum G'_k/N，Q=sum U_k G'_k/N；禁止再乘一次N_k/N。
+每类独立求 min u^T H u - 2 q^T u，约束||u||=1。
+此问题通常不能由先求H^{-1}q再归一化得到最优解。
+
+全局解通过H的FP64特征分解及一维secular方程获得：
+  (H+lambda I)u=q，||u||=1，H+lambda I半正定。
+包含q在最小特征子空间为0的hard case。用这些条件和对偶下界检验求解，
+并检验最终FP32权重经过实际F.normalize后的方向，不只检验中间FP64解。
+输出原始行范数沿用原FedAvg头的对应行范数，避免任意设成1而改变后续
+优化的参数尺度；本次没有后续轮训练。scale16未改。
+
+线性头用原始CLS h、无bias、无归一化、无scale，logit=h W^T。
+原始W初始化与余弦头完全相同，仍用原头AdamW lr=.001/wd0。
+将G_k换成sum h h^T，Q=sum W_k G'_k/N，解W H=Q。
+不另加ridge、不搜索alpha；奇异或证书失败就停止并保留失败证据。
+选无bias是为了不在比较中再增加截距参数，不等于LoRM官方线性头。
+由于头梯度不同，线性训练后的B也会不同，所以两种头之间不是纯聚合
+单因素对照；每种头内部的FedAvg与RegMean才共享完全相同的B和客户端。
+
+统计、训练和评估
+余弦组重用完整保存的T1R1十个原客户端端点；此轮聚合尚未反馈训练，
+故无必要重训。初始共享A/B/头/历史/RNG来自boundary_t0_r0.pt。
+线性组只新增一次10客户端训练，恢复上述RNG，不在训练中插入统计或评估，
+与原第一轮使用同一数据顺序、增强随机流和原5轮cosine调度区间。
+所有Gram在训练全部完成之后各用一次完整current-train确定性前向收集，
+采用MuLoRA原统计transform。不同于官方LoRM的增强Gram pass，明确归为
+本项目适配；不是声称完整忠实复现LoRM。Gram不使用测试数据或标签拟合。
+额外Gram通信每组10*768*768*8 bytes，统计前向每组5000样本，FP64统计。
+重用成本与本次新增训练成本分开，原RRS和原训练不被当成免费算法成本。
+四个固定结果一律汇报train/test CE、准确率、逐类混淆、求解证书，不按
+test选择结果、头、超参数或追加训练。T1没有旧类，不能报告遗忘改善。
+每组独立保存round1模型、原FedAvg备选头、优化器动量/RNG/历史/原时钟；
+重载并独立验证RegMean全测试混淆。实际训练仅一轮，不支持自动续跑。
+
+资源与隔离
+独立目录head_regmean_round_20261025，GPU3，中性e17.py，2小时统一硬时钟，
+6GB新增guard，预计约1.5GB。原基线与history源码、既有checkpoint均只读。
+源码基础为00b6508，新增脚本和solver不修改其实现。权重、Gram和私有数据
+不公开，仅源码/协议/聚合指标/数值证书公开。
