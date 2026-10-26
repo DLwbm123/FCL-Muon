@@ -1,0 +1,8 @@
+{
+  "revision": "ca01acc",
+  "base_revision": "01d7bd9",
+  "source_run": "/data/bmw/FCL-Muon-ten-task-20261026/runs/regmean_seed0",
+  "frozen_before_cifar_execution": true,
+  "gpu_free_mib_at_launch": 47278,
+  "launch_time": 1792998699.7053332
+}

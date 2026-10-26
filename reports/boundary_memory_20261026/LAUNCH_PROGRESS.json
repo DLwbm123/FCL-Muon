@@ -1,0 +1,44 @@
+{
+  "checked": 1792998812.400768,
+  "job": {
+    "started": 1792998699.7510092,
+    "deadline": 1793084199.7510092,
+    "status": "running",
+    "supervisor_pid": 3340412,
+    "storage_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "seed": 0,
+    "tasks": 3,
+    "gpu": "7",
+    "free_mib_at_admission": 47278,
+    "baseline_allocated_bytes": 8728576,
+    "worker_pid": 3340419,
+    "allocated_bytes": 62709760,
+    "checked": 1792998810.187687
+  },
+  "progress": {
+    "status": "current_client_statistics",
+    "clock": {
+      "started": 1792998699.7510092,
+      "deadline": 1793084199.7510092
+    },
+    "train_reference_images": 8387,
+    "test_reference_images": 1000,
+    "logical_statistics_upload_bytes": 302383616,
+    "logical_evidence_broadcast_bytes": 615200,
+    "stages": [
+      {
+        "task": 0,
+        "fused": 0.99,
+        "centered": 0.99
+      }
+    ],
+    "task": 1,
+    "updated": 1792998810.6537266,
+    "client": 7,
+    "objective": "no_old_to_new",
+    "solver_iteration": 0
+  },
+  "message_count": 64,
+  "processes": "3340411       1       01:52 /usr/bin/timeout -k 60 86300 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n3340412 3340411       01:52 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n3340419 3340412       01:52 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n"
+}
