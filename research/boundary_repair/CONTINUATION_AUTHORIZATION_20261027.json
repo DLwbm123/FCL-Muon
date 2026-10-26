@@ -1,0 +1,36 @@
+{
+  "authorized_date": "2026-10-27",
+  "scope": "User authorizes GPU7 B continuation to T10 conditional on exceeding standard LoRM at T3.",
+  "gate": {
+    "checkpoint": "B final T3 only, no best checkpoint selection",
+    "requires_full_T3_qualification": true,
+    "primary_readout": "predeclared fixed block mean subtraction",
+    "reference": "reports/ten_task_20261026/lorm_seed0/task3_fixed_rules.json",
+    "reference_images": 3000,
+    "reference_correct": 2724,
+    "reference_accuracy": 0.908,
+    "condition": "B T3 correct > 2724 on the same 3000 images; equality does not pass",
+    "raw": "Report raw alongside primary; do not add a new raw gate or tune readout."
+  },
+  "continuation": {
+    "gpu": 7,
+    "from": "B own fully committed and qualified T3, preserving its model, heads, history, RNG and all three historical evaluations",
+    "horizon": 10,
+    "config": "configs/boundary_ten_seed0.json",
+    "output": "runs/ten, separate from immutable runs/main T3 artifacts",
+    "scientific_changes": "Only total task horizon and output/continuation metadata; unchanged method, selection, lambda/kappa, optimizer, split, seed and readout.",
+    "diagnostic_windows": "Apply the same client0 round0 first/last and round4 last diagnostic windows to T4-T10.",
+    "clock": "Continuation shares original B started1793032083.5549312 / deadline1793117583.5549312; no clock reset.",
+    "storage": "Aggregate existing B root plus continuation output; original 8GB limit/6GB write-stop retained.",
+    "resources": "Verify GPU7 available memory before continuation; do not move to other GPU or stop other jobs.",
+    "training_counts": {
+      "total_client_rounds": 500,
+      "total_visits": 1250000,
+      "additional_after_T3_client_rounds": 350,
+      "additional_after_T3_visits": 875000
+    }
+  },
+  "if_not_passed": "Deliver complete B T3 result and do not extend B to T10.",
+  "delivery": "Always retain/report B T3; if extended, additionally deliver B full T1-T10 raw/centered matrices, LoRM comparison, diagnostics/cost, and actual T10 full 10000-image checkpoint reload. Keep the single heartbeat until all authorized runs are delivered.",
+  "interpretation": "This is a performance-conditioned horizon extension on the existing evaluation set, not independent held-out confirmation; disclose the conditional selection."
+}
