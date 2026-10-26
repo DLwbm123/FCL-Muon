@@ -1,0 +1,11 @@
+{
+  "committed": 1792986840.5662997,
+  "new_outer_pid": 2761429,
+  "new_supervisor_pid": 2761430,
+  "remaining_outer_timeout_seconds": 80590,
+  "original_started": 1792981131.2391922,
+  "original_deadline": 1793066631.2391922,
+  "old_scheduler_retired_without_worker_signals": true,
+  "adopted_worker_identities_unchanged": true,
+  "source_revision": "cf3253a"
+}

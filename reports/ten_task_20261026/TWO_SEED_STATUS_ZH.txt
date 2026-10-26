@@ -1,0 +1,11 @@
+用户明确修订：只做seed0、seed1两组，不做第三个seed；在另一张GPU新增seed1。每seed仍包含成熟current-only Head-RegMean与标准LoRM各一条完整十任务，共4条。
+
+现有seed0 Head GPU3/train2508848、LoRM GPU6/train2508852完全保留，worker2508840/2508845的PID、start_ticks与进程组不变。仅将原写死三个seed的监督2508837及其timeout2508836退役：先SIGSTOP调度器，新资源守护ready后仅对两控制进程个体SIGKILL，不向训练进程/组发送信号。原状态与ready/commit回执全部保留。
+
+新监督2761430、外层timeout2761429；seed1 Head在GPU0已实际启动，worker2761458/train2761461，随后由同一监督在GPU0接续seed1 LoRM。seed2尚未启动，worker入口及新队列均禁止执行它。其配置和原三seed协议只作历史保留。3项调度检查通过；训练实现与配置未改，不重新运行任何已有科学步骤。
+
+共同started1792981131.2391922/deadline1793066631.2391922不变，外层timeout只保留原始时钟剩余80590秒；仍为独立20GB预算、16GB预停止写入，全部历史保留。预计总训练访问由7.5M缩为5M；统计/评估总量随4条缩减，单条预算不变。明确仅两个seed，不作三seed确认结论。
+
+实际启动检查1792986965.5280719：seed1 Head已有4个完成clientround、7470次训练图像访问，GPU约2664MiB。seed0两条继续推进至234/375个clientround，PID和身份未改。三条训练及新监督命令行均中性。新根占用3388485632bytes。seed1 LoRM尚未开始，等待同卡Head完整终验；没有将排队任务表述为已运行。
+
+唯一定时任务fcl原位更新为“FCL 两个seed十任务跟进”，不增设心跳。alpha=.5仍后续再定。

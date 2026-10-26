@@ -1,0 +1,130 @@
+{
+  "checked": 1792986965.5280719,
+  "job": {
+    "started": 1792981131.2391922,
+    "deadline": 1793066631.2391922,
+    "status": "running",
+    "runs": [
+      {
+        "method": "regmean",
+        "seed": 0,
+        "gpu": 3,
+        "worker_pid": 2508840,
+        "started": 1792981131.428226,
+        "status": "training",
+        "qualified": false
+      },
+      {
+        "method": "lorm",
+        "seed": 0,
+        "gpu": 6,
+        "worker_pid": 2508845,
+        "started": 1792981131.573772,
+        "status": "training",
+        "qualified": false
+      },
+      {
+        "method": "regmean",
+        "seed": 1,
+        "gpu": 0,
+        "worker_pid": 2761458,
+        "started": 1792986840.9847875,
+        "process_identity": {
+          "pid": 2761458,
+          "state": "R",
+          "pgid": 2761458,
+          "start_ticks": 137770271
+        },
+        "status": "training",
+        "qualified": false
+      }
+    ],
+    "storage_limit_bytes": 20000000000,
+    "write_stop_bytes": 16000000000,
+    "baseline_allocated_bytes": 4521984,
+    "protocol": "research/head_regmean/TEN_TASK_PROTOCOL.json",
+    "schedule": "seed0 retained; seed1 regmean then lorm on GPU0; seed2 cancelled before launch",
+    "allowed_seeds": [
+      0,
+      1
+    ],
+    "expected_qualified_runs": 4,
+    "supervisor_pid": 2761430,
+    "amendment": "research/head_regmean/TWO_SEED_AMENDMENT.json"
+  },
+  "handoff": {
+    "committed": 1792986840.5662997,
+    "new_outer_pid": 2761429,
+    "new_supervisor_pid": 2761430,
+    "remaining_outer_timeout_seconds": 80590,
+    "original_started": 1792981131.2391922,
+    "original_deadline": 1793066631.2391922,
+    "old_scheduler_retired_without_worker_signals": true,
+    "adopted_worker_identities_unchanged": true,
+    "source_revision": "cf3253a"
+  },
+  "runs": [
+    {
+      "method": "regmean",
+      "seed": 0,
+      "gpu": 3,
+      "worker_pid": 2508840,
+      "train_pid": 2508848,
+      "status": "training",
+      "completed_client_records": 234,
+      "training_visits": 585260,
+      "latest_event": {
+        "kind": "client",
+        "time": 1792986964.488763,
+        "task": 4,
+        "round": 3,
+        "client": 3
+      },
+      "adopted_worker_identity_unchanged": true
+    },
+    {
+      "method": "lorm",
+      "seed": 0,
+      "gpu": 6,
+      "worker_pid": 2508845,
+      "train_pid": 2508852,
+      "status": "training",
+      "completed_client_records": 375,
+      "training_visits": 937910,
+      "latest_event": {
+        "kind": "client",
+        "time": 1792986938.4857574,
+        "task": 7,
+        "round": 2,
+        "client": 4
+      },
+      "adopted_worker_identity_unchanged": true
+    },
+    {
+      "method": "regmean",
+      "seed": 1,
+      "gpu": 0,
+      "worker_pid": 2761458,
+      "train_pid": 2761461,
+      "status": "training",
+      "completed_client_records": 4,
+      "training_visits": 7470,
+      "latest_event": {
+        "kind": "client",
+        "time": 1792986956.9732451,
+        "task": 0,
+        "round": 0,
+        "client": 3
+      }
+    }
+  ],
+  "actual_seed1_training_verified": true,
+  "seed2_never_started": true,
+  "processes": "2508840       1 2508840    01:37:14 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2508845       1 2508845    01:37:13 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2508848 2508840 2508840    01:37:13 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2508852 2508845 2508845    01:37:13 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2761429       1 2761429       02:05 /usr/bin/timeout -k 60 80590 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2761430 2761429 2761429       02:05 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2761458 2761430 2761458       02:04 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n2761461 2761458 2761458       02:04 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n",
+  "gpu_processes": [
+    "2761461, /data/bmw/envs/n3/bin/python, 2664 MiB",
+    "2508848, /data/bmw/envs/n3/bin/python, 2708 MiB",
+    "2508852, /data/bmw/envs/n3/bin/python, 8890 MiB"
+  ],
+  "allocated_bytes": 3388485632
+}

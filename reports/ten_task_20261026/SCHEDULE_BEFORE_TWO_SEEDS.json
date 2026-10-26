@@ -1,0 +1,25 @@
+{
+  "started": 1792981131.2391922,
+  "deadline": 1793066631.2391922,
+  "status": "running",
+  "runs": [
+    {
+      "method": "regmean",
+      "seed": 0,
+      "gpu": 3,
+      "worker_pid": 2508840,
+      "started": 1792981131.428226
+    },
+    {
+      "method": "lorm",
+      "seed": 0,
+      "gpu": 6,
+      "worker_pid": 2508845,
+      "started": 1792981131.573772
+    }
+  ],
+  "storage_limit_bytes": 20000000000,
+  "write_stop_bytes": 16000000000,
+  "baseline_allocated_bytes": 4521984,
+  "protocol": "research/head_regmean/TEN_TASK_PROTOCOL.json"
+}

@@ -1,0 +1,27 @@
+{
+  "ready": true,
+  "pid": 2761430,
+  "identity": {
+    "pid": 2761430,
+    "state": "R",
+    "pgid": 2761429,
+    "start_ticks": 137770209
+  },
+  "original_started": 1792981131.2391922,
+  "original_deadline": 1793066631.2391922,
+  "adopted_workers": [
+    {
+      "pid": 2508840,
+      "state": "S",
+      "pgid": 2508840,
+      "start_ticks": 137199315
+    },
+    {
+      "pid": 2508845,
+      "state": "S",
+      "pgid": 2508845,
+      "start_ticks": 137199330
+    }
+  ],
+  "time": 1792986840.4039564
+}

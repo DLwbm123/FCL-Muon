@@ -1,0 +1,34 @@
+{
+  "requested": 1792986840.364139,
+  "source_revision": "cf3253a",
+  "original_started": 1792981131.2391922,
+  "original_deadline": 1793066631.2391922,
+  "old_supervisor": {
+    "pid": 2508837,
+    "state": "S",
+    "pgid": 2508836,
+    "start_ticks": 137199292
+  },
+  "old_outer_timeout": {
+    "pid": 2508836,
+    "state": "S",
+    "pgid": 2508836,
+    "start_ticks": 137199292
+  },
+  "adopted_workers": {
+    "regmean": {
+      "pid": 2508840,
+      "state": "S",
+      "pgid": 2508840,
+      "start_ticks": 137199315
+    },
+    "lorm": {
+      "pid": 2508845,
+      "state": "S",
+      "pgid": 2508845,
+      "start_ticks": 137199330
+    }
+  },
+  "gpu0_free_mib": 72830,
+  "scope": "seeds0+1 only, seed1 head then lorm on one additional GPU0"
+}
