@@ -1,0 +1,109 @@
+{
+  "checked": 1792981270.6569607,
+  "job": {
+    "started": 1792981131.2391922,
+    "deadline": 1793066631.2391922,
+    "status": "running",
+    "runs": [
+      {
+        "method": "regmean",
+        "seed": 0,
+        "gpu": 3,
+        "worker_pid": 2508840,
+        "started": 1792981131.428226
+      },
+      {
+        "method": "lorm",
+        "seed": 0,
+        "gpu": 6,
+        "worker_pid": 2508845,
+        "started": 1792981131.573772
+      }
+    ],
+    "storage_limit_bytes": 20000000000,
+    "write_stop_bytes": 16000000000,
+    "baseline_allocated_bytes": 4521984,
+    "protocol": "research/head_regmean/TEN_TASK_PROTOCOL.json"
+  },
+  "runs": [
+    {
+      "method": "regmean",
+      "receipt": {
+        "seed": 0,
+        "method": "regmean",
+        "status": "training",
+        "started": 1792981131.4701073,
+        "train_pid": 2508848,
+        "free_mib_at_admission": 72830
+      },
+      "alive": true,
+      "completed_client_records": 4,
+      "training_visits": 10170,
+      "last_event_kind": "client",
+      "latest_checkpoint_exists": true,
+      "checkpoint_size": 448486989
+    },
+    {
+      "method": "lorm",
+      "receipt": {
+        "seed": 0,
+        "method": "lorm",
+        "status": "training",
+        "started": 1792981131.60714,
+        "train_pid": 2508852,
+        "free_mib_at_admission": 72830
+      },
+      "alive": true,
+      "completed_client_records": 9,
+      "training_visits": 20305,
+      "last_event_kind": "client",
+      "latest_checkpoint_exists": false,
+      "checkpoint_size": null
+    }
+  ],
+  "processes": [
+    {
+      "pid": 2508836,
+      "ppid": 1,
+      "pgid": 2508836,
+      "argv": "/usr/bin/timeout -k 60 86300 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py"
+    },
+    {
+      "pid": 2508837,
+      "ppid": 2508836,
+      "pgid": 2508836,
+      "argv": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py"
+    },
+    {
+      "pid": 2508840,
+      "ppid": 2508837,
+      "pgid": 2508840,
+      "argv": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py"
+    },
+    {
+      "pid": 2508845,
+      "ppid": 2508837,
+      "pgid": 2508845,
+      "argv": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py"
+    },
+    {
+      "pid": 2508848,
+      "ppid": 2508840,
+      "pgid": 2508840,
+      "argv": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py"
+    },
+    {
+      "pid": 2508852,
+      "ppid": 2508845,
+      "pgid": 2508845,
+      "argv": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py"
+    }
+  ],
+  "neutral_argv": true,
+  "gpu_processes": [
+    "2508848, /data/bmw/envs/n3/bin/python, 2676 MiB",
+    "2508852, /data/bmw/envs/n3/bin/python, 7720 MiB"
+  ],
+  "actual_training_verified": true,
+  "allocated_bytes": 453087232
+}

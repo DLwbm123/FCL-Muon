@@ -1,0 +1,8 @@
+{
+  "launched": 1792981131.1947188,
+  "outer_pid": 2508836,
+  "command": "/usr/bin/timeout -k 60 86300 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py",
+  "root": "/data/bmw/FCL-Muon-ten-task-20261026",
+  "shared_original_clock": "reports/job.json",
+  "source_revision": "4bcdaf5"
+}
