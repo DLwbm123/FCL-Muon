@@ -1,0 +1,18 @@
+{
+  "checked": 1793018514.4847968,
+  "authorized_gpu": "0",
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "checkpoint_task": 0,
+  "checkpoint_round": 0,
+  "checkpoint_phase": "clients",
+  "next_client": 9,
+  "checkpoint_committed_client_rounds": 9,
+  "checkpoint_committed_training_visits": 20305,
+  "uncommitted_training_visits_replayed": null,
+  "uncommitted_training_visits_upper_bound": 4695,
+  "cost_note": "User-requested GPU migration, not a failed scientific rerun. Uncommitted current-client work may be replayed from last atomic checkpoint; exact partial work count is unavailable. All elapsed time and storage retain original clock/budget. Old logs preserved.",
+  "source_revision": "8c90c0b7a707105338cacd6aafa547a162ac1f16"
+}

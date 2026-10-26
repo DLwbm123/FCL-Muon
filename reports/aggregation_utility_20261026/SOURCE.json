@@ -1,0 +1,7 @@
+{
+  "revision": "8c90c0b7a707105338cacd6aafa547a162ac1f16",
+  "base_revision": "c7ce88f",
+  "frozen_at": 1793018174.956165,
+  "preflight": "Eight synthetic CPU tests passed",
+  "scientific_scope": "Fresh shared T1; original RRS, central utility and federated utility through T3, seed0 only"
+}

@@ -1,0 +1,23 @@
+{
+  "authorization": "User explicitly requested new method on GPU0 after initial shared T1 had started on GPU7.",
+  "action": "Resume this same independent three-arm experiment on GPU0; no duplicate arm or new clock.",
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "old_owned_processes_exited": [
+    39220,
+    39221,
+    39304
+  ],
+  "resume_checkpoint": "runs/prefix/latest.pt",
+  "committed_client_rounds": 9,
+  "committed_training_visits": 20305,
+  "science_unchanged": true,
+  "runtime_change": "Driver restores existing prefix or arm checkpoint using original config/identity/RNG, and guard retains original deadline and storage baseline.",
+  "uncommitted_training_visits_replayed": null,
+  "uncommitted_training_visits_upper_bound": 4695,
+  "cost_disclosure": "Completed-record training visits remain875000; extra partial-client work is unknown within recorded bound. No claim of exactly875000 physical visits after migration.",
+  "new_limit_bytes": 8000000000,
+  "write_stop_bytes": 6000000000
+}

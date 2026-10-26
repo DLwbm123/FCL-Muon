@@ -26,7 +26,11 @@ def write_json(path,value):
 def main():
     root=Path(os.environ['PROJECT_ROOT']);cfg=json.loads((root/'configs/aggregation_utility_three_task_seed0.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ['started','deadline']}
-    out=root/'runs';out.mkdir(exist_ok=False)
+    resume=os.environ.get('RESUME_RUN')=='1'
+    migration=json.loads((root/'reports/GPU0_MIGRATION_READY.json').read_text()) if resume else None
+    if resume:
+        assert migration['clock']==clock and migration['authorized_gpu']=='0' and os.environ['CUDA_VISIBLE_DEVICES']=='0'
+    out=root/'runs';out.mkdir(exist_ok=resume)
     torch.set_num_threads(4);torch.set_float32_matmul_precision('highest')
     torch.manual_seed(cfg['seed']);np.random.seed(cfg['seed']);random.seed(cfg['seed'])
     torch.backends.cudnn.benchmark=False;torch.backends.cudnn.deterministic=True
@@ -55,24 +59,42 @@ def main():
             'client_rounds_including_shared_prefix':len(p.s['training_records']),
             'completed_stages':len(p.s['stages']),'clock':clock})
 
-    prefix=build('prefix');prefix_started=time.time();torch.cuda.reset_peak_memory_stats()
-    while not (prefix.s['task']==1 and prefix.s['phase']=='task_start'):
-        assert prefix.step();progress(prefix)
-    prefix.restore()
-    assert prefix.s['merges']==[0] and prefix.s['history'].committed=={0}
-    assert len(prefix.s['certificates'])==5 and all(v['deployed_fp32']['passed'] for v in prefix.s['certificates'])
-    prefix_meta={'task1_complete':True,'training_visits':sum(v['visited'] for v in prefix.s['training_records']),
-                 'client_rounds':len(prefix.s['training_records']),'stats_visits':sum(v['samples'] for v in prefix.s['stats_records']),
-                 'worker_seconds':time.time()-prefix_started,'peak_gpu_allocated_bytes':torch.cuda.max_memory_allocated(),
-                 'first_stage':prefix.s['stages'][0],'clock':clock}
-    write_json(out/'PREFIX_READY.json',prefix_meta)
-    del prefix;gc.collect();torch.cuda.empty_cache()
+    if resume and (out/'PREFIX_READY.json').exists():
+        prefix_meta=json.loads((out/'PREFIX_READY.json').read_text())
+        assert prefix_meta['clock']==clock and prefix_meta['task1_complete']
+    else:
+        prefix=build('prefix');prefix_started=time.time();torch.cuda.reset_peak_memory_stats()
+        if resume and (prefix.out/'latest.pt').exists():
+            prefix.restore()
+            prefix.event('user_requested_gpu_resume',gpu=0,original_clock=clock,
+                         checkpoint_client_records=len(prefix.s['training_records']))
+        while not (prefix.s['task']==1 and prefix.s['phase']=='task_start'):
+            assert prefix.step();progress(prefix)
+        prefix.restore()
+        assert prefix.s['merges']==[0] and prefix.s['history'].committed=={0}
+        assert len(prefix.s['certificates'])==5 and all(v['deployed_fp32']['passed'] for v in prefix.s['certificates'])
+        prefix_meta={'task1_complete':True,'training_visits':sum(v['visited'] for v in prefix.s['training_records']),
+                     'client_rounds':len(prefix.s['training_records']),'stats_visits':sum(v['samples'] for v in prefix.s['stats_records']),
+                     'current_worker_segment_seconds':time.time()-prefix_started,
+                     'study_elapsed_at_prefix_completion_seconds':time.time()-clock['started'],
+                     'peak_gpu_allocated_bytes_current_segment':torch.cuda.max_memory_allocated(),
+                     'migration':migration,'first_stage':prefix.s['stages'][0],'clock':clock}
+        write_json(out/'PREFIX_READY.json',prefix_meta)
+        del prefix;gc.collect();torch.cuda.empty_cache()
     qualifications={}
     for mode in ['rrs','central','federated']:
         p=build(mode);branch_start=time.time();torch.cuda.reset_peak_memory_stats()
-        checkpoint=torch.load(out/'prefix/latest.pt',map_location='cpu',weights_only=False)
-        import_prefix(p,checkpoint);del checkpoint
-        shutil.copyfile(out/'prefix/task1_private_logits.npz',p.out/'task1_private_logits.npz')
+        if resume and (p.out/'COMPLETE.json').exists():
+            q=json.loads((p.out/'QUALIFICATION.json').read_text());assert q['qualified'] and q['clock']==clock
+            qualifications[mode]={'qualified':True,'accepted_layers':[v['accepted_layers'] for v in q['selection_records']],
+                                 'new_branch_seconds':q['new_branch_seconds']}
+            del p;gc.collect();torch.cuda.empty_cache();continue
+        if resume and (p.out/'latest.pt').exists():
+            p.restore()
+        else:
+            checkpoint=torch.load(out/'prefix/latest.pt',map_location='cpu',weights_only=False)
+            import_prefix(p,checkpoint);del checkpoint
+            shutil.copyfile(out/'prefix/task1_private_logits.npz',p.out/'task1_private_logits.npz')
         while p.step():progress(p)
         records=p.s['training_records'];stages=p.s['stages'];selections=p.s['selection_records']
         assert len(records)==150 and len({(v['task'],v['round'],v['client']) for v in records})==150
@@ -106,7 +128,8 @@ def main():
                               'new_branch_seconds':qualification['new_branch_seconds']}
         del p;gc.collect();torch.cuda.empty_cache()
     write_json(out/'STUDY_QUALIFICATION.json',{'qualified':True,'prefix':prefix_meta,'arms':qualifications,
-               'actual_training_visits':875000,'attributed_training_visits_including_prefix_per_arm':375000,
+               'completed_record_training_visits':875000,'attributed_training_visits_including_prefix_per_arm':375000,
+               'user_requested_gpu_migration':migration,
                'actual_client_rounds':350,'actual_base_statistics_visits':210000,
                'actual_task_eval_images':16000,'actual_reload_images':9000,'clock':clock})
     write_json(out/'COMPLETE.json',{'completed':time.time(),'qualified':True})
