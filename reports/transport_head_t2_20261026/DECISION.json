@@ -1,0 +1,16 @@
+{
+  "status": "ALL_THREE_QUALIFIED_T2_GATE_FAILED",
+  "gate": {
+    "checks": {
+      "mean_old_gain_at_least_half_pp": false,
+      "mean_new_change_at_least_minus_half_pp": true,
+      "mean_overall_gain_at_least_quarter_pp": false,
+      "each_seed_old_change_nonnegative": false
+    },
+    "passed": false,
+    "all_integrity_passed": true
+  },
+  "next": "Close transport short-route study with all results retained. User separately authorized the mature current-only Head-RegMean vs standard LoRM six-run ten-task study, which is already running; its continuation is independent of this gate. No further transport/T3 or short-method successors.",
+  "no_coefficient_sweep_or_costly_retry": true,
+  "ten_task_study_is_this_transport_method": false
+}

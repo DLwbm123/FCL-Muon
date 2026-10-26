@@ -1,0 +1,8 @@
+{
+  "initial_reader_check": "An initial final-check reader selected every task==1 statistics record, including the inherited task-start RRS record, and therefore failed its new paired-statistics count.",
+  "correction": "Select the two explicit paired statistics kinds. These total100 client/pass records and50000 encoder-forward images per seed; inherited task-start RRS remains preserved and uncharged to this new branch.",
+  "experimental_state_changed": false,
+  "training_or_evaluation_repeated": false,
+  "worker_qualification_changed": false,
+  "final_check": "All original production qualification and actual final-check assertions passed; no tolerance or scientific gate changed."
+}

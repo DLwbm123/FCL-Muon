@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": {
+    "B_exact": true,
+    "raw_FedAvg_head_exact": true
+  },
+  "task": 1,
+  "round": 0,
+  "scope": "Before first changed fusion; existing old_response control, no control training repeated"
+}

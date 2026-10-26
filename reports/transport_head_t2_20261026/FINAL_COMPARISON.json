@@ -1,0 +1,715 @@
+{
+  "scope": "All three T2 development seeds, fixed raw and centered rules; primary old_response control reused without training",
+  "arms": {
+    "transport": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.45,
+            "old": 96.7,
+            "new": 94.19999999999999,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          },
+          "centered": {
+            "overall": 96.5,
+            "old": 97.6,
+            "new": 95.39999999999999,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 95.25,
+            "old": 96.1,
+            "new": 94.39999999999999,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 95.75,
+            "old": 96.0,
+            "new": 95.5,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 94.19999999999999,
+            "old": 93.10000000000001,
+            "new": 95.3,
+            "restricted": [
+              99.1,
+              97.3
+            ]
+          },
+          "centered": {
+            "overall": 95.75,
+            "old": 95.8,
+            "new": 95.7,
+            "restricted": [
+              99.1,
+              97.3
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 94.96666666666667,
+          "old": 95.3,
+          "new": 94.63333333333333
+        },
+        "centered": {
+          "overall": 96.0,
+          "old": 96.46666666666667,
+          "new": 95.53333333333333
+        }
+      },
+      "sample_std": {
+        "raw": {
+          "overall": 0.6714412359494637,
+          "old": 1.928730152198586,
+          "new": 0.5859465277082359
+        },
+        "centered": {
+          "overall": 0.4330127018922193,
+          "old": 0.9865765724632471,
+          "new": 0.15275252316519994
+        }
+      }
+    },
+    "old_response": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.5,
+            "old": 96.8,
+            "new": 94.19999999999999,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          },
+          "centered": {
+            "overall": 96.55,
+            "old": 97.7,
+            "new": 95.39999999999999,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 95.3,
+            "old": 96.1,
+            "new": 94.5,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 95.75,
+            "old": 96.0,
+            "new": 95.5,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 94.19999999999999,
+            "old": 93.10000000000001,
+            "new": 95.3,
+            "restricted": [
+              99.1,
+              97.3
+            ]
+          },
+          "centered": {
+            "overall": 95.75,
+            "old": 95.8,
+            "new": 95.7,
+            "restricted": [
+              99.1,
+              97.3
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 95.0,
+          "old": 95.33333333333333,
+          "new": 94.66666666666666
+        },
+        "centered": {
+          "overall": 96.01666666666667,
+          "old": 96.5,
+          "new": 95.53333333333333
+        }
+      },
+      "sample_std": {
+        "raw": {
+          "overall": 0.7000000000000058,
+          "old": 1.9655363983740688,
+          "new": 0.5686240703077358
+        },
+        "centered": {
+          "overall": 0.461880215351699,
+          "old": 1.0440306508910575,
+          "new": 0.15275252316519994
+        }
+      }
+    },
+    "feature_anchor": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.45,
+            "old": 96.89999999999999,
+            "new": 94.0,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          },
+          "centered": {
+            "overall": 96.45,
+            "old": 97.6,
+            "new": 95.3,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 95.39999999999999,
+            "old": 96.39999999999999,
+            "new": 94.39999999999999,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 95.65,
+            "old": 96.2,
+            "new": 95.1,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 93.95,
+            "old": 92.60000000000001,
+            "new": 95.3,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          },
+          "centered": {
+            "overall": 95.6,
+            "old": 95.5,
+            "new": 95.7,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 94.93333333333334,
+          "old": 95.3,
+          "new": 94.56666666666666
+        },
+        "centered": {
+          "overall": 95.9,
+          "old": 96.43333333333334,
+          "new": 95.36666666666666
+        }
+      },
+      "sample_std": {
+        "raw": {
+          "overall": 0.8519585279421341,
+          "old": 2.3515952032609597,
+          "new": 0.6658328118479389
+        },
+        "centered": {
+          "overall": 0.4769696007084748,
+          "old": 1.0692676621563593,
+          "new": 0.30550504633039366
+        }
+      }
+    },
+    "frozen": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.25,
+            "old": 97.39999999999999,
+            "new": 93.10000000000001,
+            "restricted": [
+              99.0,
+              97.6
+            ]
+          },
+          "centered": {
+            "overall": 96.45,
+            "old": 97.89999999999999,
+            "new": 95.0,
+            "restricted": [
+              99.0,
+              97.6
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 94.75,
+            "old": 96.5,
+            "new": 93.0,
+            "restricted": [
+              98.6,
+              97.8
+            ]
+          },
+          "centered": {
+            "overall": 95.45,
+            "old": 96.3,
+            "new": 94.6,
+            "restricted": [
+              98.6,
+              97.8
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 93.75,
+            "old": 92.9,
+            "new": 94.6,
+            "restricted": [
+              99.0,
+              96.89999999999999
+            ]
+          },
+          "centered": {
+            "overall": 95.5,
+            "old": 95.89999999999999,
+            "new": 95.1,
+            "restricted": [
+              99.0,
+              96.89999999999999
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 94.58333333333333,
+          "old": 95.6,
+          "new": 93.56666666666666
+        },
+        "centered": {
+          "overall": 95.8,
+          "old": 96.69999999999999,
+          "new": 94.89999999999999
+        }
+      },
+      "sample_std": {
+        "raw": {
+          "overall": 0.7637626158259734,
+          "old": 2.3811761799581252,
+          "new": 0.8962886439832447
+        },
+        "centered": {
+          "overall": 0.563471383479233,
+          "old": 1.0583005244258352,
+          "new": 0.26457513110646014
+        }
+      }
+    },
+    "subspace": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 94.69999999999999,
+            "old": 95.19999999999999,
+            "new": 94.19999999999999,
+            "restricted": [
+              99.0,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 93.85,
+            "old": 98.8,
+            "new": 88.9,
+            "restricted": [
+              99.0,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 93.30000000000001,
+            "old": 91.10000000000001,
+            "new": 95.5,
+            "restricted": [
+              98.6,
+              98.2
+            ]
+          },
+          "centered": {
+            "overall": 94.05,
+            "old": 98.3,
+            "new": 89.8,
+            "restricted": [
+              98.6,
+              98.2
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 92.55,
+            "old": 89.3,
+            "new": 95.8,
+            "restricted": [
+              99.1,
+              98.0
+            ]
+          },
+          "centered": {
+            "overall": 94.45,
+            "old": 98.8,
+            "new": 90.10000000000001,
+            "restricted": [
+              99.1,
+              98.0
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 93.51666666666667,
+          "old": 91.86666666666666,
+          "new": 95.16666666666666
+        },
+        "centered": {
+          "overall": 94.11666666666666,
+          "old": 98.63333333333333,
+          "new": 89.60000000000001
+        }
+      },
+      "sample_std": {
+        "raw": {
+          "overall": 1.0912531023247174,
+          "old": 3.0237945256470877,
+          "new": 0.8504900548115436
+        },
+        "centered": {
+          "overall": 0.30550504633039366,
+          "old": 0.28867513459481287,
+          "new": 0.6244997998398396
+        }
+      }
+    },
+    "adapting": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.6,
+            "old": 96.1,
+            "new": 95.1,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          },
+          "centered": {
+            "overall": 96.45,
+            "old": 97.3,
+            "new": 95.6,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 95.55,
+            "old": 95.8,
+            "new": 95.3,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 95.7,
+            "old": 95.5,
+            "new": 95.89999999999999,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 94.0,
+            "old": 92.30000000000001,
+            "new": 95.7,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          },
+          "centered": {
+            "overall": 95.6,
+            "old": 95.3,
+            "new": 95.89999999999999,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 95.05,
+          "old": 94.73333333333333,
+          "new": 95.36666666666666
+        },
+        "centered": {
+          "overall": 95.91666666666667,
+          "old": 96.03333333333333,
+          "new": 95.8
+        }
+      },
+      "sample_std": {
+        "raw": {
+          "overall": 0.9096702699330101,
+          "old": 2.112660250332101,
+          "new": 0.30550504633039366
+        },
+        "centered": {
+          "overall": 0.4645786621588814,
+          "old": 1.1015141094572196,
+          "new": 0.1732050807568861
+        }
+      }
+    }
+  },
+  "delta_vs_old_response_pp": {
+    "raw": {
+      "overall": -0.03333333333333144,
+      "old": -0.03333333333333144,
+      "new": -0.03333333333333144
+    },
+    "centered": {
+      "overall": -0.01666666666666572,
+      "old": -0.03333333333333144,
+      "new": 0.0
+    }
+  },
+  "paired_delta_pp": {
+    "raw": {
+      "overall": [
+        -0.04999999999999716,
+        -0.04999999999999716,
+        0.0
+      ],
+      "old": [
+        -0.09999999999999432,
+        0.0,
+        0.0
+      ],
+      "new": [
+        0.0,
+        -0.10000000000000853,
+        0.0
+      ]
+    },
+    "centered": {
+      "overall": [
+        -0.04999999999999716,
+        0.0,
+        0.0
+      ],
+      "old": [
+        -0.10000000000000853,
+        0.0,
+        0.0
+      ],
+      "new": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "paired_delta_sample_std_pp": {
+    "raw": {
+      "overall": 0.028867513459479646,
+      "old": 0.05773502691895929,
+      "new": 0.0577350269189675
+    },
+    "centered": {
+      "overall": 0.028867513459479646,
+      "old": 0.0577350269189675,
+      "new": 0.0
+    }
+  },
+  "gate": {
+    "checks": {
+      "mean_old_gain_at_least_half_pp": false,
+      "mean_new_change_at_least_minus_half_pp": true,
+      "mean_overall_gain_at_least_quarter_pp": false,
+      "each_seed_old_change_nonnegative": false
+    },
+    "passed": false,
+    "all_integrity_passed": true
+  },
+  "cost": {
+    "training_visits": 375000,
+    "teacher_forward_images": 375000,
+    "paired_statistic_encoder_forward_images": 150000,
+    "new_optimizer_steps": 23800,
+    "paired_unique_current_images": 75000,
+    "new_certificates": 15,
+    "preflight_backward_images": 192,
+    "preflight_teacher_forward_images": 96,
+    "task_evaluation_plus_reload_images": 12000,
+    "control_training_repeated": false,
+    "logical_communication_bytes_total": 2558202480,
+    "old_response_same_protocol_logical_communication_bytes_total": 1496494080,
+    "extra_logical_communication_bytes_vs_old_response": 1061708400
+  },
+  "proxy_diagnostics": {
+    "raw_response_mse_improves_vs_raw_FedAvg_rounds": 15,
+    "rounds_total": 15,
+    "per_seed": [
+      {
+        "seed": 0,
+        "feature_squared_drift": [
+          0.0025406269431610356,
+          0.001200838100909079,
+          0.0006003116271020556,
+          0.00015372374819901257,
+          8.75859358436131e-06
+        ],
+        "raw_response_mse": [
+          0.01522256455455696,
+          0.01748813649160865,
+          0.01655060886793549,
+          0.016886949869531154,
+          0.01668734582703706
+        ],
+        "raw_FedAvg_response_mse": [
+          0.03549262080699315,
+          0.02663416813179087,
+          0.026435035055189758,
+          0.027103911771583455,
+          0.027335865467219576
+        ]
+      },
+      {
+        "seed": 1,
+        "feature_squared_drift": [
+          0.002127286546167894,
+          0.0010013904514405922,
+          0.0005099491394223244,
+          0.000146063025062618,
+          5.830077399788039e-06
+        ],
+        "raw_response_mse": [
+          0.013261672247320744,
+          0.015435508799192931,
+          0.014666469303332453,
+          0.015477001805345914,
+          0.015503632630017162
+        ],
+        "raw_FedAvg_response_mse": [
+          0.03334735591325867,
+          0.025179185254489443,
+          0.025444854435730913,
+          0.026433450968830964,
+          0.027199786287592908
+        ]
+      },
+      {
+        "seed": 2,
+        "feature_squared_drift": [
+          0.002118664492899904,
+          0.0008912666996939817,
+          0.0004544828082704009,
+          0.0001533636335689432,
+          7.812672923944546e-06
+        ],
+        "raw_response_mse": [
+          0.01403336746011057,
+          0.01709314623694469,
+          0.01595509210558239,
+          0.016643918044962423,
+          0.016537719188174503
+        ],
+        "raw_FedAvg_response_mse": [
+          0.036371581396291354,
+          0.02833344074382893,
+          0.0275603208801537,
+          0.0291492490378241,
+          0.029313456215899224
+        ]
+      }
+    ],
+    "limits": "Raw MSE comparison is within the new paired representation against the raw-FedAvg counterfactual; minimized certificate is for alpha=.5 shrunk paired objective. Neither establishes superior classification or superiority to the old_response matching objective."
+  }
+}

@@ -1,0 +1,19 @@
+paired local/global head response匹配 T2：三个seed完成，全部实现验收通过。
+
+固定centered均值：总体96.0000%、旧96.4667%、新95.5333%。
+相对旧响应保持对照：总体-0.0167pp、旧-0.0333pp、新+0.0000pp；各seed旧变化[-0.10000000000000853, 0.0, 0.0]pp。
+预先冻结的T2 gate：{'checks': {'mean_old_gain_at_least_half_pp': False, 'mean_new_change_at_least_minus_half_pp': True, 'mean_overall_gain_at_least_quarter_pp': False, 'each_seed_old_change_nonnegative': False}, 'passed': False, 'all_integrity_passed': True}
+
+逐seed（固定centered overall/old/new）：
+seed0: 96.50/97.60/95.40%
+seed1: 95.75/96.00/95.50%
+seed2: 95.75/95.80/95.70%
+
+raw变化vs同一对照：{'overall': -0.03333333333333144, 'old': -0.03333333333333144, 'new': -0.03333333333333144}pp。两种推理规则、所有seed及背景对照完整保留。
+paired响应raw MSE在15/15轮低于raw-FedAvg反事实，但实际证书针对alpha=.5收缩目标；它不证明分类改善，也不能把该结构差异宣称为旧/新类问题的已证实原因。
+
+最终实际checkpoint：每seed50个新增clientround、125000训练访问/125000 teacher forward、50000 paired统计encoder forward、5个新部署证书、10个旧/新class、2次merge/history commit及24个B归零，首轮完整B/rawhead exact pairing、旧head/source/teacher与完整raw+centered重载验收通过。共享T1记录与task-start RRS不计入新增T2成本。
+成本合计：{'training_visits': 375000, 'teacher_forward_images': 375000, 'paired_statistic_encoder_forward_images': 150000, 'new_optimizer_steps': 23800, 'paired_unique_current_images': 75000, 'new_certificates': 15, 'preflight_backward_images': 192, 'preflight_teacher_forward_images': 96, 'task_evaluation_plus_reload_images': 12000, 'control_training_repeated': False, 'logical_communication_bytes_total': 2558202480, 'old_response_same_protocol_logical_communication_bytes_total': 1496494080, 'extra_logical_communication_bytes_vs_old_response': 1061708400}
+job exit[0,0,0]，ended1792982348.4770918；新增目录2460717056bytes，旧lineage42121469952bytes，原clock不变。
+
+用户已明确转向成熟current-only CE Head-RegMean与标准LoRM的六条完整十任务；该研究已独立启动，与本transport门槛独立。此短程路线只收尾归档，不做T3、不扫参数、不追加短程变体，不因本结果中断十任务队列。所有证据仍属共享测试集开发结果，无独立held-out确认。

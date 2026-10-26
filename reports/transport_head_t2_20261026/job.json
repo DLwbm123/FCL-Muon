@@ -2,7 +2,7 @@
   "started": 1792926949.7496953,
   "deadline": 1793012449.7496953,
   "intervention_launched": 1792978860.1537027,
-  "status": "running",
+  "status": "completed",
   "lanes": [
     {
       "seed": 0,
@@ -37,5 +37,13 @@
       "started": 1792926949.7496953,
       "deadline": 1793012449.7496953
     }
-  ]
+  ],
+  "ended": 1792982348.4770918,
+  "exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "new_allocated_bytes": 2460717056,
+  "lineage_allocated_bytes": 42121469952
 }

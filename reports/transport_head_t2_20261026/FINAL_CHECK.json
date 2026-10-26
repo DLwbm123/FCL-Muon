@@ -1,0 +1,136 @@
+{
+  "checked": 1792983381.6206017,
+  "passed": true,
+  "job": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953,
+    "intervention_launched": 1792978860.1537027,
+    "status": "completed",
+    "lanes": [
+      {
+        "seed": 0,
+        "gpu": 1,
+        "pid": 2412696
+      },
+      {
+        "seed": 1,
+        "gpu": 5,
+        "pid": 2412697
+      },
+      {
+        "seed": 2,
+        "gpu": 7,
+        "pid": 2412698
+      }
+    ],
+    "storage_limit_bytes": 4000000000,
+    "lineage_limit_bytes": 45000000000,
+    "new_before_bytes": 1720320,
+    "lineage_before_bytes": 39662473216,
+    "source_clocks": [
+      {
+        "started": 1792926949.7496953,
+        "deadline": 1793012449.7496953
+      },
+      {
+        "started": 1792926949.7496953,
+        "deadline": 1793012449.7496953
+      },
+      {
+        "started": 1792926949.7496953,
+        "deadline": 1793012449.7496953
+      }
+    ],
+    "ended": 1792982348.4770918,
+    "exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "new_allocated_bytes": 2460717056,
+    "lineage_allocated_bytes": 42121469952
+  },
+  "seeds": [
+    {
+      "seed": 0,
+      "checks": {
+        "complete_boundary": true,
+        "merge_history": true,
+        "B_count_and_zero": true,
+        "unique_client_budget": true,
+        "new_certificates": true,
+        "paired_statistics": true,
+        "certified_pair_counts": true,
+        "no_retained_endpoints": true,
+        "actual_first_round_pair": true,
+        "metrics_exact": true,
+        "old_head_exact": true,
+        "teacher_preservation": true,
+        "worker_full_qualification": true,
+        "source_unchanged_receipt": true,
+        "clock_preserved": true
+      },
+      "task": 2,
+      "phase": "complete",
+      "new_clients": 50,
+      "training_visits": 125000,
+      "new_certificates": 5,
+      "paired_statistic_forward_images": 50000,
+      "B_count": 24
+    },
+    {
+      "seed": 1,
+      "checks": {
+        "complete_boundary": true,
+        "merge_history": true,
+        "B_count_and_zero": true,
+        "unique_client_budget": true,
+        "new_certificates": true,
+        "paired_statistics": true,
+        "certified_pair_counts": true,
+        "no_retained_endpoints": true,
+        "actual_first_round_pair": true,
+        "metrics_exact": true,
+        "old_head_exact": true,
+        "teacher_preservation": true,
+        "worker_full_qualification": true,
+        "source_unchanged_receipt": true,
+        "clock_preserved": true
+      },
+      "task": 2,
+      "phase": "complete",
+      "new_clients": 50,
+      "training_visits": 125000,
+      "new_certificates": 5,
+      "paired_statistic_forward_images": 50000,
+      "B_count": 24
+    },
+    {
+      "seed": 2,
+      "checks": {
+        "complete_boundary": true,
+        "merge_history": true,
+        "B_count_and_zero": true,
+        "unique_client_budget": true,
+        "new_certificates": true,
+        "paired_statistics": true,
+        "certified_pair_counts": true,
+        "no_retained_endpoints": true,
+        "actual_first_round_pair": true,
+        "metrics_exact": true,
+        "old_head_exact": true,
+        "teacher_preservation": true,
+        "worker_full_qualification": true,
+        "source_unchanged_receipt": true,
+        "clock_preserved": true
+      },
+      "task": 2,
+      "phase": "complete",
+      "new_clients": 50,
+      "training_visits": 125000,
+      "new_certificates": 5,
+      "paired_statistic_forward_images": 50000,
+      "B_count": 24
+    }
+  ]
+}
