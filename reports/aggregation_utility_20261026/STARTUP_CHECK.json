@@ -1,0 +1,24 @@
+{
+  "checked": 1793018198.7349699,
+  "job": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961,
+    "status": "running",
+    "supervisor_pid": 39221,
+    "storage_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "seed": 0,
+    "tasks": 3,
+    "gpu": "7",
+    "free_mib_at_admission": 68619,
+    "baseline_allocated_bytes": 2502656,
+    "worker_pid": 39304,
+    "allocated_bytes": 2523136,
+    "checked": 1793018196.14458
+  },
+  "processes": "  39220       1       00:22 /usr/bin/timeout -k 60 86300 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n  39221   39220       00:22 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n  39304   39221       00:22 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n",
+  "own_gpu_processes": "39304, /data/bmw/envs/n3/bin/python, 1212 MiB",
+  "gpu": "7, 5429 MiB, 67402 MiB, 94 %\n",
+  "progress": null,
+  "worker_log_tail": ""
+}

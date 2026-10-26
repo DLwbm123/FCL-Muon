@@ -1,0 +1,39 @@
+{
+  "checked": 1793018651.239255,
+  "job": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961,
+    "status": "running",
+    "supervisor_pid": 55692,
+    "storage_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "seed": 0,
+    "tasks": 3,
+    "gpu": "0",
+    "user_requested_gpu_migration": true,
+    "free_mib_at_admission": 72830,
+    "baseline_allocated_bytes": 2502656,
+    "worker_pid": 55695,
+    "allocated_bytes": 432082944,
+    "checked": 1793018644.3014266
+  },
+  "processes": "  55691       1       01:47 /usr/bin/timeout -k 60 85931 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n  55692   55691       01:47 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n  55695   55692       01:46 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py\n",
+  "own_gpu_processes": "55695, /data/bmw/envs/n3/bin/python, 2458 MiB",
+  "gpu": "0, 2468 MiB, 70363 MiB, 69 %\n",
+  "progress": {
+    "time": 1793018598.4243157,
+    "mode": "prefix",
+    "task": 0,
+    "round": 1,
+    "phase": "clients",
+    "client_rounds_including_shared_prefix": 10,
+    "completed_stages": 0,
+    "clock": {
+      "started": 1793018176.0269961,
+      "deadline": 1793103676.0269961
+    }
+  },
+  "checkpoint_exists": true,
+  "worker_log_tail": "",
+  "old_owned_processes_gone": true
+}

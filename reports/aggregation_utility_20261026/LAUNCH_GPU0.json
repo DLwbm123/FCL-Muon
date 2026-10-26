@@ -1,0 +1,10 @@
+{
+  "outer_pid": 55691,
+  "launched": 1793018544.048307,
+  "gpu": 0,
+  "free_mib_at_admission": 72830,
+  "remaining_outer_timeout_seconds": 85931,
+  "original_started": 1793018176.0269961,
+  "original_deadline": 1793103676.0269961,
+  "no_duplicate_worker": true
+}

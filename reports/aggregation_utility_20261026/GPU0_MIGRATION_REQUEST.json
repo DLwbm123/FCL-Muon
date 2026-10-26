@@ -1,0 +1,21 @@
+{
+  "requested_at": 1793018461.5753567,
+  "authorization": "User explicitly requested new method on GPU0; move existing run, no duplicate experiment",
+  "original_job_at_request": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961,
+    "status": "running",
+    "supervisor_pid": 39221,
+    "storage_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "seed": 0,
+    "tasks": 3,
+    "gpu": "7",
+    "free_mib_at_admission": 68619,
+    "baseline_allocated_bytes": 2502656,
+    "worker_pid": 39304,
+    "allocated_bytes": 474791936,
+    "checked": 1793018456.5594199
+  },
+  "action": "Stop current owned worker through its guard, resume latest checkpoint on GPU0 with unchanged original clock and budget"
+}

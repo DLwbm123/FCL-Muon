@@ -1,0 +1,5 @@
+{
+  "scientific_revision": "8c90c0b7a707105338cacd6aafa547a162ac1f16",
+  "runtime_revision": "bf3e29a8d3769288d56e0ff6c7625b396202862e",
+  "runtime_change": "Explicit user-requested GPU0 migration, original clock/config/probe/science unchanged; latest checkpoint continuation."
+}
