@@ -1,0 +1,451 @@
+{
+  "time_shanghai": "2026-10-26T12:32:58.927875+08:00",
+  "checked": 1792989178.9278746,
+  "status": "PARTIAL_RUNNING",
+  "common_tasks_seed0": 6,
+  "seed1_no_paired_results": true,
+  "results": {
+    "centered": {
+      "stages": [
+        {
+          "task": 1,
+          "head": {
+            "new": 99.0,
+            "old": null,
+            "overall": 99.0,
+            "forgetting": null,
+            "per_task": [
+              99.0
+            ]
+          },
+          "lorm": {
+            "new": 97.7,
+            "old": null,
+            "overall": 97.7,
+            "forgetting": null,
+            "per_task": [
+              97.7
+            ]
+          }
+        },
+        {
+          "task": 2,
+          "head": {
+            "new": 94.8,
+            "old": 98.0,
+            "overall": 96.39999999999999,
+            "forgetting": 1.0000000000000009,
+            "per_task": [
+              98.0,
+              94.8
+            ]
+          },
+          "lorm": {
+            "new": 94.69999999999999,
+            "old": 90.0,
+            "overall": 92.35,
+            "forgetting": 7.699999999999996,
+            "per_task": [
+              90.0,
+              94.69999999999999
+            ]
+          }
+        },
+        {
+          "task": 3,
+          "head": {
+            "new": 90.60000000000001,
+            "old": 95.7,
+            "overall": 94.0,
+            "forgetting": 1.1999999999999955,
+            "per_task": [
+              97.89999999999999,
+              93.5,
+              90.60000000000001
+            ]
+          },
+          "lorm": {
+            "new": 93.8,
+            "old": 89.3,
+            "overall": 90.8,
+            "forgetting": 6.899999999999995,
+            "per_task": [
+              86.3,
+              92.30000000000001,
+              93.8
+            ]
+          }
+        },
+        {
+          "task": 4,
+          "head": {
+            "new": 94.19999999999999,
+            "old": 92.23333333333333,
+            "overall": 92.72500000000001,
+            "forgetting": 2.5666666666666655,
+            "per_task": [
+              97.5,
+              88.9,
+              90.3,
+              94.19999999999999
+            ]
+          },
+          "lorm": {
+            "new": 91.60000000000001,
+            "old": 88.36666666666667,
+            "overall": 89.17500000000001,
+            "forgetting": 7.033333333333329,
+            "per_task": [
+              85.0,
+              87.4,
+              92.7,
+              91.60000000000001
+            ]
+          }
+        },
+        {
+          "task": 5,
+          "head": {
+            "new": 92.2,
+            "old": 91.575,
+            "overall": 91.7,
+            "forgetting": 3.074999999999997,
+            "per_task": [
+              96.89999999999999,
+              88.1,
+              88.3,
+              93.0,
+              92.2
+            ]
+          },
+          "lorm": {
+            "new": 95.6,
+            "old": 86.45,
+            "overall": 88.28,
+            "forgetting": 7.999999999999999,
+            "per_task": [
+              83.3,
+              84.89999999999999,
+              89.60000000000001,
+              88.0,
+              95.6
+            ]
+          }
+        },
+        {
+          "task": 6,
+          "head": {
+            "new": 87.4,
+            "old": 90.02,
+            "overall": 89.58333333333334,
+            "forgetting": 4.139999999999999,
+            "per_task": [
+              95.5,
+              87.2,
+              87.3,
+              90.3,
+              89.8,
+              87.4
+            ]
+          },
+          "lorm": {
+            "new": 85.9,
+            "old": 86.28,
+            "overall": 86.21666666666667,
+            "forgetting": 8.399999999999997,
+            "per_task": [
+              81.10000000000001,
+              81.89999999999999,
+              88.4,
+              86.5,
+              93.5,
+              85.9
+            ]
+          }
+        }
+      ],
+      "summaries": {
+        "head": {
+          "mean_new_T2_to_common_end": 91.84,
+          "last": {
+            "new": 87.4,
+            "old": 90.02,
+            "overall": 89.58333333333334,
+            "forgetting": 4.139999999999999,
+            "per_task": [
+              95.5,
+              87.2,
+              87.3,
+              90.3,
+              89.8,
+              87.4
+            ]
+          },
+          "mean_stage_overall": 93.90138888888889
+        },
+        "lorm": {
+          "mean_new_T2_to_common_end": 92.32000000000001,
+          "last": {
+            "new": 85.9,
+            "old": 86.28,
+            "overall": 86.21666666666667,
+            "forgetting": 8.399999999999997,
+            "per_task": [
+              81.10000000000001,
+              81.89999999999999,
+              88.4,
+              86.5,
+              93.5,
+              85.9
+            ]
+          },
+          "mean_stage_overall": 90.75361111111111
+        }
+      }
+    },
+    "raw": {
+      "stages": [
+        {
+          "task": 1,
+          "head": {
+            "new": 99.0,
+            "old": null,
+            "overall": 99.0,
+            "forgetting": null,
+            "per_task": [
+              99.0
+            ]
+          },
+          "lorm": {
+            "new": 97.7,
+            "old": null,
+            "overall": 97.7,
+            "forgetting": null,
+            "per_task": [
+              97.7
+            ]
+          }
+        },
+        {
+          "task": 2,
+          "head": {
+            "new": 92.0,
+            "old": 97.8,
+            "overall": 94.9,
+            "forgetting": 1.200000000000001,
+            "per_task": [
+              97.8,
+              92.0
+            ]
+          },
+          "lorm": {
+            "new": 94.8,
+            "old": 87.5,
+            "overall": 91.14999999999999,
+            "forgetting": 10.199999999999998,
+            "per_task": [
+              87.5,
+              94.8
+            ]
+          }
+        },
+        {
+          "task": 3,
+          "head": {
+            "new": 85.3,
+            "old": 93.9,
+            "overall": 91.03333333333333,
+            "forgetting": 1.6000000000000014,
+            "per_task": [
+              97.7,
+              90.10000000000001,
+              85.3
+            ]
+          },
+          "lorm": {
+            "new": 94.0,
+            "old": 86.1,
+            "overall": 88.73333333333333,
+            "forgetting": 10.149999999999999,
+            "per_task": [
+              82.0,
+              90.2,
+              94.0
+            ]
+          }
+        },
+        {
+          "task": 4,
+          "head": {
+            "new": 92.9,
+            "old": 88.23333333333333,
+            "overall": 89.4,
+            "forgetting": 3.8666666666666702,
+            "per_task": [
+              97.2,
+              83.2,
+              84.3,
+              92.9
+            ]
+          },
+          "lorm": {
+            "new": 94.3,
+            "old": 84.10000000000001,
+            "overall": 86.65,
+            "forgetting": 11.399999999999991,
+            "per_task": [
+              79.80000000000001,
+              80.80000000000001,
+              91.7,
+              94.3
+            ]
+          }
+        },
+        {
+          "task": 5,
+          "head": {
+            "new": 89.5,
+            "old": 87.8,
+            "overall": 88.14,
+            "forgetting": 4.500000000000001,
+            "per_task": [
+              96.89999999999999,
+              82.39999999999999,
+              80.9,
+              91.0,
+              89.5
+            ]
+          },
+          "lorm": {
+            "new": 91.3,
+            "old": 84.05,
+            "overall": 85.5,
+            "forgetting": 11.149999999999993,
+            "per_task": [
+              77.4,
+              78.8,
+              88.5,
+              91.5,
+              91.3
+            ]
+          }
+        },
+        {
+          "task": 6,
+          "head": {
+            "new": 76.6,
+            "old": 84.86,
+            "overall": 83.48333333333333,
+            "forgetting": 6.880000000000002,
+            "per_task": [
+              94.19999999999999,
+              80.4,
+              78.5,
+              83.2,
+              88.0,
+              76.6
+            ]
+          },
+          "lorm": {
+            "new": 83.0,
+            "old": 82.34,
+            "overall": 82.45,
+            "forgetting": 12.079999999999998,
+            "per_task": [
+              72.8,
+              74.8,
+              87.1,
+              89.0,
+              88.0,
+              83.0
+            ]
+          }
+        }
+      ],
+      "summaries": {
+        "head": {
+          "mean_new_T2_to_common_end": 87.26,
+          "last": {
+            "new": 76.6,
+            "old": 84.86,
+            "overall": 83.48333333333333,
+            "forgetting": 6.880000000000002,
+            "per_task": [
+              94.19999999999999,
+              80.4,
+              78.5,
+              83.2,
+              88.0,
+              76.6
+            ]
+          },
+          "mean_stage_overall": 90.99277777777777
+        },
+        "lorm": {
+          "mean_new_T2_to_common_end": 91.47999999999999,
+          "last": {
+            "new": 83.0,
+            "old": 82.34,
+            "overall": 82.45,
+            "forgetting": 12.079999999999998,
+            "per_task": [
+              72.8,
+              74.8,
+              87.1,
+              89.0,
+              88.0,
+              83.0
+            ]
+          },
+          "mean_stage_overall": 88.69722222222222
+        }
+      }
+    }
+  },
+  "progress": [
+    {
+      "method": "regmean",
+      "seed": 0,
+      "completed_tasks": 6,
+      "client_rounds": 319,
+      "training_visits": 799040,
+      "last_event": {
+        "kind": "client",
+        "time": 1792989172.8340738,
+        "task": 6,
+        "round": 1,
+        "client": 8
+      },
+      "status": "training"
+    },
+    {
+      "method": "lorm",
+      "seed": 0,
+      "completed_tasks": 9,
+      "client_rounds": 460,
+      "training_visits": 1150000,
+      "last_event": {
+        "kind": "round_evaluation",
+        "time": 1792989150.6419086,
+        "task": 9,
+        "round": 0
+      },
+      "status": "training"
+    },
+    {
+      "method": "regmean",
+      "seed": 1,
+      "completed_tasks": 1,
+      "client_rounds": 94,
+      "training_visits": 232960,
+      "last_event": {
+        "kind": "client",
+        "time": 1792989172.8252409,
+        "task": 1,
+        "round": 4,
+        "client": 3
+      },
+      "status": "training"
+    }
+  ]
+}
