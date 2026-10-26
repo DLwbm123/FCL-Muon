@@ -5,6 +5,10 @@ from pathlib import Path
 root=Path(os.environ['PROJECT_ROOT']);seed=int(os.environ['LANE_SEED']);method=os.environ['RUN_METHOD']
 receipt=root/f'reports/{method}_seed{seed}.json';cfgpath=root/f'configs/ten_{method}_seed{seed}.json'
 cfg=json.loads(cfgpath.read_text());out=root/cfg['output']
+amendment=root/'research/head_regmean/TWO_SEED_AMENDMENT.json'
+if amendment.exists():
+    allowed=json.loads(amendment.read_text())['allowed_seeds']
+    if seed not in allowed:raise SystemExit('Seed cancelled by explicit user scope amendment; no training')
 if receipt.exists() or out.exists():raise SystemExit('Existing run; no automatic retry or clock reset')
 state={'seed':seed,'method':method,'status':'starting','started':time.time()}
 def save():

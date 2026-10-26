@@ -1,0 +1,29 @@
+{
+  "authorization": "User: use one other GPU to run one additional seed; do not use three seeds.",
+  "allowed_seeds": [
+    0,
+    1
+  ],
+  "cancelled_before_launch": [
+    2
+  ],
+  "methods": [
+    "regmean",
+    "lorm"
+  ],
+  "total_runs": 4,
+  "schedule": "Retain live seed0 Head GPU3 and LoRM GPU6; run seed1 Head then LoRM on GPU0, concurrently with seed0. Only one additional GPU.",
+  "scientific_protocol": "All per-seed data, initial weights, ten tasks, training settings, fixed raw/centered reporting and qualifications unchanged. No performance selection or early elimination.",
+  "clock": "Original started1792981131.2391922/deadline1793066631.2391922 shared by all four; no reset.",
+  "storage": "Same independent20GB limit and16GB write guard; preserve all history. No extra allocation.",
+  "controller_transition": "Replace only the live six-run scheduling supervisor and its timeout after new guard readiness. Adopt seed0 process groups without signalling or restarting training. Preserve original scheduler receipt.",
+  "source": "Original frozen science source4bcdaf52a98248c8c41331662d80de9b7cdfcc2b; amendment changes scheduler and future worker seed admission only.",
+  "statistical_reporting": "Exactly two prespecified seeds, both reported; no claim of three-seed confirmation. Earlier seed2 configuration/protocol retained as history but not executed.",
+  "planned_image_visits": {
+    "training_total": 5000000,
+    "head_statistics_total": 600000,
+    "lorm_statistics_total": 600000,
+    "head_task_eval_plus_final_reload_total": 130000,
+    "lorm_round_task_eval_plus_final_reload_total": 680000
+  }
+}
