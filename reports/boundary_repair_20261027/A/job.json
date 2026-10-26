@@ -1,0 +1,18 @@
+{
+  "started": 1793032083.3847868,
+  "deadline": 1793117583.3847868,
+  "status": "running",
+  "supervisor_pid": 595113,
+  "storage_limit_bytes": 8000000000,
+  "write_stop_bytes": 6000000000,
+  "seed": 0,
+  "tasks": 10,
+  "gpu": "2",
+  "explicit_resume": false,
+  "arm": "A",
+  "free_mib_at_admission": 41825,
+  "baseline_allocated_bytes": 2023424,
+  "worker_pid": 595134,
+  "allocated_bytes": 405950464,
+  "checked": 1793032273.8268073
+}

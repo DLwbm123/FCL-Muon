@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "images": 16,
+  "forward_calls": 4,
+  "backward_calls": 4,
+  "old_logits_B_gradient_l1": 27147.43862915039,
+  "head_CE_only_exact": true,
+  "EMA_CE_only_once_exact": true,
+  "old_heads_frozen": true,
+  "diagnostics": {
+    "steps": 1,
+    "images": 16,
+    "mask_images": 3,
+    "extra_backward_calls": 1,
+    "extra_backward_images": 16,
+    "diagnostic_forward_images": 32,
+    "diagnostic_forward_calls": 2,
+    "momentum_help_ssb_hurt": 0,
+    "triggers": 0,
+    "nonzero_repairs": 0,
+    "reasons": {
+      "no_conflict": 1
+    },
+    "sums": {
+      "base_cross": -0.023686189921488347,
+      "head_cross": -0.42728289737819963,
+      "joint_cross_before": -0.450969087299688,
+      "joint_cross_after": -0.450969087299688,
+      "remaining_positive_conflict": 0.0,
+      "history_cost": 0.0,
+      "amplitude_ratio": 0.0,
+      "normalized_ce_residual": 0.0,
+      "rounding_Q_norm": 0.0,
+      "ideal_ce_residual": 0.0
+    },
+    "maxima": {
+      "base_cross": 0.023686189921488347,
+      "head_cross": 0.42728289737819963,
+      "joint_cross_before": 0.450969087299688,
+      "joint_cross_after": 0.450969087299688,
+      "remaining_positive_conflict": 0.0,
+      "history_cost": 0.0,
+      "amplitude_ratio": 0.0,
+      "normalized_ce_residual": 0.0,
+      "rounding_Q_norm": 0.0,
+      "ideal_ce_residual": 0.0
+    },
+    "repair_step_wall_seconds": 0.9629566890653223
+  },
+  "finite_step": {
+    "base": {
+      "ce": 1.6727283000946045,
+      "cross": 1.0698421001434326
+    },
+    "corrected": {
+      "ce": 1.6727283000946045,
+      "cross": 1.0698421001434326
+    },
+    "task": 1,
+    "round": 0,
+    "client": 0,
+    "step": 0,
+    "before": {
+      "ce": 2.2372639179229736,
+      "cross": 1.4804911613464355
+    },
+    "mask_images": 3,
+    "images": 16,
+    "repair": {
+      "base_cross": -0.023686189921488347,
+      "head_cross": -0.42728289737819963,
+      "joint_cross": -0.450969087299688,
+      "trigger": false,
+      "base_norm_Q": 0.019834229022740506,
+      "scale": 0.0,
+      "reason": "no_conflict"
+    }
+  },
+  "seconds": 3.320911169052124,
+  "scope": "disposable real T2 batch with inherited T1 basis; no selected-A claim",
+  "full_checkpoint_and_RNG_restored": true
+}

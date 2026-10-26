@@ -1,0 +1,14 @@
+实验 A 十任务与实验 B 三任务：后台启动记录
+源码：745bb3e415e3eaaafba1a990e00ac22157a6b86a；分支 codex/utility-boundary-repair。
+A：GPU 2，原联邦效用 + 原SSB，从原T3 checkpoint继续T4-T10；源前三阶段记录保持原样。
+B：GPU 7，联邦效用 + 历史加权边界修正，从原共享T1 checkpoint独立继续T2-T3。
+起点（北京时间）：2026-10-27T00:28:03.384787+08:00
+两条线处于运行中，尚未完成，未宣称性能或最终交付。
+13项CPU合成、关闭路径、任务数扩展和逐状态恢复测试通过。
+B真实16图小批次验证通过：旧头冻结、旧logits对B梯度保留，CE-only head/EMA准确一次；检查后checkpoint与RNG完整恢复。
+A与B前缀导入通过严格科学配置、数据/权重身份、源clock、头/merge/history/RNG验证；原checkpoint不修改。
+各自8GB上限/6GB写停止；85500秒内部deadline；外部86300秒timeout加60秒kill。
+当前会话唯一30分钟heartbeat：fcl-a-b。继续到A/B全部完成、实际checkpoint完整重载、中文报告与公开交付。
+最终报告应将实际B步骤总耗时与额外计算计数分开；未做匹配基准计时时，不将总步骤时间声称为独立测得的额外开销。
+公开边界：仅源码、配置、协议和聚合指标；模型/Gram/梯度/原型/逐图文件留在服务器。
+A科学文件 research/aggregation_utility、research/head_regmean、fcl 未相对cc7657c变更。

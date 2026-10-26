@@ -1,0 +1,11 @@
+{
+  "time": 1793032094.8212821,
+  "arm": "A",
+  "task": 3,
+  "round": 0,
+  "phase": "task_start",
+  "next_client": 0,
+  "client_rounds": 150,
+  "training_visits": 375000,
+  "completed_stages": 3
+}
