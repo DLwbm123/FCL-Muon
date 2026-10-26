@@ -1,0 +1,155 @@
+完整参考统计＋双向边界证据：3任务验证
+CIFAR100 alpha=0.05，seed0，固定前3任务；单seed开发证据。
+来源：https://chatgpt.com/share/6adefa60-1a7c-83e8-aa39-f2ebdc1f76cd
+复用历史T1–T3已保存主线输出；新增冻结参考分支，不重训MuLoRA，不使用未来T10 checkpoint。
+
+单位：准确率%；遗忘为百分点。
+方案 | 最终总体 | 最终旧类 | 最终新类 | T2–T3平均新类 | AIA | 遗忘
+原主线 raw | 91.0333 | 93.9000 | 85.3000 | 88.6500 | 94.9778 | 1.6000
+原主线 fixed centered | 94.0000 | 95.7000 | 90.6000 | 92.7000 | 96.4667 | 1.2000
+任务内 log-softmax／等任务支持 | 93.3333 | 95.5000 | 89.0000 | 91.6500 | 96.1778 | 1.1500
+冻结参考 LDA（固定收缩0.1） | 93.9000 | 95.0000 | 91.7000 | 93.8000 | 96.5500 | 2.5500
+双向边界证据单独分类 | 92.4000 | 93.5000 | 90.2000 | 91.5000 | 65.6333 | 1.0000
+双向边界证据＋原主线条件概率 | 94.3333 | 95.0000 | 93.0000 | 94.6000 | 96.6444 | 2.6000
+移除旧类分布→新类约束 | 36.1667 | 5.7000 | 97.1000 | 97.7000 | 61.4389 | 92.9500
+
+逐阶段完整矩阵：
+原主线 raw
+  T1: 99.00
+  T2: 97.80, 92.00
+  T3: 97.70, 90.10, 85.30
+原主线 fixed centered
+  T1: 99.00
+  T2: 98.00, 94.80
+  T3: 97.90, 93.50, 90.60
+任务内 log-softmax／等任务支持
+  T1: 99.00
+  T2: 98.10, 94.30
+  T3: 97.90, 93.10, 89.00
+冻结参考 LDA（固定收缩0.1）
+  T1: 99.20
+  T2: 97.20, 95.90
+  T3: 95.60, 94.40, 91.70
+双向边界证据单独分类
+  T1: 10.00
+  T2: 96.20, 92.80
+  T3: 94.90, 92.10, 90.20
+双向边界证据＋原主线条件概率
+  T1: 99.00
+  T2: 97.00, 96.20
+  T3: 95.60, 94.40, 93.00
+移除旧类分布→新类约束
+  T1: 99.00
+  T2: 0.00, 98.30
+  T3: 5.90, 5.50, 97.10
+
+预注册开发门槛：FAIL
+  final_overall_improved: True
+  AIA_improved: True
+  final_old_not_worse: False
+  mean_new_not_worse: True
+  cross_task_stolen_errors_lower: True
+  server_objectives_converged: True
+融合终点相对LDA：+0.4333pp
+融合终点相对证据单独分类：+1.9333pp
+双向约束相对移除旧→新约束：+58.1667pp
+
+跨任务竞争与优化诊断：
+T1
+  原主线 fixed centered：跨任务夺走正确样本0；旧→新=None；新→旧=None
+  双向边界证据＋原主线条件概率：跨任务夺走正确样本0；旧→新=None；新→旧=None
+  移除旧类分布→新类约束：跨任务夺走正确样本0；旧→新=None；新→旧=None
+  bidirectional: iterations=1, converged=True, objective=0, gradient_mapping=0, max_norm=0
+  no_old_to_new: iterations=1, converged=True, objective=0, gradient_mapping=0, max_norm=0
+T2
+  原主线 fixed centered：跨任务夺走正确样本44；旧→新=0.011；新→旧=0.042
+  双向边界证据＋原主线条件概率：跨任务夺走正确样本40；旧→新=0.021；新→旧=0.022
+  移除旧类分布→新类约束：跨任务夺走正确样本989；旧→新=1.0；新→旧=0.0
+  bidirectional: iterations=757, converged=True, objective=0.072178342, gradient_mapping=9.4710371e-06, max_norm=60.0529
+  no_old_to_new: iterations=88, converged=True, objective=0.00043100605, gradient_mapping=7.2858445e-06, max_norm=1.11517
+T3
+  原主线 fixed centered：跨任务夺走正确样本123；旧→新=0.01；新→旧=0.078
+  双向边界证据＋原主线条件概率：跨任务夺走正确样本113；旧→新=0.019；新→旧=0.047
+  移除旧类分布→新类约束：跨任务夺走正确样本1858；旧→新=0.9425；新→旧=0.0
+  bidirectional: iterations=525, converged=True, objective=0.073369142, gradient_mapping=9.9940218e-06, max_norm=50.1473
+  no_old_to_new: iterations=492, converged=True, objective=0.044574405, gradient_mapping=9.9034862e-06, max_norm=50.4906
+
+新增成本与验收：
+{
+  "reference_train_forwards": 15000,
+  "reference_test_forwards": 3000,
+  "adapted_model_forward_or_training_added": 0,
+  "source_training_is_reused_sunk_cost": true,
+  "logical_statistics_upload_bytes": 481923888,
+  "logical_primary_evidence_broadcast_bytes": 3691200,
+  "message_count": 102,
+  "fp64_statistics": true,
+  "worker_wall_seconds": 259.0591952800751,
+  "gpu_peak_allocated_bytes": 828845568,
+  "allocated_root_bytes": 190693376,
+  "deployment": "Requires frozen and adapted forward passes; offline logits reuse does not eliminate deployment cost.",
+  "reference_LDA_and_ablation": "Diagnostics computed server-side from same uploaded moments; no extra client extraction."
+}
+{
+  "qualified": true,
+  "tasks": 3,
+  "seed": 0,
+  "train_reference_unique_images": 15000,
+  "test_reference_images": 3000,
+  "stage_evaluation_images": 6000,
+  "final_saved_evidence_reload_images": 3000,
+  "all_seven_arms_reload_predictions_equal": true,
+  "no_adapted_model_retraining": true,
+  "frozen_reference_unchanged": true,
+  "no_future_checkpoint": true,
+  "source_logits_unchanged_size_mtime": true,
+  "source_raw_and_centered_metrics_reproduced": true,
+  "within_task_rankings_unchanged": true,
+  "class_counts": [
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500,
+    500
+  ],
+  "unique_statistic_messages": 102,
+  "solver_all_converged": true,
+  "clock": {
+    "started": 1792998699.7510092,
+    "deadline": 1793084199.7510092
+  }
+}
+
+限制：不代表独立留出验证，不代表多seed确认；3任务不能验证T7/T8或十任务结论。
+完整协方差版本尚未验证主动查询、压缩通信或未来方向的误差归档。
+证据单独分类在T1没有跨任务约束，零初始化保持为零，因此T1为10%；其AIA不能作为强参考分类器对照。标准全类别LDA才承担参考分类器诊断。
+删除旧→新约束可能导致任务偏置失去约束；该消融的崩溃只说明当前目标需要双向约束，不单独证明原创性或优于其他校准机制。
+参考统计目标及超参数运行前固定；没有测试集拟合、超参搜索、checkpoint或seed选择。
+实际部署需要冻结参考与适配模型两个前向；离线复用logits不等于部署零开销。
+求解器若未达到预设驻点阈值，必须保留该限制，不能把有限迭代称为精确最优。
+本轮仅按已授权3任务交付，不自动扩展主动查询或十任务。

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checked": 1792999000.932538,
+  "actual_checkpoint_task": 2,
+  "archive_classes": 30,
+  "class_n": 500,
+  "worker_exit_code": 0,
+  "same_original_clock": true,
+  "all_seven_arms_full3000_saved_evidence_reload": true,
+  "no_extra_gpu_evaluation": true,
+  "source_revision": "ca01acc",
+  "solver_all_converged": true,
+  "scientific_gate_passed": false,
+  "root_allocated_bytes": 190738432
+}
