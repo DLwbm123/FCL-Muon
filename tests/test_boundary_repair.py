@@ -97,3 +97,37 @@ def test_horizon_import_same_trajectory_and_reject_config(tmp_path):
     assert a.s['training_records']==b.s['training_records'] and a.s['stages']==b.s['stages']
     bad=toy(tmp_path/'bad',kind='federated');bad.cfg['lr']*=2
     with pytest.raises(ValueError,match='Scientific'):import_boundary(bad,src,exp)
+
+
+def test_repaired_prefix_horizon_extension_preserves_trajectory(tmp_path):
+    full=build(tmp_path/'full');full.run();expected_rng=rng_state()
+    short=build(tmp_path/'short');short.cfg['tasks']=2;short.run()
+    source=torch.load(short.out/'latest.pt',weights_only=False)
+    exp={'completed_tasks':2,'config_sha256':config_hash(source['config']),'identity':source['identity'],
+         'clock':source['clock'],'selection_mode':'federated','toy':True}
+    continued=build(tmp_path/'continued');import_boundary(continued,source,exp);continued.run()
+    for k,v in full.model.state_dict().items():assert torch.equal(v,continued.model.state_dict()[k])
+    assert full.s['stages']==continued.s['stages'] and full.s['training_records']==continued.s['training_records']
+    assert full.s['communication']==continued.s['communication']
+    assert full.s['finite_step_windows']==continued.s['finite_step_windows']
+    assert torch.equal(expected_rng['torch'],rng_state()['torch'])
+
+
+def test_continuation_strict_gate_clock_and_scientific_identity():
+    from types import SimpleNamespace
+    from research.boundary_repair.continuation import validate_continuation
+    cfg={'tasks':3,'output':'runs/main','boundary_repair':SETTINGS,'selection_mode':'federated'}
+    clock={'started':1.,'deadline':100.}
+    source={'config':cfg,'clock':clock,'state':{'phase':'complete',
+        'training_records':[{'visited':2500} for _ in range(150)],
+        'stages':[{'centered':{'all_seen_accuracy':2828/3000}}],
+        'repair_records':[{'numerical_checks_passed':True} for _ in range(100)]}}
+    gate={'passed':True,'B_centered_correct':2828,'LoRM_centered_correct':2724,'test_images':3000,
+          'source_config_sha256':config_hash(cfg),'clock':clock}
+    p=SimpleNamespace(cfg=dict(cfg,tasks=10,output='runs/ten'),clock=clock)
+    validate_continuation(p,source,gate)
+    altered=copy.deepcopy(p);altered.cfg['boundary_repair']['kappa']=.5
+    with pytest.raises(ValueError,match='scientific'):validate_continuation(altered,source,gate)
+    altered=copy.deepcopy(p);altered.clock['started']=2.
+    with pytest.raises(ValueError,match='clock'):validate_continuation(altered,source,gate)
+    with pytest.raises(ValueError,match='gate'):validate_continuation(p,source,dict(gate,B_centered_correct=2724))

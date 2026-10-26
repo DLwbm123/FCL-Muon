@@ -16,10 +16,15 @@ def write(path,value):
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(value,indent=2));tmp.replace(path)
 
 
-def main():
+def main(config_name=None, report_subdir="reports", continuation=False):
     root=Path(os.environ['PROJECT_ROOT']);arm=os.environ['EXPERIMENT_ARM'];assert arm in ('A','B')
-    cfg=json.loads((root/'configs'/('utility_ten_seed0.json' if arm=='A' else 'boundary_three_seed0.json')).read_text())
-    clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
+    report=root/report_subdir
+    cfg=json.loads((root/'configs'/(config_name or ('utility_ten_seed0.json' if arm=='A' else 'boundary_three_seed0.json'))).read_text())
+    clock=json.loads((report/'job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
+    if continuation:
+        assert arm=='B' and cfg['tasks']==10 and cfg['output']=='runs/ten'
+        gate=json.loads((report/'GATE.json').read_text());assert gate['passed']
+        assert gate['clock']==clock and gate['B_centered_correct']>gate['LoRM_centered_correct']
     torch.set_num_threads(4);torch.set_float32_matmul_precision('highest')
     torch.manual_seed(0);np.random.seed(0);random.seed(0)
     torch.backends.cudnn.benchmark=False;torch.backends.cudnn.deterministic=True
@@ -45,20 +50,23 @@ def main():
         assert os.environ.get('RESUME_RUN')=='1','No implicit retry'
         p.restore()
     else:
-        expected=json.loads((root/'reports/IMPORT_SOURCE.json').read_text())
+        expected=json.loads((report/'IMPORT_SOURCE.json').read_text())
         source_path=Path(os.environ['SOURCE_CHECKPOINT'])
         source=torch.load(source_path,map_location='cpu',weights_only=False)
+        if continuation:
+            from research.boundary_repair.continuation import validate_continuation
+            validate_continuation(p,source,gate)
         proof=import_boundary(p,source,expected);del source
-        write(root/'reports/IMPORT_PROOF.json',proof)
+        write(report/'IMPORT_PROOF.json',proof)
         # Read-only source reference preserves the T3/T1 boundary and original logits.
         (p.out/'source_boundary.pt').symlink_to(source_path)
         for t in range(1,expected['completed_tasks']+1):
             (p.out/f'task{t}_private_logits.npz').symlink_to(source_path.parent/f'task{t}_private_logits.npz')
-    if arm=='B' and not (root/'reports/REAL_PREFLIGHT.json').exists():
+    if arm=='B' and not continuation and not (report/'REAL_PREFLIGHT.json').exists():
         from research.boundary_repair.preflight import real_batch
-        write(root/'reports/REAL_PREFLIGHT.json',real_batch(p));gc.collect();torch.cuda.empty_cache()
+        write(report/'REAL_PREFLIGHT.json',real_batch(p));gc.collect();torch.cuda.empty_cache()
     def progress():
-        write(root/'reports/PROGRESS.json',{'time':time.time(),'arm':arm,'task':p.s['task'],'round':p.s['round'],
+        write(report/'PROGRESS.json',{'time':time.time(),'arm':arm,'task':p.s['task'],'round':p.s['round'],
              'phase':p.s['phase'],'next_client':p.s['next_client'],'client_rounds':len(p.s['training_records']),
              'training_visits':sum(v['visited'] for v in p.s['training_records']),'completed_stages':len(p.s['stages'])})
     progress()
@@ -92,7 +100,7 @@ def main():
        'reload_raw_predictions_equal':raw_equal,'reload_centered_predictions_equal':centered_equal,
        'maximum_reload_logit_difference':float(np.abs(before['logits']-after['logits']).max()),
        'peak_gpu_allocated_bytes':torch.cuda.max_memory_allocated(),'elapsed_seconds':time.time()-clock['started'],
-       'checkpoint_bytes':(p.out/'latest.pt').stat().st_size,'import_proof':p.s['boundary_import']}
+       'checkpoint_bytes':(p.out/'latest.pt').stat().st_size,'import_proof':p.s['boundary_import'],'conditional_continuation':continuation}
     write(p.out/'QUALIFICATION.json',q);write(p.out/'COMPLETE.json',{'qualified':True,'completed':time.time()})
 
 
