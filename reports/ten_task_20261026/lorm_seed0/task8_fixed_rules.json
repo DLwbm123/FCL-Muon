@@ -1,0 +1,302 @@
+{
+  "raw": {
+    "n": 8000,
+    "all_seen_accuracy": 0.813375,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.95,
+        "all_seen_accuracy": 0.708,
+        "restricted_correct_but_other_task_wins": 242
+      },
+      {
+        "task_zero_based": 1,
+        "n": 1000,
+        "restricted_accuracy": 0.969,
+        "all_seen_accuracy": 0.704,
+        "restricted_correct_but_other_task_wins": 265
+      },
+      {
+        "task_zero_based": 2,
+        "n": 1000,
+        "restricted_accuracy": 0.963,
+        "all_seen_accuracy": 0.851,
+        "restricted_correct_but_other_task_wins": 112
+      },
+      {
+        "task_zero_based": 3,
+        "n": 1000,
+        "restricted_accuracy": 0.977,
+        "all_seen_accuracy": 0.869,
+        "restricted_correct_but_other_task_wins": 108
+      },
+      {
+        "task_zero_based": 4,
+        "n": 1000,
+        "restricted_accuracy": 0.977,
+        "all_seen_accuracy": 0.859,
+        "restricted_correct_but_other_task_wins": 118
+      },
+      {
+        "task_zero_based": 5,
+        "n": 1000,
+        "restricted_accuracy": 0.964,
+        "all_seen_accuracy": 0.797,
+        "restricted_correct_but_other_task_wins": 167
+      },
+      {
+        "task_zero_based": 6,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.84,
+        "restricted_correct_but_other_task_wins": 122
+      },
+      {
+        "task_zero_based": 7,
+        "n": 1000,
+        "restricted_accuracy": 0.983,
+        "all_seen_accuracy": 0.879,
+        "restricted_correct_but_other_task_wins": 104
+      }
+    ],
+    "task_group_confusion": [
+      [
+        709,
+        27,
+        48,
+        80,
+        15,
+        82,
+        15,
+        24
+      ],
+      [
+        15,
+        705,
+        38,
+        83,
+        35,
+        66,
+        40,
+        18
+      ],
+      [
+        13,
+        5,
+        865,
+        20,
+        30,
+        28,
+        25,
+        14
+      ],
+      [
+        8,
+        13,
+        12,
+        870,
+        23,
+        43,
+        17,
+        14
+      ],
+      [
+        18,
+        3,
+        15,
+        28,
+        864,
+        49,
+        12,
+        11
+      ],
+      [
+        9,
+        1,
+        7,
+        18,
+        125,
+        798,
+        9,
+        33
+      ],
+      [
+        9,
+        6,
+        16,
+        27,
+        6,
+        54,
+        850,
+        32
+      ],
+      [
+        4,
+        2,
+        19,
+        25,
+        6,
+        53,
+        11,
+        880
+      ]
+    ],
+    "current_all_seen_accuracy": 0.879,
+    "current_restricted_accuracy": 0.983,
+    "current_to_first_task": 0.004,
+    "current_to_old": 0.12,
+    "old_all_seen_accuracy": 0.804,
+    "old_to_current": 0.02085714285714286
+  },
+  "centered": {
+    "n": 8000,
+    "all_seen_accuracy": 0.852125,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.95,
+        "all_seen_accuracy": 0.792,
+        "restricted_correct_but_other_task_wins": 158
+      },
+      {
+        "task_zero_based": 1,
+        "n": 1000,
+        "restricted_accuracy": 0.969,
+        "all_seen_accuracy": 0.791,
+        "restricted_correct_but_other_task_wins": 178
+      },
+      {
+        "task_zero_based": 2,
+        "n": 1000,
+        "restricted_accuracy": 0.963,
+        "all_seen_accuracy": 0.852,
+        "restricted_correct_but_other_task_wins": 111
+      },
+      {
+        "task_zero_based": 3,
+        "n": 1000,
+        "restricted_accuracy": 0.977,
+        "all_seen_accuracy": 0.837,
+        "restricted_correct_but_other_task_wins": 140
+      },
+      {
+        "task_zero_based": 4,
+        "n": 1000,
+        "restricted_accuracy": 0.977,
+        "all_seen_accuracy": 0.92,
+        "restricted_correct_but_other_task_wins": 57
+      },
+      {
+        "task_zero_based": 5,
+        "n": 1000,
+        "restricted_accuracy": 0.964,
+        "all_seen_accuracy": 0.822,
+        "restricted_correct_but_other_task_wins": 142
+      },
+      {
+        "task_zero_based": 6,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.875,
+        "restricted_correct_but_other_task_wins": 87
+      },
+      {
+        "task_zero_based": 7,
+        "n": 1000,
+        "restricted_accuracy": 0.983,
+        "all_seen_accuracy": 0.928,
+        "restricted_correct_but_other_task_wins": 55
+      }
+    ],
+    "task_group_confusion": [
+      [
+        802,
+        26,
+        42,
+        35,
+        23,
+        36,
+        11,
+        25
+      ],
+      [
+        27,
+        794,
+        23,
+        35,
+        56,
+        33,
+        17,
+        15
+      ],
+      [
+        21,
+        8,
+        868,
+        5,
+        45,
+        14,
+        22,
+        17
+      ],
+      [
+        20,
+        27,
+        5,
+        840,
+        38,
+        29,
+        15,
+        26
+      ],
+      [
+        11,
+        3,
+        6,
+        6,
+        928,
+        27,
+        6,
+        13
+      ],
+      [
+        8,
+        4,
+        5,
+        11,
+        92,
+        828,
+        5,
+        47
+      ],
+      [
+        9,
+        12,
+        8,
+        7,
+        13,
+        29,
+        888,
+        34
+      ],
+      [
+        8,
+        1,
+        11,
+        6,
+        10,
+        26,
+        7,
+        931
+      ]
+    ],
+    "current_all_seen_accuracy": 0.928,
+    "current_restricted_accuracy": 0.983,
+    "current_to_first_task": 0.008,
+    "current_to_old": 0.069,
+    "old_all_seen_accuracy": 0.8412857142857143,
+    "old_to_current": 0.025285714285714286
+  }
+}

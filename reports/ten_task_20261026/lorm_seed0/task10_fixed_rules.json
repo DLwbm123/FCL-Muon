@@ -1,0 +1,410 @@
+{
+  "raw": {
+    "n": 10000,
+    "all_seen_accuracy": 0.8009,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.952,
+        "all_seen_accuracy": 0.675,
+        "restricted_correct_but_other_task_wins": 277
+      },
+      {
+        "task_zero_based": 1,
+        "n": 1000,
+        "restricted_accuracy": 0.972,
+        "all_seen_accuracy": 0.665,
+        "restricted_correct_but_other_task_wins": 307
+      },
+      {
+        "task_zero_based": 2,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.841,
+        "restricted_correct_but_other_task_wins": 121
+      },
+      {
+        "task_zero_based": 3,
+        "n": 1000,
+        "restricted_accuracy": 0.977,
+        "all_seen_accuracy": 0.823,
+        "restricted_correct_but_other_task_wins": 154
+      },
+      {
+        "task_zero_based": 4,
+        "n": 1000,
+        "restricted_accuracy": 0.978,
+        "all_seen_accuracy": 0.83,
+        "restricted_correct_but_other_task_wins": 148
+      },
+      {
+        "task_zero_based": 5,
+        "n": 1000,
+        "restricted_accuracy": 0.963,
+        "all_seen_accuracy": 0.784,
+        "restricted_correct_but_other_task_wins": 179
+      },
+      {
+        "task_zero_based": 6,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.825,
+        "restricted_correct_but_other_task_wins": 137
+      },
+      {
+        "task_zero_based": 7,
+        "n": 1000,
+        "restricted_accuracy": 0.983,
+        "all_seen_accuracy": 0.862,
+        "restricted_correct_but_other_task_wins": 121
+      },
+      {
+        "task_zero_based": 8,
+        "n": 1000,
+        "restricted_accuracy": 0.992,
+        "all_seen_accuracy": 0.9,
+        "restricted_correct_but_other_task_wins": 92
+      },
+      {
+        "task_zero_based": 9,
+        "n": 1000,
+        "restricted_accuracy": 0.995,
+        "all_seen_accuracy": 0.804,
+        "restricted_correct_but_other_task_wins": 191
+      }
+    ],
+    "task_group_confusion": [
+      [
+        675,
+        18,
+        41,
+        51,
+        10,
+        76,
+        9,
+        22,
+        33,
+        65
+      ],
+      [
+        11,
+        666,
+        34,
+        66,
+        29,
+        56,
+        39,
+        19,
+        35,
+        45
+      ],
+      [
+        11,
+        5,
+        853,
+        16,
+        35,
+        25,
+        22,
+        11,
+        15,
+        7
+      ],
+      [
+        8,
+        9,
+        7,
+        824,
+        19,
+        34,
+        13,
+        16,
+        6,
+        64
+      ],
+      [
+        11,
+        4,
+        15,
+        21,
+        832,
+        43,
+        9,
+        10,
+        26,
+        29
+      ],
+      [
+        6,
+        1,
+        6,
+        16,
+        125,
+        784,
+        8,
+        31,
+        11,
+        12
+      ],
+      [
+        8,
+        5,
+        16,
+        24,
+        5,
+        39,
+        834,
+        31,
+        33,
+        5
+      ],
+      [
+        6,
+        1,
+        24,
+        19,
+        5,
+        42,
+        12,
+        862,
+        18,
+        11
+      ],
+      [
+        8,
+        3,
+        9,
+        10,
+        11,
+        34,
+        9,
+        3,
+        901,
+        12
+      ],
+      [
+        5,
+        1,
+        11,
+        42,
+        55,
+        19,
+        17,
+        29,
+        17,
+        804
+      ]
+    ],
+    "current_all_seen_accuracy": 0.804,
+    "current_restricted_accuracy": 0.995,
+    "current_to_first_task": 0.005,
+    "current_to_old": 0.196,
+    "old_all_seen_accuracy": 0.8005555555555556,
+    "old_to_current": 0.027777777777777776
+  },
+  "centered": {
+    "n": 10000,
+    "all_seen_accuracy": 0.8415,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.952,
+        "all_seen_accuracy": 0.775,
+        "restricted_correct_but_other_task_wins": 177
+      },
+      {
+        "task_zero_based": 1,
+        "n": 1000,
+        "restricted_accuracy": 0.972,
+        "all_seen_accuracy": 0.741,
+        "restricted_correct_but_other_task_wins": 231
+      },
+      {
+        "task_zero_based": 2,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.849,
+        "restricted_correct_but_other_task_wins": 113
+      },
+      {
+        "task_zero_based": 3,
+        "n": 1000,
+        "restricted_accuracy": 0.977,
+        "all_seen_accuracy": 0.792,
+        "restricted_correct_but_other_task_wins": 185
+      },
+      {
+        "task_zero_based": 4,
+        "n": 1000,
+        "restricted_accuracy": 0.978,
+        "all_seen_accuracy": 0.896,
+        "restricted_correct_but_other_task_wins": 82
+      },
+      {
+        "task_zero_based": 5,
+        "n": 1000,
+        "restricted_accuracy": 0.963,
+        "all_seen_accuracy": 0.816,
+        "restricted_correct_but_other_task_wins": 147
+      },
+      {
+        "task_zero_based": 6,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.869,
+        "restricted_correct_but_other_task_wins": 93
+      },
+      {
+        "task_zero_based": 7,
+        "n": 1000,
+        "restricted_accuracy": 0.983,
+        "all_seen_accuracy": 0.922,
+        "restricted_correct_but_other_task_wins": 61
+      },
+      {
+        "task_zero_based": 8,
+        "n": 1000,
+        "restricted_accuracy": 0.992,
+        "all_seen_accuracy": 0.941,
+        "restricted_correct_but_other_task_wins": 51
+      },
+      {
+        "task_zero_based": 9,
+        "n": 1000,
+        "restricted_accuracy": 0.995,
+        "all_seen_accuracy": 0.814,
+        "restricted_correct_but_other_task_wins": 181
+      }
+    ],
+    "task_group_confusion": [
+      [
+        780,
+        15,
+        32,
+        34,
+        20,
+        31,
+        7,
+        24,
+        27,
+        30
+      ],
+      [
+        20,
+        744,
+        19,
+        29,
+        47,
+        23,
+        18,
+        16,
+        64,
+        20
+      ],
+      [
+        20,
+        7,
+        861,
+        1,
+        45,
+        11,
+        21,
+        16,
+        13,
+        5
+      ],
+      [
+        15,
+        20,
+        4,
+        794,
+        30,
+        25,
+        14,
+        19,
+        13,
+        66
+      ],
+      [
+        13,
+        3,
+        8,
+        6,
+        901,
+        27,
+        6,
+        10,
+        12,
+        14
+      ],
+      [
+        6,
+        2,
+        6,
+        11,
+        84,
+        819,
+        5,
+        52,
+        5,
+        10
+      ],
+      [
+        9,
+        9,
+        7,
+        6,
+        10,
+        24,
+        880,
+        37,
+        11,
+        7
+      ],
+      [
+        10,
+        1,
+        10,
+        4,
+        8,
+        22,
+        6,
+        925,
+        5,
+        9
+      ],
+      [
+        5,
+        3,
+        7,
+        1,
+        22,
+        6,
+        3,
+        2,
+        944,
+        7
+      ],
+      [
+        7,
+        2,
+        6,
+        11,
+        45,
+        17,
+        16,
+        53,
+        29,
+        814
+      ]
+    ],
+    "current_all_seen_accuracy": 0.814,
+    "current_restricted_accuracy": 0.995,
+    "current_to_first_task": 0.007,
+    "current_to_old": 0.186,
+    "old_all_seen_accuracy": 0.8445555555555555,
+    "old_to_current": 0.018666666666666668
+  }
+}

@@ -1,0 +1,12 @@
+LoRM seed0：完整十任务完成并终验通过（当前四条中的第一条完整结果）。
+CIFAR100 alpha=.05，10clients×10tasks×5rounds×5epochs，官方标准配置保持不变。
+
+raw: final overall=80.0900%, old=80.0556%, new=80.4000%; mean new T2–T10=89.1556%; forgetting=11.0222pp; average incremental accuracy=85.6598%.
+centered: final overall=84.1500%, old=84.4556%, new=81.4000%; mean new T2–T10=91.1000%; forgetting=8.4556pp; average incremental accuracy=88.4759%.
+
+500唯一clientround、1250000训练访问、79350 optimizer steps，50轮完成。最终task10/round0/initializedFalse与完整10×三角矩阵一致。Worker已对全部10000测试图像重载实际最终checkpoint，raw/centered预测全部一致，max logit difference=0。此次只读终验未重复GPU前向。
+统计forward300000，原逐轮评估275000、任务末评估55000、最终重载10000图像；均保留标准流程。通信字节未由LoRM harness直接记录，不能把其通信与Head假定相等。
+训练组原clock累计elapsed=8917.688s；本worker elapsed=8945.268s；最大记录round GPU peak=7496478720bytes；run output allocated=1946316800bytes，latest checkpoint=1914322935bytes。
+
+主线seed0、主线seed1继续原协议；seed1 LoRM仍在同GPU0等待主线完整资格验收后自动接续。这里只报告单条LoRM终点，不与尚未完成十任务的主线不同阶段直接比较，不作两seed最终结论。无新增实验、调参、选checkpoint、额外seed或alpha=.5。
+数据/权重/checkpoint/逐图logits保留服务器私有；公开源码/协议、完整矩阵与聚合指标/资格证据。共享测试集开发证据，不是独立held-out确认。

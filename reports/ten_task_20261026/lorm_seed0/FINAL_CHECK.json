@@ -1,0 +1,23 @@
+{
+  "checked": 1792990830.191971,
+  "passed": true,
+  "checks": {
+    "complete_qualified_worker": true,
+    "full_task10_boundary": true,
+    "full_matrix_exact": true,
+    "full_client_budget": true,
+    "50_rounds": true,
+    "fixed_rules_all_stages": true,
+    "full10000_reload_verified": true,
+    "original_clock": true,
+    "no_training_process": true
+  },
+  "checkpoint_bytes": 1914322935,
+  "run_output_allocated_bytes": 1946316800,
+  "worker_elapsed_seconds": 8945.26824426651,
+  "training_elapsed_seconds": 8917.688328266144,
+  "max_recorded_round_peak_gpu_bytes": 7496478720,
+  "sum_round_seconds": 7196.6634685993195,
+  "optimizer_steps": 79350,
+  "evaluation_not_repeated": "Reused successful worker full10000 reload; this check only reads checkpoint and records."
+}
