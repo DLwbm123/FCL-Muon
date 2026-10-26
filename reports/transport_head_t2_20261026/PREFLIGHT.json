@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "checked": 1792978784.1166835,
+  "scope": "38 solver/lifecycle/gradient checks including same-frame equivalence, nonsymmetric cross orientation, unequal partition additivity, paired statistics RNG/global B restoration, exact first-round local training pair and checkpoint lifecycle"
+}

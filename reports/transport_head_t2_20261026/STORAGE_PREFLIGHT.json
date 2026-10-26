@@ -1,0 +1,9 @@
+{
+  "checked": 1792978770.7874777,
+  "mount": "/data  ext4   /dev/sdc1",
+  "available_bytes": 14923412172800,
+  "probe_passed": true,
+  "expected_new_peak_bytes": 3300000000,
+  "existing_lineage_last_complete_bytes": 39660728320,
+  "lineage_limit_bytes": 45000000000
+}

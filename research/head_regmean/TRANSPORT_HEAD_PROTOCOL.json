@@ -1,0 +1,71 @@
+{
+  "name": "T2 paired local-to-deployed-global head response transport",
+  "purpose": "Head-RegMean currently matches effective rows with each local endpoint Gram, but deploys with the FedAvg B encoder. Test whether explicit paired local/global response matching improves the mainline. Fixed feature/old-response constraints did not qualify; this is a different head aggregation mechanism, not another preservation coefficient sweep. Encoder-frame mismatch is an architectural hypothesis, not a proven explanation of old/new test errors.",
+  "previous_result": "feature_anchor all3 qualified but centered vs old_response old-.0667/new-.1667/overall-.1167pp failed; head orthogonal complement harmed new classes by5.9333pp. All original BOTH gates remain failed.",
+  "lanes": [
+    {
+      "seed": 0,
+      "gpu": 1,
+      "source": "head_loss_intervention_20261026/runs/seed0/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed0/old_response",
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed0/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed0/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed0/centered_all_seen",
+      "feature_anchor_background": "feature_anchor_t2_20261026/runs/seed0/feature_anchor"
+    },
+    {
+      "seed": 1,
+      "gpu": 5,
+      "source": "head_loss_intervention_20261026/runs/seed1/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed1/old_response",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s1.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed1/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed1/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed1/centered_all_seen",
+      "feature_anchor_background": "feature_anchor_t2_20261026/runs/seed1/feature_anchor"
+    },
+    {
+      "seed": 2,
+      "gpu": 7,
+      "source": "head_loss_intervention_20261026/runs/seed2/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed2/old_response",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s2.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed2/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed2/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed2/centered_all_seen",
+      "feature_anchor_background": "feature_anchor_t2_20261026/runs/seed2/feature_anchor"
+    }
+  ],
+  "scientific_change": "Local training is exactly OldResponsePilot: current CE+centered old-logit teacher MSE coeff1 for B, centeredallseen CE on detached features for head, old heads frozen. Retain already-uploaded local B endpoints. After unchanged sample-weighted B FedAvg, send this round global B to clients; on the exact same current deterministic images collect normalized FP32 Z_local/Z_global with FP64 G_global=Z_global.T Z_global and nonsymmetric C=Z_local.T Z_global. Form H=sum T_alpha(G_global)/N and Q=sum U_local T_alpha(C)/N, T_alpha(M)=alpha*M+(1-alpha)*diag(diag(M)), alpha.5 unchanged. Do NOT symmetrize C. Sphere solve min tr(U H U.T)-2tr(U Q.T), unit rows, then preserve raw FedAvg parameter row norms. Re-certify actual FP32 normalized deployed rows with unchanged numeric tolerances. Shared coordinate multiplicative-noise interpretation justifies shrinking both moments; alpha1 is ordinary paired response regression. Same-frame case reduces mathematically to existing RegMean. This certificate belongs to the new paired objective; not a certificate of global class risk or old-objective optimality.",
+  "teacher": "Copy the exact shared T2 model into a frozen eval-mode teacher. Retain the task-start client model in memory; no extra teacher model transmission or disk duplicate is required in this simulator. Teacher is used during training only and discarded at inference; additional full encoder forward on every current image is charged. All teacher tensors must exactly match source at completion.",
+  "shared_start": "Same source T2 full model/head/state/RNG and GPU; no initial projection. Primary reused old_response T2 centered; feature/adapting/frozen/current are background. First-round aggregated B and raw FedAvg head must exactly match the already-saved old_response round_t1_r1.pt before the first changed head fusion; stop and retain failure if pairing fails, no automatic costly retry.",
+  "fixed_training": "T2 only; unchanged5rounds*5epochs/10clients/batch16/QVrank32/fixedA/originalSSB B/FedAvg/singlemerge; headAdamW.001wd0. Original local endpoint Gram pass is replaced by paired local+global passes AFTER B FedAvg. No labels used in response solve, no old data, no server feature pooling/cache. Both raw and fixed centered inference reported, centered primary. Same FP32 deterministic mathSDPA/TF32off/CUBLAS=:4096:8.",
+  "qualification": "CPU: same-frame recovery of old aggregation and split-count additivity; nonsymmetric cross orientation recovers a known orthogonal function transport atalpha1; raw row norms/FP32 certificates; paired sample correspondence/RNG/global B restoration; full first-round local heads and aggregated B equal the old learner, checkpoint restore per client and lifecycle/teacher/oldhead freeze. Real firstbatch zero-start/perturbed gradient qualification as before, then actual first-round B/rawhead exact vs saved old_response control. End50clients125k train125k teacher50k stat forwards5 new paired certificates, each5000pairs/10000forward, nonzero local-global feature drift, mergehistory2/24Bzero/full rawcentered reload/source unchanged.",
+  "budget": {
+    "new_branches": 3,
+    "new_training_visits": 375000,
+    "additional_training_teacher_forward_images": 375000,
+    "new_client_rounds": 150,
+    "new_statistics_visits": 150000,
+    "new_common_RRS_visits": 0,
+    "new_old_training_or_replay_images": 0,
+    "preflight_backward_images_max": 192,
+    "preflight_extra_teacher_forward_images_max": 96,
+    "T2_evaluation_and_reload_images": 12000,
+    "new_storage_guard_bytes": 4000000000,
+    "estimated_new_peak_bytes": 3300000000,
+    "lineage_guard_bytes": 45000000000,
+    "clock": "Inherited earliest started1792926949.7496953/deadline1793012449.7496953. Include new+feature+subspace+oldresponse+frozen+centered+headloss+confirmation+pilot+round+basicrepair. Existinglineage39.6607GB; expectednewpeak3.3GB fits45GB guard; no reset or history removal.",
+    "new_unique_paired_statistics_images": 75000
+  },
+  "evaluation": "Three-seed raw/centered overall/old/new/restricted/forgetting/error-transfer vs reused old_response primary and retained controls. Report mean squared local-global normalized-feature drift and raw paired response MSE of transported and raw-FedAvg heads; raw MSE is descriptive because fixedalpha.5 shrunk objective is minimized. Improved proxy fit does not guarantee accuracy; actual gate decides. Sharedtest development only, no independentheldout, no testfit/checkpointselection/alternateinference.",
+  "gate": {
+    "primary": "Against old_response T2 with fixed centered inference: mean old gain>=.5pp, mean new change>=-.5pp, mean overall gain>=.25pp, and each seed old change>=0pp (numerical tolerance1e-9). All integrity gates must pass.",
+    "decision": "If all pass, freeze this candidate and consider T3 continuation from these saved T2 endpoints under a new budgeted protocol, then evaluate BOTH unchanged original three-task gates before any full10. If any fail, retain negative/mixed result and choose a distinct evidence-based mechanism; no coefficient sweep, automatic costly retry, or weakened old gate."
+  },
+  "paused_routes": "ridge/v1 fixed round-start reference B fusion and affine ridge head, and history_spectral stay paused. This candidate leaves original B FedAvg and cosine unit-row head intact and changes only head response matching at the actual current FedAvg encoder; imports none of their engines. No prototype head or old training replay. Original GPU6 stopped queue protected.",
+  "no_automatic_retry": true,
+  "resource_admission": "GPU1/5/7 minimum12000MiBfree at launch; teacher adds one frozen encoder copy, existing processes protected.",
+  "statistics_and_communication": "Each pair uses identical current sample and deterministic transform; observe restores RNG/modes and global B is restored even on error. Clients retain local B temporarily (no extra B upload); global B broadcast at each fusion charged separately. Upload two768x768 FP64 matrices G_global/C instead of old one, plus two target constants per class and one drift scalar; raw local Gram used locally only for target constants. No feature/raw-image uploads. Retained endpoints stay private and are cleared after each fusion. Extra local/global statistics increase encoder forwards from25000 to50000 per seed; train and teacher visits unchanged. No extra full model disk copy."
+}
