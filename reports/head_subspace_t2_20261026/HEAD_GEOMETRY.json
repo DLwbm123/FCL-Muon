@@ -1,0 +1,198 @@
+{
+  "checked": 1792974932.7536218,
+  "source": "Classifier rows only; no images, labels or fitted values; descriptive geometry, not new performance evidence",
+  "rows": [
+    {
+      "seed": 0,
+      "arm": "subspace",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7989134495543934,
+          "mean_unit_head_norm": 0.6014460572878297
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.7890213450734338,
+          "mean_unit_head_norm": 0.6143657686464761
+        }
+      ]
+    },
+    {
+      "seed": 0,
+      "arm": "old_response",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7989134495543934,
+          "mean_unit_head_norm": 0.6014460572878297
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.8136991414593525,
+          "mean_unit_head_norm": 0.5812862545883446
+        }
+      ]
+    },
+    {
+      "seed": 0,
+      "arm": "adapting",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7989134495543934,
+          "mean_unit_head_norm": 0.6014460572878297
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.814789752354286,
+          "mean_unit_head_norm": 0.5797565405253646
+        }
+      ]
+    },
+    {
+      "seed": 0,
+      "arm": "current",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7989134495543934,
+          "mean_unit_head_norm": 0.6014460572878297
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.7875109449191383,
+          "mean_unit_head_norm": 0.6163006591178586
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "arm": "subspace",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7868940555859469,
+          "mean_unit_head_norm": 0.6170881040485202
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.8081760725774401,
+          "mean_unit_head_norm": 0.5889409404855238
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "arm": "old_response",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7868940555859469,
+          "mean_unit_head_norm": 0.6170881040485202
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.8307539616493893,
+          "mean_unit_head_norm": 0.5566397854018575
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "arm": "adapting",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7868940555859469,
+          "mean_unit_head_norm": 0.6170881040485202
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.8331938784655547,
+          "mean_unit_head_norm": 0.5529809854539379
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "arm": "current",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7868940555859469,
+          "mean_unit_head_norm": 0.6170881040485202
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.8066052842854341,
+          "mean_unit_head_norm": 0.5910904629658309
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "arm": "subspace",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7652818307119997,
+          "mean_unit_head_norm": 0.6436953797850925
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.802236363580121,
+          "mean_unit_head_norm": 0.597006523717787
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "arm": "old_response",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7652818307119997,
+          "mean_unit_head_norm": 0.6436953797850925
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.8065221834827953,
+          "mean_unit_head_norm": 0.591203837641238
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "arm": "adapting",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7652818307119997,
+          "mean_unit_head_norm": 0.6436953797850925
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.8098998350766243,
+          "mean_unit_head_norm": 0.5865681900681723
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "arm": "current",
+      "blocks": [
+        {
+          "task": 0,
+          "contrast_energy_rms": 0.7652818307119997,
+          "mean_unit_head_norm": 0.6436953797850925
+        },
+        {
+          "task": 1,
+          "contrast_energy_rms": 0.7676862152383387,
+          "mean_unit_head_norm": 0.6408259517106022
+        }
+      ]
+    }
+  ]
+}

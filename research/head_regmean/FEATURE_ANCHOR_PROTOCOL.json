@@ -1,0 +1,69 @@
+{
+  "name": "T2 full normalized-feature anchor with unchanged centered head learning",
+  "purpose": "Old-response preservation covers at most nine old-class contrast directions in T2, not the full768-dimensional feature. Frozen encoder improved old classes but hurt new classes. Test a soft full-feature target as a distinct mainline mechanism; not a strength sweep or claimed new distillation algorithm.",
+  "previous_result": "Old-response gate failed old/overall gains; hard old-head complement qualified but centered old+2.1333/new-5.9333/overall-1.9pp vs old_response, so reject its T3 continuation. Head contrast energies differ only about1-6 percent with inconsistent direction; they do not establish an amplitude explanation. All earlier original BOTH gates remain failed.",
+  "lanes": [
+    {
+      "seed": 0,
+      "gpu": 1,
+      "source": "head_loss_intervention_20261026/runs/seed0/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed0/old_response",
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed0/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed0/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed0/centered_all_seen",
+      "subspace_background": "head_subspace_t2_20261026/runs/seed0/head_subspace"
+    },
+    {
+      "seed": 1,
+      "gpu": 5,
+      "source": "head_loss_intervention_20261026/runs/seed1/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed1/old_response",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s1.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed1/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed1/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed1/centered_all_seen",
+      "subspace_background": "head_subspace_t2_20261026/runs/seed1/head_subspace"
+    },
+    {
+      "seed": 2,
+      "gpu": 7,
+      "source": "head_loss_intervention_20261026/runs/seed2/shared/latest.pt",
+      "control": "old_response_t2_20261026/runs/seed2/old_response",
+      "manifest": "head_confirmation_20261025/manifests/seq-cifar100_n10_a0.05_s2.json",
+      "original_current_control": "head_loss_intervention_20261026/runs/seed2/current",
+      "frozen_control": "frozen_encoder_t2_20261026/runs/seed2/frozen_encoder",
+      "adapting_control": "head_centered_loss_20261026/runs/seed2/centered_all_seen",
+      "subspace_background": "head_subspace_t2_20261026/runs/seed2/head_subspace"
+    }
+  ],
+  "scientific_change": "Replace centered old-logit MSE by scale^2*mean_B,D((normalize(studentCLS)-normalize(frozenTeacherCLS))^2), scale16 unchanged and coefficient1 fixed. This equals expected squared logit change along an isotropically random unit head (no actual random heads sampled). Full-rank in feature coordinates, invariant to common orthogonal feature basis rotations; no old-head projection or head constraint. B CE current-only, head centered-all-seen CE on detached student features, old head frozen, original RegMean unchanged. Do not claim the penalty strength matches old-logit MSE on this nonisotropic data.",
+  "teacher": "Copy the exact shared T2 model into a frozen eval-mode teacher. Retain the task-start client model in memory; no extra teacher model transmission or disk duplicate is required in this simulator. Teacher is used during training only and discarded at inference; additional full encoder forward on every current image is charged. All teacher tensors must exactly match source at completion.",
+  "shared_start": "Exact same shared source T2 encoder/head/state/RNG and GPU per seed; no projected initialization. Primary control old_response T2 with fixed centered inference, adapting/frozen/current/subspace as background, all reused without training.",
+  "fixed_training": "T2 only; five rounds x five epochs,10clients,batch16,QVrank32,shared fixed A/originalSSB B/FedAvg/singlemerge; headAdamW.001wd0 reset/localGram/alpha.5 constrainedRegMean/rawFedAvg norms unchanged. FP32 deterministic mathSDPA/TF32off/CUBLAS=:4096:8. Inference bothraw andfixedcentered, centered is declared primary. No old training/replay, no test fitting.",
+  "qualification": "Meaningful CPU tests: old-logit-nullspace changes incur positive feature loss, teacher detach, orthogonal feature-basis invariance; zero-start B/head gradient identity, perturbed B gradient change and unchanged head gradient, teacher/oldhead freeze and full lifecycle. Real preflight zero-start and fixed1e-3*sin Bv perturbation, no optimizer steps; actual first batch matches preflight. End50clients125000visits5certs, merge/history2,24Bzero,teacher exactsource/oldheadexact,positive feature preservation after start,student backbone changed, full raw+centered confusion reload/source size+mtime unchanged.",
+  "budget": {
+    "new_branches": 3,
+    "new_training_visits": 375000,
+    "additional_training_teacher_forward_images": 375000,
+    "new_client_rounds": 150,
+    "new_statistics_visits": 75000,
+    "new_common_RRS_visits": 0,
+    "new_old_training_or_replay_images": 0,
+    "preflight_backward_images_max": 192,
+    "preflight_extra_teacher_forward_images_max": 96,
+    "T2_evaluation_and_reload_images": 12000,
+    "new_storage_guard_bytes": 6000000000,
+    "estimated_new_peak_bytes": 3000000000,
+    "lineage_guard_bytes": 45000000000,
+    "clock": "Inherited earliest started1792926949.7496953/deadline1793012449.7496953. Include new+subspace+oldresponse+frozen+centered+headloss+confirmation+pilot+round+basicrepair; no clock reset or history removal."
+  },
+  "evaluation": "All seeds raw/centered T2 overall/old/new/restricted/forgetting/error transfer and paired deltas versus reused old_response primary and all backgrounds. Report scale256 feature MSE and extra teacher compute. Current images do not establish old-distribution invariance; soft anchoring may still suppress useful plasticity. Shared test development only; no independent heldout, no test fitting/checkpoint selection. No posthoc alternate inference.",
+  "gate": {
+    "primary": "Against old_response T2 with fixed centered inference: mean old gain>=.5pp, mean new change>=-.5pp, mean overall gain>=.25pp, and each seed old change>=0pp (numerical tolerance1e-9). All integrity gates must pass.",
+    "decision": "If all pass, freeze this candidate and consider T3 continuation from these saved T2 endpoints under a new budgeted protocol, then evaluate BOTH unchanged original three-task gates before any full10. If any fail, retain negative/mixed result and choose a distinct evidence-based mechanism; no coefficient sweep, automatic costly retry, or weakened old gate."
+  },
+  "paused_routes": "ridge/v1 fixed-reference B fusion and ridge head, and history_spectral remain paused; this experiment uses original B FedAvg and existing cosine Head-RegMean, and imports none of the paused engines. Original GPU6 stopped queue remains protected.",
+  "no_automatic_retry": true,
+  "resource_admission": "GPU1/5/7 minimum12000MiBfree at launch; teacher adds one frozen encoder copy, existing processes protected."
+}

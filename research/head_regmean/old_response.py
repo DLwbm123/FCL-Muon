@@ -28,11 +28,14 @@ def response_preserving_backward(model,teacher,x,y,task,cpt):
 class OldResponsePilot(HeadLossPilot):
     teacher=None
 
+    def loss_terms(self,x,y):
+        if self.cfg['old_response_coefficient']!=1.:raise ValueError('Frozen protocol coefficient changed')
+        return response_preserving_backward(self.model,self.teacher,x,y,self.s['task'],self.cfg['cpt'])
+
     def backward_loss(self,x,y):
         if self.teacher is None or any(v.requires_grad for v in self.teacher.parameters()):
             raise ValueError('A frozen task-start teacher is required')
-        if self.cfg['old_response_coefficient']!=1.:raise ValueError('Frozen protocol coefficient changed')
-        loss,head,ce,preserve=response_preserving_backward(self.model,self.teacher,x,y,self.s['task'],self.cfg['cpt'])
+        loss,head,ce,preserve=self.loss_terms(x,y)
         assert all(v.grad is None for v in self.teacher.parameters())
         assert all(v.grad is None for v in self.model.rows[:-1])
         if self.expected_first is not None:

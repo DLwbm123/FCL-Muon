@@ -1,0 +1,62 @@
+{
+  "qualified": true,
+  "head_loss_mode": "centered_all_seen",
+  "new_training_visits": 125000,
+  "new_client_rounds": 50,
+  "new_optimizer_steps": 7925,
+  "new_B_optimizer_steps": 7925,
+  "new_statistics_visits": 25000,
+  "new_communication_bytes": {
+    "B_download": 117964800,
+    "current_head_download": 1536000,
+    "head_Gram_upload": 235929600,
+    "B_upload": 117964800,
+    "current_head_upload": 1536000,
+    "task_end_B_download": 23592960,
+    "task_end_head_download": 307200,
+    "RRS_raw_upload": 0,
+    "A_broadcast": 0
+  },
+  "new_certificates_passed": 5,
+  "actual_first_batch_matches_preflight": true,
+  "final_checkpoint_reload_confusion_equal": true,
+  "centered_matrix": [
+    [
+      0.99
+    ],
+    [
+      0.988,
+      0.889
+    ]
+  ],
+  "centered_forgetting": 0.0020000000000000018,
+  "teacher_state_exact": true,
+  "teacher_gradients_none": true,
+  "old_head_exact": true,
+  "changed_backbone_tensors": 12,
+  "preservation_training": {
+    "visits": 125000,
+    "batches": 7925,
+    "ce_sum": 10336.152685795207,
+    "mse_sum": 120.4035767115339,
+    "positive_mse_batches": 7915,
+    "max_mse": 0.006229865830391645
+  },
+  "head_constraint": "old_head_orthogonal_complement",
+  "old_span_rank": 10,
+  "complement_dimension": 758,
+  "final_head_cosine_leak": 7.956868740639322e-09,
+  "max_local_head_cosine_leak": 1.5849919609006105e-08,
+  "old_response_coefficient": 1.0,
+  "new_teacher_forward_images": 125000,
+  "preflight_extra_teacher_forward_images": 32,
+  "clock": {
+    "started": 1792926949.7496953,
+    "deadline": 1793012449.7496953
+  },
+  "reused_control": "old_response_t2_20261026/runs/seed0/old_response",
+  "reused_control_new_optimizer_steps": 0,
+  "new_common_RRS_images": 0,
+  "new_T1_replay_images": 0,
+  "preflight_backward_images": 32
+}

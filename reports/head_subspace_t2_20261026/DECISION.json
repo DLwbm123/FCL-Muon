@@ -1,0 +1,15 @@
+{
+  "status": "ALL_THREE_QUALIFIED_T2_GATE_FAILED_NEW_CLASS_HARM",
+  "gate": {
+    "checks": {
+      "mean_old_gain_at_least_half_pp": true,
+      "mean_new_change_at_least_minus_half_pp": false,
+      "mean_overall_gain_at_least_quarter_pp": false,
+      "each_seed_old_change_nonnegative": true
+    },
+    "passed": false
+  },
+  "no_T3_or_full10": true,
+  "no_rank_or_strength_sweep": true,
+  "next": "Head-only contrast-energy diagnostic completed without images/labels; small inconsistent differences do not support an amplitude-only explanation. New frozen FEATURE_ANCHOR_PROTOCOL replaces rank-limited old responses by full normalized-feature anchoring, returns to unconstrained heads, reuses all controls. Earlier gates remain failed."
+}

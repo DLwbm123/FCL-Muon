@@ -1,0 +1,541 @@
+{
+  "rows": [
+    {
+      "seed": 0,
+      "subspace": {
+        "raw": {
+          "overall": 0.947,
+          "old": 0.952,
+          "new": 0.942,
+          "restricted": [
+            0.99,
+            0.981
+          ],
+          "forgetting": 0.038000000000000034,
+          "old_to_new": 0.042,
+          "new_to_old": 0.046
+        },
+        "centered": {
+          "overall": 0.9385,
+          "old": 0.988,
+          "new": 0.889,
+          "restricted": [
+            0.99,
+            0.981
+          ],
+          "forgetting": 0.0020000000000000018,
+          "old_to_new": 0.004,
+          "new_to_old": 0.102
+        }
+      },
+      "old_response": {
+        "raw": {
+          "overall": 0.955,
+          "old": 0.968,
+          "new": 0.942,
+          "restricted": [
+            0.989,
+            0.977
+          ],
+          "forgetting": 0.02200000000000002,
+          "old_to_new": 0.026,
+          "new_to_old": 0.049
+        },
+        "centered": {
+          "overall": 0.9655,
+          "old": 0.977,
+          "new": 0.954,
+          "restricted": [
+            0.989,
+            0.977
+          ],
+          "forgetting": 0.013000000000000012,
+          "old_to_new": 0.014,
+          "new_to_old": 0.032
+        }
+      },
+      "adapting": {
+        "raw": {
+          "overall": 0.956,
+          "old": 0.961,
+          "new": 0.951,
+          "restricted": [
+            0.989,
+            0.977
+          ],
+          "forgetting": 0.029000000000000026,
+          "old_to_new": 0.033,
+          "new_to_old": 0.038
+        },
+        "centered": {
+          "overall": 0.9645,
+          "old": 0.973,
+          "new": 0.956,
+          "restricted": [
+            0.989,
+            0.977
+          ],
+          "forgetting": 0.017000000000000015,
+          "old_to_new": 0.018,
+          "new_to_old": 0.032
+        }
+      },
+      "frozen": {
+        "raw": {
+          "overall": 0.9525,
+          "old": 0.974,
+          "new": 0.931,
+          "restricted": [
+            0.99,
+            0.976
+          ],
+          "forgetting": 0.016000000000000014,
+          "old_to_new": 0.019,
+          "new_to_old": 0.062
+        },
+        "centered": {
+          "overall": 0.9645,
+          "old": 0.979,
+          "new": 0.95,
+          "restricted": [
+            0.99,
+            0.976
+          ],
+          "forgetting": 0.01100000000000001,
+          "old_to_new": 0.013,
+          "new_to_old": 0.038
+        }
+      },
+      "current": {
+        "raw": {
+          "overall": 0.9495,
+          "old": 0.979,
+          "new": 0.92,
+          "restricted": [
+            0.989,
+            0.982
+          ],
+          "forgetting": 0.01100000000000001,
+          "old_to_new": 0.013,
+          "new_to_old": 0.073
+        },
+        "centered": {
+          "overall": 0.965,
+          "old": 0.981,
+          "new": 0.949,
+          "restricted": [
+            0.989,
+            0.982
+          ],
+          "forgetting": 0.009000000000000008,
+          "old_to_new": 0.01,
+          "new_to_old": 0.041
+        }
+      },
+      "delta_vs_old_response_pp": {
+        "raw": {
+          "overall": -0.8000000000000007,
+          "old": -1.6000000000000014,
+          "new": 0.0,
+          "forgetting": 1.6000000000000014
+        },
+        "centered": {
+          "overall": -2.7000000000000024,
+          "old": 1.100000000000001,
+          "new": -6.499999999999995,
+          "forgetting": -1.100000000000001
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "subspace": {
+        "raw": {
+          "overall": 0.933,
+          "old": 0.911,
+          "new": 0.955,
+          "restricted": [
+            0.986,
+            0.982
+          ],
+          "forgetting": 0.07499999999999996,
+          "old_to_new": 0.084,
+          "new_to_old": 0.031
+        },
+        "centered": {
+          "overall": 0.9405,
+          "old": 0.983,
+          "new": 0.898,
+          "restricted": [
+            0.986,
+            0.982
+          ],
+          "forgetting": 0.0030000000000000027,
+          "old_to_new": 0.005,
+          "new_to_old": 0.093
+        }
+      },
+      "old_response": {
+        "raw": {
+          "overall": 0.953,
+          "old": 0.961,
+          "new": 0.945,
+          "restricted": [
+            0.986,
+            0.981
+          ],
+          "forgetting": 0.025000000000000022,
+          "old_to_new": 0.029,
+          "new_to_old": 0.043
+        },
+        "centered": {
+          "overall": 0.9575,
+          "old": 0.96,
+          "new": 0.955,
+          "restricted": [
+            0.986,
+            0.981
+          ],
+          "forgetting": 0.026000000000000023,
+          "old_to_new": 0.029,
+          "new_to_old": 0.034
+        }
+      },
+      "adapting": {
+        "raw": {
+          "overall": 0.9555,
+          "old": 0.958,
+          "new": 0.953,
+          "restricted": [
+            0.986,
+            0.981
+          ],
+          "forgetting": 0.028000000000000025,
+          "old_to_new": 0.032,
+          "new_to_old": 0.036
+        },
+        "centered": {
+          "overall": 0.957,
+          "old": 0.955,
+          "new": 0.959,
+          "restricted": [
+            0.986,
+            0.981
+          ],
+          "forgetting": 0.031000000000000028,
+          "old_to_new": 0.034,
+          "new_to_old": 0.03
+        }
+      },
+      "frozen": {
+        "raw": {
+          "overall": 0.9475,
+          "old": 0.965,
+          "new": 0.93,
+          "restricted": [
+            0.986,
+            0.978
+          ],
+          "forgetting": 0.02100000000000002,
+          "old_to_new": 0.025,
+          "new_to_old": 0.058
+        },
+        "centered": {
+          "overall": 0.9545,
+          "old": 0.963,
+          "new": 0.946,
+          "restricted": [
+            0.986,
+            0.978
+          ],
+          "forgetting": 0.02300000000000002,
+          "old_to_new": 0.025,
+          "new_to_old": 0.041
+        }
+      },
+      "current": {
+        "raw": {
+          "overall": 0.9555,
+          "old": 0.971,
+          "new": 0.94,
+          "restricted": [
+            0.986,
+            0.984
+          ],
+          "forgetting": 0.015000000000000013,
+          "old_to_new": 0.019,
+          "new_to_old": 0.052
+        },
+        "centered": {
+          "overall": 0.958,
+          "old": 0.964,
+          "new": 0.952,
+          "restricted": [
+            0.986,
+            0.984
+          ],
+          "forgetting": 0.02200000000000002,
+          "old_to_new": 0.025,
+          "new_to_old": 0.038
+        }
+      },
+      "delta_vs_old_response_pp": {
+        "raw": {
+          "overall": -1.9999999999999907,
+          "old": -4.999999999999993,
+          "new": 1.0000000000000009,
+          "forgetting": 4.999999999999993
+        },
+        "centered": {
+          "overall": -1.7000000000000015,
+          "old": 2.300000000000002,
+          "new": -5.699999999999994,
+          "forgetting": -2.300000000000002
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "subspace": {
+        "raw": {
+          "overall": 0.9255,
+          "old": 0.893,
+          "new": 0.958,
+          "restricted": [
+            0.991,
+            0.98
+          ],
+          "forgetting": 0.09699999999999998,
+          "old_to_new": 0.103,
+          "new_to_old": 0.024
+        },
+        "centered": {
+          "overall": 0.9445,
+          "old": 0.988,
+          "new": 0.901,
+          "restricted": [
+            0.991,
+            0.98
+          ],
+          "forgetting": 0.0020000000000000018,
+          "old_to_new": 0.004,
+          "new_to_old": 0.087
+        }
+      },
+      "old_response": {
+        "raw": {
+          "overall": 0.942,
+          "old": 0.931,
+          "new": 0.953,
+          "restricted": [
+            0.991,
+            0.973
+          ],
+          "forgetting": 0.05899999999999994,
+          "old_to_new": 0.062,
+          "new_to_old": 0.028
+        },
+        "centered": {
+          "overall": 0.9575,
+          "old": 0.958,
+          "new": 0.957,
+          "restricted": [
+            0.991,
+            0.973
+          ],
+          "forgetting": 0.03200000000000003,
+          "old_to_new": 0.034,
+          "new_to_old": 0.02
+        }
+      },
+      "adapting": {
+        "raw": {
+          "overall": 0.94,
+          "old": 0.923,
+          "new": 0.957,
+          "restricted": [
+            0.99,
+            0.973
+          ],
+          "forgetting": 0.06699999999999995,
+          "old_to_new": 0.07,
+          "new_to_old": 0.023
+        },
+        "centered": {
+          "overall": 0.956,
+          "old": 0.953,
+          "new": 0.959,
+          "restricted": [
+            0.99,
+            0.973
+          ],
+          "forgetting": 0.03700000000000003,
+          "old_to_new": 0.038,
+          "new_to_old": 0.019
+        }
+      },
+      "frozen": {
+        "raw": {
+          "overall": 0.9375,
+          "old": 0.929,
+          "new": 0.946,
+          "restricted": [
+            0.99,
+            0.969
+          ],
+          "forgetting": 0.06099999999999994,
+          "old_to_new": 0.064,
+          "new_to_old": 0.034
+        },
+        "centered": {
+          "overall": 0.955,
+          "old": 0.959,
+          "new": 0.951,
+          "restricted": [
+            0.99,
+            0.969
+          ],
+          "forgetting": 0.031000000000000028,
+          "old_to_new": 0.032,
+          "new_to_old": 0.024
+        }
+      },
+      "current": {
+        "raw": {
+          "overall": 0.948,
+          "old": 0.962,
+          "new": 0.934,
+          "restricted": [
+            0.99,
+            0.98
+          ],
+          "forgetting": 0.028000000000000025,
+          "old_to_new": 0.029,
+          "new_to_old": 0.056
+        },
+        "centered": {
+          "overall": 0.9635,
+          "old": 0.979,
+          "new": 0.948,
+          "restricted": [
+            0.99,
+            0.98
+          ],
+          "forgetting": 0.01100000000000001,
+          "old_to_new": 0.012,
+          "new_to_old": 0.041
+        }
+      },
+      "delta_vs_old_response_pp": {
+        "raw": {
+          "overall": -1.649999999999996,
+          "old": -3.8000000000000034,
+          "new": 0.5000000000000004,
+          "forgetting": 3.8000000000000034
+        },
+        "centered": {
+          "overall": -1.3000000000000012,
+          "old": 3.0000000000000027,
+          "new": -5.599999999999994,
+          "forgetting": -3.0000000000000027
+        }
+      }
+    }
+  ],
+  "means": {
+    "subspace": {
+      "raw": {
+        "overall": 0.9351666666666666,
+        "old": 0.9186666666666667,
+        "new": 0.9516666666666667,
+        "forgetting": 0.06999999999999999
+      },
+      "centered": {
+        "overall": 0.9411666666666667,
+        "old": 0.9863333333333334,
+        "new": 0.896,
+        "forgetting": 0.0023333333333333353
+      }
+    },
+    "old_response": {
+      "raw": {
+        "overall": 0.9499999999999998,
+        "old": 0.9533333333333333,
+        "new": 0.9466666666666667,
+        "forgetting": 0.03533333333333333
+      },
+      "centered": {
+        "overall": 0.9601666666666667,
+        "old": 0.965,
+        "new": 0.9553333333333333,
+        "forgetting": 0.023666666666666687
+      }
+    },
+    "adapting": {
+      "raw": {
+        "overall": 0.9504999999999999,
+        "old": 0.9473333333333334,
+        "new": 0.9536666666666666,
+        "forgetting": 0.04133333333333333
+      },
+      "centered": {
+        "overall": 0.9591666666666666,
+        "old": 0.9603333333333333,
+        "new": 0.9579999999999999,
+        "forgetting": 0.02833333333333336
+      }
+    },
+    "frozen": {
+      "raw": {
+        "overall": 0.9458333333333333,
+        "old": 0.956,
+        "new": 0.9356666666666666,
+        "forgetting": 0.032666666666666656
+      },
+      "centered": {
+        "overall": 0.9580000000000001,
+        "old": 0.967,
+        "new": 0.949,
+        "forgetting": 0.021666666666666685
+      }
+    },
+    "current": {
+      "raw": {
+        "overall": 0.951,
+        "old": 0.9706666666666667,
+        "new": 0.9313333333333333,
+        "forgetting": 0.018000000000000016
+      },
+      "centered": {
+        "overall": 0.9621666666666666,
+        "old": 0.9746666666666667,
+        "new": 0.9496666666666665,
+        "forgetting": 0.014000000000000012
+      }
+    }
+  },
+  "mean_delta_vs_old_response_pp": {
+    "raw": {
+      "overall": -1.483333333333329,
+      "old": -3.4666666666666663,
+      "new": 0.5000000000000004,
+      "forgetting": 3.4666666666666663
+    },
+    "centered": {
+      "overall": -1.9000000000000015,
+      "old": 2.133333333333335,
+      "new": -5.933333333333327,
+      "forgetting": -2.133333333333335
+    }
+  },
+  "gate": {
+    "checks": {
+      "mean_old_gain_at_least_half_pp": true,
+      "mean_new_change_at_least_minus_half_pp": false,
+      "mean_overall_gain_at_least_quarter_pp": false,
+      "each_seed_old_change_nonnegative": true
+    },
+    "passed": false
+  },
+  "limits": "Implementation qualification does not establish scientific benefit; raw and centered both retained; no posthoc choice of inference rule. Shared-test development only."
+}

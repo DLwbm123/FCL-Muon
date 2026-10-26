@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "checked": 1792975220.8664737,
+  "scope": "34 solver/lifecycle/gradient/frozen/teacher checks including feature-nullspace detection, orthogonal basis invariance, unchanged head gradient and full lifecycle; old response and subspace regression after loss hook extraction"
+}

@@ -1,0 +1,78 @@
+{
+  "checked": 1792974932.7530699,
+  "passed": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "task": 2,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "visits": 125000,
+      "certificates": 5,
+      "all_certificates_passed": true,
+      "max_local_leak": 1.5849919609006105e-08,
+      "max_fusion_leak": 8.864531439084247e-09,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_reload_checks": true
+    },
+    {
+      "seed": 1,
+      "task": 2,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "visits": 125000,
+      "certificates": 5,
+      "all_certificates_passed": true,
+      "max_local_leak": 1.398921586065358e-08,
+      "max_fusion_leak": 9.078934944764476e-09,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_reload_checks": true
+    },
+    {
+      "seed": 2,
+      "task": 2,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "visits": 125000,
+      "certificates": 5,
+      "all_certificates_passed": true,
+      "max_local_leak": 1.349945505094594e-08,
+      "max_fusion_leak": 8.828793637708388e-09,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_reload_checks": true
+    }
+  ]
+}
