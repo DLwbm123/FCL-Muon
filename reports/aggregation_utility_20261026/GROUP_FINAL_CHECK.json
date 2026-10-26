@@ -1,0 +1,23 @@
+{
+  "checked": 1793027016.671819,
+  "passed": true,
+  "all_owned_processes_exited": true,
+  "worker_exit_codes": [
+    0,
+    0
+  ],
+  "all_three_worker_qualifications": true,
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "group_wall_seconds": 8747.14708662033,
+  "allocated_bytes_at_supervisor_exit": 2220077056,
+  "recorded_training_visits": 875000,
+  "unknown_extra_training_visits_upper_bound": 5420,
+  "actual_base_statistics_visits": 210000,
+  "actual_task_eval_images": 16000,
+  "actual_final_reload_images": 9000,
+  "no_repeated_GPU_evaluation": true,
+  "no_repeated_RRS_or_federated_checkpoint_audit": true
+}

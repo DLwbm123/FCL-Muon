@@ -1,0 +1,56 @@
+{
+  "checked": 1793026970.6614885,
+  "passed": true,
+  "mode": "central",
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "config_exact": true,
+  "task": 3,
+  "round": 0,
+  "phase": "complete",
+  "heads": 3,
+  "merges": [
+    0,
+    1,
+    2
+  ],
+  "history": [
+    0,
+    1,
+    2
+  ],
+  "zero_B_count": 24,
+  "unique_client_rounds": 150,
+  "training_visits_including_prefix": 375000,
+  "base_stats_visits": 90000,
+  "head_certificates": 15,
+  "selection_audits": [
+    {
+      "task": 2,
+      "accepted_layers": 12,
+      "exact_fallback_layers": 0,
+      "split_and_fit_prototype_counts_pass": true,
+      "accepted_certificates_pass": true,
+      "final_saved_A_matches_selection": null
+    },
+    {
+      "task": 3,
+      "accepted_layers": 11,
+      "exact_fallback_layers": 1,
+      "split_and_fit_prototype_counts_pass": true,
+      "accepted_certificates_pass": true,
+      "final_saved_A_matches_selection": true
+    }
+  ],
+  "full3000_reload_raw_centered_equal": true,
+  "maximum_reload_logit_difference": 0.00032782554626464844,
+  "completed": {
+    "completed": 1793026913.6238482,
+    "qualified": true
+  },
+  "timing_and_peak_scope": "full_branch",
+  "new_branch_seconds": 4662.506861448288,
+  "peak_gpu_allocated_bytes": 2045677056
+}

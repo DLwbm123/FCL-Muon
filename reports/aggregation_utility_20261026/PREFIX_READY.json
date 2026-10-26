@@ -1,0 +1,192 @@
+{
+  "task1_complete": true,
+  "training_visits": 125000,
+  "client_rounds": 50,
+  "stats_visits": 30000,
+  "current_worker_segment_seconds": 1017.3254954814911,
+  "study_elapsed_at_prefix_completion_seconds": 1391.966117143631,
+  "peak_gpu_allocated_bytes_current_segment": 1927309824,
+  "migration": {
+    "checked": 1793018514.4847968,
+    "authorized_gpu": "0",
+    "clock": {
+      "started": 1793018176.0269961,
+      "deadline": 1793103676.0269961
+    },
+    "checkpoint_task": 0,
+    "checkpoint_round": 0,
+    "checkpoint_phase": "clients",
+    "next_client": 9,
+    "checkpoint_committed_client_rounds": 9,
+    "checkpoint_committed_training_visits": 20305,
+    "uncommitted_training_visits_replayed": null,
+    "uncommitted_training_visits_upper_bound": 4695,
+    "cost_note": "User-requested GPU migration, not a failed scientific rerun. Uncommitted current-client work may be replayed from last atomic checkpoint; exact partial work count is unavailable. All elapsed time and storage retain original clock/budget. Old logs preserved.",
+    "source_revision": "8c90c0b7a707105338cacd6aafa547a162ac1f16"
+  },
+  "first_stage": {
+    "task": 0,
+    "all_seen": 0.99,
+    "per_task": [
+      0.99
+    ],
+    "restricted": [
+      0.99
+    ],
+    "old_accuracy": null,
+    "new_accuracy": 0.99,
+    "forgetting": null,
+    "old_to_new_error": null,
+    "new_to_old_error": null,
+    "confusion": [
+      [
+        100,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        100,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        96,
+        1,
+        0,
+        2,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        97,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        100,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        100,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        98,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        99,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        100,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        100
+      ]
+    ],
+    "centered": {
+      "n": 1000,
+      "all_seen_accuracy": 0.99,
+      "per_task": [
+        {
+          "task_zero_based": 0,
+          "n": 1000,
+          "restricted_accuracy": 0.99,
+          "all_seen_accuracy": 0.99,
+          "restricted_correct_but_other_task_wins": 0
+        }
+      ],
+      "task_group_confusion": [
+        [
+          1000
+        ]
+      ],
+      "current_all_seen_accuracy": 0.99,
+      "current_restricted_accuracy": 0.99,
+      "current_to_first_task": null,
+      "current_to_old": null,
+      "old_all_seen_accuracy": null,
+      "old_to_current": null
+    }
+  },
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  }
+}

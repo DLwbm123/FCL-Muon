@@ -1,0 +1,40 @@
+{
+  "started": 1793018176.0269961,
+  "deadline": 1793103676.0269961,
+  "status": "completed",
+  "supervisor_pid": 127358,
+  "storage_limit_bytes": 8000000000,
+  "write_stop_bytes": 6000000000,
+  "baseline_allocated_bytes": 2502656,
+  "lanes": [
+    {
+      "gpu": "0",
+      "modes": [
+        "rrs",
+        "central"
+      ],
+      "worker_pid": 127361,
+      "started": 1793020240.4382784,
+      "free_mib_at_admission": 72830,
+      "exit_code": 0
+    },
+    {
+      "gpu": "7",
+      "modes": [
+        "federated"
+      ],
+      "worker_pid": 127367,
+      "started": 1793020240.5423198,
+      "free_mib_at_admission": 68619,
+      "exit_code": 0,
+      "ended_observed": 1793024679.1870644
+    }
+  ],
+  "seed": 0,
+  "tasks": 3,
+  "parallel_authorized": true,
+  "allocated_bytes": 2220077056,
+  "checked": 1793026913.1536467,
+  "qualified": true,
+  "ended": 1793026923.1740828
+}
