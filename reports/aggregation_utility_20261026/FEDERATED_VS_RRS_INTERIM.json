@@ -1,0 +1,116 @@
+{
+  "status": "TWO_COMPLETED_ARMS_CENTRAL_PENDING",
+  "scientific_gate": "pending central T3; no strong advantage established",
+  "arms": {
+    "rrs": {
+      "raw": {
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            97.8,
+            92.0
+          ],
+          [
+            97.7,
+            90.10000000000001,
+            85.3
+          ]
+        ],
+        "final_overall_percent": 91.03333333333333,
+        "final_old_percent": 93.9,
+        "final_new_percent": 85.3,
+        "AIA_percent": 94.97777777777779,
+        "mean_new_T2_T3_percent": 88.65,
+        "forgetting_percent": 1.6000000000000014
+      },
+      "centered": {
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            98.0,
+            94.8
+          ],
+          [
+            97.89999999999999,
+            93.5,
+            90.60000000000001
+          ]
+        ],
+        "final_overall_percent": 94.0,
+        "final_old_percent": 95.7,
+        "final_new_percent": 90.60000000000001,
+        "AIA_percent": 96.46666666666667,
+        "mean_new_T2_T3_percent": 92.7,
+        "forgetting_percent": 1.1999999999999955
+      }
+    },
+    "federated": {
+      "raw": {
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            97.8,
+            91.9
+          ],
+          [
+            97.7,
+            90.10000000000001,
+            85.5
+          ]
+        ],
+        "final_overall_percent": 91.10000000000001,
+        "final_old_percent": 93.9,
+        "final_new_percent": 85.5,
+        "AIA_percent": 94.98333333333333,
+        "mean_new_T2_T3_percent": 88.7,
+        "forgetting_percent": 1.5500000000000014
+      },
+      "centered": {
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            98.0,
+            95.0
+          ],
+          [
+            97.89999999999999,
+            93.60000000000001,
+            90.60000000000001
+          ]
+        ],
+        "final_overall_percent": 94.03333333333333,
+        "final_old_percent": 95.75,
+        "final_new_percent": 90.60000000000001,
+        "AIA_percent": 96.51111111111112,
+        "mean_new_T2_T3_percent": 92.8,
+        "forgetting_percent": 1.2499999999999956
+      }
+    }
+  },
+  "federated_minus_rrs_pp": {
+    "raw": {
+      "final_overall_percent": 0.06666666666667709,
+      "final_old_percent": 0.0,
+      "final_new_percent": 0.20000000000000284,
+      "AIA_percent": 0.005555555555545766,
+      "mean_new_T2_T3_percent": 0.04999999999999716,
+      "forgetting_percent": -0.050000000000000044
+    },
+    "centered": {
+      "final_overall_percent": 0.03333333333333144,
+      "final_old_percent": 0.04999999999999716,
+      "final_new_percent": 0.0,
+      "AIA_percent": 0.04444444444445139,
+      "mean_new_T2_T3_percent": 0.09999999999999432,
+      "forgetting_percent": 0.050000000000000044
+    }
+  }
+}
