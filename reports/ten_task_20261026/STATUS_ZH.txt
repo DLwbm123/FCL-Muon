@@ -1,0 +1,14 @@
+六条完整十任务研究——启动前冻结
+
+用户直接批准 CIFAR100 alpha=0.05、seeds 0/1/2、成熟 current-only CE Head-RegMean 与标准 LoRM，共六条完整十任务；alpha=0.5 后续再定。seed0 双方法并行，完整性验收通过后依次运行 seed1、seed2 双方法。性能不触发提前淘汰；数据/数值/恢复错误与共同资源上限仍为硬约束。不重释任何既有短程失败为通过。
+
+独立新根 /data/bmw/FCL-Muon-ten-task-20261026，用户明确批准六条共用新增20GB预算、保留全部历史。预计峰值12GB；16GB提前停止写入以给并发原子checkpoint保留4GB余量。所有六条共享首次正式启动时钟，85500秒主动停止、外层86300秒硬超时并留终止余量。旧根约47.21GB及旧队列45GB停止状态保留，不修改或重启。
+
+Head 使用原当前任务CE、固定RRS A、原SSB与B FedAvg、cosine16/rank32、local-endpoint Gram与alpha=.5球面Head-RegMean，固定按task block去均值推理。新运行从头统一FP32确定性math SDPA/TF32关闭；该数值协议不同于更早确认实验，不能据此声称已经解决当时RegMean/FedAvg首轮配对失败。
+LoRM 使用已固定官方版本与标准设置，保留其逐轮评估和任务末时间聚合。其rank16、线性带bias头、A/B交替、AdamW与16mixed均不改。两者不是单一机制的因果消融；比较必须披露计算、精度、结构与通信差异。
+
+仅保留每条运行一个原子latest完整checkpoint，不新建各任务/轮次张量快照；逐任务metrics、raw/centered矩阵、a_tt、新任务T2-T10均值、竞争统计、证书、训练成本和私有logits保留。历史文件不删除。所有数据、权重、特征/Gram与私有logits不公开。
+
+启动前21项CPU检查通过，涵盖真实生产类十任务生命周期、跨T3/T4恢复、紧凑保留与默认保留逐参数精确一致、solver、旧head冻结、LoRM状态保存。三个完整十任务分区与实际CIFAR100标签/覆盖/互斥性验收通过。无性能有效性结论。共同测试集已用于开发，seed重复不构成独立held-out验证。
+
+既有transport T2仅按原协议收尾；不再启动短程后继，也不以其性能阻挡此次完整十任务研究。ridge/v1和history_spectral继续暂停。唯一fcl心跳继续每30分钟跟进。

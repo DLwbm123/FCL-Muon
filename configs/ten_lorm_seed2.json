@@ -1,0 +1,31 @@
+{
+  "dataset": "seq-cifar100",
+  "method": "lorm_official",
+  "seed": 2,
+  "alpha": 0.05,
+  "clients": 10,
+  "tasks": 10,
+  "rounds": 5,
+  "epochs": 5,
+  "batch": 16,
+  "precision": "16-mixed",
+  "manifest": "manifests/seq-cifar100_n10_a0.05_s2.json",
+  "output": "runs/lorm_seed2",
+  "official": {
+    "optimizer": "AdamW",
+    "lr": 0.0005,
+    "r": 16,
+    "wd_reg": 0,
+    "lora_head": false,
+    "regmean_all": true,
+    "alpha_regmean_head": 0.5,
+    "alpha_regmean_backbone": 0,
+    "gram_dtype": "32",
+    "reg_dtype_64": true,
+    "train_matrix": "alt",
+    "lr_B": -1,
+    "lr_A": -1,
+    "regmean_rounds": 1
+  },
+  "record_fixed_rules": true
+}

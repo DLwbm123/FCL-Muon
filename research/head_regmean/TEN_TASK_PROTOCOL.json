@@ -1,0 +1,64 @@
+{
+  "name": "Complete ten-task study, Head-RegMean and standard LoRM",
+  "authorization": "User directly approved six ten-task runs at alpha .05, then independently approved new shared 20GB budget with all history preserved on 2026-10-26. Alpha .5 is deferred.",
+  "scope": {
+    "dataset": "CIFAR100",
+    "partition_alpha": 0.05,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "tasks": 10,
+    "classes_per_task": 10,
+    "clients": 10,
+    "rounds": 5,
+    "epochs": 5,
+    "batch": 16,
+    "methods": [
+      "regmean",
+      "lorm"
+    ]
+  },
+  "queue": "Seed0 both methods on GPUs3/6 concurrently; after both qualify, seed1 pair then seed2 pair. No performance gate, no T2/T3 early elimination. Only technical correctness, resource and common deadline can block admission.",
+  "initialization": "Fresh same pinned pretrained weights and existing complete ten-task seed-specific manifests. No continuation from short-study checkpoint.",
+  "head": "Mature ConfirmationPilot: current-only CE jointly updates current cosine head and B. Fixed RRS A, original SSB B, sample-weighted B FedAvg, local-endpoint Gram constrained spherical Head-RegMean alpha .5, cosine16, rank32, B lr .0002, head AdamW .001 wd0. Fixed centered inference; raw always reported.",
+  "head_numerics": "Fresh FP32 deterministic algorithms, math SDPA, TF32 off, CUBLAS :4096:8. Disclosed difference from older non-deterministic confirmation; not evidence resolving its failed exact pair.",
+  "lorm": "Pinned official 6d57b5d361f743f3ff0cd1371409bd7a1158de64, unchanged standard config: rank16, AdamW .0005 wd0, A/B alternating, linear+bias head, 16-mixed, regmean_all, head alpha .5/backbone0, one Gram pass. All original round and temporal task-end evaluations kept.",
+  "contrast_limit": "Algorithms differ in architecture/optimizer/numerics; comparative study, not a single-mechanism causal ablation. Report all six without test-based fitting/selection.",
+  "excluded": "No teacher/old-response, all-seen training loss, feature anchor, orthogonal head, transported head, prototype, ridge, extra seeds or alpha .5 runs.",
+  "qualification": "Ten-task toy exact compact-vs-default trajectory and boundary recovery including T3-to-T4; original solver/lifecycle tests. Actual each run 500 unique client-rounds, 1.25M train image visits, ten complete stages. Head 50 deployed certificates/ten merges/history commits/zero B/full raw+centered confusion reload; LoRM complete task10 boundary and all 10000 final raw+centered predictions reproduced from checkpoint.",
+  "reporting": [
+    "Both raw and fixed centered lower-triangular accuracy matrices",
+    "a_tt for every task and mean new accuracy T2-T10",
+    "final overall/old/new, average incremental accuracy, forgetting",
+    "task-restricted accuracy and block competition from same logits",
+    "per-seed values and paired mean/sample std",
+    "training/statistics/evaluation/communication/wall time/storage cost with unequal method costs disclosed"
+  ],
+  "retention": "Only atomic latest full checkpoint per run; no new task snapshots or round endpoint files. All stage metrics, events, certificates and private task logits retained. All older directories untouched.",
+  "resources": {
+    "root": "/data/bmw/FCL-Muon-ten-task-20261026",
+    "new_limit_bytes": 20000000000,
+    "write_stop_bytes": 16000000000,
+    "estimated_peak_bytes": 12000000000,
+    "hard_timeout_seconds": 85500,
+    "outer_timeout_seconds": 86300,
+    "shared_clock": "All six runs, children and any authorized repair share first actual group execution time. No reset. CPU preflight cost disclosed separately.",
+    "shared_read_only": "Existing data/deps/official source/weights via symlinks; no copies or downloads.",
+    "prior_root_occupancy_bytes": 47212929024,
+    "prior_root_occupancy_timestamp": 1792980206,
+    "prior_root_rule": "Original 45GB guard/50GB ledger and interrupted original queue remain unchanged; independent new budget is explicit user exception, not cleanup or restart."
+  },
+  "planned_image_visits": {
+    "training_total": 7500000,
+    "head_statistics_total": 900000,
+    "lorm_statistics_total": 900000,
+    "head_task_eval_plus_final_reload_total": 195000,
+    "lorm_round_task_eval_plus_final_reload_total": 1020000
+  },
+  "old_results": "All old negative/partial results and failed RegMean/FedAvg exact pairing retained as failures. Transport T2 finishes under its existing protocol and does not spawn another short variant or block this study.",
+  "privacy": "Only code/protocol/text results public. Data, weights, Grams, feature/checkpoint tensors, private per-image logits remain server-private.",
+  "no_automatic_costly_retry": true,
+  "test_limit": "Shared CIFAR test development set; seed replication is not independent held-out validation."
+}

@@ -18,6 +18,10 @@ def main():
     torch.manual_seed(cfg['seed']);np.random.seed(cfg['seed']);random.seed(cfg['seed'])
     torch.backends.cudnn.benchmark=False;torch.backends.cudnn.deterministic=True
     torch.backends.cuda.matmul.allow_tf32=False;torch.backends.cudnn.allow_tf32=False
+    if cfg.get('math_sdpa',False):
+        torch.use_deterministic_algorithms(True)
+        torch.backends.cuda.enable_flash_sdp(False);torch.backends.cuda.enable_mem_efficient_sdp(False)
+        torch.backends.cuda.enable_math_sdp(True)
     mf=root/cfg['manifest'];m=json.loads(mf.read_text())
     assert m['identity']=={k:cfg[k] for k in ['dataset','seed','alpha','clients']}
     data=[CIFAR100(root/'data',train=t,download=False) for t in [True,False]]

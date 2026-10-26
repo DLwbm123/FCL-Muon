@@ -17,7 +17,7 @@ class ConfirmationPilot(Pilot):
 
     def fuse(self):
         s=self.s
-        if s['task']==0 and s['round']==0:
+        if s['task']==0 and s['round']==0 and self.cfg.get('retain_first_round_endpoints',True):
             atomic_save({'heads':s['heads'],'B':s['agg_B'],
                          'A':[a.A.cpu() for a in self.model.adapters.values()],
                          'sizes':s['sizes'],'rng':rng_state()},self.out/'first_round_endpoints.pt')

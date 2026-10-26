@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "started": 1792980955.623433,
+  "elapsed": 9.93526291847229,
+  "scope": "-q tests/test_ten_task.py tests/test_head_confirmation.py tests/test_head_regmean_pilot.py tests/test_head_regmean.py tests/test_lorm_state.py"
+}

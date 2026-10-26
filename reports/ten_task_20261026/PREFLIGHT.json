@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "checked": 1792981015.2668462,
+  "tests": {
+    "passed": true,
+    "exit_code": 0,
+    "started": 1792980955.623433,
+    "elapsed": 9.93526291847229,
+    "scope": "-q tests/test_ten_task.py tests/test_head_confirmation.py tests/test_head_regmean_pilot.py tests/test_head_regmean.py tests/test_lorm_state.py"
+  },
+  "data": [
+    {
+      "method": "regmean",
+      "seed": 0,
+      "complete_ten_task_manifest": true
+    },
+    {
+      "method": "lorm",
+      "seed": 0,
+      "complete_ten_task_manifest": true
+    },
+    {
+      "method": "regmean",
+      "seed": 1,
+      "complete_ten_task_manifest": true
+    },
+    {
+      "method": "lorm",
+      "seed": 1,
+      "complete_ten_task_manifest": true
+    },
+    {
+      "method": "regmean",
+      "seed": 2,
+      "complete_ten_task_manifest": true
+    },
+    {
+      "method": "lorm",
+      "seed": 2,
+      "complete_ten_task_manifest": true
+    }
+  ],
+  "weight_readable": true,
+  "fresh_study_no_old_run_reuse": true,
+  "shared_resources_copied": false,
+  "hash_policy": "Existing built-in LoRM digest retained; no extra preflight hashing"
+}

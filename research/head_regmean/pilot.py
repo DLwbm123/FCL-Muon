@@ -182,8 +182,9 @@ class Pilot:
             for b,v in zip(self.model.b_parameters(),s['agg_B']):b.copy_(v)
             self.model.rows[-1].copy_(head)
         s['certificates'].append({'task':s['task'],'round':s['round'],**cert})
-        atomic_save({'task':s['task'],'round':s['round'],'B':s['agg_B'],'head':head,
-            'raw_FedAvg_head':raw,'certificate':cert},self.out/f"round_t{s['task']}_r{s['round']+1}.pt")
+        if self.cfg.get('retain_round_checkpoints',True):
+            atomic_save({'task':s['task'],'round':s['round'],'B':s['agg_B'],'head':head,
+                'raw_FedAvg_head':raw,'certificate':cert},self.out/f"round_t{s['task']}_r{s['round']+1}.pt")
         self.event('aggregate',certificate=cert)
         s.update(round=s['round']+1,heads=[],grams=[],sizes=[],agg_B=[],next_client=0,phase='round_start')
 
@@ -232,7 +233,7 @@ class Pilot:
             s.update(task=t+1,round=0,client_states={},phase='complete' if t+1==self.cfg['tasks'] else 'task_start')
         else:raise ValueError('Unknown phase')
         self.save()
-        if p=='committed':
+        if p=='committed' and self.cfg.get('retain_task_checkpoints',True):
             dest=self.out/f'task{t+1}.pt'
             if not dest.exists():os.link(self.out/'latest.pt',dest)
         return True
