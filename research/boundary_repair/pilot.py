@@ -166,4 +166,3 @@ class BoundaryPilot(UtilityPilot):
             self.model.rows[-1].copy_(global_head)
         s['next_client']+=1
         s['phase']='local_done' if s['next_client']==self.cfg['clients'] else 'clients'
-
