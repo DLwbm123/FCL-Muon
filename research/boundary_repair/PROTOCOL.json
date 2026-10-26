@@ -1,0 +1,54 @@
+{
+  "source_commit": "cc7657c92b2eadd03f8c54da887da4e6459003bd",
+  "authorization": "2026-10-27: explicit A ten-task and B three-task execution through result delivery. This supersedes the previous no-ten-task gate only for these two runs; old results remain immutable.",
+  "arms": {
+    "A": "Federated utility plus unchanged original SSB, T1-T10; import committed original federated T3",
+    "B": "Federated utility plus historical boundary repair, T1-T3; import original shared T1, independent thereafter"
+  },
+  "gpu_assignment": {
+    "A": 2,
+    "B": 7
+  },
+  "comparisons": "Existing standard LoRM seed0 at each corresponding stage, plus previous three-task federated result as internal reference. No new LoRM, RRS, Central, seeds, alpha, or optimizer arms.",
+  "readout": "Fixed per-task block mean subtraction, all seen classes without oracle task ID; report raw equally completely.",
+  "boundary_repair": {
+    "loss": "Formal current-task CE; cross loss mean softplus(max centered old logit minus centered true logit) on detached current-task-correct mask from same augmented forward.",
+    "base": "Original five-step SSB of EMA .9 M + .1 g; exactly one B optimizer and one CE-only AdamW head step. Use actual FP32 B and head displacements.",
+    "metric": "Q=I+ A H_old A.T / max(trace(H_old)/input_dim,1e-12); symmetric, Cholesky verified and cached after final A. Only committed old history, shared Q/V metric.",
+    "solution": "Global q=T(h)-T(g)<g,T(h)>/<g,T(g)>; b=max(0,<h,Delta0>+<h_w,Delta_w>); delta_star=-b q/<h,q>. One global cap scale for norm_Q(delta)<=.25 norm_Q(Delta0). Correction never enters EMA or head.",
+    "lambda": 1.0,
+    "kappa": 0.25,
+    "epsilon": 1e-12,
+    "relative_denominator_tolerance": 1e-10,
+    "geometry_tolerance": 1e-07,
+    "degenerate": "T1, empty mask, b=0: zero. Exactly zero g removes equality; zero h cannot repair head conflict; nonpositive/nonfinite/relative-degenerate denominator skips with reason; zero base norm gives zero cap.",
+    "numeric": "FP64 joint reductions and geometry; record ideal and actually deployed FP32 corrections, explicit rounding envelopes, normalized orthogonality residual, cap and remaining conflict. Any nonfinite gradient/parameter or geometry error outside rounding allowance is a technical stop, not a performance gate.",
+    "certificate_scope": "Existing selected-A certificates only qualify original SSB proposals, not the repaired training update. No finite-step, old-class, or post-FedAvg loss guarantee."
+  },
+  "finite_step_windows": "B T2/T3, client0: round0 step0 and final local step; round4 final local step. Two extra forwards compare base and corrected B with same updated head, augmentation and fixed mask. Restore buffers, modes, RNG and committed corrected parameters; optimizers unmodified by observation.",
+  "preflight": "13 deterministic CPU math/lifecycle checks; one disposable real T2 minibatch (inherited T1 basis), old-head gradient/freeze and CE-only head/EMA exactly-once verification; restore imported checkpoint and RNG before formal task initialization. All real preflight time/images charged separately.",
+  "resource": {
+    "independent_clock_per_arm": true,
+    "maximum_seconds": 85500,
+    "external_hard_timeout_seconds": 86300,
+    "kill_grace_seconds": 30,
+    "storage_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "watchdog_poll_seconds": 10,
+    "expected_peak_bytes": 3000000000,
+    "external_kill_grace_seconds": 60
+  },
+  "counts": {
+    "A_total_client_rounds": 500,
+    "A_reused_client_rounds": 150,
+    "A_total_training_visits": 1250000,
+    "A_new_training_visits": 875000,
+    "B_total_client_rounds": 150,
+    "B_reused_client_rounds": 50,
+    "B_total_training_visits": 375000,
+    "B_new_training_visits": 250000
+  },
+  "stops": "No stopping for low accuracy, rare triggers, heavy clipping or absent gain. Continue to frozen horizons if implementation valid. No unbounded retry, no clock reset, no test-driven parameter changes. Stop technical nonfinite/inconsistent state or hard budget and preserve evidence.",
+  "qualification": "Actual final checkpoint full reload on A 10000/B 3000 images; raw/centered predictions identical to saved final record, max logit difference reported; exact lifecycle and training counts. Preserve historical per-stage metrics, never replace with final-model backtesting.",
+  "delivery": "Chinese A/B and combined reports, complete raw/centered triangular matrices, AIA/forgetting/restricted/competition counts, LoRM paired scope and net differences, repair diagnostics and actual costs. Publish code/config/protocol/aggregate results only; retain weights, Grams, gradients, prototypes and per-image artifacts privately. One 30-minute session monitor until both validated and delivered."
+}
