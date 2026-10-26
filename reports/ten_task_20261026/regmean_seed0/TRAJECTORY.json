@@ -1266,5 +1266,6 @@
     }
   ],
   "primary_rule": "fixed centered logits for Head and equally centered LoRM; raw reported for both",
-  "selection": "All ten stages and all three seeds; no performance-based exclusion"
+  "selection": "All ten stages; exactly two prespecified seeds0/1 under TWO_SEED_AMENDMENT.json; no performance-based exclusion.",
+  "metadata_correction": "The source reporting helper retained the obsolete phrase all three seeds. Corrected here to the controlling two-seed amendment; no metric changed."
 }

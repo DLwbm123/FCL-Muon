@@ -1,0 +1,54 @@
+Head-RegMean seed1十任务完整完成，实际最终checkpoint终验通过。
+单位：准确率%；遗忘为百分点。
+{
+  "metrics": {
+    "raw": {
+      "final_all_seen": 80.04999999999998,
+      "final_old": 79.53333333333332,
+      "final_new": 84.7,
+      "mean_new_T2_T10": 84.01111111111112,
+      "average_incremental_accuracy": 87.37246428571427,
+      "forgetting": 6.022222222222222
+    },
+    "centered": {
+      "final_all_seen": 86.35,
+      "final_old": 85.66666666666667,
+      "final_new": 92.5,
+      "mean_new_T2_T10": 89.52222222222223,
+      "average_incremental_accuracy": 90.91131746031745,
+      "forgetting": 4.544444444444446
+    }
+  },
+  "cost": {
+    "training_visits": 1250000,
+    "optimizer_steps": 79200,
+    "client_rounds": 500,
+    "statistics_forward_images": 300000,
+    "task_evaluation_images": 55000,
+    "round_evaluation_images": 0,
+    "final_reload_images": 10000,
+    "worker_wall_seconds": 19733.881290197372,
+    "checkpoint_bytes": 403926235,
+    "run_output_allocated_bytes": 436649984,
+    "logical_communication_bytes": 10768588800,
+    "recorded_round_peak_gpu_bytes": null
+  },
+  "qualification": {
+    "complete_qualified_worker": true,
+    "full_task10_boundary": true,
+    "config_matches_seed1": true,
+    "ten_unique_merges_history": true,
+    "24_B_zero": true,
+    "full_training_budget": true,
+    "full_stats_budget": true,
+    "50_deployment_certificates": true,
+    "full_raw_metrics_exact": true,
+    "centered_metrics_exact": true,
+    "worker_final10000_reload": true,
+    "original_clock": true,
+    "only_latest_full_checkpoint": true,
+    "no_training_process": true
+  }
+}
+seed1 LoRM在同GPU0已自动接续，尚无完整配对结论。两seed均保留，不选seed、不重复训练、无测试调参。GPU共享负载下wall时间不是受控效率比较；显存峰值未记录，null不等于0。
+原始与预固定centered都报告；共享CIFAR测试集已用于开发，不是独立heldout确认。checkpoint、私有logits和统计不公开。

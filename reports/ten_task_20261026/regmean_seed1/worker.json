@@ -1,0 +1,11 @@
+{
+  "seed": 1,
+  "method": "regmean",
+  "status": "completed",
+  "started": 1792986841.0266893,
+  "train_pid": 2761461,
+  "free_mib_at_admission": 72830,
+  "training_exit_code": 0,
+  "ended": 1793006574.9079795,
+  "qualified": true
+}

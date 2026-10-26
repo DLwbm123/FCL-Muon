@@ -28,7 +28,7 @@ def report(out,method):
         competition=[{'task':i+1,**s} for i,s in enumerate(stages)]
     result={'raw':trajectory(raw),'centered':trajectory(centered),'competition':competition,
             'primary_rule':'fixed centered logits for Head and equally centered LoRM; raw reported for both',
-            'selection':'All ten stages and all three seeds; no performance-based exclusion'}
+            'selection':'All ten stages and every seed required by the current protocol/amendment; no performance-based exclusion'}
     (out/'TRAJECTORY.json').write_text(json.dumps(result,indent=2))
     return result
 
