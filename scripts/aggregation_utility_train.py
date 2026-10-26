@@ -27,9 +27,18 @@ def main():
     root=Path(os.environ['PROJECT_ROOT']);cfg=json.loads((root/'configs/aggregation_utility_three_task_seed0.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ['started','deadline']}
     resume=os.environ.get('RESUME_RUN')=='1'
+    parallel=os.environ.get('PARALLEL_RUN')=='1'
+    modes=os.environ.get('ARM_MODES','rrs,central,federated').split(',')
+    if parallel:
+        allocation=json.loads((root/'reports/PARALLEL_READY.json').read_text())
+        assert resume and allocation['clock']==clock
+        assert modes==allocation['lanes'][os.environ['CUDA_VISIBLE_DEVICES']]
+    else:
+        assert modes==['rrs','central','federated']
     migration=json.loads((root/'reports/GPU0_MIGRATION_READY.json').read_text()) if resume else None
     if resume:
-        assert migration['clock']==clock and migration['authorized_gpu']=='0' and os.environ['CUDA_VISIBLE_DEVICES']=='0'
+        assert migration['clock']==clock and migration['authorized_gpu']=='0'
+        assert parallel or os.environ['CUDA_VISIBLE_DEVICES']=='0'
     out=root/'runs';out.mkdir(exist_ok=resume)
     torch.set_num_threads(4);torch.set_float32_matmul_precision('highest')
     torch.manual_seed(cfg['seed']);np.random.seed(cfg['seed']);random.seed(cfg['seed'])
@@ -54,7 +63,8 @@ def main():
         return UtilityPilot(model,raw,manifest,loader,train_tf.cuda(),test_tf.cuda(),config,out/mode,identity,clock)
 
     def progress(p):
-        write_json(out/'STUDY_PROGRESS.json',{'time':time.time(),'mode':p.cfg['selection_mode'],
+        progress_path=out/('PROGRESS_GPU'+os.environ['CUDA_VISIBLE_DEVICES']+'.json') if parallel else out/'STUDY_PROGRESS.json'
+        write_json(progress_path,{'time':time.time(),'mode':p.cfg['selection_mode'],
             'task':p.s['task'],'round':p.s['round'],'phase':p.s['phase'],
             'client_rounds_including_shared_prefix':len(p.s['training_records']),
             'completed_stages':len(p.s['stages']),'clock':clock})
@@ -82,8 +92,9 @@ def main():
         write_json(out/'PREFIX_READY.json',prefix_meta)
         del prefix;gc.collect();torch.cuda.empty_cache()
     qualifications={}
-    for mode in ['rrs','central','federated']:
+    for mode in modes:
         p=build(mode);branch_start=time.time();torch.cuda.reset_peak_memory_stats()
+        resumed_records=None
         if resume and (p.out/'COMPLETE.json').exists():
             q=json.loads((p.out/'QUALIFICATION.json').read_text());assert q['qualified'] and q['clock']==clock
             qualifications[mode]={'qualified':True,'accepted_layers':[v['accepted_layers'] for v in q['selection_records']],
@@ -91,10 +102,15 @@ def main():
             del p;gc.collect();torch.cuda.empty_cache();continue
         if resume and (p.out/'latest.pt').exists():
             p.restore()
+            resumed_records=len(p.s['training_records'])
+            if parallel:
+                p.event('user_requested_parallel_resume',gpu=os.environ['CUDA_VISIBLE_DEVICES'],original_clock=clock,
+                        checkpoint_client_records=len(p.s['training_records']))
         else:
             checkpoint=torch.load(out/'prefix/latest.pt',map_location='cpu',weights_only=False)
             import_prefix(p,checkpoint);del checkpoint
             shutil.copyfile(out/'prefix/task1_private_logits.npz',p.out/'task1_private_logits.npz')
+        progress(p)
         while p.step():progress(p)
         records=p.s['training_records'];stages=p.s['stages'];selections=p.s['selection_records']
         assert len(records)==150 and len({(v['task'],v['round'],v['client']) for v in records})==150
@@ -121,12 +137,18 @@ def main():
             'full_3000_checkpoint_reload_raw_predictions_equal':raw_equal,'full_3000_checkpoint_reload_centered_predictions_equal':centered_equal,
             'maximum_reload_logit_difference':float(np.abs(before['logits']-after['logits']).max()),
             'peak_gpu_allocated_bytes':torch.cuda.max_memory_allocated(),'new_branch_seconds':time.time()-branch_start,
+            'timing_and_peak_scope':'current_worker_segment' if resumed_records is not None else 'full_branch',
+            'resumed_committed_client_records':resumed_records,
             'checkpoint_bytes':(p.out/'latest.pt').stat().st_size,'certificates_passed':15,'merges':[0,1,2]}
         write_json(p.out/'QUALIFICATION.json',qualification)
         write_json(p.out/'COMPLETE.json',{'completed':time.time(),'qualified':True})
         qualifications[mode]={'qualified':True,'accepted_layers':[v['accepted_layers'] for v in selections],
                               'new_branch_seconds':qualification['new_branch_seconds']}
         del p;gc.collect();torch.cuda.empty_cache()
+    if parallel:
+        write_json(out/('LANE_GPU'+os.environ['CUDA_VISIBLE_DEVICES']+'_COMPLETE.json'),
+                   {'qualified':True,'arms':qualifications,'clock':clock,'completed':time.time()})
+        return
     write_json(out/'STUDY_QUALIFICATION.json',{'qualified':True,'prefix':prefix_meta,'arms':qualifications,
                'completed_record_training_visits':875000,'attributed_training_visits_including_prefix_per_arm':375000,
                'user_requested_gpu_migration':migration,
@@ -138,5 +160,7 @@ def main():
 if __name__=='__main__':
     try:main()
     except BaseException as exc:
-        root=Path(os.environ['PROJECT_ROOT']);root.joinpath('reports/FAILURE.json').write_text(json.dumps({'time':time.time(),'error':repr(exc)},indent=2))
+        root=Path(os.environ['PROJECT_ROOT'])
+        filename='FAILURE_GPU'+os.environ['CUDA_VISIBLE_DEVICES']+'.json' if os.environ.get('PARALLEL_RUN')=='1' else 'FAILURE.json'
+        root.joinpath('reports',filename).write_text(json.dumps({'time':time.time(),'error':repr(exc)},indent=2))
         raise

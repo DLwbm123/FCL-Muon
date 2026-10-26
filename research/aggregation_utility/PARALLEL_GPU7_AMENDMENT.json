@@ -1,0 +1,29 @@
+{
+  "authorization": "User explicitly requested the new mechanism on GPU7 for earlier results while the GPU0 study was running.",
+  "change": "GPU0 runs rrs then central; GPU7 runs federated from the same completed immutable T1 prefix. Controlled original-clock checkpoint handover replaces the sequential scheduler to prevent duplicate federated execution.",
+  "lanes": {
+    "0": [
+      "rrs",
+      "central"
+    ],
+    "7": [
+      "federated"
+    ]
+  },
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "scientific_configuration_unchanged": true,
+  "shared_storage_limit_bytes": 8000000000,
+  "shared_write_stop_bytes": 6000000000,
+  "guard_interval_seconds": 10,
+  "no_additional_arm_seed_or_task": true,
+  "cost_disclosure": "Potential uncommitted client work during the scheduling handover is bounded and recorded in PARALLEL_READY. Timing and GPU peak for a resumed arm describe the current worker segment; the original group clock covers all segments. Original GPU migration extra visits remain separately recorded.",
+  "runtime_validation": [
+    "AST and git diff --check",
+    "Mocked two-lane successful completion keeps clock and routing",
+    "Mocked worker failure stops surviving sibling without success marker",
+    "Mocked original deadline stops both workers without success marker"
+  ]
+}
