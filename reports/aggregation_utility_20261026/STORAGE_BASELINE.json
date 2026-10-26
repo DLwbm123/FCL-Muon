@@ -1,0 +1,15 @@
+{
+  "available_bytes": 14870415097856,
+  "root": "/data/bmw/FCL-Muon-aggregation-utility-20261026",
+  "existing_shared_read_only": [
+    "data",
+    "deps",
+    "lorm_deps",
+    "sources",
+    "manifests",
+    "weights.json"
+  ],
+  "new_limit_bytes": 8000000000,
+  "write_stop_bytes": 6000000000,
+  "expected_peak_bytes": 4000000000
+}

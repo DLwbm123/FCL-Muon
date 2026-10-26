@@ -1,0 +1,64 @@
+{
+  "name": "Aggregation-utility subspace selection: independent three-task pilot",
+  "authorization": "User 2026-10-26 supplied Pro share and explicitly requested implementing the new method and first three tasks on a GPU with spare VRAM; this resumes work after waiting for Pro.",
+  "base_revision": "c7ce88f; scientific ConfirmationPilot unchanged from ten-task study",
+  "scope": {
+    "dataset": "CIFAR100",
+    "seed": 0,
+    "alpha": 0.05,
+    "tasks": 3,
+    "clients": 10,
+    "rounds": 5,
+    "epochs": 5,
+    "batch": 16,
+    "rank": 32,
+    "candidate_width": 64,
+    "arms": [
+      "rrs",
+      "central",
+      "federated"
+    ]
+  },
+  "prefix": "Fresh original-RRS T1 executed once. Same exact saved T1 model/history/RNG imported into all three T2/T3 arms. No final T10 checkpoint used for an earlier task. T3 probe data indices remain identical across arms; model-dependent pools and gradients reflect each arm own T2 trajectory.",
+  "pool": "Preserve exact original FP32 RRS A0. Append the next 32 relative-response directions, project out A0 with a Gram solve twice, QR and concatenate P=[A0.T,Q_extra]. Original candidate Z0=[I;0] gives A0 exactly. Formal A=(P Z).T remains rank32.",
+  "probe": "Task-start normalized current encoder CLS, fit-only pooled class sums/counts make a temporary cosine16 prototype head. Formal random head is preserved. Each local class deterministically split approx80/20, singleton stays fit. Current train-only data; no old images, test labels or future data. Formal training afterwards uses all current training images.",
+  "gradient": "Each client uploads FP32 C_k=G_k P using zero temporary Q/V B_probe, with client mean CE over its split. Client weights equal split sample fractions, separately fit/check. Q and V separately use original five-step FP32 SSB at rank32 with momentum factor0.1 and denominator1e-7; no FedMuon scaling.",
+  "objectives": {
+    "federated": "sum_QV <sum_k p_k C_k Z, sum_k p_k SSB(0.1 C_k Z)>",
+    "central": "sum_QV <sum_k p_k C_k Z, SSB(0.1 sum_k p_k C_k Z)>",
+    "rrs": "Always exact original A0; same fit/check instrumentation for trajectory and overhead control."
+  },
+  "historical_constraints": "For BOTH learned arms: Gamma=tr(Z.T P.T H P Z) and actual LOCAL-SSB-then-average response R=sum_QV tr(Dfed Z.T P.T H P Z Dfed.T) must not exceed original-RRS budgets except predeclared numerical tolerance. This uses actual federated R even in the central-objective control.",
+  "search": "At most60 projected feasible ascent steps per layer, tangent objective gradients with two linear inequality projections, QR retraction, up to16 backtracks. Initial step.25, inward derivative.001, relative constraint tolerance2e-6, relative utility gain1e-4, FP32 orthogonality/pool reconstruction tolerance1e-5. No global optimum claim. Numerical budget fixed before CIFAR execution.",
+  "check": "Exactly one fit-selected FP32 candidate checked per layer. Recompute deployed FP32 utility, Gamma/R and orthogonality. Check uses split-specific mean gradients against the FIT update held fixed, with operator corresponding to the arm objective (central for B, federated for C). Positive check utility and relative gain1e-4 over RRS required. Reject=>exact A0, no re-search on check labels. Also log actual federated check utility for both arms and norm-matched direction diagnostics, never use them for another selection loop.",
+  "unchanged_training": "Original current-only CE, RRS pool construction, B-only original SSB/sample-weighted FedAvg, cosine16 head AdamW.001 and spherical Head-RegMean alpha.5. FP32 deterministic algorithms/mathSDPA/TF32off. No boundary-evidence branch, teacher, distillation, replay or extra inference model.",
+  "interpretation": "RRS improvement, not complete removal of RRS. Surrogate utility is first-order for one virtual step; history is archival patch-input response, neither a guarantee of finite-step loss nor no forgetting.",
+  "evaluation": "All three complete to T3 regardless of scientific performance. Both fixed centered and raw full lower-triangular matrices, per-stage new/old/overall, T2-T3 mean new, AIA, forgetting, task-restricted accuracy and competition. Report accepted layers/fallback reasons/fit+check U/Gamma/R/update norms/projector distance/cost for both selection arms. No test tuning/checkpoint selection.",
+  "gate": "Descriptive pilot gate: federated centered T3 overall and AIA strictly above both original RRS and central control; T3 old and T2-T3 mean-new not below original RRS; at least one accepted layer in each modified task and all accepted certificates valid. Report comparisons against central old/new separately. Failure blocks automatic expansion, no new seed or ten-task run is authorized.",
+  "qualification": "Eight synthetic CPU tests cover original SSB, projected gradients, candidate pool, cancellation/rotation/first-order identity, independent-check fallback, split disjointness, unmodified RRS trajectory, prefix/RNG/clock/restart. Actual per-arm150 unique client-round/375k visits including50/125k shared;15 head certificates/3 histories+merges; final actual saved checkpoint reproduces raw+centered3000 predictions. Private gradient evidence retained for CPU audit.",
+  "cost": {
+    "actual_training_visits": 875000,
+    "attributed_training_visits_per_arm": 375000,
+    "actual_client_rounds": 350,
+    "actual_base_statistics_visits": 210000,
+    "actual_task_eval_images": 16000,
+    "actual_final_reload_images": 9000,
+    "probe_cost": "Actual prototype fit + disjoint fit/check backward image visits and logical tensor bytes recorded, without pretending these are free. Baseline instrumentation overhead separately disclosed."
+  },
+  "resources": {
+    "root": "/data/bmw/FCL-Muon-aggregation-utility-20261026",
+    "new_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "expected_peak_bytes": 4000000000,
+    "max_seconds": 85500,
+    "outer_timeout_seconds": 86300,
+    "outer_kill_seconds": 60,
+    "guard_interval_seconds": 10,
+    "common_clock": "Fresh T1 and all three branches share first actual execution start; no reset/retry/parallel subdivision. Scientific failures preserved without automatic costly rerun.",
+    "required_free_mib": 18000,
+    "shared_readonly": "Prior data/deps/sources/manifests/weights linked only; all new caches/tmp/output under new root. Existing roots/history untouched."
+  },
+  "privacy": "Publish source/config/protocol/aggregate/certificates; keep checkpoint, projected gradients, Gram, prototype/features and per-image logits private.",
+  "monitor": "Reuse only existing fcl30min heartbeat. Original four ten-task study has completed worker qualification but its LoRM1 final CPU audit/two-seed publication remains pending; preserve and deliver it independently. Close monitor only after both studies delivered, absent new authorized work.",
+  "proposal_source": "User-provided Pro design, 2026-10-26: improve RRS by federated aggregation utility; retain SSB."
+}
