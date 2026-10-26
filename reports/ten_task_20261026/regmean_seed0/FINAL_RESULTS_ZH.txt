@@ -1,0 +1,47 @@
+Head-RegMean seed0十任务已完整完成且实际checkpoint终验通过。
+完整配对结果见上级SEED0_COMPARISON.json及SEED0_COMPARISON_ZH.txt。
+{
+  "metrics": {
+    "raw": {
+      "final_all_seen": 79.0,
+      "final_old": 77.75555555555556,
+      "final_new": 90.2,
+      "mean_new_T2_T10": 84.11111111111111,
+      "average_incremental_accuracy": 86.55038888888889,
+      "forgetting": 7.355555555555554
+    },
+    "centered": {
+      "final_all_seen": 85.87,
+      "final_old": 85.06666666666666,
+      "final_new": 93.10000000000001,
+      "mean_new_T2_T10": 90.38888888888889,
+      "average_incremental_accuracy": 91.11652380952381,
+      "forgetting": 5.977777777777779
+    }
+  },
+  "cost": {
+    "training_visits": 1250000,
+    "optimizer_steps": 79350,
+    "client_rounds": 500,
+    "statistics_forward_images": 300000,
+    "task_evaluation_images": 55000,
+    "round_evaluation_images": 0,
+    "final_reload_images": 10000,
+    "worker_wall_seconds": 12812.419152021408,
+    "checkpoint_bytes": 403926043,
+    "run_output_allocated_bytes": 436649984,
+    "logical_communication_bytes": 10768588800,
+    "recorded_round_peak_gpu_bytes": null
+  },
+  "qualification": {
+    "500unique_clients": true,
+    "1.25M_training_visits": true,
+    "300k_stats": true,
+    "50_deployment_certificates": true,
+    "10merge_history": true,
+    "24B_zero": true,
+    "full_raw_centered_confusion_reload": true,
+    "original_clock_preserved": true
+  }
+}
+仅seed0结果；seed1继续原协议。未重复评估、无重训/调参/额外seed，checkpoint与私有logits不公开。

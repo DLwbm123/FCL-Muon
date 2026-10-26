@@ -1,0 +1,25 @@
+{
+  "checked": 1792994409.6271338,
+  "passed": true,
+  "checks": {
+    "complete_qualified_worker": true,
+    "full_task10_boundary": true,
+    "ten_unique_merges_history": true,
+    "24_B_zero": true,
+    "full_training_budget": true,
+    "full_stats_budget": true,
+    "50_deployment_certificates": true,
+    "full_raw_metrics_exact": true,
+    "centered_metrics_exact": true,
+    "worker_final10000_reload": true,
+    "original_clock": true,
+    "only_latest_full_checkpoint": true,
+    "no_training_process": true
+  },
+  "worker_elapsed_seconds": 12812.419152021408,
+  "optimizer_steps": 79350,
+  "checkpoint_bytes": 403926043,
+  "run_output_allocated_bytes": 436649984,
+  "logical_communication_bytes_total": 10768588800,
+  "final_forward_not_repeated": true
+}
