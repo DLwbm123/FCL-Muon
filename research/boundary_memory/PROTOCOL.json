@@ -1,0 +1,57 @@
+{
+  "name": "Full reference moments and bidirectional boundary evidence: three-task pilot",
+  "authorization": "2026-10-26 user requested a separate implementation route for the linked improvement and initial validation on three tasks.",
+  "source_proposal": "https://chatgpt.com/share/6adefa60-1a7c-83e8-aa39-f2ebdc1f76cd",
+  "source_title": "完整对比结果分析; candidate 边界查询与记忆聚合",
+  "implementation_scope": "First recommended step: full class moments and bidirectional evidence. Active covariance queries, compressed memory, and ten-task expansion are conditional future work, not part of this pilot.",
+  "existing_experiment": "The separate two-seed ten-task Head-RegMean/LoRM experiment keeps its original processes, protocol, clock, root and budget.",
+  "scope": {
+    "dataset": "CIFAR100",
+    "alpha": 0.05,
+    "seed": 0,
+    "tasks": 3,
+    "cpt": 10,
+    "clients": 10
+  },
+  "source": "Reuse immutable seed0 task1/2/3 private logits and exact indices from the current-only CE Head-RegMean ten-task run. These are historical task-boundary predictions. Never load the future task10 checkpoint to generate earlier predictions.",
+  "source_training": "Original frozen 5 rounds x 5 local epochs, batch16, fixed RRS A, SSB B and sample-weighted B aggregation, spherical Head-RegMean, rank32, cosine16. This route adds zero MuLoRA training steps.",
+  "reference": "Same pinned initial ViT-B/16 augreg_in21k weights, never adapted; normalized CLS, same deterministic evaluation transform for train statistics and test reference features; full768 dimensions; FP32 forward, FP64 moments and optimization.",
+  "fcl_lifecycle": "At each task, clients extract only their current training samples, send class n/mean/centered scatter, and immediately release feature batches. Merge includes between-client mean correction. Samples counted once, messages uniquely identified. Archive only full class statistics; no old training image or feature replay at later tasks, no future-task fitting.",
+  "objective": "Class-balanced squared hinge of m-(a_c-a_j)^T mu_c-b_c+b_j+kappa sqrt((a_c-a_j)^T Sigma_c (a_c-a_j)+epsilon), with cross-task j; lambda/C sum(||a_c||^2+b_c^2), ||a_c||<=R0. All old/new directions plus old/old cross-task pairs retained.",
+  "score": "For every input and every seen task, s_c=logsoftmax(z_task)_c+logsumexp(reference evidence for task). Predict over all seen classes, no true-task input. Within-task ranking must remain exactly unchanged.",
+  "arms": [
+    "original raw",
+    "original fixed centered",
+    "within-task logsoftmax with equal task support",
+    "standard full-class reference LDA with fixed0.1 covariance shrinkage/equal priors",
+    "bidirectional evidence alone",
+    "bidirectional evidence plus MuLoRA conditional scores",
+    "remove old-distribution-to-new-class terms with original loss denominators"
+  ],
+  "hyperparameters": "All fixed before extraction/evaluation, no tuning: margin2log10, kappa1, lambda1e-4, R0=64, epsilon1e-12. Deterministic accelerated projected gradient/majorization with monotone restart,3000iterations maximum, unit-step gradient mapping tolerance1e-5, startzero. Finite-iteration stationarity disclosed; nonconvergence qualifies execution but blocks a clean mechanism conclusion.",
+  "baseline_policy": "LDA is a standard full-class diagnostic fit using the same sufficient statistics; no parameter search or general baseline optimization. The old ridge/v1 and history_spectral experiments remain paused.",
+  "evaluation": "All seen task test images per stage:1000,2000,3000. Reference test features extracted once per newly observed task, used only after that task's fitted heads have been saved. Labels are metrics-only. Preserve every arm and stage, full accuracy matrix, overall/old/new/a_tt/newmeanT2-T3/AIA/forgetting/task competition/restricted accuracy, corrected and broken predictions, evidence scales and solver convergence.",
+  "predeclared_progression_gate": "Descriptive seed0 development gate, not significance: final fused overall and AIA strictly exceed fixed-centered; T3 old accuracy and mean newT2-T3 do not decrease; cross-task stolen errors decrease. Compare LDA and ablation without concealing unfavorable outcomes. Report whether fusion adds beyond reference-only and whether bidirectional terms help. No automatic query/ten-task expansion in this pilot.",
+  "qualification": "Unequal-client and single-sample moment merge equals pooled stats on synthetic tests; analytic gradient matches autograd; masks and full-block rankings correct; all30class totals and at most300client-class message counts valid,15000unique current training images exactly once, no future logits/checkpoint; original raw confusion/centered metrics reproduced from saved indices; actual final evidence checkpoint reload reproduces all3000predictions for all arms; original input files not modified.",
+  "resources": {
+    "new_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "estimated_peak_bytes": 2000000000,
+    "deadline_seconds": 85500,
+    "outer_timeout_seconds": 86300,
+    "guard_interval_seconds": 10,
+    "gpu_free_admission_mib": 12000,
+    "clock": "One independent new experiment, starts once at first actual execution; no reset or automatic costly retry; all children included",
+    "historical_storage": "All prior roots and data preserved; existing data/source/weights read-only shared"
+  },
+  "monitor": "Merge follow-up into the existing fcl30minute heartbeat; never create a second heartbeat.",
+  "cost": "Account actual reference train/test forwards, server iterations, full-statistics client upload bytes/counts, evidence broadcast bytes, original training sunk cost, solver wall time, memory and disk. Reused logits do not imply a deployable single forward: real inference requires frozen reference and adapted model forwards.",
+  "limitations": [
+    "Single-seed three-task development evidence only",
+    "Shared CIFAR test already used in prior development; not independent held-out validation",
+    "No test selection, no hyperparameter sweep",
+    "No novelty or test-accuracy guarantee inferred from empirical moment bounds",
+    "Full-moment pilot does not validate active communication or future unseen boundary compression"
+  ],
+  "delivery": "Publish source/config/protocol/tests/aggregate reports after completion through the configured GitHub proxy. Keep all images, weights, full statistics, features, checkpoints and per-image logits server-private."
+}

@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 2.327197313308716,
+  "stdout": "",
+  "stderr": "test_analytic_gradient_against_autograd (test_boundary_memory.BoundaryMemoryTests.test_analytic_gradient_against_autograd) ... ok\ntest_compose_is_label_free_and_preserves_every_block (test_boundary_memory.BoundaryMemoryTests.test_compose_is_label_free_and_preserves_every_block) ... ok\ntest_one_task_no_boundary_and_ball_projection (test_boundary_memory.BoundaryMemoryTests.test_one_task_no_boundary_and_ball_projection) ... ok\ntest_only_old_to_new_terms_are_removed (test_boundary_memory.BoundaryMemoryTests.test_only_old_to_new_terms_are_removed) ... ok\ntest_solver_learns_missing_task_direction (test_boundary_memory.BoundaryMemoryTests.test_solver_learns_missing_task_direction) ... ok\ntest_unequal_client_scatter_includes_between_client_mean (test_boundary_memory.BoundaryMemoryTests.test_unequal_client_scatter_includes_between_client_mean) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.475s\n\nOK\n",
+  "cpu_synthetic_only": true,
+  "repair": "Added monotone acceleration to reach stationarity on ill-conditioned synthetic objective; no CIFAR execution yet"
+}
