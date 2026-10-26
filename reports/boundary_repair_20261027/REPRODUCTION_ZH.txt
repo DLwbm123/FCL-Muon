@@ -1,0 +1,17 @@
+结果与来源复现入口
+
+训练科学来源：A 固定cc7657c上的联邦效用/原SSB实现；本轮A启动完整源码745bb3e，见A/SOURCE.json。B修正实现同745bb3e，三任务后仅续跑入口扩展至10f2355，见B_ten/SOURCE.json。配置分别configs/utility_ten_seed0.json、boundary_three_seed0.json、boundary_ten_seed0.json；数值定义与冻结协议见research/boundary_repair/PROTOCOL.json及CONTINUATION_AUTHORIZATION_20261027.json。
+
+仅重建公开报告，不启动训练：
+python3 scripts/summarize_boundary_three.py
+REPORT_ARM=A python3 scripts/summarize_boundary_ten.py
+REPORT_ARM=B python3 scripts/summarize_boundary_ten.py
+python3 scripts/summarize_boundary_final.py
+
+私有逐图配对脚本：scripts/pair_boundary_outputs.py。使用PROJECT_ROOT、PREVIOUS_OUTPUT、CURRENT_OUTPUT、TASK_COUNT、PAIR_REPORT环境变量指定服务器已有输出，通过既有中性e17入口执行，输出仅为聚合纠正/破坏数。公开聚合文件B_ten/PAIRED_B_VS_A.json已由服务器原始逐图文件按相同ID生成，不公开原始逐图文件。
+
+检查点复用：A/IMPORT_PROOF.json记录旧联邦T3导入；B/IMPORT_PROOF.json记录共享T1导入；B_ten/GATE.json和IMPORT_PROOF.json记录B自身T3条件续跑。所有历史阶段均来自当时评测。实际最终模型的全量重载已在QUALIFICATION.json记录，报告重建不重复GPU评测。
+
+测试入口：scripts/boundary_preflight.py、boundary_continue_preflight.py。15项CPU检查包括全局解、截断/退化、关闭与T1精确原轨迹、逐状态恢复、修正模型前缀扩展后轨迹一致。B/REAL_PREFLIGHT.json记录真实小批次图路径和优化器隔离检查。
+
+本轮已完成，重建报告不构成新增训练授权。原权重、历史Gram、梯度、原型、checkpoint与逐图输出均私有保留；公开仓库不包含这些大文件。

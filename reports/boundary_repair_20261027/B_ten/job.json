@@ -1,0 +1,23 @@
+{
+  "started": 1793032083.5549312,
+  "deadline": 1793117583.5549312,
+  "status": "completed",
+  "supervisor_pid": 803939,
+  "storage_limit_bytes": 8000000000,
+  "write_stop_bytes": 6000000000,
+  "seed": 0,
+  "tasks": 10,
+  "gpu": "7",
+  "explicit_resume": false,
+  "arm": "B",
+  "continuation_started": 1793039612.6136365,
+  "conditional_T3_extension": true,
+  "free_mib_at_admission": 45460,
+  "baseline_allocated_bytes": 609849344,
+  "worker_pid": 803954,
+  "allocated_bytes": 1749798912,
+  "checked": 1793055740.3061054,
+  "exit_code": 0,
+  "qualified": true,
+  "ended": 1793055750.3799818
+}

@@ -1,0 +1,318 @@
+{
+  "envelope_checks_passed": true,
+  "strict_FP32_bound_not_claimed": true,
+  "maximum_normalized_CE_residual": 0.04349392491364065,
+  "maximum_actual_amplitude_ratio": 0.2548156298913388,
+  "nominal_cap": 0.25,
+  "maximum_rounding_Q_norm": 2.0046371927904595e-08,
+  "worst_client_rounds": {
+    "normalized_ce_residual": [
+      {
+        "task": 6,
+        "round": 5,
+        "client_zero_based": 3,
+        "maximum": 0.04349392491364065,
+        "client_round_max_rounding_Q_norm": 1.454432747578971e-08
+      },
+      {
+        "task": 9,
+        "round": 5,
+        "client_zero_based": 9,
+        "maximum": 0.03941407619797171,
+        "client_round_max_rounding_Q_norm": 1.5940057111689226e-08
+      },
+      {
+        "task": 8,
+        "round": 5,
+        "client_zero_based": 8,
+        "maximum": 0.03424315683829879,
+        "client_round_max_rounding_Q_norm": 1.278830720729947e-08
+      },
+      {
+        "task": 2,
+        "round": 5,
+        "client_zero_based": 9,
+        "maximum": 0.034231085916597466,
+        "client_round_max_rounding_Q_norm": 1.5466915684062278e-08
+      }
+    ],
+    "amplitude_ratio": [
+      {
+        "task": 6,
+        "round": 5,
+        "client_zero_based": 9,
+        "maximum": 0.2548156298913388,
+        "client_round_max_rounding_Q_norm": 1.4581352733953819e-08
+      },
+      {
+        "task": 2,
+        "round": 5,
+        "client_zero_based": 2,
+        "maximum": 0.2539785319015491,
+        "client_round_max_rounding_Q_norm": 1.5330649731599162e-08
+      },
+      {
+        "task": 2,
+        "round": 5,
+        "client_zero_based": 9,
+        "maximum": 0.2539169605688054,
+        "client_round_max_rounding_Q_norm": 1.5466915684062278e-08
+      },
+      {
+        "task": 3,
+        "round": 5,
+        "client_zero_based": 8,
+        "maximum": 0.25339159368172637,
+        "client_round_max_rounding_Q_norm": 1.415557128592397e-08
+      }
+    ]
+  },
+  "per_step_violation_count_unavailable": true,
+  "finite_step_windows": [
+    {
+      "task": 2,
+      "round": 1,
+      "step": 0,
+      "reason": "empty_mask",
+      "scale": null,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": null
+    },
+    {
+      "task": 2,
+      "round": 1,
+      "step": 124,
+      "reason": "full",
+      "scale": 1.0,
+      "ce_corrected_minus_base": -4.731118679046631e-07,
+      "cross_corrected_minus_base": -7.27623701095581e-05
+    },
+    {
+      "task": 2,
+      "round": 5,
+      "step": 124,
+      "reason": "capped",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 3,
+      "round": 1,
+      "step": 0,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 3,
+      "round": 1,
+      "step": 4,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 3,
+      "round": 5,
+      "step": 4,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 4,
+      "round": 1,
+      "step": 0,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 4,
+      "round": 1,
+      "step": 104,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 4,
+      "round": 5,
+      "step": 104,
+      "reason": "capped",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 5,
+      "round": 1,
+      "step": 0,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 5,
+      "round": 1,
+      "step": 329,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 5,
+      "round": 5,
+      "step": 329,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 6,
+      "round": 1,
+      "step": 0,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 6,
+      "round": 1,
+      "step": 44,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 6,
+      "round": 5,
+      "step": 44,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 7,
+      "round": 1,
+      "step": 0,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 7,
+      "round": 1,
+      "step": 204,
+      "reason": "full",
+      "scale": 1.0,
+      "ce_corrected_minus_base": -1.7695128917694092e-08,
+      "cross_corrected_minus_base": -5.198642611503601e-05
+    },
+    {
+      "task": 7,
+      "round": 5,
+      "step": 204,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 8,
+      "round": 1,
+      "step": 0,
+      "reason": "empty_mask",
+      "scale": null,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": null
+    },
+    {
+      "task": 8,
+      "round": 1,
+      "step": 64,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 8,
+      "round": 5,
+      "step": 64,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 9,
+      "round": 1,
+      "step": 0,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 9,
+      "round": 1,
+      "step": 159,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 9,
+      "round": 5,
+      "step": 159,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 10,
+      "round": 1,
+      "step": 0,
+      "reason": "empty_mask",
+      "scale": null,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": null
+    },
+    {
+      "task": 10,
+      "round": 1,
+      "step": 129,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    },
+    {
+      "task": 10,
+      "round": 5,
+      "step": 129,
+      "reason": "no_conflict",
+      "scale": 0.0,
+      "ce_corrected_minus_base": 0.0,
+      "cross_corrected_minus_base": 0.0
+    }
+  ],
+  "nonzero_repair_windows": 2,
+  "finite_step_limitation": "Last-round windows coincide with zero B learning rate; most windows have no repair. No retrospective favorable-window selection or new training."
+}
