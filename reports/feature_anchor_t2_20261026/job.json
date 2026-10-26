@@ -1,0 +1,41 @@
+{
+  "started": 1792926949.7496953,
+  "deadline": 1793012449.7496953,
+  "intervention_launched": 1792975329.5221448,
+  "status": "running",
+  "lanes": [
+    {
+      "seed": 0,
+      "gpu": 1,
+      "pid": 2236132
+    },
+    {
+      "seed": 1,
+      "gpu": 5,
+      "pid": 2236133
+    },
+    {
+      "seed": 2,
+      "gpu": 7,
+      "pid": 2236134
+    }
+  ],
+  "storage_limit_bytes": 6000000000,
+  "lineage_limit_bytes": 45000000000,
+  "new_before_bytes": 1548288,
+  "lineage_before_bytes": 37201788928,
+  "source_clocks": [
+    {
+      "started": 1792926949.7496953,
+      "deadline": 1793012449.7496953
+    },
+    {
+      "started": 1792926949.7496953,
+      "deadline": 1793012449.7496953
+    },
+    {
+      "started": 1792926949.7496953,
+      "deadline": 1793012449.7496953
+    }
+  ]
+}

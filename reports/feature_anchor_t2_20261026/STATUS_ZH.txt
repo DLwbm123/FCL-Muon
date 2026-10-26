@@ -1,0 +1,1 @@
+全特征保持 T2 三种子已经启动，34项CPU测试、三seed真实预检及正式首批均通过。尚无科学效果结果。损失固定256*normalized-feature MSE、系数1，头训练与聚合保持原规则；复用old_response主对照。原时钟、新root6GB/lineage45GB守护不变，唯一30分钟心跳跟进。
