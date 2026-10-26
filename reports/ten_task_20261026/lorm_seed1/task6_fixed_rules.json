@@ -1,0 +1,210 @@
+{
+  "raw": {
+    "n": 6000,
+    "all_seen_accuracy": 0.8328333333333333,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.959,
+        "all_seen_accuracy": 0.697,
+        "restricted_correct_but_other_task_wins": 262
+      },
+      {
+        "task_zero_based": 1,
+        "n": 1000,
+        "restricted_accuracy": 0.981,
+        "all_seen_accuracy": 0.841,
+        "restricted_correct_but_other_task_wins": 140
+      },
+      {
+        "task_zero_based": 2,
+        "n": 1000,
+        "restricted_accuracy": 0.974,
+        "all_seen_accuracy": 0.88,
+        "restricted_correct_but_other_task_wins": 94
+      },
+      {
+        "task_zero_based": 3,
+        "n": 1000,
+        "restricted_accuracy": 0.974,
+        "all_seen_accuracy": 0.847,
+        "restricted_correct_but_other_task_wins": 127
+      },
+      {
+        "task_zero_based": 4,
+        "n": 1000,
+        "restricted_accuracy": 0.979,
+        "all_seen_accuracy": 0.876,
+        "restricted_correct_but_other_task_wins": 103
+      },
+      {
+        "task_zero_based": 5,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.856,
+        "restricted_correct_but_other_task_wins": 106
+      }
+    ],
+    "task_group_confusion": [
+      [
+        701,
+        114,
+        37,
+        60,
+        30,
+        58
+      ],
+      [
+        14,
+        841,
+        23,
+        43,
+        42,
+        37
+      ],
+      [
+        20,
+        14,
+        893,
+        10,
+        44,
+        19
+      ],
+      [
+        20,
+        26,
+        15,
+        847,
+        27,
+        65
+      ],
+      [
+        17,
+        9,
+        18,
+        25,
+        879,
+        52
+      ],
+      [
+        14,
+        7,
+        9,
+        14,
+        90,
+        866
+      ]
+    ],
+    "current_all_seen_accuracy": 0.856,
+    "current_restricted_accuracy": 0.962,
+    "current_to_first_task": 0.014,
+    "current_to_old": 0.134,
+    "old_all_seen_accuracy": 0.8282,
+    "old_to_current": 0.0462
+  },
+  "centered": {
+    "n": 6000,
+    "all_seen_accuracy": 0.863,
+    "per_task": [
+      {
+        "task_zero_based": 0,
+        "n": 1000,
+        "restricted_accuracy": 0.959,
+        "all_seen_accuracy": 0.833,
+        "restricted_correct_but_other_task_wins": 126
+      },
+      {
+        "task_zero_based": 1,
+        "n": 1000,
+        "restricted_accuracy": 0.981,
+        "all_seen_accuracy": 0.85,
+        "restricted_correct_but_other_task_wins": 131
+      },
+      {
+        "task_zero_based": 2,
+        "n": 1000,
+        "restricted_accuracy": 0.974,
+        "all_seen_accuracy": 0.89,
+        "restricted_correct_but_other_task_wins": 84
+      },
+      {
+        "task_zero_based": 3,
+        "n": 1000,
+        "restricted_accuracy": 0.974,
+        "all_seen_accuracy": 0.868,
+        "restricted_correct_but_other_task_wins": 106
+      },
+      {
+        "task_zero_based": 4,
+        "n": 1000,
+        "restricted_accuracy": 0.979,
+        "all_seen_accuracy": 0.919,
+        "restricted_correct_but_other_task_wins": 60
+      },
+      {
+        "task_zero_based": 5,
+        "n": 1000,
+        "restricted_accuracy": 0.962,
+        "all_seen_accuracy": 0.818,
+        "restricted_correct_but_other_task_wins": 144
+      }
+    ],
+    "task_group_confusion": [
+      [
+        845,
+        72,
+        37,
+        19,
+        20,
+        7
+      ],
+      [
+        22,
+        851,
+        30,
+        27,
+        56,
+        14
+      ],
+      [
+        30,
+        8,
+        903,
+        14,
+        36,
+        9
+      ],
+      [
+        23,
+        35,
+        6,
+        871,
+        34,
+        31
+      ],
+      [
+        28,
+        1,
+        14,
+        12,
+        928,
+        17
+      ],
+      [
+        26,
+        5,
+        5,
+        14,
+        129,
+        821
+      ]
+    ],
+    "current_all_seen_accuracy": 0.818,
+    "current_restricted_accuracy": 0.962,
+    "current_to_first_task": 0.026,
+    "current_to_old": 0.179,
+    "old_all_seen_accuracy": 0.872,
+    "old_to_current": 0.0156
+  }
+}

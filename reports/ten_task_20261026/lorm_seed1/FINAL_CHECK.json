@@ -1,0 +1,27 @@
+{
+  "checked": 1793018239.4915645,
+  "passed": true,
+  "checks": {
+    "complete_qualified_worker": true,
+    "full_task10_boundary": true,
+    "full_matrix_exact": true,
+    "full_client_budget": true,
+    "50_rounds": true,
+    "fixed_rules_all_stages": true,
+    "full10000_reload_verified": true,
+    "original_clock": true,
+    "no_training_process": true,
+    "only_latest_full_checkpoint": true,
+    "fixed_rules_match_trajectory": true
+  },
+  "checkpoint_bytes": 1914322999,
+  "run_output_allocated_bytes": 1946320896,
+  "worker_elapsed_seconds": 10971.695147037506,
+  "optimizer_steps": 79200,
+  "evaluation_not_repeated": "Reused successful worker full10000 reload; this check only reads checkpoint and records.",
+  "training_elapsed_seconds": 10946.231594085693,
+  "complete_report_group_elapsed_seconds": 36393.823489665985,
+  "elapsed_note": "COMPLETE.elapsed uses original shared study clock; training_elapsed_seconds here measures this worker start to training end.",
+  "max_recorded_round_peak_gpu_bytes": 7501512704,
+  "sum_round_seconds": 9114.866378545761
+}

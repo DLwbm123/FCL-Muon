@@ -1,0 +1,15 @@
+{
+  "qualified": true,
+  "client_rounds": 500,
+  "training_visits": 1250000,
+  "optimizer_steps": 79200,
+  "checkpoint_boundary_complete": true,
+  "final_checkpoint_raw_predictions_equal": true,
+  "final_checkpoint_centered_predictions_equal": true,
+  "max_reload_logit_difference": 0.0,
+  "audit_images": 10000,
+  "statistics_image_forwards": 300000,
+  "round_evaluation_images": 275000,
+  "task_evaluation_images": 55000,
+  "note": "Pinned official learner; end-round and end-task statistics retained, no performance gate"
+}

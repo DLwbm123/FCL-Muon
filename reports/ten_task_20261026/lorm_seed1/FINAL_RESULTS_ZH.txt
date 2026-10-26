@@ -1,0 +1,21 @@
+LoRM seed1完整十任务完成并通过终验。
+500 unique client-round、1250000训练访问、79200优化步；实际最终checkpoint在全部10000图raw/centered预测重现，最大logit差0。
+单位：准确率%；遗忘为百分点。
+centered: {"final_all_seen": 83.84, "final_old": 83.82222222222224, "final_new": 84.0, "mean_new_T2_T10": 91.13333333333333, "average_incremental_accuracy": 88.17835317460319, "forgetting": 8.833333333333334}
+raw: {"final_all_seen": 81.34, "final_old": 81.25555555555555, "final_new": 82.1, "mean_new_T2_T10": 89.43333333333334, "average_incremental_accuracy": 85.68199206349206, "forgetting": 9.922222222222222}
+两seed完整配对见../TWO_SEED_FINAL_ZH.txt。
+{
+  "training_visits": 1250000,
+  "optimizer_steps": 79200,
+  "client_rounds": 500,
+  "statistics_forward_images": 300000,
+  "task_evaluation_images": 55000,
+  "round_evaluation_images": 275000,
+  "final_reload_images": 10000,
+  "worker_wall_seconds": 10971.695147037506,
+  "checkpoint_bytes": 1914322999,
+  "run_output_allocated_bytes": 1946320896,
+  "logical_communication_bytes": null,
+  "recorded_round_peak_gpu_bytes": 7501512704
+}
+不重复GPU评估；最终只读CPU检查点核对通过。

@@ -1,0 +1,481 @@
+{
+  "seed": 1,
+  "status": "FULL_SINGLE_SEED_PAIR_COMPLETE",
+  "primary": "Both methods use fixed centered inference; raw retained for both",
+  "summary": {
+    "raw": {
+      "regmean": {
+        "final_all_seen": 80.04999999999998,
+        "final_old": 79.53333333333332,
+        "final_new": 84.7,
+        "mean_new_T2_T10": 84.01111111111112,
+        "average_incremental_accuracy": 87.37246428571427,
+        "forgetting": 6.022222222222222
+      },
+      "lorm": {
+        "final_all_seen": 81.34,
+        "final_old": 81.25555555555555,
+        "final_new": 82.1,
+        "mean_new_T2_T10": 89.43333333333334,
+        "average_incremental_accuracy": 85.68199206349206,
+        "forgetting": 9.922222222222222
+      },
+      "head_minus_lorm_pp": {
+        "final_all_seen": -1.2900000000000134,
+        "final_old": -1.722222222222225,
+        "final_new": 2.6000000000000023,
+        "mean_new_T2_T10": -5.422222222222217,
+        "average_incremental_accuracy": 1.6904722222222168,
+        "forgetting": -3.9
+      }
+    },
+    "centered": {
+      "regmean": {
+        "final_all_seen": 86.35,
+        "final_old": 85.66666666666667,
+        "final_new": 92.5,
+        "mean_new_T2_T10": 89.52222222222223,
+        "average_incremental_accuracy": 90.91131746031745,
+        "forgetting": 4.544444444444446
+      },
+      "lorm": {
+        "final_all_seen": 83.84,
+        "final_old": 83.82222222222224,
+        "final_new": 84.0,
+        "mean_new_T2_T10": 91.13333333333333,
+        "average_incremental_accuracy": 88.17835317460319,
+        "forgetting": 8.833333333333334
+      },
+      "head_minus_lorm_pp": {
+        "final_all_seen": 2.50999999999999,
+        "final_old": 1.8444444444444374,
+        "final_new": 8.500000000000007,
+        "mean_new_T2_T10": -1.6111111111111076,
+        "average_incremental_accuracy": 2.7329642857142677,
+        "forgetting": -4.288888888888887
+      }
+    }
+  },
+  "stage_comparison": {
+    "raw": [
+      {
+        "task": 1,
+        "regmean": {
+          "new": 98.6,
+          "old": null,
+          "overall": 98.6,
+          "forgetting": null
+        },
+        "lorm": {
+          "new": 97.7,
+          "old": null,
+          "overall": 97.7,
+          "forgetting": null
+        }
+      },
+      {
+        "task": 2,
+        "regmean": {
+          "new": 93.8,
+          "old": 97.2,
+          "overall": 95.5,
+          "forgetting": 1.4000000000000012
+        },
+        "lorm": {
+          "new": 96.3,
+          "old": 79.7,
+          "overall": 88.0,
+          "forgetting": 17.999999999999993
+        }
+      },
+      {
+        "task": 3,
+        "regmean": {
+          "new": 88.2,
+          "old": 94.5,
+          "overall": 92.40000000000002,
+          "forgetting": 1.699999999999996
+        },
+        "lorm": {
+          "new": 93.10000000000001,
+          "old": 84.65,
+          "overall": 87.46666666666668,
+          "forgetting": 12.349999999999994
+        }
+      },
+      {
+        "task": 4,
+        "regmean": {
+          "new": 91.3,
+          "old": 88.8,
+          "overall": 89.425,
+          "forgetting": 4.733333333333333
+        },
+        "lorm": {
+          "new": 91.60000000000001,
+          "old": 85.1,
+          "overall": 86.72500000000001,
+          "forgetting": 10.599999999999998
+        }
+      },
+      {
+        "task": 5,
+        "regmean": {
+          "new": 84.8,
+          "old": 88.64999999999999,
+          "overall": 87.88000000000001,
+          "forgetting": 4.325000000000001
+        },
+        "lorm": {
+          "new": 90.3,
+          "old": 84.325,
+          "overall": 85.52,
+          "forgetting": 10.350000000000001
+        }
+      },
+      {
+        "task": 6,
+        "regmean": {
+          "new": 75.0,
+          "old": 85.86,
+          "overall": 84.05,
+          "forgetting": 5.480000000000002
+        },
+        "lorm": {
+          "new": 85.6,
+          "old": 82.82000000000001,
+          "overall": 83.28333333333333,
+          "forgetting": 10.980000000000002
+        }
+      },
+      {
+        "task": 7,
+        "regmean": {
+          "new": 78.5,
+          "old": 83.46666666666667,
+          "overall": 82.75714285714287,
+          "forgetting": 5.150000000000001
+        },
+        "lorm": {
+          "new": 84.5,
+          "old": 82.0,
+          "overall": 82.35714285714286,
+          "forgetting": 10.450000000000001
+        }
+      },
+      {
+        "task": 8,
+        "regmean": {
+          "new": 76.6,
+          "old": 82.38571428571429,
+          "overall": 81.66250000000001,
+          "forgetting": 4.785714285714286
+        },
+        "lorm": {
+          "new": 88.9,
+          "old": 81.3,
+          "overall": 82.25,
+          "forgetting": 10.014285714285716
+        }
+      },
+      {
+        "task": 9,
+        "regmean": {
+          "new": 83.2,
+          "old": 81.175,
+          "overall": 81.4,
+          "forgetting": 4.674999999999999
+        },
+        "lorm": {
+          "new": 92.5,
+          "old": 80.8875,
+          "overall": 82.17777777777778,
+          "forgetting": 10.125000000000002
+        }
+      },
+      {
+        "task": 10,
+        "regmean": {
+          "new": 84.7,
+          "old": 79.53333333333333,
+          "overall": 80.04999999999998,
+          "forgetting": 6.022222222222222
+        },
+        "lorm": {
+          "new": 82.1,
+          "old": 81.25555555555555,
+          "overall": 81.34,
+          "forgetting": 9.922222222222222
+        }
+      }
+    ],
+    "centered": [
+      {
+        "task": 1,
+        "regmean": {
+          "new": 98.6,
+          "old": null,
+          "overall": 98.6,
+          "forgetting": null
+        },
+        "lorm": {
+          "new": 97.7,
+          "old": null,
+          "overall": 97.7,
+          "forgetting": null
+        }
+      },
+      {
+        "task": 2,
+        "regmean": {
+          "new": 95.39999999999999,
+          "old": 96.3,
+          "overall": 95.85,
+          "forgetting": 2.300000000000002
+        },
+        "lorm": {
+          "new": 95.6,
+          "old": 86.7,
+          "overall": 91.14999999999999,
+          "forgetting": 10.999999999999998
+        }
+      },
+      {
+        "task": 3,
+        "regmean": {
+          "new": 91.8,
+          "old": 94.95,
+          "overall": 93.90000000000002,
+          "forgetting": 2.0500000000000016
+        },
+        "lorm": {
+          "new": 93.5,
+          "old": 87.5,
+          "overall": 89.5,
+          "forgetting": 9.149999999999997
+        }
+      },
+      {
+        "task": 4,
+        "regmean": {
+          "new": 91.9,
+          "old": 92.8,
+          "overall": 92.575,
+          "forgetting": 2.466666666666665
+        },
+        "lorm": {
+          "new": 91.8,
+          "old": 89.10000000000001,
+          "overall": 89.775,
+          "forgetting": 6.499999999999999
+        }
+      },
+      {
+        "task": 5,
+        "regmean": {
+          "new": 90.60000000000001,
+          "old": 91.425,
+          "overall": 91.25999999999999,
+          "forgetting": 3.025
+        },
+        "lorm": {
+          "new": 93.10000000000001,
+          "old": 87.425,
+          "overall": 88.56,
+          "forgetting": 7.2250000000000005
+        }
+      },
+      {
+        "task": 6,
+        "regmean": {
+          "new": 78.9,
+          "old": 90.47999999999999,
+          "overall": 88.55,
+          "forgetting": 3.2000000000000006
+        },
+        "lorm": {
+          "new": 81.8,
+          "old": 87.20000000000002,
+          "overall": 86.3,
+          "forgetting": 7.140000000000002
+        }
+      },
+      {
+        "task": 7,
+        "regmean": {
+          "new": 85.9,
+          "old": 87.89999999999999,
+          "overall": 87.61428571428571,
+          "forgetting": 3.3166666666666678
+        },
+        "lorm": {
+          "new": 91.10000000000001,
+          "old": 84.28333333333335,
+          "overall": 85.25714285714285,
+          "forgetting": 7.966666666666666
+        }
+      },
+      {
+        "task": 8,
+        "regmean": {
+          "new": 87.3,
+          "old": 87.1,
+          "overall": 87.125,
+          "forgetting": 3.3571428571428585
+        },
+        "lorm": {
+          "new": 92.9,
+          "old": 83.77142857142857,
+          "overall": 84.91250000000001,
+          "forgetting": 8.314285714285713
+        }
+      },
+      {
+        "task": 9,
+        "regmean": {
+          "new": 91.4,
+          "old": 86.775,
+          "overall": 87.28888888888889,
+          "forgetting": 3.2875000000000014
+        },
+        "lorm": {
+          "new": 96.39999999999999,
+          "old": 83.33749999999999,
+          "overall": 84.78888888888889,
+          "forgetting": 8.850000000000001
+        }
+      },
+      {
+        "task": 10,
+        "regmean": {
+          "new": 92.5,
+          "old": 85.66666666666667,
+          "overall": 86.35,
+          "forgetting": 4.544444444444446
+        },
+        "lorm": {
+          "new": 84.0,
+          "old": 83.82222222222224,
+          "overall": 83.84,
+          "forgetting": 8.833333333333334
+        }
+      }
+    ]
+  },
+  "final_per_task": {
+    "raw": {
+      "regmean": [
+        93.89999999999999,
+        80.4,
+        80.80000000000001,
+        82.39999999999999,
+        73.3,
+        73.5,
+        76.0,
+        74.2,
+        81.3,
+        84.7
+      ],
+      "lorm": [
+        66.7,
+        77.0,
+        83.8,
+        81.3,
+        81.10000000000001,
+        82.8,
+        80.60000000000001,
+        87.2,
+        90.8,
+        82.1
+      ],
+      "head_minus_lorm_pp": [
+        27.199999999999992,
+        3.400000000000003,
+        -2.9999999999999916,
+        1.100000000000001,
+        -7.800000000000007,
+        -9.299999999999997,
+        -4.600000000000004,
+        -13.0,
+        -9.500000000000009,
+        2.6000000000000023
+      ]
+    },
+    "centered": {
+      "regmean": [
+        93.7,
+        85.0,
+        86.5,
+        87.0,
+        82.19999999999999,
+        77.4,
+        84.0,
+        85.2,
+        90.0,
+        92.5
+      ],
+      "lorm": [
+        78.4,
+        73.5,
+        85.7,
+        80.5,
+        87.2,
+        73.0,
+        88.3,
+        92.30000000000001,
+        95.5,
+        84.0
+      ],
+      "head_minus_lorm_pp": [
+        15.300000000000002,
+        11.5,
+        0.8000000000000007,
+        6.499999999999995,
+        -5.000000000000004,
+        4.400000000000004,
+        -4.300000000000004,
+        -7.100000000000007,
+        -5.499999999999994,
+        8.500000000000007
+      ]
+    }
+  },
+  "cost": {
+    "regmean": {
+      "training_visits": 1250000,
+      "optimizer_steps": 79200,
+      "client_rounds": 500,
+      "statistics_forward_images": 300000,
+      "task_evaluation_images": 55000,
+      "round_evaluation_images": 0,
+      "final_reload_images": 10000,
+      "worker_wall_seconds": 19733.881290197372,
+      "checkpoint_bytes": 403926235,
+      "run_output_allocated_bytes": 436649984,
+      "logical_communication_bytes": 10768588800,
+      "recorded_round_peak_gpu_bytes": null
+    },
+    "lorm": {
+      "training_visits": 1250000,
+      "optimizer_steps": 79200,
+      "client_rounds": 500,
+      "statistics_forward_images": 300000,
+      "task_evaluation_images": 55000,
+      "round_evaluation_images": 275000,
+      "final_reload_images": 10000,
+      "worker_wall_seconds": 10971.695147037506,
+      "checkpoint_bytes": 1914322999,
+      "run_output_allocated_bytes": 1946320896,
+      "logical_communication_bytes": null,
+      "recorded_round_peak_gpu_bytes": 7501512704
+    }
+  },
+  "limits": [
+    "This report describes one seed pair; consult TWO_SEED_FINAL.json for aggregation across both prespecified seeds.",
+    "Shared development test set, no independent held-out confirmation.",
+    "Different architectures/ranks/optimizers/numerics; not a single-mechanism causal ablation.",
+    "Wall time includes different GPU workloads and contention; not a controlled throughput benchmark.",
+    "Head GPU peak and LoRM logical communication were not directly recorded; null means unavailable, not zero.",
+    "Lower forgetting alone can reflect lower initial task acquisition; jointly report absolute old accuracy and a_tt."
+  ]
+}

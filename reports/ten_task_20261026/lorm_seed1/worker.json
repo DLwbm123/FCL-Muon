@@ -1,0 +1,11 @@
+{
+  "seed": 1,
+  "method": "lorm",
+  "status": "completed",
+  "started": 1793006578.8310876,
+  "train_pid": 3687001,
+  "free_mib_at_admission": 41825,
+  "training_exit_code": 0,
+  "ended": 1793017550.5262346,
+  "qualified": true
+}
