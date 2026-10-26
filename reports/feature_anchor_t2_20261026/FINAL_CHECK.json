@@ -1,0 +1,72 @@
+{
+  "checked": 1792978132.899995,
+  "passed": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "task": 2,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "visits": 125000,
+      "certificates": 5,
+      "all_certificates_passed": true,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_reload_checks": true
+    },
+    {
+      "seed": 1,
+      "task": 2,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "visits": 125000,
+      "certificates": 5,
+      "all_certificates_passed": true,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_reload_checks": true
+    },
+    {
+      "seed": 2,
+      "task": 2,
+      "phase": "complete",
+      "merges": [
+        0,
+        1
+      ],
+      "history": [
+        0,
+        1
+      ],
+      "B_count": 24,
+      "B_zero": true,
+      "new_clients": 50,
+      "visits": 125000,
+      "certificates": 5,
+      "all_certificates_passed": true,
+      "matrix_exact": true,
+      "qualified": true,
+      "teacher_reload_checks": true
+    }
+  ]
+}

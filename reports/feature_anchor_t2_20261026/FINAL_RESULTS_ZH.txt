@@ -1,0 +1,5 @@
+全特征保持T2三seed完成并全部通过实现验收，exit[0,0,0]。
+固定centered均值：总体95.9000%、旧96.4333%、新95.3667%。vs old_response：总体-0.1167pp、旧-0.0667pp、新-0.1667pp；逐seed旧变化[-0.10000000000000853, 0.20000000000000284, -0.29999999999999716]pp。只有新类损失界通过，旧增益/总体增益/每seed旧非负全部失败。无T3/full10，未做系数扫描或重跑。
+raw vs old_response：{'overall': -0.06666666666666288, 'old': -0.03333333333333144, 'new': -0.10000000000000853}pp。保留所有seed和两个推理规则。全特征约束参与训练、teacher及旧head冻结正确，但未表现出优于低维旧响应保持的收益，不能把更全面的约束当作性能改进。
+各seed50client125000train125000teacherforward25000stats5新部署证书；全3训练375000+teacher375000、统计75000、192预检backward+96teacher、12000终点评估重载；实际finalcheckpoint/24Bzero/mergehistory2/完整rawcentered重载通过，无控制重训。teacher精确source/无梯度、旧headexact、student12backbone张量变化、preservation正值及125k访问通过。source大小mtime未变。
+job ended1792977466.601471；newroot2460479488/lineage39660728320bytes，继承最早clock与6GB/45GB守护。当前仅共享test开发证据，无独立heldout验证。

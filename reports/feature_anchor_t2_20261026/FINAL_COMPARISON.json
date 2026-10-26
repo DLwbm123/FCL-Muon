@@ -1,0 +1,426 @@
+{
+  "scope": "Three-seed T2 development evidence; fixed raw and centered rules; all controls reused",
+  "arms": {
+    "feature_anchor": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.45,
+            "old": 96.89999999999999,
+            "new": 94.0,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          },
+          "centered": {
+            "overall": 96.45,
+            "old": 97.6,
+            "new": 95.3,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 95.39999999999999,
+            "old": 96.39999999999999,
+            "new": 94.39999999999999,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 95.65,
+            "old": 96.2,
+            "new": 95.1,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 93.95,
+            "old": 92.60000000000001,
+            "new": 95.3,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          },
+          "centered": {
+            "overall": 95.6,
+            "old": 95.5,
+            "new": 95.7,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 94.93333333333334,
+          "old": 95.3,
+          "new": 94.56666666666666
+        },
+        "centered": {
+          "overall": 95.89999999999999,
+          "old": 96.43333333333334,
+          "new": 95.36666666666667
+        }
+      }
+    },
+    "old_response": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.5,
+            "old": 96.8,
+            "new": 94.19999999999999,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          },
+          "centered": {
+            "overall": 96.55,
+            "old": 97.7,
+            "new": 95.39999999999999,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 95.3,
+            "old": 96.1,
+            "new": 94.5,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 95.75,
+            "old": 96.0,
+            "new": 95.5,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 94.19999999999999,
+            "old": 93.10000000000001,
+            "new": 95.3,
+            "restricted": [
+              99.1,
+              97.3
+            ]
+          },
+          "centered": {
+            "overall": 95.75,
+            "old": 95.8,
+            "new": 95.7,
+            "restricted": [
+              99.1,
+              97.3
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 95.0,
+          "old": 95.33333333333333,
+          "new": 94.66666666666667
+        },
+        "centered": {
+          "overall": 96.01666666666667,
+          "old": 96.5,
+          "new": 95.53333333333335
+        }
+      }
+    },
+    "frozen": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.25,
+            "old": 97.39999999999999,
+            "new": 93.10000000000001,
+            "restricted": [
+              99.0,
+              97.6
+            ]
+          },
+          "centered": {
+            "overall": 96.45,
+            "old": 97.89999999999999,
+            "new": 95.0,
+            "restricted": [
+              99.0,
+              97.6
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 94.75,
+            "old": 96.5,
+            "new": 93.0,
+            "restricted": [
+              98.6,
+              97.8
+            ]
+          },
+          "centered": {
+            "overall": 95.45,
+            "old": 96.3,
+            "new": 94.6,
+            "restricted": [
+              98.6,
+              97.8
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 93.75,
+            "old": 92.9,
+            "new": 94.6,
+            "restricted": [
+              99.0,
+              96.89999999999999
+            ]
+          },
+          "centered": {
+            "overall": 95.5,
+            "old": 95.89999999999999,
+            "new": 95.1,
+            "restricted": [
+              99.0,
+              96.89999999999999
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 94.58333333333333,
+          "old": 95.60000000000001,
+          "new": 93.56666666666666
+        },
+        "centered": {
+          "overall": 95.8,
+          "old": 96.69999999999999,
+          "new": 94.89999999999999
+        }
+      }
+    },
+    "subspace": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 94.69999999999999,
+            "old": 95.19999999999999,
+            "new": 94.19999999999999,
+            "restricted": [
+              99.0,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 93.85,
+            "old": 98.8,
+            "new": 88.9,
+            "restricted": [
+              99.0,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 93.30000000000001,
+            "old": 91.10000000000001,
+            "new": 95.5,
+            "restricted": [
+              98.6,
+              98.2
+            ]
+          },
+          "centered": {
+            "overall": 94.05,
+            "old": 98.3,
+            "new": 89.8,
+            "restricted": [
+              98.6,
+              98.2
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 92.55,
+            "old": 89.3,
+            "new": 95.8,
+            "restricted": [
+              99.1,
+              98.0
+            ]
+          },
+          "centered": {
+            "overall": 94.45,
+            "old": 98.8,
+            "new": 90.10000000000001,
+            "restricted": [
+              99.1,
+              98.0
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 93.51666666666667,
+          "old": 91.86666666666667,
+          "new": 95.16666666666667
+        },
+        "centered": {
+          "overall": 94.11666666666667,
+          "old": 98.63333333333333,
+          "new": 89.60000000000001
+        }
+      }
+    },
+    "adapting": {
+      "seeds": [
+        {
+          "seed": 0,
+          "raw": {
+            "overall": 95.6,
+            "old": 96.1,
+            "new": 95.1,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          },
+          "centered": {
+            "overall": 96.45,
+            "old": 97.3,
+            "new": 95.6,
+            "restricted": [
+              98.9,
+              97.7
+            ]
+          }
+        },
+        {
+          "seed": 1,
+          "raw": {
+            "overall": 95.55,
+            "old": 95.8,
+            "new": 95.3,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          },
+          "centered": {
+            "overall": 95.7,
+            "old": 95.5,
+            "new": 95.89999999999999,
+            "restricted": [
+              98.6,
+              98.1
+            ]
+          }
+        },
+        {
+          "seed": 2,
+          "raw": {
+            "overall": 94.0,
+            "old": 92.30000000000001,
+            "new": 95.7,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          },
+          "centered": {
+            "overall": 95.6,
+            "old": 95.3,
+            "new": 95.89999999999999,
+            "restricted": [
+              99.0,
+              97.3
+            ]
+          }
+        }
+      ],
+      "mean": {
+        "raw": {
+          "overall": 95.05,
+          "old": 94.73333333333333,
+          "new": 95.36666666666667
+        },
+        "centered": {
+          "overall": 95.91666666666667,
+          "old": 96.03333333333335,
+          "new": 95.8
+        }
+      }
+    }
+  },
+  "delta_vs_old_response_pp": {
+    "raw": {
+      "overall": -0.06666666666666288,
+      "old": -0.03333333333333144,
+      "new": -0.10000000000000853
+    },
+    "centered": {
+      "overall": -0.11666666666667425,
+      "old": -0.06666666666666288,
+      "new": -0.1666666666666714
+    }
+  },
+  "each_seed_centered_old_delta_pp": [
+    -0.10000000000000853,
+    0.20000000000000284,
+    -0.29999999999999716
+  ],
+  "gate": {
+    "checks": {
+      "mean_old_gain_at_least_half_pp": false,
+      "mean_new_change_at_least_minus_half_pp": true,
+      "mean_overall_gain_at_least_quarter_pp": false,
+      "each_seed_old_change_nonnegative": false
+    },
+    "passed": false
+  }
+}
