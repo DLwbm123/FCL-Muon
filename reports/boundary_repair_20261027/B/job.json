@@ -1,7 +1,7 @@
 {
   "started": 1793032083.5549312,
   "deadline": 1793117583.5549312,
-  "status": "running",
+  "status": "completed",
   "supervisor_pid": 595136,
   "storage_limit_bytes": 8000000000,
   "write_stop_bytes": 6000000000,
@@ -13,6 +13,9 @@
   "free_mib_at_admission": 46938,
   "baseline_allocated_bytes": 4083712,
   "worker_pid": 595146,
-  "allocated_bytes": 407621632,
-  "checked": 1793032273.9732752
+  "allocated_bytes": 609693696,
+  "checked": 1793038834.2811875,
+  "exit_code": 0,
+  "qualified": true,
+  "ended": 1793038844.2998924
 }

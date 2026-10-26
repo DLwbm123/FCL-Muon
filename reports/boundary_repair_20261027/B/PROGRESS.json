@@ -1,11 +1,11 @@
 {
-  "time": 1793032097.5926576,
+  "time": 1793038805.944611,
   "arm": "B",
-  "task": 1,
+  "task": 3,
   "round": 0,
-  "phase": "task_start",
+  "phase": "complete",
   "next_client": 0,
-  "client_rounds": 50,
-  "training_visits": 125000,
-  "completed_stages": 1
+  "client_rounds": 150,
+  "training_visits": 375000,
+  "completed_stages": 3
 }

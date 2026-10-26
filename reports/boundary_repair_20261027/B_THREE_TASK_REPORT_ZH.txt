@@ -1,0 +1,257 @@
+实验 B：历史加权跨任务边界修正，完整三任务报告
+
+B 已完成150客户端轮、375000次训练访问（复用T1的125000次，新增250000次），15次头聚合证书通过。实际最终checkpoint全部3000图重载后的raw与去均值预测均一致，最大logit差0.000231981277。
+主指标：B 去均值94.267%，LoRM 90.800%，高3.467个百分点，净多判对104张。raw：B 90.467%，LoRM 88.733%，高1.733个百分点。
+因此满足用户条件，已从B自身T3完整状态在GPU7继续T4-T10；保留原时钟、参数与三任务结果。A/B十任务均尚未完成。本报告只交付已验收的B三任务，不能替代十任务结论。
+
+配置与方法：CIFAR100前30类、每任务10类，seed0、10客户端全参与、alpha=.05、每任务5轮、本地5epochs、batch16。候选池64、正式rank32、固定共享A训练B、cosine16、Head-RegMean alpha=.5。训练CE仅当前10类，旧头冻结。竞争损失只修正B，head AdamW和B EMA每步各推进一次，修正不写EMA。lambda=1、kappa=.25，全部Q/V共同投影和全局幅度限制。测试不使用真实任务ID。
+
+比较口径：LoRM使用标准配置且为相同seed/划分/类别顺序、同阶段当时评测，不用T10模型回测前三任务；不新增LoRM训练。对LoRM是完整系统比较，差异不只边界修正，不能将全部优势归因于新模块。
+
+读出 centered
+指标 | B | 标准LoRM | 旧联邦效用方法
+final_overall_percent: 94.2667 | 90.8000 | 94.0333
+final_old_percent: 95.8500 | 89.3000 | 95.7500
+final_new_percent: 91.1000 | 93.8000 | 90.6000
+AIA_percent: 96.6056 | 93.6167 | 96.5111
+mean_new_T2_T3_percent: 93.0500 | 94.2500 | 92.8000
+forgetting_pp: 1.1500 | 6.9000 | 1.2500
+B完整准确率下三角矩阵（%）：[[99.0], [98.1, 95.0], [98.0, 93.7, 91.10000000000001]]
+Brestricted矩阵（%）：[[99.0], [98.9, 98.3], [98.9, 98.3, 97.0]]
+B任务内正确但跨任务被抢走数：[[0], [8, 33], [9, 46, 59]]
+LoRM完整准确率下三角矩阵（%）：[[97.7], [90.0, 94.69999999999999], [86.3, 92.30000000000001, 93.8]]
+LoRMrestricted矩阵（%）：[[97.7], [97.1, 97.7], [96.6, 97.5, 97.39999999999999]]
+LoRM任务内正确但跨任务被抢走数：[[0], [71, 30], [103, 52, 36]]
+旧联邦效用完整准确率下三角矩阵（%）：[[99.0], [98.0, 95.0], [97.89999999999999, 93.60000000000001, 90.60000000000001]]
+旧联邦效用restricted矩阵（%）：[[99.0], [98.9, 98.3], [98.9, 98.3, 97.1]]
+旧联邦效用任务内正确但跨任务被抢走数：[[0], [9, 33], [10, 47, 65]]
+B每阶段 overall/old/new（%）：{"stage_overall_percent": [99.0, 96.55, 94.26666666666668], "stage_old_percent": [null, 98.1, 95.85000000000001], "stage_new_percent": [99.0, 95.0, 91.10000000000001]}
+B每阶段 old→new / new→old错误率：[[null, 0.01, 0.01], [null, 0.039, 0.073]]
+T3新1000图错误分解：{"restricted_errors": 30, "restricted_correct_stolen_by_old": 59, "all_seen_errors": 89}
+相同样本ID对旧联邦方法的T3配对：{"all": {"n": 3000, "changed_predictions": 9, "corrected": 8, "broken": 1, "net_correct": 7, "both_wrong_but_changed": 0}, "old": {"n": 2000, "changed_predictions": 4, "corrected": 3, "broken": 1, "net_correct": 2, "both_wrong_but_changed": 0}, "new": {"n": 1000, "changed_predictions": 5, "corrected": 5, "broken": 0, "net_correct": 5, "both_wrong_but_changed": 0}}
+
+读出 raw
+指标 | B | 标准LoRM | 旧联邦效用方法
+final_overall_percent: 90.4667 | 88.7333 | 91.1000
+final_old_percent: 93.5500 | 86.1000 | 93.9000
+final_new_percent: 84.3000 | 94.0000 | 85.5000
+AIA_percent: 94.6889 | 92.5278 | 94.9833
+mean_new_T2_T3_percent: 87.7000 | 94.4000 | 88.7000
+forgetting_pp: 1.5000 | 10.1500 | 1.5500
+B完整准确率下三角矩阵（%）：[[99.0], [98.1, 91.10000000000001], [98.0, 89.1, 84.3]]
+Brestricted矩阵（%）：[[99.0], [98.9, 98.3], [98.9, 98.3, 97.0]]
+B任务内正确但跨任务被抢走数：[[0], [8, 72], [9, 92, 127]]
+LoRM完整准确率下三角矩阵（%）：[[97.7], [87.5, 94.8], [82.0, 90.2, 94.0]]
+LoRMrestricted矩阵（%）：[[97.7], [97.1, 97.7], [96.6, 97.5, 97.39999999999999]]
+LoRM任务内正确但跨任务被抢走数：[[0], [96, 29], [146, 73, 34]]
+旧联邦效用完整准确率下三角矩阵（%）：[[99.0], [97.8, 91.9], [97.7, 90.10000000000001, 85.5]]
+旧联邦效用restricted矩阵（%）：[[99.0], [98.9, 98.3], [98.9, 98.3, 97.1]]
+旧联邦效用任务内正确但跨任务被抢走数：[[0], [11, 64], [12, 82, 116]]
+B每阶段 overall/old/new（%）：{"stage_overall_percent": [99.0, 94.6, 90.46666666666667], "stage_old_percent": [null, 98.1, 93.55], "stage_new_percent": [99.0, 91.10000000000001, 84.3]}
+B每阶段 old→new / new→old错误率：[[null, 0.011, 0.013], [null, 0.082, 0.154]]
+T3新1000图错误分解：{"restricted_errors": 30, "restricted_correct_stolen_by_old": 127, "all_seen_errors": 157}
+相同样本ID对旧联邦方法的T3配对：{"all": {"n": 3000, "changed_predictions": 30, "corrected": 4, "broken": 23, "net_correct": -19, "both_wrong_but_changed": 3}, "old": {"n": 2000, "changed_predictions": 16, "corrected": 4, "broken": 11, "net_correct": -7, "both_wrong_but_changed": 1}, "new": {"n": 1000, "changed_predictions": 14, "corrected": 0, "broken": 12, "net_correct": -12, "both_wrong_but_changed": 2}}
+
+AIA是三个阶段总体准确率的均值。最终遗忘为旧任务i在学习后至当前的最大准确率减当前准确率，再对旧任务平均；遗忘低不单独代表旧类绝对准确率高。
+相对旧联邦方法，去均值只改变9张预测：纠正8张、破坏1张、净增加7张；新类纠正5张且无破坏。raw改变30张：纠正4张、破坏23张，净减少19张。不能把净增7张表述为只改变7张，也不能隐去raw退步。
+
+训练期机制汇总：{
+  "steps": 15850,
+  "images": 250000,
+  "mask_images": 245657,
+  "extra_backward_calls": 15843,
+  "extra_backward_images": 249888,
+  "diagnostic_forward_images": 132,
+  "diagnostic_forward_calls": 12,
+  "momentum_help_ssb_hurt": 29,
+  "triggers": 2047,
+  "nonzero_repairs": 2040,
+  "repair_step_wall_seconds": 4738.956553367199,
+  "client_wall_seconds": 5834.781502116937,
+  "reasons": {
+    "empty_mask": 7,
+    "no_conflict": 13796,
+    "full": 765,
+    "capped": 1282
+  },
+  "reason_fraction_all_steps": {
+    "empty_mask": 0.0004416403785488959,
+    "no_conflict": 0.870410094637224,
+    "full": 0.04826498422712934,
+    "capped": 0.08088328075709779
+  },
+  "mask_fraction": 0.982628,
+  "trigger_fraction_all_steps": 0.12914826498422713,
+  "momentum_help_ssb_hurt_fraction_active": 0.0018304614025121504,
+  "sums": {
+    "base_cross": -1.782789910402025,
+    "head_cross": -93.6294432186211,
+    "joint_cross_before": -95.41223312902315,
+    "joint_cross_after": -95.5101586755634,
+    "remaining_positive_conflict": 0.15701022580316976,
+    "history_cost": 0.00022869019997867873,
+    "amplitude_ratio": 399.50435643804997,
+    "normalized_ce_residual": 0.22555723033748198,
+    "rounding_Q_norm": 2.8072058576922567e-05,
+    "ideal_ce_residual": 8.664485555075278e-18
+  },
+  "maxima": {
+    "base_cross": 0.010047145677353337,
+    "head_cross": 0.7091700412455624,
+    "joint_cross_before": 0.7143320139994006,
+    "joint_cross_after": 0.7143320139994006,
+    "remaining_positive_conflict": 0.0035791238838065076,
+    "history_cost": 8.911757644004457e-07,
+    "amplitude_ratio": 0.2539785319015491,
+    "normalized_ce_residual": 0.034231085916597466,
+    "rounding_Q_norm": 1.8307245513892065e-08,
+    "ideal_ce_residual": 1.370234610861441e-18
+  },
+  "means_active": {
+    "base_cross": -0.00011252855585444834,
+    "head_cross": -0.005909830412082377,
+    "joint_cross_before": -0.006022358967936827,
+    "joint_cross_after": -0.006028539965635511,
+    "remaining_positive_conflict": 9.91038476318688e-06,
+    "history_cost": 1.4434778765301946e-08,
+    "amplitude_ratio": 0.025216458779148517,
+    "normalized_ce_residual": 1.4237027730700119e-05,
+    "rounding_Q_norm": 1.7718903349695491e-09,
+    "ideal_ce_residual": 5.4689677176515045e-22
+  },
+  "numerical_checks_passed": true,
+  "timing_note": "repair_step_wall_seconds covers whole update, not independently isolated repair overhead"
+}
+逐任务/轮次/客户端完整100条诊断和6个固定窗口记录在JSON。窗口比较使用同一增强结果、固定mask和相同CE更新后的头；观察不额外推进优化器，恢复buffer/RNG。以下为窗口实际损失：
+{"base": {"ce": 1.9961762428283691, "cross": null}, "corrected": {"ce": 1.9961762428283691, "cross": null}, "task": 1, "round": 0, "client": 0, "step": 0, "before": {"ce": 2.504270076751709, "cross": null}, "mask_images": 0, "images": 16, "repair": {"reason": "empty_mask", "trigger": false}}
+{"base": {"ce": 0.019706377759575844, "cross": 0.04671892896294594}, "corrected": {"ce": 0.01970590464770794, "cross": 0.04664616659283638}, "task": 1, "round": 0, "client": 0, "step": 124, "before": {"ce": 0.019671907648444176, "cross": 0.0466458797454834}, "mask_images": 13, "images": 13, "repair": {"base_cross": -2.8447322733607302e-05, "head_cross": 0.00010061412001173607, "joint_cross": 7.216679727812877e-05, "trigger": true, "base_norm_Q": 0.005006173542997598, "scale": 1.0, "reason": "full", "relative_denominator": 0.9115908248405133, "ideal_norm_Q": 0.00022776728016464398, "ideal_ce_residual": -5.082197683525802e-21, "ideal_remaining_cross": 1.3552527156068805e-20}}
+{"base": {"ce": 0.0012599709443747997, "cross": 0.004410102963447571}, "corrected": {"ce": 0.0012599709443747997, "cross": 0.004410102963447571}, "task": 1, "round": 4, "client": 0, "step": 124, "before": {"ce": 0.0012936585117131472, "cross": 0.004399582743644714}, "mask_images": 13, "images": 13, "repair": {"base_cross": 0.0, "head_cross": 9.330028482932586e-06, "joint_cross": 9.330028482932586e-06, "trigger": true, "base_norm_Q": 0.0, "scale": 0.0, "reason": "capped", "relative_denominator": 0.9671155284403629, "ideal_norm_Q": 0.0, "ideal_ce_residual": 0.0, "ideal_remaining_cross": 9.330028482932586e-06}}
+{"base": {"ce": 1.7514045238494873, "cross": 2.016456127166748}, "corrected": {"ce": 1.7514045238494873, "cross": 2.016456127166748}, "task": 2, "round": 0, "client": 0, "step": 0, "before": {"ce": 2.4423837661743164, "cross": 2.683708906173706}, "mask_images": 1, "images": 8, "repair": {"base_cross": -0.010047145677353337, "head_cross": -0.6805732490585606, "joint_cross": -0.690620394735914, "trigger": false, "base_norm_Q": 0.005418956018573633, "scale": 0.0, "reason": "no_conflict"}}
+{"base": {"ce": 0.4023786187171936, "cross": 2.0314278602600098}, "corrected": {"ce": 0.4023786187171936, "cross": 2.0314278602600098}, "task": 2, "round": 0, "client": 0, "step": 4, "before": {"ce": 0.6022087931632996, "cross": 2.4239730834960938}, "mask_images": 8, "images": 8, "repair": {"base_cross": -0.0036726344334440976, "head_cross": -0.41213831796996026, "joint_cross": -0.4158109524034044, "trigger": false, "base_norm_Q": 0.005186642322254671, "scale": 0.0, "reason": "no_conflict"}}
+{"base": {"ce": 0.0018377883825451136, "cross": 0.06307348608970642}, "corrected": {"ce": 0.0018377883825451136, "cross": 0.06307348608970642}, "task": 2, "round": 4, "client": 0, "step": 4, "before": {"ce": 0.0020518675446510315, "cross": 0.06895408034324646}, "mask_images": 8, "images": 8, "repair": {"base_cross": 0.0, "head_cross": -0.006312059072317261, "joint_cross": -0.006312059072317261, "trigger": false, "base_norm_Q": 0.0, "scale": 0.0, "reason": "no_conflict"}}
+
+选择A阶段每任务接受层数：[12, 12]
+选A证书只针对原SSB基础提案。修正的CE一阶正交、历史幅度及竞争一阶诊断另行记录；截断后可能保留竞争冲突。FP32实际幅度轻微超出0.25仅在显式舍入误差包络内通过，完整数值见JSON，不称精确实数等式。
+成本：{
+  "training_visits": 375000,
+  "new_training_visits": 250000,
+  "stats_visits": 90000,
+  "reload_images": 3000,
+  "elapsed_seconds": 6749.811784744263,
+  "peak_gpu_allocated_bytes": 2050095104,
+  "checkpoint_bytes": 403978745,
+  "logical_communication_bytes": {
+    "RRS_raw_upload": 1698693120,
+    "A_broadcast": 35389440,
+    "B_download": 353894400,
+    "current_head_download": 4608000,
+    "head_Gram_upload": 707788800,
+    "B_upload": 353894400,
+    "current_head_upload": 4608000,
+    "task_end_B_download": 70778880,
+    "task_end_head_download": 921600,
+    "prototype_statistics_upload": 1230400,
+    "probe_fit_gradient_upload": 94371840,
+    "probe_check_gradient_upload": 94371840,
+    "candidate_pool_broadcast": 47185920,
+    "prototype_head_broadcast": 614400,
+    "repair_Q_broadcast": 1966080
+  },
+  "actual_new_client_rounds": 100,
+  "actual_new_statistics_images": 60000,
+  "new_stage_evaluation_images": 5000,
+  "shared_T1_evaluation_images": 1000,
+  "prototype_forward_images": 8016,
+  "selection_forward_backward_images": 10000,
+  "extra_training_backward_images": 249888,
+  "diagnostic_forward_images": 132,
+  "logical_communication_total_bytes": 3470317120,
+  "allocated_bytes_at_T3_end": 609693696,
+  "real_preflight": {
+    "passed": true,
+    "images": 16,
+    "forward_calls": 4,
+    "backward_calls": 4,
+    "old_logits_B_gradient_l1": 27147.43862915039,
+    "head_CE_only_exact": true,
+    "EMA_CE_only_once_exact": true,
+    "old_heads_frozen": true,
+    "diagnostics": {
+      "steps": 1,
+      "images": 16,
+      "mask_images": 3,
+      "extra_backward_calls": 1,
+      "extra_backward_images": 16,
+      "diagnostic_forward_images": 32,
+      "diagnostic_forward_calls": 2,
+      "momentum_help_ssb_hurt": 0,
+      "triggers": 0,
+      "nonzero_repairs": 0,
+      "reasons": {
+        "no_conflict": 1
+      },
+      "sums": {
+        "base_cross": -0.023686189921488347,
+        "head_cross": -0.42728289737819963,
+        "joint_cross_before": -0.450969087299688,
+        "joint_cross_after": -0.450969087299688,
+        "remaining_positive_conflict": 0.0,
+        "history_cost": 0.0,
+        "amplitude_ratio": 0.0,
+        "normalized_ce_residual": 0.0,
+        "rounding_Q_norm": 0.0,
+        "ideal_ce_residual": 0.0
+      },
+      "maxima": {
+        "base_cross": 0.023686189921488347,
+        "head_cross": 0.42728289737819963,
+        "joint_cross_before": 0.450969087299688,
+        "joint_cross_after": 0.450969087299688,
+        "remaining_positive_conflict": 0.0,
+        "history_cost": 0.0,
+        "amplitude_ratio": 0.0,
+        "normalized_ce_residual": 0.0,
+        "rounding_Q_norm": 0.0,
+        "ideal_ce_residual": 0.0
+      },
+      "repair_step_wall_seconds": 0.9629566890653223
+    },
+    "finite_step": {
+      "base": {
+        "ce": 1.6727283000946045,
+        "cross": 1.0698421001434326
+      },
+      "corrected": {
+        "ce": 1.6727283000946045,
+        "cross": 1.0698421001434326
+      },
+      "task": 1,
+      "round": 0,
+      "client": 0,
+      "step": 0,
+      "before": {
+        "ce": 2.2372639179229736,
+        "cross": 1.4804911613464355
+      },
+      "mask_images": 3,
+      "images": 16,
+      "repair": {
+        "base_cross": -0.023686189921488347,
+        "head_cross": -0.42728289737819963,
+        "joint_cross": -0.450969087299688,
+        "trigger": false,
+        "base_norm_Q": 0.019834229022740506,
+        "scale": 0.0,
+        "reason": "no_conflict"
+      }
+    },
+    "seconds": 3.320911169052124,
+    "scope": "disposable real T2 batch with inherited T1 basis; no selected-A claim",
+    "full_checkpoint_and_RNG_restored": true
+  }
+}
+额外反向图像与次数单独记录；repair_step_wall_seconds包含整步计算，不能作为隔离测得的额外修正开销。总运行时间含选A、训练、评测/重载，GPU共享负载使跨实验耗时不构成受控速度比较。
+
+结论：三任务完整方案超过标准LoRM，优势主要来自旧类保持，B的T3新类准确率仍低于LoRM。修正确实触发并改变更新，去均值相对旧方案净增7张但raw净减19张。新模块收益较小且依赖读出，不能由此宣称普遍机制优势；需等待已授权的完整十任务结果。
+本次十任务扩展按同一开发评测集的T3性能条件决定，是明确披露的条件选择，不是独立留出验证。仅seed0，不能把层/客户端/小批次作为独立seed做显著性结论。
+数据边界：公开源码/配置/协议/聚合统计；模型权重、历史Gram、梯度、原型与逐图预测留在服务器私有目录。

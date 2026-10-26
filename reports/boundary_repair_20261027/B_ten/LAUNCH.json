@@ -1,0 +1,32 @@
+{
+  "launched": 1793039612.568852,
+  "timeout_pid": 803938,
+  "gpu": 7,
+  "clock": {
+    "started": 1793032083.5549312,
+    "deadline": 1793117583.5549312
+  },
+  "remaining_external_timeout_seconds": 78030,
+  "free_mib": 45460,
+  "total_root_allocated_bytes": 609841152,
+  "storage_probe_passed": true,
+  "gate": {
+    "passed": true,
+    "test_images": 3000,
+    "B_centered_correct": 2828,
+    "B_raw_correct": 2714,
+    "LoRM_centered_correct": 2724,
+    "LoRM_raw_correct": 2662,
+    "source_config_sha256": "f032ab2070b85fe9539aa8b66c1106c0b6c10037a963d0ad03cab70e1ea4e491",
+    "clock": {
+      "started": 1793032083.5549312,
+      "deadline": 1793117583.5549312
+    },
+    "checked": 1793039612.429462,
+    "readout": "fixed block mean subtraction",
+    "requires_strict_exceedance": true,
+    "reload_qualification_passed": true,
+    "maximum_reload_logit_difference": 0.0002319812774658203,
+    "selection_disclosure": "Horizon extended conditional on the same development evaluation set; not independent confirmation."
+  }
+}

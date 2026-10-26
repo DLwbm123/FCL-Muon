@@ -1,0 +1,64 @@
+{
+  "source": {
+    "source_commit": "745bb3e415e3eaaafba1a990e00ac22157a6b86a",
+    "completed_tasks": 3,
+    "selection_mode": "federated",
+    "config_sha256": "f032ab2070b85fe9539aa8b66c1106c0b6c10037a963d0ad03cab70e1ea4e491",
+    "identity": {
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+      "weight_identity": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+      "source_revision": "Frozen aggregation-utility source recorded in reports/SOURCE.json; base c7ce88f",
+      "purpose": "three-task aggregation-utility selection"
+    },
+    "clock": {
+      "started": 1793032083.5549312,
+      "deadline": 1793117583.5549312
+    },
+    "prior_T1_import": {
+      "source": {
+        "source_commit": "cc7657c92b2eadd03f8c54da887da4e6459003bd",
+        "completed_tasks": 1,
+        "selection_mode": "prefix",
+        "config_sha256": "7fbef9b7493fee9a1fec95749f3b78ca12ed786572eeb7609cca8ceedfde6210",
+        "identity": {
+          "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+          "weight_identity": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+          "source_revision": "Frozen aggregation-utility source recorded in reports/SOURCE.json; base c7ce88f",
+          "purpose": "three-task aggregation-utility selection"
+        },
+        "clock": {
+          "started": 1793018176.0269961,
+          "deadline": 1793103676.0269961
+        }
+      },
+      "new_clock": {
+        "started": 1793032083.5549312,
+        "deadline": 1793117583.5549312
+      },
+      "target_config_sha256": "f032ab2070b85fe9539aa8b66c1106c0b6c10037a963d0ad03cab70e1ea4e491",
+      "reused_client_rounds": 50,
+      "reused_training_visits": 125000,
+      "allowed_changes": [
+        "boundary_repair",
+        "output",
+        "selection_mode",
+        "tasks"
+      ],
+      "prefix_schedule_independent_of_horizon": true
+    }
+  },
+  "new_clock": {
+    "started": 1793032083.5549312,
+    "deadline": 1793117583.5549312
+  },
+  "target_config_sha256": "dd5ba73d6c9f2128ee8fd6ddf26e99b1986410c11c6a417d51f17674fc88029f",
+  "reused_client_rounds": 150,
+  "reused_training_visits": 375000,
+  "allowed_changes": [
+    "boundary_repair",
+    "output",
+    "selection_mode",
+    "tasks"
+  ],
+  "prefix_schedule_independent_of_horizon": true
+}
