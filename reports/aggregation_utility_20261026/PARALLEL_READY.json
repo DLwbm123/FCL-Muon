@@ -1,0 +1,35 @@
+{
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "lanes": {
+    "0": [
+      "rrs",
+      "central"
+    ],
+    "7": [
+      "federated"
+    ]
+  },
+  "retired_pids": [
+    55691,
+    55692,
+    55695
+  ],
+  "runtime_revision": "f2970e9",
+  "ready": 1793020240.0783963,
+  "resume_checkpoint": "runs/rrs/latest.pt",
+  "task": 1,
+  "round": 2,
+  "phase": "clients",
+  "next_client": 5,
+  "committed_client_rounds": 75,
+  "committed_training_visits": 185275,
+  "uncommitted_training_visits_replayed": null,
+  "uncommitted_training_visits_upper_bound": 725,
+  "previous_gpu_migration_extra_visits_upper_bound": 4695,
+  "total_extra_training_visits_upper_bound": 5420,
+  "no_scientific_configuration_change": true,
+  "same_shared_T1": true
+}

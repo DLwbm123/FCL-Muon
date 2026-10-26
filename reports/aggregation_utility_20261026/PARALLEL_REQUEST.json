@@ -1,0 +1,14 @@
+{
+  "requested": 1793020232.0240393,
+  "authorization": "User requested new mechanism on GPU7 for faster results",
+  "retiring_owned_pids": [
+    55691,
+    55692,
+    55695
+  ],
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "runtime_revision": "f2970e9"
+}

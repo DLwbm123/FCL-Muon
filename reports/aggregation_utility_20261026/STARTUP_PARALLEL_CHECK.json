@@ -1,0 +1,169 @@
+{
+  "checked": 1793020320.3665667,
+  "job": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961,
+    "status": "running",
+    "supervisor_pid": 127358,
+    "storage_limit_bytes": 8000000000,
+    "write_stop_bytes": 6000000000,
+    "baseline_allocated_bytes": 2502656,
+    "lanes": [
+      {
+        "gpu": "0",
+        "modes": [
+          "rrs",
+          "central"
+        ],
+        "worker_pid": 127361,
+        "started": 1793020240.4382784,
+        "free_mib_at_admission": 72830,
+        "exit_code": null
+      },
+      {
+        "gpu": "7",
+        "modes": [
+          "federated"
+        ],
+        "worker_pid": 127367,
+        "started": 1793020240.5423198,
+        "free_mib_at_admission": 68619,
+        "exit_code": null
+      }
+    ],
+    "seed": 0,
+    "tasks": 3,
+    "parallel_authorized": true,
+    "allocated_bytes": 1428975616,
+    "checked": 1793020310.6535745
+  },
+  "actual_checkpoints": {
+    "0": {
+      "mode": "rrs",
+      "task": 1,
+      "round": 2,
+      "phase": "clients",
+      "client_records": 78,
+      "training_visits": 191935,
+      "stages": 1,
+      "clock_equal": true,
+      "prefix_provenance": {
+        "shared_tasks": [
+          0
+        ],
+        "reused_training_visits": 125000,
+        "source": "runs/prefix/latest.pt",
+        "same_clock": true
+      },
+      "last_events": [
+        {
+          "kind": "client",
+          "time": 1793020306.398446,
+          "task": 1,
+          "round": 2,
+          "client": 6,
+          "N": 1118,
+          "visited": 5590,
+          "steps": 350,
+          "lr_last": 6.916664088644234e-05,
+          "loss": 0.054451653770919164
+        },
+        {
+          "kind": "client",
+          "time": 1793020312.4652185,
+          "task": 1,
+          "round": 2,
+          "client": 7,
+          "N": 69,
+          "visited": 345,
+          "steps": 25,
+          "lr_last": 7.006368770266422e-05,
+          "loss": 0.10845658218326128
+        }
+      ]
+    },
+    "7": {
+      "mode": "federated",
+      "task": 1,
+      "round": 0,
+      "phase": "task_start",
+      "client_records": 50,
+      "training_visits": 125000,
+      "stages": 1,
+      "clock_equal": true,
+      "prefix_provenance": {
+        "shared_tasks": [
+          0
+        ],
+        "reused_training_visits": 125000,
+        "source": "runs/prefix/latest.pt",
+        "same_clock": true
+      },
+      "last_events": [
+        {
+          "kind": "probe_client",
+          "time": 1793020318.94558,
+          "task": 1,
+          "round": 0,
+          "split": "fit",
+          "client": 4,
+          "samples": 141
+        },
+        {
+          "kind": "probe_client",
+          "time": 1793020319.6609726,
+          "task": 1,
+          "round": 0,
+          "split": "fit",
+          "client": 5,
+          "samples": 117
+        }
+      ]
+    }
+  },
+  "processes": {
+    "127357": "/usr/bin/timeout -k 60 84235 /data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py ",
+    "127358": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py ",
+    "127361": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py ",
+    "127367": "/data/bmw/envs/n3/bin/python /data/bmw/workers/e17.py "
+  },
+  "gpu_compute_processes": "127361, GPU-a85c9770-4c14-3268-bedc-63b9c0d87f12, /data/bmw/envs/n3/bin/python, 2650 MiB\n127367, GPU-578b486c-6eae-13b0-23be-353ed09220ec, /data/bmw/envs/n3/bin/python, 2700 MiB\n",
+  "gpu_status": "0, 2660 MiB, 70171 MiB, 71 %\n7, 6917 MiB, 65914 MiB, 95 %\n",
+  "retired_pids_gone": true,
+  "runtime_revision": "f2970e9",
+  "parallel_ready": {
+    "clock": {
+      "started": 1793018176.0269961,
+      "deadline": 1793103676.0269961
+    },
+    "lanes": {
+      "0": [
+        "rrs",
+        "central"
+      ],
+      "7": [
+        "federated"
+      ]
+    },
+    "retired_pids": [
+      55691,
+      55692,
+      55695
+    ],
+    "runtime_revision": "f2970e9",
+    "ready": 1793020240.0783963,
+    "resume_checkpoint": "runs/rrs/latest.pt",
+    "task": 1,
+    "round": 2,
+    "phase": "clients",
+    "next_client": 5,
+    "committed_client_rounds": 75,
+    "committed_training_visits": 185275,
+    "uncommitted_training_visits_replayed": null,
+    "uncommitted_training_visits_upper_bound": 725,
+    "previous_gpu_migration_extra_visits_upper_bound": 4695,
+    "total_extra_training_visits_upper_bound": 5420,
+    "no_scientific_configuration_change": true,
+    "same_shared_T1": true
+  }
+}

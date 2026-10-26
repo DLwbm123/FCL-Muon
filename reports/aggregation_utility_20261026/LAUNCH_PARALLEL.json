@@ -1,0 +1,23 @@
+{
+  "outer_pid": 127357,
+  "launched": 1793020240.283553,
+  "remaining_outer_timeout_seconds": 84235,
+  "original_clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "free_mib_at_admission": {
+    "0": 72830,
+    "7": 68619
+  },
+  "runtime_revision": "f2970e9",
+  "lanes": {
+    "0": [
+      "rrs",
+      "central"
+    ],
+    "7": [
+      "federated"
+    ]
+  }
+}

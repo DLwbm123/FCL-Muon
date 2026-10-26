@@ -1,0 +1,17 @@
+{
+  "started": 1793018176.0269961,
+  "deadline": 1793103676.0269961,
+  "status": "running",
+  "supervisor_pid": 55692,
+  "storage_limit_bytes": 8000000000,
+  "write_stop_bytes": 6000000000,
+  "seed": 0,
+  "tasks": 3,
+  "gpu": "0",
+  "user_requested_gpu_migration": true,
+  "free_mib_at_admission": 72830,
+  "baseline_allocated_bytes": 2502656,
+  "worker_pid": 55695,
+  "allocated_bytes": 1521004544,
+  "checked": 1793020226.9508173
+}
