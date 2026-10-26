@@ -1,0 +1,89 @@
+{
+  "checked": 1793022828.7471545,
+  "passed": true,
+  "mode": "rrs",
+  "clock": {
+    "started": 1793018176.0269961,
+    "deadline": 1793103676.0269961
+  },
+  "actual_checkpoint": {
+    "task": 3,
+    "round": 0,
+    "phase": "complete",
+    "client_records": 150,
+    "training_visits": 375000,
+    "stages": 3,
+    "certificates": 15,
+    "certificates_pass": true,
+    "clock_equal": true,
+    "selections": [
+      {
+        "task": 1,
+        "accepted_layers": 0,
+        "fit_samples": 4009,
+        "check_samples": 991
+      },
+      {
+        "task": 2,
+        "accepted_layers": 0,
+        "fit_samples": 4007,
+        "check_samples": 993
+      }
+    ],
+    "stage_metrics": [
+      {
+        "task": 1,
+        "raw_overall": 0.99,
+        "raw_old": null,
+        "raw_new": 0.99,
+        "centered_overall": 0.99,
+        "centered_old": null,
+        "centered_new": 0.99
+      },
+      {
+        "task": 2,
+        "raw_overall": 0.949,
+        "raw_old": 0.978,
+        "raw_new": 0.92,
+        "centered_overall": 0.964,
+        "centered_old": 0.98,
+        "centered_new": 0.948
+      },
+      {
+        "task": 3,
+        "raw_overall": 0.9103333333333333,
+        "raw_old": 0.939,
+        "raw_new": 0.853,
+        "centered_overall": 0.94,
+        "centered_old": 0.957,
+        "centered_new": 0.906
+      }
+    ]
+  },
+  "config_exact": true,
+  "heads": 3,
+  "merges": [
+    0,
+    1,
+    2
+  ],
+  "history": [
+    0,
+    1,
+    2
+  ],
+  "zero_B_count": 24,
+  "unique_client_rounds": 150,
+  "training_visits_including_prefix": 375000,
+  "base_stats_visits": 90000,
+  "head_certificates": 15,
+  "full3000_reload_raw_centered_equal": true,
+  "maximum_reload_logit_difference": 0.00016736984252929688,
+  "completed": {
+    "completed": 1793022249.9807744,
+    "qualified": true
+  },
+  "timing_and_peak_scope": "current_worker_segment",
+  "new_branch_seconds": 2003.7184419631958,
+  "peak_gpu_allocated_bytes": 2046277120
+}

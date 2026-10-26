@@ -1,0 +1,63 @@
+{
+  "observed": 1793022853.6398182,
+  "status": "INTERIM_T2_NOT_FINAL_COMPARISON",
+  "rrs": {
+    "task": 2,
+    "raw_overall": 0.949,
+    "raw_old": 0.978,
+    "raw_new": 0.92,
+    "centered_overall": 0.964,
+    "centered_old": 0.98,
+    "centered_new": 0.948
+  },
+  "federated": {
+    "task": 2,
+    "raw_overall": 0.9485,
+    "raw_old": 0.978,
+    "raw_new": 0.919,
+    "centered_overall": 0.965,
+    "centered_old": 0.98,
+    "centered_new": 0.95
+  },
+  "limitations": [
+    "Single seed, first two tasks only; central has no T2 result yet.",
+    "Centered improvement is 0.1 percentage point (2/2000 additional correct); raw decreases 0.05 percentage point (1/2000 fewer correct).",
+    "No statistical significance or final scientific gate claim; all three arms continue to T3 unchanged."
+  ],
+  "ongoing": {
+    "central": {
+      "task": 1,
+      "round": 1,
+      "phase": "clients",
+      "client_records": 63,
+      "selections": [
+        {
+          "task": 1,
+          "accepted_layers": 12,
+          "fit_samples": 4009,
+          "check_samples": 991
+        }
+      ]
+    },
+    "federated": {
+      "task": 2,
+      "round": 1,
+      "phase": "clients",
+      "client_records": 115,
+      "selections": [
+        {
+          "task": 1,
+          "accepted_layers": 12,
+          "fit_samples": 4009,
+          "check_samples": 991
+        },
+        {
+          "task": 2,
+          "accepted_layers": 10,
+          "fit_samples": 4007,
+          "check_samples": 993
+        }
+      ]
+    }
+  }
+}
