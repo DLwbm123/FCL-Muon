@@ -1,0 +1,1 @@
+三seed paired local/global head response匹配T2已启动。38项CPU、真实预检和正式首批通过；首次改变fusion前的完整B/rawFedAvghead精确配对仍待第一轮结束，由worker硬检查。暂无科学效果。B原FedAvg、旧响应系数1、cosine head保持；仅更新聚合目标到实际部署globalencoder坐标，增加成对统计与通信。4GB新增/45GBlineage/最早原clock守护。唯一30分钟心跳继续。
