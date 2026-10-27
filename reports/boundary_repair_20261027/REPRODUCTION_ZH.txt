@@ -1,5 +1,7 @@
 结果与来源复现入口
 
+详细阅读入口：DETAILED_EXPERIMENT_ANALYSIS_ZH.txt 汇总实验设置、完整十任务结果、B/A配对变化、raw与去均值的精确错误分解、机制解释、成本和证据限制。DETAILED_ANALYSIS_EVIDENCE.json 保存本次事后分析的60组阶段错误分解与终点增量恒等式；最小复算公式见详细报告第十二节。二者基于已交付聚合证据，没有新增训练或评测；下列原报告脚本不覆盖这份分析文稿。
+
 训练科学来源：A 固定cc7657c上的联邦效用/原SSB实现；本轮A启动完整源码745bb3e，见A/SOURCE.json。B修正实现同745bb3e，三任务后仅续跑入口扩展至10f2355，见B_ten/SOURCE.json。配置分别configs/utility_ten_seed0.json、boundary_three_seed0.json、boundary_ten_seed0.json；数值定义与冻结协议见research/boundary_repair/PROTOCOL.json及CONTINUATION_AUTHORIZATION_20261027.json。
 
 仅重建公开报告，不启动训练：

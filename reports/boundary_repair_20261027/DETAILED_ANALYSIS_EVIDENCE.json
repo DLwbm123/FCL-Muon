@@ -1,0 +1,588 @@
+{
+  "report_date": "2026-10-27",
+  "source_revision": "1685206",
+  "source_file": "reports/boundary_repair_20261027/FINAL_COMPARISON.json",
+  "scope": "Post-hoc aggregate analysis only; no new training, tuning or per-image evaluation",
+  "units": {
+    "accuracy": "percent",
+    "difference": "percentage points",
+    "errors": "images"
+  },
+  "definitions": {
+    "within_task_errors": "1000 * sum(1 - restricted_task_accuracy/100) over seen tasks",
+    "cross_task_stolen": "restricted-correct samples whose all-seen-class prediction is wrong",
+    "total_errors": "within_task_errors + cross_task_stolen",
+    "oracle_scope": "True task ID used only for restricted diagnostic; neither formal readout uses oracle task ID"
+  },
+  "stage_error_decomposition": {
+    "A": {
+      "raw": [
+        {
+          "task": 1,
+          "n": 1000,
+          "within_task_errors": 10,
+          "cross_task_stolen": 0,
+          "total_errors": 10,
+          "correct": 990
+        },
+        {
+          "task": 2,
+          "n": 2000,
+          "within_task_errors": 28,
+          "cross_task_stolen": 75,
+          "total_errors": 103,
+          "correct": 1897
+        },
+        {
+          "task": 3,
+          "n": 3000,
+          "within_task_errors": 57,
+          "cross_task_stolen": 210,
+          "total_errors": 267,
+          "correct": 2733
+        },
+        {
+          "task": 4,
+          "n": 4000,
+          "within_task_errors": 70,
+          "cross_task_stolen": 355,
+          "total_errors": 425,
+          "correct": 3575
+        },
+        {
+          "task": 5,
+          "n": 5000,
+          "within_task_errors": 96,
+          "cross_task_stolen": 500,
+          "total_errors": 596,
+          "correct": 4404
+        },
+        {
+          "task": 6,
+          "n": 6000,
+          "within_task_errors": 134,
+          "cross_task_stolen": 865,
+          "total_errors": 999,
+          "correct": 5001
+        },
+        {
+          "task": 7,
+          "n": 7000,
+          "within_task_errors": 178,
+          "cross_task_stolen": 1156,
+          "total_errors": 1334,
+          "correct": 5666
+        },
+        {
+          "task": 8,
+          "n": 8000,
+          "within_task_errors": 196,
+          "cross_task_stolen": 1449,
+          "total_errors": 1645,
+          "correct": 6355
+        },
+        {
+          "task": 9,
+          "n": 9000,
+          "within_task_errors": 199,
+          "cross_task_stolen": 1590,
+          "total_errors": 1789,
+          "correct": 7211
+        },
+        {
+          "task": 10,
+          "n": 10000,
+          "within_task_errors": 201,
+          "cross_task_stolen": 1886,
+          "total_errors": 2087,
+          "correct": 7913
+        }
+      ],
+      "centered": [
+        {
+          "task": 1,
+          "n": 1000,
+          "within_task_errors": 10,
+          "cross_task_stolen": 0,
+          "total_errors": 10,
+          "correct": 990
+        },
+        {
+          "task": 2,
+          "n": 2000,
+          "within_task_errors": 28,
+          "cross_task_stolen": 42,
+          "total_errors": 70,
+          "correct": 1930
+        },
+        {
+          "task": 3,
+          "n": 3000,
+          "within_task_errors": 57,
+          "cross_task_stolen": 122,
+          "total_errors": 179,
+          "correct": 2821
+        },
+        {
+          "task": 4,
+          "n": 4000,
+          "within_task_errors": 70,
+          "cross_task_stolen": 213,
+          "total_errors": 283,
+          "correct": 3717
+        },
+        {
+          "task": 5,
+          "n": 5000,
+          "within_task_errors": 96,
+          "cross_task_stolen": 317,
+          "total_errors": 413,
+          "correct": 4587
+        },
+        {
+          "task": 6,
+          "n": 6000,
+          "within_task_errors": 134,
+          "cross_task_stolen": 493,
+          "total_errors": 627,
+          "correct": 5373
+        },
+        {
+          "task": 7,
+          "n": 7000,
+          "within_task_errors": 178,
+          "cross_task_stolen": 676,
+          "total_errors": 854,
+          "correct": 6146
+        },
+        {
+          "task": 8,
+          "n": 8000,
+          "within_task_errors": 196,
+          "cross_task_stolen": 841,
+          "total_errors": 1037,
+          "correct": 6963
+        },
+        {
+          "task": 9,
+          "n": 9000,
+          "within_task_errors": 199,
+          "cross_task_stolen": 937,
+          "total_errors": 1136,
+          "correct": 7864
+        },
+        {
+          "task": 10,
+          "n": 10000,
+          "within_task_errors": 201,
+          "cross_task_stolen": 1210,
+          "total_errors": 1411,
+          "correct": 8589
+        }
+      ]
+    },
+    "B": {
+      "raw": [
+        {
+          "task": 1,
+          "n": 1000,
+          "within_task_errors": 10,
+          "cross_task_stolen": 0,
+          "total_errors": 10,
+          "correct": 990
+        },
+        {
+          "task": 2,
+          "n": 2000,
+          "within_task_errors": 28,
+          "cross_task_stolen": 80,
+          "total_errors": 108,
+          "correct": 1892
+        },
+        {
+          "task": 3,
+          "n": 3000,
+          "within_task_errors": 58,
+          "cross_task_stolen": 228,
+          "total_errors": 286,
+          "correct": 2714
+        },
+        {
+          "task": 4,
+          "n": 4000,
+          "within_task_errors": 70,
+          "cross_task_stolen": 375,
+          "total_errors": 445,
+          "correct": 3555
+        },
+        {
+          "task": 5,
+          "n": 5000,
+          "within_task_errors": 99,
+          "cross_task_stolen": 520,
+          "total_errors": 619,
+          "correct": 4381
+        },
+        {
+          "task": 6,
+          "n": 6000,
+          "within_task_errors": 135,
+          "cross_task_stolen": 898,
+          "total_errors": 1033,
+          "correct": 4967
+        },
+        {
+          "task": 7,
+          "n": 7000,
+          "within_task_errors": 180,
+          "cross_task_stolen": 1184,
+          "total_errors": 1364,
+          "correct": 5636
+        },
+        {
+          "task": 8,
+          "n": 8000,
+          "within_task_errors": 194,
+          "cross_task_stolen": 1484,
+          "total_errors": 1678,
+          "correct": 6322
+        },
+        {
+          "task": 9,
+          "n": 9000,
+          "within_task_errors": 196,
+          "cross_task_stolen": 1602,
+          "total_errors": 1798,
+          "correct": 7202
+        },
+        {
+          "task": 10,
+          "n": 10000,
+          "within_task_errors": 198,
+          "cross_task_stolen": 1884,
+          "total_errors": 2082,
+          "correct": 7918
+        }
+      ],
+      "centered": [
+        {
+          "task": 1,
+          "n": 1000,
+          "within_task_errors": 10,
+          "cross_task_stolen": 0,
+          "total_errors": 10,
+          "correct": 990
+        },
+        {
+          "task": 2,
+          "n": 2000,
+          "within_task_errors": 28,
+          "cross_task_stolen": 41,
+          "total_errors": 69,
+          "correct": 1931
+        },
+        {
+          "task": 3,
+          "n": 3000,
+          "within_task_errors": 58,
+          "cross_task_stolen": 114,
+          "total_errors": 172,
+          "correct": 2828
+        },
+        {
+          "task": 4,
+          "n": 4000,
+          "within_task_errors": 70,
+          "cross_task_stolen": 218,
+          "total_errors": 288,
+          "correct": 3712
+        },
+        {
+          "task": 5,
+          "n": 5000,
+          "within_task_errors": 99,
+          "cross_task_stolen": 313,
+          "total_errors": 412,
+          "correct": 4588
+        },
+        {
+          "task": 6,
+          "n": 6000,
+          "within_task_errors": 135,
+          "cross_task_stolen": 493,
+          "total_errors": 628,
+          "correct": 5372
+        },
+        {
+          "task": 7,
+          "n": 7000,
+          "within_task_errors": 180,
+          "cross_task_stolen": 676,
+          "total_errors": 856,
+          "correct": 6144
+        },
+        {
+          "task": 8,
+          "n": 8000,
+          "within_task_errors": 194,
+          "cross_task_stolen": 845,
+          "total_errors": 1039,
+          "correct": 6961
+        },
+        {
+          "task": 9,
+          "n": 9000,
+          "within_task_errors": 196,
+          "cross_task_stolen": 935,
+          "total_errors": 1131,
+          "correct": 7869
+        },
+        {
+          "task": 10,
+          "n": 10000,
+          "within_task_errors": 198,
+          "cross_task_stolen": 1186,
+          "total_errors": 1384,
+          "correct": 8616
+        }
+      ]
+    },
+    "LoRM": {
+      "raw": [
+        {
+          "task": 1,
+          "n": 1000,
+          "within_task_errors": 23,
+          "cross_task_stolen": 0,
+          "total_errors": 23,
+          "correct": 977
+        },
+        {
+          "task": 2,
+          "n": 2000,
+          "within_task_errors": 52,
+          "cross_task_stolen": 125,
+          "total_errors": 177,
+          "correct": 1823
+        },
+        {
+          "task": 3,
+          "n": 3000,
+          "within_task_errors": 85,
+          "cross_task_stolen": 253,
+          "total_errors": 338,
+          "correct": 2662
+        },
+        {
+          "task": 4,
+          "n": 4000,
+          "within_task_errors": 114,
+          "cross_task_stolen": 420,
+          "total_errors": 534,
+          "correct": 3466
+        },
+        {
+          "task": 5,
+          "n": 5000,
+          "within_task_errors": 141,
+          "cross_task_stolen": 584,
+          "total_errors": 725,
+          "correct": 4275
+        },
+        {
+          "task": 6,
+          "n": 6000,
+          "within_task_errors": 186,
+          "cross_task_stolen": 867,
+          "total_errors": 1053,
+          "correct": 4947
+        },
+        {
+          "task": 7,
+          "n": 7000,
+          "within_task_errors": 226,
+          "cross_task_stolen": 1052,
+          "total_errors": 1278,
+          "correct": 5722
+        },
+        {
+          "task": 8,
+          "n": 8000,
+          "within_task_errors": 255,
+          "cross_task_stolen": 1238,
+          "total_errors": 1493,
+          "correct": 6507
+        },
+        {
+          "task": 9,
+          "n": 9000,
+          "within_task_errors": 259,
+          "cross_task_stolen": 1429,
+          "total_errors": 1688,
+          "correct": 7312
+        },
+        {
+          "task": 10,
+          "n": 10000,
+          "within_task_errors": 264,
+          "cross_task_stolen": 1727,
+          "total_errors": 1991,
+          "correct": 8009
+        }
+      ],
+      "centered": [
+        {
+          "task": 1,
+          "n": 1000,
+          "within_task_errors": 23,
+          "cross_task_stolen": 0,
+          "total_errors": 23,
+          "correct": 977
+        },
+        {
+          "task": 2,
+          "n": 2000,
+          "within_task_errors": 52,
+          "cross_task_stolen": 101,
+          "total_errors": 153,
+          "correct": 1847
+        },
+        {
+          "task": 3,
+          "n": 3000,
+          "within_task_errors": 85,
+          "cross_task_stolen": 191,
+          "total_errors": 276,
+          "correct": 2724
+        },
+        {
+          "task": 4,
+          "n": 4000,
+          "within_task_errors": 114,
+          "cross_task_stolen": 319,
+          "total_errors": 433,
+          "correct": 3567
+        },
+        {
+          "task": 5,
+          "n": 5000,
+          "within_task_errors": 141,
+          "cross_task_stolen": 445,
+          "total_errors": 586,
+          "correct": 4414
+        },
+        {
+          "task": 6,
+          "n": 6000,
+          "within_task_errors": 186,
+          "cross_task_stolen": 641,
+          "total_errors": 827,
+          "correct": 5173
+        },
+        {
+          "task": 7,
+          "n": 7000,
+          "within_task_errors": 226,
+          "cross_task_stolen": 776,
+          "total_errors": 1002,
+          "correct": 5998
+        },
+        {
+          "task": 8,
+          "n": 8000,
+          "within_task_errors": 255,
+          "cross_task_stolen": 928,
+          "total_errors": 1183,
+          "correct": 6817
+        },
+        {
+          "task": 9,
+          "n": 9000,
+          "within_task_errors": 259,
+          "cross_task_stolen": 1074,
+          "total_errors": 1333,
+          "correct": 7667
+        },
+        {
+          "task": 10,
+          "n": 10000,
+          "within_task_errors": 264,
+          "cross_task_stolen": 1321,
+          "total_errors": 1585,
+          "correct": 8415
+        }
+      ]
+    }
+  },
+  "final_decomposition": {
+    "A": {
+      "within_task_errors": 201,
+      "raw_cross_task_stolen": 1886,
+      "centered_cross_task_stolen": 1210,
+      "raw_total_errors": 2087,
+      "centered_total_errors": 1411,
+      "centering_net_correct": 676
+    },
+    "B": {
+      "within_task_errors": 198,
+      "raw_cross_task_stolen": 1884,
+      "centered_cross_task_stolen": 1186,
+      "raw_total_errors": 2082,
+      "centered_total_errors": 1384,
+      "centering_net_correct": 698
+    },
+    "LoRM": {
+      "within_task_errors": 264,
+      "raw_cross_task_stolen": 1727,
+      "centered_cross_task_stolen": 1321,
+      "raw_total_errors": 1991,
+      "centered_total_errors": 1585,
+      "centering_net_correct": 406
+    }
+  },
+  "final_net_correct_decomposition": {
+    "B_minus_A": {
+      "raw": {
+        "within_task_contribution": 3,
+        "cross_task_contribution": 2,
+        "net_correct": 5
+      },
+      "centered": {
+        "within_task_contribution": 3,
+        "cross_task_contribution": 24,
+        "net_correct": 27
+      }
+    },
+    "B_minus_LoRM": {
+      "raw": {
+        "within_task_contribution": 66,
+        "cross_task_contribution": -157,
+        "net_correct": -91
+      },
+      "centered": {
+        "within_task_contribution": 66,
+        "cross_task_contribution": 135,
+        "net_correct": 201
+      }
+    },
+    "A_minus_LoRM": {
+      "raw": {
+        "within_task_contribution": 63,
+        "cross_task_contribution": -159,
+        "net_correct": -96
+      },
+      "centered": {
+        "within_task_contribution": 63,
+        "cross_task_contribution": 111,
+        "net_correct": 174
+      }
+    }
+  },
+  "repair_summary_derived": {
+    "active_steps": 71360,
+    "trigger_percent": 13.743697478991596,
+    "capped_percent_of_triggers": 66.25904412514012,
+    "mean_amplitude_ratio_over_trigger_steps": 0.2008994442073079,
+    "trigger_but_no_nonzero_deployment": 16
+  }
+}
