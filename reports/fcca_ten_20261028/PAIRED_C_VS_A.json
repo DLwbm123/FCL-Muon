@@ -1,0 +1,542 @@
+{
+  "1": {
+    "raw": {
+      "all": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 0,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 0,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "2": {
+    "raw": {
+      "all": {
+        "n": 2000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 1
+      },
+      "old": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 1
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 2000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "3": {
+    "raw": {
+      "all": {
+        "n": 3000,
+        "changed_predictions": 2,
+        "corrected": 1,
+        "broken": 1,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 2000,
+        "changed_predictions": 1,
+        "corrected": 1,
+        "broken": 0,
+        "net_correct": 1,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 1,
+        "net_correct": -1,
+        "both_wrong_but_changed": 0
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 3000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 2000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "4": {
+    "raw": {
+      "all": {
+        "n": 4000,
+        "changed_predictions": 3,
+        "corrected": 0,
+        "broken": 3,
+        "net_correct": -3,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 3000,
+        "changed_predictions": 2,
+        "corrected": 0,
+        "broken": 2,
+        "net_correct": -2,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 1,
+        "net_correct": -1,
+        "both_wrong_but_changed": 0
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 4000,
+        "changed_predictions": 3,
+        "corrected": 1,
+        "broken": 1,
+        "net_correct": 0,
+        "both_wrong_but_changed": 1
+      },
+      "old": {
+        "n": 3000,
+        "changed_predictions": 2,
+        "corrected": 0,
+        "broken": 1,
+        "net_correct": -1,
+        "both_wrong_but_changed": 1
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 1,
+        "broken": 0,
+        "net_correct": 1,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "5": {
+    "raw": {
+      "all": {
+        "n": 5000,
+        "changed_predictions": 17,
+        "corrected": 12,
+        "broken": 2,
+        "net_correct": 10,
+        "both_wrong_but_changed": 3
+      },
+      "old": {
+        "n": 4000,
+        "changed_predictions": 10,
+        "corrected": 6,
+        "broken": 1,
+        "net_correct": 5,
+        "both_wrong_but_changed": 3
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 7,
+        "corrected": 6,
+        "broken": 1,
+        "net_correct": 5,
+        "both_wrong_but_changed": 0
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 5000,
+        "changed_predictions": 6,
+        "corrected": 5,
+        "broken": 1,
+        "net_correct": 4,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 4000,
+        "changed_predictions": 3,
+        "corrected": 3,
+        "broken": 0,
+        "net_correct": 3,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 3,
+        "corrected": 2,
+        "broken": 1,
+        "net_correct": 1,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "6": {
+    "raw": {
+      "all": {
+        "n": 6000,
+        "changed_predictions": 9,
+        "corrected": 3,
+        "broken": 3,
+        "net_correct": 0,
+        "both_wrong_but_changed": 3
+      },
+      "old": {
+        "n": 5000,
+        "changed_predictions": 8,
+        "corrected": 3,
+        "broken": 3,
+        "net_correct": 0,
+        "both_wrong_but_changed": 2
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 1
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 6000,
+        "changed_predictions": 7,
+        "corrected": 4,
+        "broken": 3,
+        "net_correct": 1,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 5000,
+        "changed_predictions": 7,
+        "corrected": 4,
+        "broken": 3,
+        "net_correct": 1,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "7": {
+    "raw": {
+      "all": {
+        "n": 7000,
+        "changed_predictions": 22,
+        "corrected": 8,
+        "broken": 6,
+        "net_correct": 2,
+        "both_wrong_but_changed": 8
+      },
+      "old": {
+        "n": 6000,
+        "changed_predictions": 17,
+        "corrected": 6,
+        "broken": 5,
+        "net_correct": 1,
+        "both_wrong_but_changed": 6
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 5,
+        "corrected": 2,
+        "broken": 1,
+        "net_correct": 1,
+        "both_wrong_but_changed": 2
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 7000,
+        "changed_predictions": 20,
+        "corrected": 11,
+        "broken": 7,
+        "net_correct": 4,
+        "both_wrong_but_changed": 2
+      },
+      "old": {
+        "n": 6000,
+        "changed_predictions": 13,
+        "corrected": 6,
+        "broken": 5,
+        "net_correct": 1,
+        "both_wrong_but_changed": 2
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 7,
+        "corrected": 5,
+        "broken": 2,
+        "net_correct": 3,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "8": {
+    "raw": {
+      "all": {
+        "n": 8000,
+        "changed_predictions": 32,
+        "corrected": 11,
+        "broken": 10,
+        "net_correct": 1,
+        "both_wrong_but_changed": 11
+      },
+      "old": {
+        "n": 7000,
+        "changed_predictions": 29,
+        "corrected": 10,
+        "broken": 10,
+        "net_correct": 0,
+        "both_wrong_but_changed": 9
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 3,
+        "corrected": 1,
+        "broken": 0,
+        "net_correct": 1,
+        "both_wrong_but_changed": 2
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 8000,
+        "changed_predictions": 29,
+        "corrected": 10,
+        "broken": 9,
+        "net_correct": 1,
+        "both_wrong_but_changed": 10
+      },
+      "old": {
+        "n": 7000,
+        "changed_predictions": 27,
+        "corrected": 10,
+        "broken": 9,
+        "net_correct": 1,
+        "both_wrong_but_changed": 8
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 2,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 2
+      }
+    }
+  },
+  "9": {
+    "raw": {
+      "all": {
+        "n": 9000,
+        "changed_predictions": 45,
+        "corrected": 18,
+        "broken": 12,
+        "net_correct": 6,
+        "both_wrong_but_changed": 15
+      },
+      "old": {
+        "n": 8000,
+        "changed_predictions": 37,
+        "corrected": 14,
+        "broken": 11,
+        "net_correct": 3,
+        "both_wrong_but_changed": 12
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 8,
+        "corrected": 4,
+        "broken": 1,
+        "net_correct": 3,
+        "both_wrong_but_changed": 3
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 9000,
+        "changed_predictions": 29,
+        "corrected": 16,
+        "broken": 6,
+        "net_correct": 10,
+        "both_wrong_but_changed": 7
+      },
+      "old": {
+        "n": 8000,
+        "changed_predictions": 28,
+        "corrected": 15,
+        "broken": 6,
+        "net_correct": 9,
+        "both_wrong_but_changed": 7
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 1,
+        "broken": 0,
+        "net_correct": 1,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "10": {
+    "raw": {
+      "all": {
+        "n": 10000,
+        "changed_predictions": 55,
+        "corrected": 22,
+        "broken": 14,
+        "net_correct": 8,
+        "both_wrong_but_changed": 19
+      },
+      "old": {
+        "n": 9000,
+        "changed_predictions": 47,
+        "corrected": 17,
+        "broken": 12,
+        "net_correct": 5,
+        "both_wrong_but_changed": 18
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 8,
+        "corrected": 5,
+        "broken": 2,
+        "net_correct": 3,
+        "both_wrong_but_changed": 1
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 10000,
+        "changed_predictions": 28,
+        "corrected": 9,
+        "broken": 6,
+        "net_correct": 3,
+        "both_wrong_but_changed": 13
+      },
+      "old": {
+        "n": 9000,
+        "changed_predictions": 27,
+        "corrected": 9,
+        "broken": 6,
+        "net_correct": 3,
+        "both_wrong_but_changed": 12
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 1
+      }
+    }
+  }
+}
