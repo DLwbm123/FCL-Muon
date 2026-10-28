@@ -135,3 +135,23 @@ def test_accepted_branch_deploys_candidate_and_original_head(tmp_path):
     assert any(not torch.equal(b,a) for b,a in zip(p.model.b_parameters(),baseline))
     assert torch.equal(p.model.rows[-1].detach().cpu(),fixed_head)
     assert p.s['fcca_endpoints']==[] and p.s['phase']=='round_start'
+
+
+def test_horizon_continuation_matches_uninterrupted_and_rejects_drift(tmp_path):
+    full=build(tmp_path/'full_horizon');full.run();end=rng_state()
+    short=build(tmp_path/'short_horizon');short.cfg['tasks']=2;short.run()
+    source=torch.load(short.out/'latest.pt',weights_only=False)
+    expected={'completed_tasks':2,'config_sha256':config_hash(source['config']),
+              'identity':source['identity'],'clock':source['clock'],'selection_mode':'federated','toy':True}
+    target=build(tmp_path/'continued')
+    proof=import_boundary(target,source,expected,continuation=True)
+    assert proof['explicit_user_continuation'] and proof['allowed_changes']==['output','tasks']
+    assert target.s['stages']==short.s['stages'] and target.s['phase']=='task_start'
+    target.run()
+    for key,value in full.model.state_dict().items():assert torch.equal(value,target.model.state_dict()[key]),key
+    assert full.s['stages']==target.s['stages'] and full.s['training_records']==target.s['training_records']
+    assert full.s['communication']==target.s['communication'] and torch.equal(end['torch'],rng_state()['torch'])
+    bad=build(tmp_path/'changed_threshold');bad.cfg['fcca']['minimum_relative_raw_gain']*=2
+    with pytest.raises(ValueError,match='Scientific config'):import_boundary(bad,source,expected,continuation=True)
+    bad=build(tmp_path/'new_clock');bad.clock=dict(bad.clock,started=2.)
+    with pytest.raises(ValueError,match='original clock'):import_boundary(bad,source,expected,continuation=True)

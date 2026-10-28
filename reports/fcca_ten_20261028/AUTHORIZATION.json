@@ -1,0 +1,15 @@
+{
+  "explicit_user_T10_authorization": true,
+  "request": "跑一下 10 任务的实验",
+  "date": "2026-10-28",
+  "clock": {
+    "started": 1793160824.1203914,
+    "deadline": 1793246324.1203914
+  },
+  "T3_scientific_progress_gate_passed": false,
+  "configuration_changes": [
+    "tasks",
+    "output"
+  ],
+  "preserve_T3_evidence": true
+}

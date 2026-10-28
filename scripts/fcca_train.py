@@ -16,10 +16,13 @@ def write(path,value):
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(value,indent=2));tmp.replace(path)
 
 
-def main():
-    root=Path(os.environ['PROJECT_ROOT']);report=root/'reports'
-    cfg=json.loads((root/'configs/fcca_three_seed0.json').read_text());assert cfg['tasks']==3
+def main(config_name='fcca_three_seed0.json',report_subdir='reports',continuation=False):
+    root=Path(os.environ['PROJECT_ROOT']);report=root/report_subdir
+    cfg=json.loads((root/'configs'/config_name).read_text());assert cfg['tasks']==(10 if continuation else 3)
     clock=json.loads((report/'job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
+    if continuation:
+        auth=json.loads((report/'AUTHORIZATION.json').read_text())
+        assert auth['explicit_user_T10_authorization'] and auth['clock']==clock
     torch.set_num_threads(4);torch.set_float32_matmul_precision('highest')
     torch.manual_seed(0);np.random.seed(0);random.seed(0)
     torch.backends.cudnn.benchmark=False;torch.backends.cudnn.deterministic=True
@@ -43,11 +46,12 @@ def main():
     else:
         expected=json.loads((report/'IMPORT_SOURCE.json').read_text());source_path=Path(os.environ['SOURCE_CHECKPOINT'])
         source=torch.load(source_path,map_location='cpu',weights_only=False)
-        proof=import_boundary(p,source,expected);del source
+        proof=import_boundary(p,source,expected,continuation=continuation);del source
         write(report/'IMPORT_PROOF.json',proof)
         (p.out/'source_boundary.pt').symlink_to(source_path)
-        (p.out/'task1_private_logits.npz').symlink_to(source_path.parent/'task1_private_logits.npz')
-    if not (report/'REAL_PREFLIGHT.json').exists():
+        for t in range(1,expected['completed_tasks']+1):
+            (p.out/f'task{t}_private_logits.npz').symlink_to(source_path.parent/f'task{t}_private_logits.npz')
+    if not continuation and not (report/'REAL_PREFLIGHT.json').exists():
         from research.fcca.preflight import real_batch
         write(report/'REAL_PREFLIGHT.json',real_batch(p));gc.collect();torch.cuda.empty_cache()
     def progress():
@@ -64,7 +68,7 @@ def main():
     assert p.s['merges']==list(range(n)) and p.s['history'].committed==set(range(n)) and len(model.rows)==n
     assert len(p.s['certificates'])==n*5 and all(v['deployed_fp32']['passed'] for v in p.s['certificates'])
     assert len(p.s['selection_records'])==n-1 and all(not torch.count_nonzero(b) for b in model.b_parameters())
-    assert len(rr)==10 and len({(v['task'],v['round']) for v in rr})==10 and not p.s.get('fcca_endpoints')
+    assert len(rr)==(n-1)*cfg['rounds'] and len({(v['task'],v['round']) for v in rr})==len(rr) and not p.s.get('fcca_endpoints')
     for r in rr:
         assert r['fixed_actual_HeadRegMean'] and r['check_used_once'] and not r['old_class_guarantee']
         if r['accepted']:
@@ -93,7 +97,15 @@ def main():
        'checkpoint_bytes':(p.out/'latest.pt').stat().st_size,'import_proof':p.s['boundary_import'],
        'extra_forward_images':sum(r['extra_forward_images'] for r in rr),'extra_backward_images':sum(r['extra_backward_images'] for r in rr),
        'extra_forward_calls':sum(r['extra_forward_calls'] for r in rr),'extra_backward_calls':sum(r['extra_backward_calls'] for r in rr),
-       'limitations':['single seed','train-only selector checks, not independent holdout','archive response is not old-label risk','no automatic ten-task extension']}
+       'explicit_user_continuation':continuation,
+       'limitations':['single seed','train-only selector checks, not independent holdout','archive response is not old-label risk',
+                     'user-requested T10 extension after observed T3 result; not independent confirmation' if continuation else 'no automatic ten-task extension']}
+    if continuation:
+        origin=json.loads((root/'runs/main/QUALIFICATION.json').read_text())
+        assert stages[:3]==origin['stages']
+        q.update(continuation_new_client_rounds=len(records)-150,continuation_new_training_visits=n*125000-375000,
+                 full_C_new_training_visits=n*125000-125000,
+                 peak_gpu_allocated_bytes_all_C_segments=max(q['peak_gpu_allocated_bytes'],origin['peak_gpu_allocated_bytes']))
     write(p.out/'QUALIFICATION.json',q);write(p.out/'COMPLETE.json',{'qualified':True,'completed':time.time()})
 
 
