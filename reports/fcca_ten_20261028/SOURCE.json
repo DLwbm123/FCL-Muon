@@ -1,0 +1,10 @@
+{
+  "source_commit": "793ff2f6ea08a4ddebf48a1a5846a4619e1e7061",
+  "T3_implementation_commit": "406a30ac278ec580d8aa03e620edec37f1ec04e3",
+  "T3_report_commit": "d5fb891776d8aa2563bfeec893ef7a8a1ee99b24",
+  "branch": "codex/fcca-ten-20261028",
+  "protocol": "research/fcca/TEN_TASK_EXTENSION_ZH.txt",
+  "config": "configs/fcca_ten_seed0.json",
+  "tests_passed": 10,
+  "scope": "explicit user T4-T10 continuation; no tuning"
+}

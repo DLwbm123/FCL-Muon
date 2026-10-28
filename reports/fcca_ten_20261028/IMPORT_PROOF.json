@@ -1,0 +1,64 @@
+{
+  "source": {
+    "source_commit": "406a30ac278ec580d8aa03e620edec37f1ec04e3",
+    "completed_tasks": 3,
+    "selection_mode": "federated",
+    "config_sha256": "23012d61c9379cf0fe5ca00295bc9331e7cfb2556f2a1554539547fc3e44064f",
+    "identity": {
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+      "weight_identity": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+      "source_revision": "Frozen aggregation-utility source recorded in reports/SOURCE.json; base c7ce88f",
+      "purpose": "three-task aggregation-utility selection"
+    },
+    "clock": {
+      "started": 1793160824.1203914,
+      "deadline": 1793246324.1203914
+    }
+  },
+  "new_clock": {
+    "started": 1793160824.1203914,
+    "deadline": 1793246324.1203914
+  },
+  "target_config_sha256": "1957be9663e1c8ba196bb38c36849f22704f4ca8b871442819c9bf8980357f9e",
+  "reused_client_rounds": 150,
+  "reused_training_visits": 375000,
+  "allowed_changes": [
+    "output",
+    "tasks"
+  ],
+  "prefix_schedule_independent_of_horizon": true,
+  "explicit_user_continuation": true,
+  "prior_T1_import": {
+    "source": {
+      "source_commit": "cc7657c92b2eadd03f8c54da887da4e6459003bd",
+      "completed_tasks": 1,
+      "selection_mode": "prefix",
+      "config_sha256": "7fbef9b7493fee9a1fec95749f3b78ca12ed786572eeb7609cca8ceedfde6210",
+      "identity": {
+        "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+        "weight_identity": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+        "source_revision": "Frozen aggregation-utility source recorded in reports/SOURCE.json; base c7ce88f",
+        "purpose": "three-task aggregation-utility selection"
+      },
+      "clock": {
+        "started": 1793018176.0269961,
+        "deadline": 1793103676.0269961
+      }
+    },
+    "new_clock": {
+      "started": 1793160824.1203914,
+      "deadline": 1793246324.1203914
+    },
+    "target_config_sha256": "23012d61c9379cf0fe5ca00295bc9331e7cfb2556f2a1554539547fc3e44064f",
+    "reused_client_rounds": 50,
+    "reused_training_visits": 125000,
+    "allowed_changes": [
+      "fcca",
+      "inference_rule",
+      "output",
+      "selection_mode",
+      "tasks"
+    ],
+    "prefix_schedule_independent_of_horizon": true
+  }
+}

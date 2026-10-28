@@ -1,0 +1,18 @@
+{
+  "started": 1793160824.1203914,
+  "deadline": 1793246324.1203914,
+  "status": "running",
+  "storage_limit_bytes": 8000000000,
+  "write_stop_bytes": 6000000000,
+  "seed": 0,
+  "tasks": 10,
+  "gpu": "3",
+  "explicit_resume": false,
+  "arm": "C",
+  "explicit_user_continuation": true,
+  "continuation_started": 1793170762.5138896,
+  "free_mib_at_admission": 72830,
+  "baseline_allocated_bytes": 609927168,
+  "allocated_bytes": 1203249152,
+  "checked": 1793170912.959169
+}
