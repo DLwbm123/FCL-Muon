@@ -1,0 +1,34 @@
+FedSPECTRA 修订版：三任务阶段报告（十任务正在运行）
+2026-10-28
+
+三条路线均完成150客户端轮/375000次新训练访问，实际3000张seen测试图的checkpoint重载raw与centered预测一致。已按预先冻结流程继续T4-T10；三任务表现不用于改变配置或选择是否延伸。
+同seed0/alpha=.05。原LoRM采用已交付原始系统配置；本轮control/MVP/Full使用相同rank32、cosine/Head-RegMean、AdamW和task-start旧类KL。MVP-control用于检查新增谱输运；Full同时改变动态子空间、累计更新秩和随机流，不能归因给单一算子。
+
+T3：方法 | raw总体 | raw旧类 | raw新类 | centered总体（%）
+LoRM | 88.7333 | 86.10 | 94.00 | 90.80
+control | 89.7333 | 93.55 | 82.10 | 93.6000
+mvp | 89.0333 | 93.05 | 81.00 | 92.8667
+full | 88.6333 | 92.55 | 80.80 | 93.2667
+
+MVP相对LoRM raw +0.30pp，Full -0.10pp；相对同配置普通聚合control分别-0.70pp和-1.10pp。两者尚未体现新增谱机制的性能增益。
+旧类保持较高但新类可塑性较弱：MVP/Full raw新类81.0/80.8%，LoRM94.0%；即使centered，MVP/Full新类88.4/89.6%，仍低于LoRM93.8%。common recipe与新模块的影响需要分开，不能只用overall/遗忘解释。
+
+机制记录：
+control: {"metrics": {"raw": {"final_overall_percent": 89.73333333333335, "final_old_percent": 93.55, "final_new_percent": 82.1, "AIA_percent": 94.44444444444446, "forgetting_pp": 1.3500000000000012}, "centered": {"final_overall_percent": 93.6, "final_old_percent": 95.65, "final_new_percent": 89.5, "AIA_percent": 96.43333333333332, "forgetting_pp": 1.2499999999999956}}, "clip_fraction": null, "clip_modes": 0, "total_modes": 0, "barycenter_fallbacks": 0, "barycenter_calls": 0, "global_norm_caps": 0, "aggregate_maps": 0, "aggregate_bures_improved": 0, "extra_probe_forward_images": 0, "extra_probe_backward_images": 0, "teacher_forward_images": 250000, "logical_communication_bytes": 3230576640}
+raw完整阶段矩阵（%）：[[99.4], [98.0, 90.4], [98.0, 89.1, 82.1]]
+centered完整阶段矩阵（%）：[[99.4], [98.2, 94.39999999999999], [98.2, 93.10000000000001, 89.5]]
+重载最大logit差：0.0001506805419921875
+mvp: {"metrics": {"raw": {"final_overall_percent": 89.03333333333335, "final_old_percent": 93.05, "final_new_percent": 81.0, "AIA_percent": 94.04444444444444, "forgetting_pp": 1.3500000000000012}, "centered": {"final_overall_percent": 92.86666666666666, "final_old_percent": 95.10000000000001, "final_new_percent": 88.4, "AIA_percent": 95.98888888888888, "forgetting_pp": 1.200000000000001}}, "clip_fraction": 0.591328125, "clip_modes": 68121, "total_modes": 115200, "barycenter_fallbacks": 3, "barycenter_calls": 180, "global_norm_caps": 0, "aggregate_maps": 360, "aggregate_bures_improved": 360, "extra_probe_forward_images": 2814, "extra_probe_backward_images": 4374, "teacher_forward_images": 250000, "logical_communication_bytes": 3447336960}
+raw完整阶段矩阵（%）：[[99.3], [98.1, 89.5], [98.0, 88.1, 81.0]]
+centered完整阶段矩阵（%）：[[99.3], [98.3, 93.30000000000001], [98.0, 92.2, 88.4]]
+重载最大logit差：0.00022935867309570312
+full: {"metrics": {"raw": {"final_overall_percent": 88.63333333333333, "final_old_percent": 92.55, "final_new_percent": 80.80000000000001, "AIA_percent": 93.7611111111111, "forgetting_pp": 1.8000000000000016}, "centered": {"final_overall_percent": 93.26666666666667, "final_old_percent": 95.10000000000001, "final_new_percent": 89.60000000000001, "AIA_percent": 96.15555555555555, "forgetting_pp": 1.5999999999999959}}, "clip_fraction": 0.7125954861111111, "clip_modes": 82091, "total_modes": 115200, "barycenter_fallbacks": 0, "barycenter_calls": 180, "global_norm_caps": 0, "aggregate_maps": 360, "aggregate_bures_improved": 360, "extra_probe_forward_images": 2814, "extra_probe_backward_images": 4374, "teacher_forward_images": 250000, "logical_communication_bytes": 3091968000}
+raw完整阶段矩阵（%）：[[99.3], [97.3, 89.4], [97.0, 88.1, 80.80000000000001]]
+centered完整阶段矩阵（%）：[[99.3], [97.7, 94.1], [97.5, 92.7, 89.60000000000001]]
+重载最大logit差：8.296966552734375e-05
+
+谱缩放clip率MVP59.1328%、Full71.2595%，均高于预先声明的25%风险线。Bures fallback为3/180（MVP）和0/180（Full），未超过5%风险线；全局范数cap均未触发。
+两方法的360个层/QV/轮次聚合记录中，聚合Gram至目标的Bures距离都下降，但分类精度没有超过control。这直接说明该谱代理改善不等于分类收益，不能宣称两者已有因果联系。
+所有路线各增加250000张teacher前向。MVP/Full分别额外2814张probe前向、4374张probe反向；逻辑通信总量见JSON。Full不做RRS完整统计遍历，不能只比较谱模块额外通信而忽略基础消息差别。
+完整逐层/逐客户端谱记录、训练记录、通信分类、阶段混淆矩阵、W+S所需统计在各arm的QUALIFICATION_T3.json；与历史A的同图纠正/破坏在PAIRED_VS_A_T3.json。原始模型、teacher、逐图logits/ID和Fisher/梯度不公开。
+这是单seed开发性阶段结果。raw主指标，centered仅诊断；十任务尚未完成，最终性能与冻结科学条件待T10。运行代码及阈值保持f935467不变。

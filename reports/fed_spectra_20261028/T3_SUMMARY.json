@@ -1,0 +1,107 @@
+{
+  "status": "T3_QUALIFIED_T4_RUNNING",
+  "arms": {
+    "control": {
+      "metrics": {
+        "raw": {
+          "final_overall_percent": 89.73333333333335,
+          "final_old_percent": 93.55,
+          "final_new_percent": 82.1,
+          "AIA_percent": 94.44444444444446,
+          "forgetting_pp": 1.3500000000000012
+        },
+        "centered": {
+          "final_overall_percent": 93.6,
+          "final_old_percent": 95.65,
+          "final_new_percent": 89.5,
+          "AIA_percent": 96.43333333333332,
+          "forgetting_pp": 1.2499999999999956
+        }
+      },
+      "clip_fraction": null,
+      "clip_modes": 0,
+      "total_modes": 0,
+      "barycenter_fallbacks": 0,
+      "barycenter_calls": 0,
+      "global_norm_caps": 0,
+      "aggregate_maps": 0,
+      "aggregate_bures_improved": 0,
+      "extra_probe_forward_images": 0,
+      "extra_probe_backward_images": 0,
+      "teacher_forward_images": 250000,
+      "logical_communication_bytes": 3230576640
+    },
+    "mvp": {
+      "metrics": {
+        "raw": {
+          "final_overall_percent": 89.03333333333335,
+          "final_old_percent": 93.05,
+          "final_new_percent": 81.0,
+          "AIA_percent": 94.04444444444444,
+          "forgetting_pp": 1.3500000000000012
+        },
+        "centered": {
+          "final_overall_percent": 92.86666666666666,
+          "final_old_percent": 95.10000000000001,
+          "final_new_percent": 88.4,
+          "AIA_percent": 95.98888888888888,
+          "forgetting_pp": 1.200000000000001
+        }
+      },
+      "clip_fraction": 0.591328125,
+      "clip_modes": 68121,
+      "total_modes": 115200,
+      "barycenter_fallbacks": 3,
+      "barycenter_calls": 180,
+      "global_norm_caps": 0,
+      "aggregate_maps": 360,
+      "aggregate_bures_improved": 360,
+      "extra_probe_forward_images": 2814,
+      "extra_probe_backward_images": 4374,
+      "teacher_forward_images": 250000,
+      "logical_communication_bytes": 3447336960
+    },
+    "full": {
+      "metrics": {
+        "raw": {
+          "final_overall_percent": 88.63333333333333,
+          "final_old_percent": 92.55,
+          "final_new_percent": 80.80000000000001,
+          "AIA_percent": 93.7611111111111,
+          "forgetting_pp": 1.8000000000000016
+        },
+        "centered": {
+          "final_overall_percent": 93.26666666666667,
+          "final_old_percent": 95.10000000000001,
+          "final_new_percent": 89.60000000000001,
+          "AIA_percent": 96.15555555555555,
+          "forgetting_pp": 1.5999999999999959
+        }
+      },
+      "clip_fraction": 0.7125954861111111,
+      "clip_modes": 82091,
+      "total_modes": 115200,
+      "barycenter_fallbacks": 0,
+      "barycenter_calls": 180,
+      "global_norm_caps": 0,
+      "aggregate_maps": 360,
+      "aggregate_bures_improved": 360,
+      "extra_probe_forward_images": 2814,
+      "extra_probe_backward_images": 4374,
+      "teacher_forward_images": 250000,
+      "logical_communication_bytes": 3091968000
+    }
+  },
+  "original_LoRM_T3": {
+    "raw": {
+      "overall": 88.73333333333333,
+      "old": 86.1,
+      "new": 94.0
+    },
+    "centered": {
+      "overall": 90.8,
+      "old": 89.3,
+      "new": 93.8
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "W_plus_S_checks": 36,
+  "paired_stage_readout_checks": 18,
+  "qualified_arms": 3
+}
