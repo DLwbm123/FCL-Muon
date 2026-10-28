@@ -1,8 +1,7 @@
 {
   "started": 1793160824.1203914,
   "deadline": 1793246324.1203914,
-  "status": "running",
-  "supervisor_pid": 2870718,
+  "status": "completed",
   "storage_limit_bytes": 8000000000,
   "write_stop_bytes": 6000000000,
   "seed": 0,
@@ -12,7 +11,9 @@
   "arm": "C",
   "free_mib_at_admission": 72830,
   "baseline_allocated_bytes": 4882432,
-  "worker_pid": 2870729,
-  "allocated_bytes": 605048832,
-  "checked": 1793160984.624183
+  "allocated_bytes": 609816576,
+  "checked": 1793163591.2681053,
+  "exit_code": 0,
+  "qualified": true,
+  "ended": 1793163601.28282
 }

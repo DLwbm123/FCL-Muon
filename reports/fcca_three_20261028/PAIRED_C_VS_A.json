@@ -1,0 +1,164 @@
+{
+  "1": {
+    "raw": {
+      "all": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 0,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 0,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "2": {
+    "raw": {
+      "all": {
+        "n": 2000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 1
+      },
+      "old": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 1
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 2000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    }
+  },
+  "3": {
+    "raw": {
+      "all": {
+        "n": 3000,
+        "changed_predictions": 2,
+        "corrected": 1,
+        "broken": 1,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 2000,
+        "changed_predictions": 1,
+        "corrected": 1,
+        "broken": 0,
+        "net_correct": 1,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 1,
+        "corrected": 0,
+        "broken": 1,
+        "net_correct": -1,
+        "both_wrong_but_changed": 0
+      }
+    },
+    "centered": {
+      "all": {
+        "n": 3000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "old": {
+        "n": 2000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      },
+      "new": {
+        "n": 1000,
+        "changed_predictions": 0,
+        "corrected": 0,
+        "broken": 0,
+        "net_correct": 0,
+        "both_wrong_but_changed": 0
+      }
+    }
+  }
+}
