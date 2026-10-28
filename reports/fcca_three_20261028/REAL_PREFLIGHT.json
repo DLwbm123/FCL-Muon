@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "images_per_forward": 16,
+  "forward_calls": 2,
+  "backward_calls": 2,
+  "old_logits_B_gradient_l1": 24314.65771484375,
+  "fixed_heads_unchanged": true,
+  "probe_state_restored": true,
+  "scope": "disposable T2 training batch, inherited T1 basis; no optimizer step",
+  "seconds": 0.9718904495239258,
+  "full_checkpoint_and_RNG_restored": true
+}

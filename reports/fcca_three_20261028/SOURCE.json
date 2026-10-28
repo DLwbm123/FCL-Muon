@@ -1,0 +1,9 @@
+{
+  "source_commit": "406a30ac278ec580d8aa03e620edec37f1ec04e3",
+  "base_evidence_commit": "5fd1c94",
+  "branch": "codex/fcca-three-20261028",
+  "protocol": "research/fcca/PROTOCOL_ZH.txt",
+  "config": "configs/fcca_three_seed0.json",
+  "tests_passed": 9,
+  "scope": "single C three-task experiment; no parameter search or ten-task authorization"
+}
