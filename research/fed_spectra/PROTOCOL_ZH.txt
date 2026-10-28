@@ -1,0 +1,62 @@
+FedSPECTRA 修订版 v1：冻结前实施协议，2026-10-28
+
+授权和目的
+用户在阅读全文和六项数学缺口后授权“按照你的想法继续实验”。本轮研究服务器谱状态如何统一本地可塑性、历史保持、低秩子空间和本轮增量聚合。新实现独立于A/B/C；不覆盖历史配置、结果或checkpoint。真实训练启动时冻结代码和本协议，新增路线另立记录。后续按唯一30分钟监测持续分析和推进，不用测试表现回改这一轮。
+
+与原提案的明确差异
+1. 不以相同教师/学生的KL一阶梯度作为旧知识敏感度。训练仍用task-start教师在当前batch上的old-class KL；几何统计改为old-output Fisher的随机Jacobian收缩，其在KL=0时仍能非零。
+2. 归一化梯度Gram只表示能量形状。另上传带符号的共同随机投影草图，用其跨客户端方差估计方向分歧。草图不能完整识别所有冲突，不宣称真实全梯度冲突必然下降。
+3. 删除依赖SVD任意符号的Procrustes乘法。用正定Gram之间的对称Gaussian OT map，所有矩阵处于同一个当前rank-r坐标系。
+4. 只输运本轮delta B，不缩放公共参数终点。目标的幅度来自实际delta B能量，归一化梯度谱只提供形状。客户端零增量严格保持零。
+5. Full换基时，投影保留分量留在B，投影残差写入冻结Q/V基权重；模型函数只允许FP32舍入差。历史Fisher存于固定输入坐标d x d，更新时由P提升，禁止不同P下直接做小矩阵EMA。
+6. 不声称精确求解原prompt的统一大目标。子空间选择是明确的trace最大化，历史滤波和谱映射是显式分块构造；其对有限步CE、旧任务风险、聚合后Gram没有保证。
+
+三条运行线与对照
+control：原RRS + AdamW本地更新 + task-start old KL + 原Head-RegMean + 普通B FedAvg。
+MVP：与control相同RRS/本地学习/分类头，增加服务器谱状态及本轮增量输运。
+Full：与MVP相同本地学习/分类头/输运，用联邦梯度草图和历史Fisher构造候选池、选择每轮共享A，完全不调用RRS。
+三者均从原始预训练权重开始，不复用含SSB更新的历史T1；每条均先验收T3，再在同一运行/同一时钟下继续T4-T10。现有A/B/LoRM使用同一划分、seed0、相同阶段的公开记录，明确是原始系统对比；不重训或调优它们。
+controlled arm与MVP/Full相同rank/head/optimizer/precision/训练访问和KL。Full因换基残差积累，单轮活动rank为32，任务内累计变化可能超过32；其增益不能单独归因于谱输运。MVP-control是较干净的输运对照，Full-MVP是整个动态子空间机制的比较。
+
+冻结训练设置
+CIFAR100，alpha=.05，seed0，10客户端全参与，10任务x10类，5通信轮/任务，5本地epochs/轮，batch16，ViT-B/16 augreg_in21k，Q/V rank32，cosine scale16，Head-RegMean alpha=.5。FP32、deterministic、math SDPA、TF32 off。训练划分/预训练权重只读复用。
+B优化器为AdamW，lr=.0002，betas(.9,.999)，eps1e-8，weight_decay=0，沿用每任务5轮的cosine日程；每客户端每轮重建optimizer，三条路线一致。头沿用AdamW lr=.001/wd0且每客户端每轮重置。旧头冻结。没有SSB、boundary repair、FCCA或训练侧centered补偿。
+本地loss = 当前任务块CE + 1.0*T^2*KL(p_task_start_old || p_student_old)，T=2。教师在任务开始冻结且只对当前训练batch前向，无旧图像。T1无KL。额外教师前向完整计数；不把当前输入蒸馏称为旧任务泛化保证。
+
+探针和Fisher
+每任务每客户端按独立Generator(seed610283+10007*t+101*k)选择最多16张当前训练图像；该集合跨轮固定。t/k从0开始。只用test-transform确定性预处理，不读取旧/未来/测试图像参与任何拟合。
+当前g+ = probe mean 当前任务CE的Q/V权重梯度。old输出z/T，p=softmax(z/T)，独立Rademacher xi：a=sqrt(p)*xi - p*sum(sqrt(p)*xi)。old敏感梯度 = grad sum_i<a_i,z_i/T>/sqrt(N)。E[aa^T]=diag(p)-pp^T，估计batch平均输出Fisher的分层输入侧收缩；单随机收缩有方差、归一化引入偏差，层间/输出交叉项未完整保留。
+每通信轮一组探针，共享一次student forward，T1一次current backward，T2以后current和old各一次backward。每任务末额外一组all-seen Fisher用于将当前已学知识记入历史；仍只读本任务训练图像。
+full Q/V梯度只在模拟客户端私有RAM暂存，服务器只收到候选低秩草图、m x m统计和带符号小草图，不上传d x d梯度。代码中的单进程缓存不冒充真实网络，所有逻辑消息按实际类型/形状计数。
+
+Full候选池与共享空间
+每层候选维m64。共同输出投影Omega[d,16]来自固定独立Gaussian种子，缩放1/sqrt(16)。当前候选上传g_q^T Omega和g_v^T Omega，按客户端当前梯度Frobenius归一化；服务器按样本权重形成因子协方差，取前16维近似当前方向。
+候选池包括上一轮U32、当前16、历史Fisher前16；依次去重正交化，不足时固定种子随机补全。最终选择发生在该64维池内。MVP直接使用固定RRS的U32作为P。
+E+=g+P；S_k=sum_QV E+^T E+ / sum_QV ||E+||^2。H_k同理由Fisher梯度得到。带符号草图T_k=stack(Omega^T E_q,Omega^T E_v)/sqrt(sum_QV||E+||^2)；D=sum p(T_k-Tbar)^T(T_k-Tbar)。相反梯度具有相同S，但D一般非零。
+Sbar采用Bures barycenter，输入ridge1e-5*I/m，FP64固定点最多60次，相对步长阈值1e-7；不收敛时仅明确记录arithmetic fallback，不静默替换。Bures输出再归一化为单位trace，原trace记录。
+历史在ambient input坐标保存：H <- .9 H + .1 P(mean H_k)P^T，再归一化；首次非零直接采用新值。无新敏感信号时保留历史，不衰减为零。任务末all-seen Fisher以同规则提交；历史不保存原始图像。
+M = Sbar - .5*(P^T H P) - .25*D。取top32特征向量Z，U=PZ，A=U^T。它精确求解给定P和统计下的trace最大化；负特征值允许存在并完整记录。
+换基：Bnew = Bold Aold Unew；R=Bold Aold - Bnew Anew；base_QV += R。分别检查实际FP32重建误差和正交误差。残差通过旧B/新B因子及已知A传输，完整计费。三条路线每轮均重置Adam状态，无错误的二阶动量旋转。
+
+对称谱映射与幅度
+把Sbar、H、D均投影到实际部署U坐标。R=(I+.5H_r+.25D_r)^(-1/2)，shape=unit_trace(R S_r R)。每个Q/V独立：e=sum p||delta B_k||^2，target=e*((1-1e-4)*shape+1e-4 I/r)。
+C_k=delta B_k^T delta B_k + 1e-4*||delta B_k||^2 I/r。
+T_k=C_k^(-1/2) (C_k^(1/2)*target*C_k^(1/2))^(1/2) C_k^(-1/2)。
+将T_k特征值限制到[.5,2]，变换delta B_k T_k后按原样本权重聚合。聚合范数最多为普通FedAvg本轮增量的2倍，必要时统一缩放并记录。零增量/完全抵消保持零。没有客户端可靠度q，也不使用SVD列符号。
+实际部署采用原FP32 FedAvg端点 + (新聚合增量-原聚合增量)，identity map精确复现原端点；零学习时保留原始公共参数。记录FP32实际增量的历史代价，不把理论FP64结果当实际部署值。
+目标Gram只约束正则化客户端映射；clip、零空间和有符号平均均会改变最终Gram。完整报告单客户端与聚合前后谱、Bures距离、有效秩、奇异/条件数、clip率、范数cap、历史暴露和有符号一致度，不预设它们一定改善。
+
+验收、评价与选择边界
+CPU测试必须覆盖Fisher非零、相反梯度、Bures已知解/失败记录、正交坐标旋转等变性、零更新、范数上限、换基残差保留、旧头不变、数据范围，以及逐客户端/换基/任务边界断点重载与连续运行一致。GPU实际前向验证与训练均计入同一时钟。
+T3和T10各保存资格记录和独立checkpoint，重载实际全部seen测试图像（3000/10000）确认raw/centered预测相同，logit差单列。工程验收失败停止对应路线；T3性能不理想本身不触发改配置、挑版本、重启或省略T10。预算内继续十任务，以免只挑三任务有利结果。
+每阶段保留当时模型结果：raw/centered矩阵、overall/old/new、AIA、forgetting、W+S、old->new/new->old、与A同图配对纠正/破坏、机制与通信/前后向/显存/墙钟。不能用最终模型重算早期阶段取代原记录。
+描述性科学条件：T10 raw严格超过原LoRM；raw AIA/旧类不低于LoRM，新类下降<=1pp；相对controlled arm raw overall/AIA不下降；centered不能是唯一收益。机制指标完整解释，任何clip>25%或fallback>5%单独标为机制依赖风险，不据此事后调阈值。单seed和已知历史对照不支持统计显著性或独立确认。
+
+资源和执行
+三条路线属于同一个实验，共用首次实际运行时钟。三张已授权GPU（具体卡号见私有启动记录），启动前核实每卡空闲>=18000MiB。不终止现有进程。新独立root（具体路径见私有操作记录）；数据/权重/deps/sources/manifest通过只读使用的符号链接复用，新增缓存和tmp只在此root。
+内部deadline=started+84600秒；外部timeout在开始后86200秒，60秒kill grace。单次总历时严格<86400秒。监督器每10秒检查root实际分配字节，硬上限32GB，28GB停止新增训练/写入阈值，预计峰值<16GB；均小于50,000,000,000字节。所有重试/恢复共用原started/deadline，不自动重启成本性失败。
+中性入口由WORKER_ENTRY环境变量指定，配置/项目路径通过环境传递；主/子进程完整ps与nvidia-smi验收。每条路线无多进程DataLoader。
+一个30分钟会话监测统一状态、分析、故障、后继实验、公开交付。健康无变化静默；只通知阶段结果、路线变化、失败、完成或用户行动。运行代码冻结；后续新假设另立实验，不借拆名延长本轮。
+
+公开交付
+公开本方法源码/配置/协议、聚合资格与报告、成本和负结果。私有保留权重、teacher state、逐图logits/ID、探针索引和原始梯度/Fisher矩阵。分享对话不进入公共仓库。通过7897代理推送，核对远端提交与匿名报告访问。本轮完成后按结果自主选择下一项主线实验，保持同一监测入口。

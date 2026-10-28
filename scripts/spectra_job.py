@@ -1,0 +1,91 @@
+"""One common clock/storage supervisor, a real GPU preflight, and three arms."""
+import json,os,signal,subprocess,sys,time
+from pathlib import Path
+
+
+def main():
+    root=Path(os.environ['PROJECT_ROOT']);report=root/'reports';receipt=report/'job.json'
+    if receipt.exists():raise RuntimeError('Existing experiment: do not duplicate or reset its clock')
+    assert json.loads((report/'CPU_TESTS.json').read_text())['passed']
+    entry=os.environ['WORKER_ENTRY'];gpus=json.loads(os.environ['LANE_GPUS'])
+    cfg=json.loads((root/'configs/spectra_full_seed0.json').read_text())
+    assert set(gpus)=={'control','mvp','full'} and len(set(gpus.values()))==3
+    for gpu in gpus.values():
+        free=int(subprocess.check_output(['nvidia-smi','-i',str(gpu),'--query-gpu=memory.free','--format=csv,noheader,nounits'],text=True).strip())
+        if free<cfg['required_free_mib']:raise RuntimeError('Insufficient GPU admission memory')
+    # Includes initial source setup/CPU qualification conservatively, not just
+    # training. This immutable receipt is also used by the external timeout.
+    origin=json.loads((report/'ORIGIN.json').read_text())
+    started=origin['started'];deadline=started+cfg['maximum_seconds']
+    if time.time()>=deadline:raise TimeoutError('Original budget exhausted')
+    def size():
+        total=0
+        for directory,_,files in os.walk(root,followlinks=False):
+            for name in files:
+                p=Path(directory)/name
+                try:
+                    if not p.is_symlink():total+=p.stat().st_blocks*512
+                except FileNotFoundError:pass
+        return total
+    state={'started':started,'deadline':deadline,'status':'preflight','lanes':[],
+           'storage_limit_bytes':cfg['storage_limit_bytes'],'write_stop_bytes':cfg['write_stop_bytes'],
+           'baseline_allocated_bytes':size(),'supervisor_pid':os.getpid()}
+    children=[];logs=[];stop=False
+    def save():
+        temp=receipt.with_suffix('.tmp');temp.write_text(json.dumps(state,indent=2));temp.replace(receipt)
+    def request_stop(*_):
+        nonlocal stop
+        stop=True
+    signal.signal(signal.SIGTERM,request_stop);signal.signal(signal.SIGINT,request_stop)
+    def terminate():
+        for p in children:
+            if p.poll() is None:os.killpg(p.pid,signal.SIGTERM)
+        until=time.time()+30
+        while any(p.poll() is None for p in children) and time.time()<until:time.sleep(.5)
+        for p in children:
+            if p.poll() is None:os.killpg(p.pid,signal.SIGKILL);p.wait()
+    def poll_budget():
+        used=size();state.update(allocated_bytes=used,checked=time.time());save()
+        if stop or time.time()>=deadline or used>=cfg['write_stop_bytes']:
+            state['status']='budget_or_signal_stop';save();terminate();return False
+        return True
+    def spawn(arm,preflight=False):
+        out=report/arm;out.mkdir(exist_ok=True)
+        name='preflight' if preflight else arm
+        log=(report/f'{name}.log').open('x');logs.append(log)
+        env=dict(os.environ,ARM=arm,CUDA_VISIBLE_DEVICES=str(gpus[arm]),ENTRY_FILE='scripts/spectra_train.py')
+        env.pop('ENTRY_MODULE',None)
+        if preflight:env['PREFLIGHT_ONLY']='1'
+        else:env.pop('PREFLIGHT_ONLY',None)
+        p=subprocess.Popen([sys.executable,entry],env=env,stdin=subprocess.DEVNULL,
+                           stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+        children.append(p)
+        state['lanes'].append({'arm':name,'gpu':gpus[arm],'pid':p.pid,'started':time.time()});save()
+        return p
+    save()
+    try:
+        preflight=spawn('full',True)
+        while preflight.poll() is None:
+            if not poll_budget():return
+            time.sleep(10)
+        if preflight.returncode!=0 or not json.loads((report/'REAL_PREFLIGHT.json').read_text())['passed']:
+            raise RuntimeError('Real GPU preflight failed; formal training not launched')
+        state['status']='running';save()
+        workers=[spawn(arm) for arm in ('control','mvp','full')]
+        while any(p.poll() is None for p in workers):
+            if not poll_budget():return
+            time.sleep(10)
+        qualified=all(p.returncode==0 and (root/'runs'/arm/'COMPLETE.json').exists()
+                      for arm,p in zip(('control','mvp','full'),workers))
+        state.update(status='completed' if qualified else 'failed',qualified=qualified,
+                     exit_codes={arm:p.returncode for arm,p in zip(('control','mvp','full'),workers)})
+        if qualified:
+            (report/'COMPLETE.json').write_text(json.dumps({'qualified':True,'arms':3,'tasks_per_arm':10,'completed':time.time()}))
+    except BaseException as exc:
+        state.update(status='supervisor_failure',error=repr(exc));terminate();raise
+    finally:
+        state.update(ended=time.time(),allocated_bytes=size());save()
+        for log in logs:log.close()
+
+
+if __name__=='__main__':main()

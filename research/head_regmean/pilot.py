@@ -138,6 +138,9 @@ class Pilot:
         loss.backward()
         return loss
 
+    def adapter_optimizer(self, parameters, state):
+        return ClientMuon(parameters, state, [], [], False)
+
     def train_client(self):
         s=self.s;k=s['next_client'];t=s['task'];r=s['round'];bs=self.model.b_parameters()
         global_b=[b.detach().clone() for b in bs];global_head=self.model.rows[-1].detach().clone()
@@ -146,7 +149,7 @@ class Pilot:
         if n:
             dl=self.loader(self.raw[0],ids,self.cfg['batch'],True);count=self.cfg['epochs']*len(dl)
             momentum=[v.to(self.device) for v in s['client_states'][k]['m']]
-            opt=ClientMuon(bs,momentum,[],[],False)
+            opt=self.adapter_optimizer(bs,momentum)
             headopt=torch.optim.AdamW([self.model.rows[-1]],lr=.001,weight_decay=0)
             steps=seen=0;loss_sum=0.
             for _ in range(self.cfg['epochs']):

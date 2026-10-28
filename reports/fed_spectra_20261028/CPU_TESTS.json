@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "expected_tests": 28,
+  "seconds": 16.70218586921692,
+  "scope": [
+    "spectral algebra and invariance",
+    "Fisher zero-KL case",
+    "residual-preserving rebase",
+    "three-arm full/resume trajectories",
+    "actual checkpoint qualification and continuation",
+    "original Head-RegMean and FCCA regression"
+  ]
+}
