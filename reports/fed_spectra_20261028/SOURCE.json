@@ -1,0 +1,17 @@
+{
+  "commit": "f935467407272d527ad2ed752ced73d083cb0b5a",
+  "branch": "codex/fedspectra-20261028",
+  "protocol": "research/fed_spectra/PROTOCOL_ZH.txt",
+  "cpu_tests_passed": 28,
+  "methods": [
+    "controlled_adam",
+    "fed_spectra_mvp",
+    "fed_spectra_full"
+  ],
+  "fresh_training": true,
+  "prior_T1_not_imported": true,
+  "milestones": [
+    3,
+    10
+  ]
+}

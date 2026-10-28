@@ -1,0 +1,142 @@
+{
+  "passed": true,
+  "images": 4,
+  "old_fisher_layer_gradient_norms": [
+    5.989724636077881,
+    6.03704833984375,
+    5.952193737030029,
+    6.1708984375,
+    5.868961334228516,
+    5.536288738250732,
+    5.832798957824707,
+    5.677779674530029,
+    5.045009136199951,
+    5.604071140289307,
+    5.883992671966553,
+    6.27558708190918
+  ],
+  "rebase_maximum_logit_difference": 3.3974647521972656e-06,
+  "rebase": [
+    {
+      "residual_fro": 0.027189827373121464,
+      "old_update_fro": 0.02773541027655213,
+      "maximum_weight_roundoff": 1.4846152029956983e-08
+    },
+    {
+      "residual_fro": 0.027248650879503723,
+      "old_update_fro": 0.027792796484767183,
+      "maximum_weight_roundoff": 1.2984902542090282e-08
+    },
+    {
+      "residual_fro": 0.0269882982273229,
+      "old_update_fro": 0.02758427653247566,
+      "maximum_weight_roundoff": 1.3893195427439053e-08
+    },
+    {
+      "residual_fro": 0.026959693304486256,
+      "old_update_fro": 0.027554552091099558,
+      "maximum_weight_roundoff": 1.024786777659159e-08
+    },
+    {
+      "residual_fro": 0.027164268138704598,
+      "old_update_fro": 0.027725238265797585,
+      "maximum_weight_roundoff": 1.3988374736317866e-08
+    },
+    {
+      "residual_fro": 0.027193729931539606,
+      "old_update_fro": 0.02777163512565912,
+      "maximum_weight_roundoff": 5.765702443261134e-09
+    },
+    {
+      "residual_fro": 0.027026947034049786,
+      "old_update_fro": 0.027623886693576568,
+      "maximum_weight_roundoff": 7.3766131813979285e-09
+    },
+    {
+      "residual_fro": 0.02719148364145608,
+      "old_update_fro": 0.0277947679676399,
+      "maximum_weight_roundoff": 4.432227085349183e-09
+    },
+    {
+      "residual_fro": 0.02721159054126757,
+      "old_update_fro": 0.02779836908910784,
+      "maximum_weight_roundoff": 7.357426778931142e-09
+    },
+    {
+      "residual_fro": 0.027163050626572156,
+      "old_update_fro": 0.027745634236476836,
+      "maximum_weight_roundoff": 7.2370000825383585e-09
+    },
+    {
+      "residual_fro": 0.02709602493939829,
+      "old_update_fro": 0.027658106838224596,
+      "maximum_weight_roundoff": 7.3952662049681095e-09
+    },
+    {
+      "residual_fro": 0.027207091238644315,
+      "old_update_fro": 0.02778347825889463,
+      "maximum_weight_roundoff": 6.038820582476845e-09
+    },
+    {
+      "residual_fro": 0.026944000783281283,
+      "old_update_fro": 0.027511808329774273,
+      "maximum_weight_roundoff": 7.451013556147856e-09
+    },
+    {
+      "residual_fro": 0.027219999665498967,
+      "old_update_fro": 0.02779157546297363,
+      "maximum_weight_roundoff": 5.453383633557962e-09
+    },
+    {
+      "residual_fro": 0.027272511523804395,
+      "old_update_fro": 0.027821673968289516,
+      "maximum_weight_roundoff": 7.143238361928539e-09
+    },
+    {
+      "residual_fro": 0.02709951855966021,
+      "old_update_fro": 0.027647754772726674,
+      "maximum_weight_roundoff": 7.298116444509617e-09
+    },
+    {
+      "residual_fro": 0.027092792290711716,
+      "old_update_fro": 0.027677821963825837,
+      "maximum_weight_roundoff": 1.4388640390272656e-08
+    },
+    {
+      "residual_fro": 0.027089291284023258,
+      "old_update_fro": 0.027677031491639435,
+      "maximum_weight_roundoff": 3.723556893375779e-09
+    },
+    {
+      "residual_fro": 0.02719399950075751,
+      "old_update_fro": 0.027812335992172508,
+      "maximum_weight_roundoff": 6.951954706346797e-09
+    },
+    {
+      "residual_fro": 0.02702501582587295,
+      "old_update_fro": 0.02763872835077081,
+      "maximum_weight_roundoff": 4.089214800107044e-09
+    },
+    {
+      "residual_fro": 0.02727919888202137,
+      "old_update_fro": 0.02779797350815071,
+      "maximum_weight_roundoff": 6.812667624478408e-09
+    },
+    {
+      "residual_fro": 0.02725507744661241,
+      "old_update_fro": 0.027769713684883922,
+      "maximum_weight_roundoff": 7.149390662819499e-09
+    },
+    {
+      "residual_fro": 0.027240906800585867,
+      "old_update_fro": 0.027822557409064107,
+      "maximum_weight_roundoff": 7.424694636881668e-09
+    },
+    {
+      "residual_fro": 0.026952154110824182,
+      "old_update_fro": 0.027521346754553082,
+      "maximum_weight_roundoff": 6.739111019227195e-09
+    }
+  ],
+  "peak_gpu_allocated_bytes": 817217024
+}

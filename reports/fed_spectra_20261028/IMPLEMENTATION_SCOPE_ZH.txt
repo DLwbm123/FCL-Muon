@@ -1,0 +1,8 @@
+FedSPECTRA 启动实现口径补充
+科学源码与配置冻结于f935467，未因启动结果修改训练。
+
+1. control/MVP/Full均为相同seed、划分、rank、cosine/Head-RegMean、AdamW、KL、轮数和训练访问预算。MVP与control共享RRS初始化且新探针恢复训练RNG。
+2. Full移除RRS统计遍历，因此与另外两条不保证完全相同的逐batch增强/全局随机流。Full-MVP比较整个动态子空间机制，不能声称只有一个算子不同的严格同轨迹因果比较。若后续需要更严格配对，应在新的冻结实验中使用独立task/client/round随机流。
+3. Full保留换基残差，单轮活动rank32；任务内累计更新秩可超过32，最宽松上界为5轮乘32，不能隐藏这一表示容量差异。
+4. 原LoRM、A、B采用已交付同seed同划分的原阶段结果；原LoRM的rank/head/optimizer/precision与本实验不同，是完整系统比较。
+5. 本轮单seed，不预设精度改善。数学数值检查通过只说明已验证的工程性质，不是方法有效性证据。

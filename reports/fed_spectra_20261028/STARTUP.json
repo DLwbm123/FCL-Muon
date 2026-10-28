@@ -1,0 +1,83 @@
+{
+  "status": "running",
+  "checked": 1793188685.577538,
+  "clock": {
+    "started": 1793187562.1834884,
+    "deadline": 1793272162.1834884
+  },
+  "allocated_bytes": 2594705408,
+  "storage_limit_bytes": 32000000000,
+  "write_stop_bytes": 28000000000,
+  "arms": {
+    "control": {
+      "progress": {
+        "time": 1793188662.0271986,
+        "method": "controlled_adam",
+        "task": 0,
+        "round": 1,
+        "phase": "clients",
+        "next_client": 8,
+        "client_rounds": 18,
+        "training_visits": 42390,
+        "stages": [],
+        "geometry_rounds": 0,
+        "transport_rounds": 0,
+        "worker_started": 1793188258.7783542,
+        "original_clock": {
+          "started": 1793187562.1834884,
+          "deadline": 1793272162.1834884
+        },
+        "qualified_milestones": []
+      },
+      "failure": null
+    },
+    "mvp": {
+      "progress": {
+        "time": 1793188661.479349,
+        "method": "fed_spectra_mvp",
+        "task": 0,
+        "round": 1,
+        "phase": "clients",
+        "next_client": 8,
+        "client_rounds": 18,
+        "training_visits": 42390,
+        "stages": [],
+        "geometry_rounds": 2,
+        "transport_rounds": 1,
+        "worker_started": 1793188258.7275987,
+        "original_clock": {
+          "started": 1793187562.1834884,
+          "deadline": 1793272162.1834884
+        },
+        "qualified_milestones": []
+      },
+      "failure": null
+    },
+    "full": {
+      "progress": {
+        "time": 1793188674.432516,
+        "method": "fed_spectra_full",
+        "task": 0,
+        "round": 2,
+        "phase": "clients",
+        "next_client": 0,
+        "client_rounds": 20,
+        "training_visits": 50000,
+        "stages": [],
+        "geometry_rounds": 3,
+        "transport_rounds": 2,
+        "worker_started": 1793188258.5519404,
+        "original_clock": {
+          "started": 1793187562.1834884,
+          "deadline": 1793272162.1834884
+        },
+        "qualified_milestones": []
+      },
+      "failure": null
+    }
+  },
+  "source_commit": "f935467407272d527ad2ed752ced73d083cb0b5a",
+  "cpu_tests_passed": 28,
+  "gpu_preflight_passed": true,
+  "process_name_check": "neutral supervisor and all three workers verified with ps and nvidia-smi"
+}
