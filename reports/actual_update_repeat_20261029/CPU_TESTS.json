@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "seconds": 9.874671220779419,
+  "suites": [
+    "tests/test_actual_update.py",
+    "tests/test_fed_spectra.py"
+  ],
+  "launcher_report_compile": true
+}

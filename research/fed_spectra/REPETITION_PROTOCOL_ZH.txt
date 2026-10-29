@@ -1,0 +1,20 @@
+实际更新谱修正：固定三seed探索性稳健性检查（2026-10-29）
+
+背景与范围
+原seed0五任务实验已完成并公开：control raw86.14%、global86.24%；+0.10pp低于冻结+0.20pp门槛，旧类-0.075pp亦失败。原判定不变。600个算子记录全部生效、范数正常，不能把差异小归因于算子未执行，也不据此增大eta。本次直接检验相同主线的微小新旧类权衡是否随seed改变，不优化历史LoRM或baseline。
+这是看到seed0后决定的探索性重复，不是事前独立确认；不作统计显著性或T10结论。旧FedSPECTRA三arm保持停止。
+
+运行前固定
+新增seed1和seed2，各control eta=0与global eta=.1，全部fresh预训练起步，前5任务，各任务5轮、10客户端、每客户端5epochs、batch16。所有方法参数及数值阈值继承ACTUAL_UPDATE_PROTOCOL_ZH.txt，不搜索eta，不修改算子/优化器/损失/任务数。使用既有对应seed的CIFAR100 alpha.05 manifest；Python/NumPy/Torch初始化seed与manifest seed一致，同seed两路线共享初始随机流。PYTHONHASHSEED保持原0。旧seed0的初始化行为保持不变。
+只改调度器按EXPERIMENT_SEED选配置，初始化读取cfg.seed，单seed报告标注真实seed。两条路线每任务内固定A，任务边界RRS不强行绑定数值；方法造成的后续特征差异是机制后果。
+两个seed无论T1/T3结果如何都完成T5。每路线T3/T5分别150/250客户端轮、375000/625000访问，3000/5000图实际checkpoint重载，raw与centered预测一致。工程错误/数值违规/资源预算触发时保留失败，不静默重启、不丢弃seed、不补抽seed。
+
+报告规则（在新seed运行前固定）
+必须展示seed0、1、2全部T1-T5，逐seed重复原T5门槛判定，及3seed的配对差均值、样本标准差、最小值、最大值；不选择最好seed。Raw为主，centered仅诊断；保留overall/old/new/AIA/forgetting/W/S/双向混淆、每seed同图纠正和破坏、算子幅度/范数/角度/有效秩、通信与成本。
+三个seed整体“值得进入后续机制验证”的探索性条件：3seed平均raw总体差>=+.20pp；平均raw AIA和旧类差均>=0；每个seed新类差>=-1pp；平均raw S差<=0；至少2/3 seed总体差>0；全部工程资格通过。此标准不重写seed0的失败，也不证明稳定/显著收益。任一缺失或失败则不能判定满足条件，完整记录原因。
+全部完成后再做汇总；若不满足，不自动继续相同eta的更多seed或T10，不通过测试集搜索eta救结果。持续研究授权下先分析已有机制证据，下一假设另立冻结协议。
+
+共同预算与交付
+seed1与seed2属于一次重复实验，共享同一ORIGIN.started；每对子目录内部deadline=started+27900秒，外部timeout到started+28600秒另加60秒kill grace，整个实验<8小时。重试/排队/续跑不延时。两个配对主管可并行，GPU映射启动前记录，各GPU启动前空闲>=18000MiB。
+两子目录各实际存储上限20GB、16GB停止新增写入；本次整体上限40GB（含源代码/日志/cache/tmp/所有新副本），预计峰值<24GB，严格<50GB。各主管每10秒计算自身实际st_blocks；worker的checkpoint写入前检查沿用现有保护。共享已有data/deps/manifests/weights/sources只读，不下载、不复制模型库。部署前做挂载/余量/写读探针，两个子目录共享原始时钟。中性入口，ps和nvidia-smi检查主/子进程。
+每seed完成后原报告器自动生成配对报告；最终统一本地收集并汇总seed0/1/2，可公开聚合证据经代理提交推送并验证匿名访问。训练权重、逐图logits/ID、完整日志及私有路径不公开。保持本会话唯一30分钟心跳，健康未变化静默。

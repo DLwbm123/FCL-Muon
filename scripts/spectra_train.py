@@ -12,9 +12,9 @@ from research.fed_spectra.actual_update import ActualUpdatePilot,global_shape_up
 from research.fed_spectra.lifecycle import qualify,write
 
 
-def initialize_rng():
+def initialize_rng(seed=0):
     torch.set_num_threads(4);torch.set_float32_matmul_precision('highest')
-    torch.manual_seed(0);np.random.seed(0);random.seed(0)
+    torch.manual_seed(seed);np.random.seed(seed);random.seed(seed)
     torch.backends.cudnn.benchmark=False;torch.backends.cudnn.deterministic=True
     torch.backends.cuda.matmul.allow_tf32=False;torch.backends.cudnn.allow_tf32=False
     torch.use_deterministic_algorithms(True)
@@ -94,11 +94,14 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
 def main():
     root=Path(os.environ['PROJECT_ROOT']);arm=os.environ.get('ARM','full');report=root/'reports'/arm
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
+    seed=int(os.environ.get('EXPERIMENT_SEED','0'))
+    if seed not in (0,1,2):raise ValueError('Unregistered seed')
     if prefix not in ('spectra','actual_update'):raise ValueError('Unknown configuration family')
-    cfg=json.loads((root/f'configs/{prefix}_{arm}_seed0.json').read_text())
+    cfg=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
     if time.time()>=clock['deadline']:raise TimeoutError('Original deadline exhausted')
-    initialize_rng()
+    assert cfg['seed']==seed
+    initialize_rng(seed)
     manifest=json.loads((root/cfg['manifest']).read_text());weights=json.loads((root/'weights.json').read_text())
     assert manifest['identity']=={k:cfg[k] for k in ('dataset','seed','alpha','clients')}
     raw=[CIFAR100(root/'data',train=t,download=False) for t in (True,False)]

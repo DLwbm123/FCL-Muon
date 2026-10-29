@@ -105,3 +105,28 @@ def test_frozen_configs_differ_only_in_eta_and_output():
     assert a['actual_update']['operator'].pop('eta')==0.
     assert b['actual_update']['operator'].pop('eta')==.1
     assert a==b
+
+
+def test_registered_repetition_seeds_and_matched_rng():
+    import random
+    from scripts.spectra_train import initialize_rng
+    root=Path(__file__).resolve().parents[1]
+    snapshots=[]
+    for seed in (0,1,2):
+        a=json.loads((root/f'configs/actual_update_control_seed{seed}.json').read_text())
+        b=json.loads((root/f'configs/actual_update_global_seed{seed}.json').read_text())
+        assert a['seed']==b['seed']==seed
+        assert a['manifest']==b['manifest']==f'manifests/seq-cifar100_n10_a0.05_s{seed}.json'
+        assert a['actual_update']['operator'].pop('eta')==0.
+        assert b['actual_update']['operator'].pop('eta')==.1
+        a.pop('output');b.pop('output');assert a==b
+        if seed==0:base=a.copy()
+        else:
+            for k in ('seed','manifest','protocol_version'):a[k]=base[k]
+            assert a==base
+        def sample():return torch.rand(4),np.random.rand(4),random.random()
+        initialize_rng(seed);x=sample()
+        initialize_rng(seed);y=sample()
+        assert torch.equal(x[0],y[0]) and np.array_equal(x[1],y[1]) and x[2]==y[2]
+        snapshots.append(x[0])
+    assert all(not torch.equal(snapshots[i],snapshots[j]) for i in range(3) for j in range(i))

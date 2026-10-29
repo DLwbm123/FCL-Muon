@@ -9,12 +9,15 @@ def main():
     assert json.loads((report/'CPU_TESTS.json').read_text())['passed']
     entry=os.environ['WORKER_ENTRY'];gpus=json.loads(os.environ['LANE_GPUS'])
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
+    seed=int(os.environ.get('EXPERIMENT_SEED','0'))
+    if seed not in (0,1,2):raise ValueError('Unregistered seed')
     if prefix not in ('spectra','actual_update'):raise ValueError('Unknown configuration family')
     arms=('control','global') if prefix=='actual_update' else ('control','mvp','full')
-    cfg=json.loads((root/f'configs/{prefix}_{arms[-1]}_seed0.json').read_text())
+    cfg=json.loads((root/f'configs/{prefix}_{arms[-1]}_seed{seed}.json').read_text())
     assert set(gpus)==set(arms) and len(set(gpus.values()))==len(arms)
     for arm in arms:
-        other=json.loads((root/f'configs/{prefix}_{arm}_seed0.json').read_text())
+        other=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
+        assert other['seed']==seed
         assert all(other[k]==cfg[k] for k in ('tasks','maximum_seconds','storage_limit_bytes','write_stop_bytes'))
     for gpu in gpus.values():
         free=int(subprocess.check_output(['nvidia-smi','-i',str(gpu),'--query-gpu=memory.free','--format=csv,noheader,nounits'],text=True).strip())

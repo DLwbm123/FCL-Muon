@@ -98,11 +98,11 @@ def main():
         for view in ['raw','centered']:
             expected=arms['global'][view][t-1]['overall_percent']-arms['control'][view][t-1]['overall_percent']
             assert abs(expected-pairs[str(t)][view]['accuracy_delta_pp'])<1e-10
-    result={'status':'COMPLETED_QUALIFIED','hypothesis_supported_in_this_pilot':all(conditions.values()),
+    result={'status':'COMPLETED_QUALIFIED','seed':cfg['seed'],'hypothesis_supported_in_this_pilot':all(conditions.values()),
         'scientific_conditions':conditions,'frozen_gate':gate,'T5_raw_differences_pp_except_S_count':differences,
         'arms':arms,'paired_vs_control':pairs,'validation':{'same_configs_except_eta_output':True,
         'matrix_and_W_plus_S':True,'paired_counts_match_accuracy':True},
-        'limitations':['single seed0 development pilot; no statistical significance',
+        'limitations':[f"single seed{cfg['seed']} development pilot; no statistical significance",
             'T5 endpoint; no T10 claim','current-input KL is not old-task risk guarantee',
             'norm is preserved, but vectorized direction changes under nonuniform spectral scaling',
             'no causal attribution from spectral proxy improvements alone'],
