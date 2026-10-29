@@ -64,6 +64,8 @@ def validate_comparison_configs(reference,candidate):
     a=json.loads(json.dumps(reference));b=json.loads(json.dumps(candidate))
     for c in [a,b]:c.pop('output');c['actual_update']['operator'].pop('eta')
     gated=bool(b.get('training_gate'))
+    if b.get('direction_selection'):
+        assert b.pop('direction_selection')=={'type':'gradient_reflection','tie_tolerance':1e-12}
     if gated:
         assert b.pop('training_gate')=={'minimum_improvement':1e-6,'probe_per_client':32,'selection_seed_base':61029}
         for k in ['protocol_version','maximum_seconds','storage_limit_bytes','write_stop_bytes']:
@@ -103,6 +105,9 @@ def main():
         arms['global']['training_gate']={'accepted_rounds':q['gate_accepted_rounds'],'rounds':len(gates),
             'decisions':[{'task':v['task'],'round':v['round'],'accepted':v['accepted'],'loss_difference':v['loss_difference']} for v in gates],
             'student_forward_images':q['gate_student_forward_images'],'teacher_forward_images':q['gate_teacher_forward_images']}
+        if q['config'].get('direction_selection'):
+            arms['global']['training_gate'].update(backward_images=q['gate_backward_images'],negative_direction_rounds=q['negative_direction_rounds'],
+              direction_choices=[v['direction']['selected'] for v in gates])
     a,b=arms['control']['raw'][-1],arms['global']['raw'][-1]
     differences={k:b[k]-a[k] for k in ['overall_percent','old_percent','new_percent','AIA_percent','forgetting_pp','S']}
     gate=frozen['scientific_gate']
@@ -127,6 +132,8 @@ def main():
             'no causal attribution from spectral proxy improvements alone'],
         'source_revision':json.loads((report/'SOURCE.json').read_text())['commit']}
     if gated:result['limitations'].append('Control is the qualified existing same-seed run; gate uses extra current-training probes and logical communication, not held-out data.')
+    if records['global']['config'].get('direction_selection'):
+        result['limitations'].append('Direction selected by training gradient, then loss-gated; extra backward cost included; reflection is not original spectral interpolation.')
     write(report/'FINAL_REPORT.json',result)
     lines=['实际更新全局谱修正：五任务配对实验结果',
         '结论：'+('满足预先固定的单seed初步收益条件。' if result['hypothesis_supported_in_this_pilot'] else '未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。'),
@@ -150,6 +157,8 @@ def main():
         '完整分阶段新旧类、方向混淆、矩阵与同图净变化见FINAL_REPORT.json；逐层谱细节见QUALIFICATION_T5.json。',
         '权重、teacher、逐图logits/ID及完整运行日志保留私有；公开聚合报告、配置、源码和验收摘要。']
     if gated:lines+=['训练目标门：仅同probe CE+KL改善>1e-6时接受eta=.1候选，否则精确原FedAvg。对照复用已合格同seed五任务运行；新方案有额外probe/逻辑通信开销，不是零成本比较。',json.dumps(arms['global']['training_gate'],ensure_ascii=False)]
+    if records['global']['config'].get('direction_selection'):
+        lines+=['方向版本：训练梯度在原候选与等范数反射方向间固定选择，再应用原训练接受门；新增反向成本，负向不是原谱插值，不能将原候选统计当实际部署。']
     (report/'FINAL_REPORT_ZH.txt').write_text('\n'.join(lines)+'\n')
     print(json.dumps({'report_ready':True,'scientific_conditions':conditions}))
 

@@ -39,3 +39,31 @@ def choose_direction(grads,baseline,positive,negative):
           for key,values in [('positive',positive),('negative',negative)]}
     if not all(torch.isfinite(torch.tensor(v)) for v in dots.values()):raise ArithmeticError('Nonfinite directional derivative')
     return ('negative' if dots['negative']<dots['positive']-1e-12 else 'positive'),dots
+
+
+def reflected_record(proposal,origin,baseline,negative):
+    """Describe the selected FP32 endpoint, never copy positive spectral effects."""
+    import copy
+    record=copy.deepcopy(proposal)
+    index=0
+    for pair in record['layers'].values():
+        for r in pair:
+            o,b,n=origin[index].double(),baseline[index].double(),negative[index].double();index+=1
+            old=b-o;actual=n-o;norm=float(old.norm());outnorm=float(actual.norm())
+            error=abs(outnorm-norm)/max(norm,1e-30)
+            correction=float((n-b).norm())/max(norm,1e-30)
+            r.update(output_norm=outnorm,norm_relative_error=error,relative_correction=correction,
+                actual_FP32_norm=outnorm,actual_FP32_norm_relative_error=error,actual_FP32_relative_correction=correction,
+                cosine_with_fedavg=float((actual*old).sum())/max(norm*outnorm,1e-30) if norm else 1.,
+                direction='negative_reflection',target_energy_role='positive_proposal_reference_only')
+            if 'singular_values_before' in r and norm:
+                before=torch.linalg.svdvals(old);after=torch.linalg.svdvals(actual)
+                active=before>1e-12*before[0]
+                energy=after[active].square();energy=energy/energy.sum()
+                r.update(singular_values_after=after.tolist(),energy_after=energy.tolist(),
+                    effective_energy_rank_after=float(torch.exp(-(energy*energy.clamp_min(1e-300).log()).sum())),
+                    singular_scale_min=float((after[active]/before[active]).min()),
+                    singular_scale_max=float((after[active]/before[active]).max()),
+                    after_spectrum_measurement='descending SVD of deployed FP32 update')
+            if error>5e-4:raise ArithmeticError('Reflected record norm mismatch')
+    return record

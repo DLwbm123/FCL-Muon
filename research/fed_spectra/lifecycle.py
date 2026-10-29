@@ -89,6 +89,13 @@ def qualify(p,n):
         q['extra_probe_forward_images']+=q['gate_student_forward_images']+q['gate_teacher_forward_images']
         q['extra_probe_forward_calls']+=sum(v['forward_calls'] for v in gates)
         q['gate_accepted_rounds']=sum(v['accepted'] for v in gates)
+        if cfg.get('direction_selection'):
+            assert all('direction' in v and v['backward_images']>0 for v in gates)
+            q['gate_backward_images']=sum(v['backward_images'] for v in gates)
+            q['extra_probe_backward_images']+=q['gate_backward_images']
+            q['extra_probe_backward_calls']+=sum(v['backward_calls'] for v in gates)
+            q['negative_direction_rounds']=sum(v['direction']['selected']=='negative' for v in gates)
+            q['limitations'].append('Gradient-oriented reflected proposals use extra training backward passes; negative reflection is not original spectral interpolation.')
         q['limitations'].append('Training-internal loss gate is not a held-out or old-task risk guarantee; extra forward and logical communication costs are reported.')
     if path.exists():raise ValueError('Do not overwrite a qualified milestone')
     write(path,q)

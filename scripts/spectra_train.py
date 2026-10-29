@@ -59,6 +59,23 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
             'maximum_norm_relative_error':max(v['norm_relative_error'] for v in receipts),
             'peak_gpu_allocated_bytes':torch.cuda.max_memory_allocated(),
             'scope':'real ViT GPU forward with synthetic actual-increment inputs; full local learning tested in CPU lifecycle and formal run'}
+        if cfg.get('direction_selection'):
+            from research.fed_spectra.direction_diagnostic import reflected_proposal,choose_direction
+            with torch.no_grad():
+                for b,v in zip(model.b_parameters(),original):b.copy_(v)
+            model.zero_grad(set_to_none=True)
+            z=model(x);z.square().mean().backward()
+            grads=[b.grad.detach().cpu().double().clone() for b in model.b_parameters()]
+            assert all(torch.isfinite(g).all() for g in grads) and sum(float(g.norm()) for g in grads)>0
+            negative,checks=reflected_proposal([torch.zeros_like(b) for b in original],original,changed)
+            sign,dots=choose_direction(grads,original,changed,negative)
+            with torch.no_grad():
+                for b,v in zip(model.b_parameters(),changed if sign=='positive' else negative):b.copy_(v)
+                assert torch.isfinite(model(x)).all()
+            result.update(direction_preflight=True,selected_direction=sign,directional_derivatives=dots,
+                          reflection_checks=checks,gradient_images=len(ids),
+                          direction_scope='real ViT synthetic-increment logit-squared gradient and reflection; CE/KL lifecycle tested separately')
+            del z,grads
         del model;gc.collect();torch.cuda.empty_cache();return result
     from research.fed_spectra.math import gaussian_map,orthogonal_pool,rebase_adapter,fisher_coefficients
     model=new_model(cfg,weights);model.add_head(10);model.add_head(10);model.eval()
@@ -96,7 +113,7 @@ def main():
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
     seed=int(os.environ.get('EXPERIMENT_SEED','0'))
     if seed not in (0,1,2):raise ValueError('Unregistered seed')
-    if prefix not in ('spectra','actual_update','actual_gate'):raise ValueError('Unknown configuration family')
+    if prefix not in ('spectra','actual_update','actual_gate','actual_direction'):raise ValueError('Unknown configuration family')
     cfg=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
     if time.time()>=clock['deadline']:raise TimeoutError('Original deadline exhausted')

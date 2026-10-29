@@ -1,0 +1,15 @@
+训练梯度定向的谱候选接受门：三seed五任务（2026-10-30，训练前冻结）
+
+依据：原无门控与单向训练接受门三seed T5科学门槛均失败，原判定保留。共同T4首轮诊断中，固定梯度选符号在不重合训练探针上seed0/2改善、seed1变差，平均CE+KL差-1.5487927e-5，仅支持进一步检验，非泛化收益。训练探针曾参与训练，未用test挑符号/强度。
+
+唯一新机制相对已完成单向门：每轮依原流程求解一次Head-RegMean，生成FP32 FedAvg端点和eta=.1原谱候选；各层Q/V将原候选更新绕FedAvg更新轴反射得负向候选，保持范数/角度/修正距离（FP32相对误差<=5e-4）。baseline处在原固定训练probe上反向一次CE+temp2/lambda1旧类KL，用两方向g·delta较小者统一选择全模型positive或negative，差<=1e-12选positive；不是逐层选符号或二次梯度。然后只评估已选方向同probe目标，沿用改善>1e-6接受，否则精确原FedAvg。固定eta=.1，不搜索强度/门槛、不看test/确认probe选方向。反射是矩阵方向反射，不称原谱插值或保证奇异值方向支撑。
+原probe按各client排序训练索引、独立Generator61029+1009*seed+31*client选最多32图，每任务固定，不扰动训练RNG；不引入新probe采样超参。原数据、RRS A、AdamW reset、头求解、损失/学习率/rank/训练budget一致。
+
+记录/成本：training_gate_records.direction保存符号、两导数、反射误差和positive_round原正向候选；candidate_round是已选候选；actual_update_rounds是最终部署（拒绝时零修正/谱不变）。负向实际谱由真实部署FP32增量SVD重算，不能复制正向谱；target_energy只作正向参考标签，不把它当负向目标。额外训练probe student/teacher前向分开、student backward图/calls、3个B点广播/共享头/两导数标量上传/一个方向选择标量下发及原损失标量回传逐项计数。完整梯度不上传，只在单进程私有模拟内存聚合；方向导数可由client本地回传。比单向门增加一次B候选下发、一次baseline probe反向、两标量上传；不称零成本改进。
+
+训练/评测：CIFAR100 alpha.05，seed0/1/2全部fresh原预训练权重，5任务×5轮×10client×5epochs，每seed250client轮/625000访问、总新1875000。三条并行，复用原合格同seed control只读链接，不重训/强化对照。比较原无门控、单向门和新定向门全部三seed。所有seed必须完成T5，禁止按T3表现/符号/接受率筛选。T3/T5各150/250client轮、375000/625000访问、实际3000/5000图checkpoint重载raw/centered预测一致。训练选择不读取test，只统一报告测试指标。
+主要冻结门槛相对control：mean raw总体>=+.20pp、mean AIA>=0、mean old>=0、每seed new>=-1pp、mean S不增加、至少2/3seed raw差正、全部工程通过；同时相对旧单向门mean raw>=0。原无门控比较全部报告，不能以centered/新类单指标掩盖失败。保留T1–T5 raw/centered/old/new/AIA/遗忘/W+S/方向混淆与同图计数、所有seed均值/样本SD/范围。不宣称显著性、T10或通用优越性。
+
+运行：三个seed共一独立实验与首次起点。内部27900秒、外部28600秒加60killgrace，总<8h，准备/重试/排队共同计时，不重置。每seed使用至少18000MiB可用显存GPU。共同新root实际24GB上限/20GB写停止、预计<18GB，各主管对同一group计数，不三份相加。共享数据/依赖/权重/control为只读symlink，不复制。10秒主管硬资源检查和独立外部timeout。挂载/空间/小写读探针、中性e17.py主子进程ps/nvidia-smi检查。
+启动前必须相关CPU轨迹与恢复检查通过：全部拒绝=原control；强制正向=原单向门；强制负向实际记录/逐转移恢复；自然方向/门控规则；成本/资格/配置漂移拒绝；真实ViT合成增量梯度与反射preflight通过后才训练。报告故障只修报告不重训。按既定公开边界交付源码/协议/聚合结果；私有权重/逐图ID/logits/梯度/完整日志留服务器。
+持续授权保持，不因一轮完成暂停。若失败，先解释完整主线证据，不自动加seed/T10或搜索强度，不转对比方法优化；另立有依据且有限的下一假设，沿用唯一30分钟监测。
