@@ -1,0 +1,11 @@
+{
+  "status": "running",
+  "scientific_result_available": false,
+  "gpu": 0,
+  "neutral_processes_verified": true,
+  "neutral_GPU_process_verified": true,
+  "source_checkpoint_import_running": true,
+  "shared_budget_seconds": 7160,
+  "storage_limit_bytes": 12000000000,
+  "progress": null
+}

@@ -1,0 +1,17 @@
+{
+  "commit": "fa7ed5e9ff6ae04f6423a0478f8efc454328c2df",
+  "protocol": "actual-alignment-v1-20261029",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "source_arm": "control",
+  "source_task": 3,
+  "diagnostic_task": 4,
+  "diagnostic_round": 1,
+  "eta": 0.1,
+  "new_training_visits": 75000,
+  "test_images_used": 0,
+  "shared_budget_seconds": 7160
+}
