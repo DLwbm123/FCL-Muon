@@ -4,6 +4,6 @@ import pytest
 from pathlib import Path
 from research.fed_spectra.lifecycle import write
 root=Path(os.environ['PROJECT_ROOT'])
-code=pytest.main(['-q','tests/test_matrix_gate.py','tests/test_matrix_tangent.py','tests/test_tangent_gate.py','tests/test_spectral_tangent.py','tests/test_direction_gate.py','tests/test_loss_gate.py','tests/test_alignment_diagnostic.py'])
+code=pytest.main(['-q','--basetemp',str(root/'cpu_tmp'),'tests/test_matrix_gate.py','tests/test_matrix_tangent.py','tests/test_tangent_gate.py','tests/test_spectral_tangent.py','tests/test_direction_gate.py','tests/test_loss_gate.py','tests/test_alignment_diagnostic.py'])
 write(root/'reports/CPU_TESTS.json',{'passed':code==0,'exit_code':int(code),'scope':'matrix and prior gate lifecycle, client aggregation, operator invariants and probe isolation'})
 sys.exit(code)

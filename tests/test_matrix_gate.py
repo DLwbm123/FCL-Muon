@@ -34,7 +34,14 @@ def test_client_full_aggregation_matches_weighted_gradient():
     r,g=measure(p,groups,True);state=rng_state()
     rr,m=measure(p,groups,True,full_client_gradients=True)
     assert r==rr and m[0].shape==model.weight.shape and m[0].dtype==torch.float64
-    torch.testing.assert_close(m[0],g[0],rtol=2e-6,atol=1e-8)
+    from torch.nn import functional as F
+    expected=torch.zeros_like(m[0])
+    for ids in groups:
+        z=model(data[ids]);target=(teacher(data[ids])[:,:2]/2).softmax(-1)
+        loss=F.cross_entropy(z[:,2:],labels[ids]-2)+F.kl_div((z[:,:2]/2).log_softmax(-1),target,reduction='batchmean')*4
+        local=torch.autograd.grad(loss,model.weight)[0]
+        expected.add_(local.double(),alpha=len(ids)/len(data))
+    torch.testing.assert_close(m[0],expected,rtol=0,atol=0)
     assert torch.equal(state['torch'],rng_state()['torch']) and model.weight.grad is None
     with pytest.raises(ValueError):measure(p,groups,False,full_client_gradients=True)
     with pytest.raises(ValueError):measure(p,groups,True,[(u,vh)],True)
@@ -72,7 +79,7 @@ def test_natural_resume_cost_and_actual_deployment(tmp_path):
             assert op['used_angle']<=op['reference_angle']+1e-12 and op['norm_relative_error']<=1e-10
     q=qualify(full,3)
     assert q['gate_backward_images']==q['extra_probe_backward_images']>0
-    assert q['logical_communication_bytes']['matrix_full_gradient_upload']==sum(v['baseline']['clients'].__len__() for v in full.s['training_gate_records'])*sum(b.numel()*4 for b in full.model.b_parameters())
+    assert q['logical_communication_bytes']['matrix_full_gradient_upload']==sum(len(v['baseline']['clients']) for v in full.s['training_gate_records'])*sum(b.numel()*4 for b in full.model.b_parameters())
     assert 'tangent_svd_bases_broadcast' not in q['logical_communication_bytes']
     assert q['extra_probe_forward_images']==q['gate_student_forward_images']+q['gate_teacher_forward_images']
 
