@@ -1,0 +1,993 @@
+{
+  "status": "COMPLETED_QUALIFIED",
+  "seed": 2,
+  "hypothesis_supported_in_this_pilot": true,
+  "scientific_conditions": {
+    "T5_raw_gain": true,
+    "raw_AIA": true,
+    "raw_old": true,
+    "raw_new": true,
+    "cross_task_stolen": true,
+    "both_reload_qualified": true
+  },
+  "frozen_gate": {
+    "final_task": 5,
+    "raw_gain_min_pp": 0.2,
+    "raw_AIA_delta_min_pp": 0.0,
+    "raw_old_delta_min_pp": 0.0,
+    "raw_new_delta_min_pp": -1.0,
+    "cross_task_stolen_delta_max": 0,
+    "single_seed_only": true
+  },
+  "T5_raw_differences_pp_except_S_count": {
+    "overall_percent": 0.5,
+    "old_percent": 0.09999999999999432,
+    "new_percent": 2.1000000000000085,
+    "AIA_percent": 0.22166666666667822,
+    "forgetting_pp": 0.3500000000000001,
+    "S": -29
+  },
+  "arms": {
+    "control": {
+      "raw": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 98.9,
+          "old_percent": null,
+          "new_percent": 98.9,
+          "AIA_percent": 98.9,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 11,
+          "S": 0,
+          "errors": 11,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            98.9
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 93.45,
+          "old_percent": 97.3,
+          "new_percent": 89.60000000000001,
+          "AIA_percent": 96.17500000000001,
+          "forgetting_pp": 1.6000000000000014,
+          "signed_forgetting_pp": 1.6000000000000014,
+          "W": 27,
+          "S": 104,
+          "errors": 131,
+          "task_group_confusion": [
+            [
+              983,
+              17
+            ],
+            [
+              97,
+              903
+            ]
+          ],
+          "old_to_new_percent": 1.7,
+          "new_to_old_percent": 9.7,
+          "per_task_percent": [
+            97.3,
+            89.60000000000001
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 89.83333333333333,
+          "old_percent": 90.8,
+          "new_percent": 87.9,
+          "AIA_percent": 94.06111111111112,
+          "forgetting_pp": 3.450000000000003,
+          "signed_forgetting_pp": 3.450000000000003,
+          "W": 51,
+          "S": 254,
+          "errors": 305,
+          "task_group_confusion": [
+            [
+              955,
+              13,
+              32
+            ],
+            [
+              81,
+              874,
+              45
+            ],
+            [
+              99,
+              16,
+              885
+            ]
+          ],
+          "old_to_new_percent": 3.85,
+          "new_to_old_percent": 11.5,
+          "per_task_percent": [
+            94.69999999999999,
+            86.9,
+            87.9
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 86.175,
+          "old_percent": 87.83333333333333,
+          "new_percent": 81.2,
+          "AIA_percent": 92.08958333333334,
+          "forgetting_pp": 4.300000000000004,
+          "signed_forgetting_pp": 4.300000000000004,
+          "W": 67,
+          "S": 486,
+          "errors": 553,
+          "task_group_confusion": [
+            [
+              955,
+              13,
+              32,
+              0
+            ],
+            [
+              67,
+              819,
+              35,
+              79
+            ],
+            [
+              97,
+              17,
+              880,
+              6
+            ],
+            [
+              92,
+              72,
+              21,
+              815
+            ]
+          ],
+          "old_to_new_percent": 2.8333333333333335,
+          "new_to_old_percent": 18.5,
+          "per_task_percent": [
+            94.69999999999999,
+            81.39999999999999,
+            87.4,
+            81.2
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 83.28,
+          "old_percent": 85.575,
+          "new_percent": 74.1,
+          "AIA_percent": 90.32766666666666,
+          "forgetting_pp": 3.8250000000000006,
+          "signed_forgetting_pp": 3.8250000000000006,
+          "W": 96,
+          "S": 740,
+          "errors": 836,
+          "task_group_confusion": [
+            [
+              954,
+              13,
+              32,
+              0,
+              1
+            ],
+            [
+              62,
+              814,
+              30,
+              76,
+              18
+            ],
+            [
+              93,
+              17,
+              864,
+              7,
+              19
+            ],
+            [
+              86,
+              73,
+              21,
+              811,
+              9
+            ],
+            [
+              153,
+              30,
+              47,
+              27,
+              743
+            ]
+          ],
+          "old_to_new_percent": 1.175,
+          "new_to_old_percent": 25.7,
+          "per_task_percent": [
+            94.6,
+            80.9,
+            85.9,
+            80.9,
+            74.1
+          ]
+        }
+      ],
+      "centered": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 98.9,
+          "old_percent": null,
+          "new_percent": 98.9,
+          "AIA_percent": 98.9,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 11,
+          "S": 0,
+          "errors": 11,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            98.9
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 95.45,
+          "old_percent": 98.3,
+          "new_percent": 92.60000000000001,
+          "AIA_percent": 97.17500000000001,
+          "forgetting_pp": 0.6000000000000005,
+          "signed_forgetting_pp": 0.6000000000000005,
+          "W": 27,
+          "S": 64,
+          "errors": 91,
+          "task_group_confusion": [
+            [
+              994,
+              6
+            ],
+            [
+              65,
+              935
+            ]
+          ],
+          "old_to_new_percent": 0.6,
+          "new_to_old_percent": 6.5,
+          "per_task_percent": [
+            98.3,
+            92.60000000000001
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 93.7,
+          "old_percent": 94.19999999999999,
+          "new_percent": 92.7,
+          "AIA_percent": 96.01666666666667,
+          "forgetting_pp": 1.5500000000000014,
+          "signed_forgetting_pp": 1.5500000000000014,
+          "W": 51,
+          "S": 138,
+          "errors": 189,
+          "task_group_confusion": [
+            [
+              988,
+              5,
+              7
+            ],
+            [
+              60,
+              912,
+              28
+            ],
+            [
+              47,
+              14,
+              939
+            ]
+          ],
+          "old_to_new_percent": 1.75,
+          "new_to_old_percent": 6.1,
+          "per_task_percent": [
+            97.89999999999999,
+            90.5,
+            92.7
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 91.55,
+          "old_percent": 92.46666666666667,
+          "new_percent": 88.8,
+          "AIA_percent": 94.9,
+          "forgetting_pp": 2.2666666666666684,
+          "signed_forgetting_pp": 2.2666666666666684,
+          "W": 67,
+          "S": 271,
+          "errors": 338,
+          "task_group_confusion": [
+            [
+              989,
+              5,
+              6,
+              0
+            ],
+            [
+              57,
+              877,
+              27,
+              39
+            ],
+            [
+              47,
+              14,
+              932,
+              7
+            ],
+            [
+              52,
+              44,
+              12,
+              892
+            ]
+          ],
+          "old_to_new_percent": 1.5333333333333334,
+          "new_to_old_percent": 10.8,
+          "per_task_percent": [
+            98.0,
+            87.2,
+            92.2,
+            88.8
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 89.92,
+          "old_percent": 90.5,
+          "new_percent": 87.6,
+          "AIA_percent": 93.904,
+          "forgetting_pp": 2.7500000000000027,
+          "signed_forgetting_pp": 2.7500000000000027,
+          "W": 96,
+          "S": 408,
+          "errors": 504,
+          "task_group_confusion": [
+            [
+              984,
+              5,
+              6,
+              0,
+              5
+            ],
+            [
+              57,
+              866,
+              24,
+              34,
+              19
+            ],
+            [
+              43,
+              14,
+              916,
+              5,
+              22
+            ],
+            [
+              51,
+              44,
+              11,
+              879,
+              15
+            ],
+            [
+              50,
+              16,
+              25,
+              21,
+              888
+            ]
+          ],
+          "old_to_new_percent": 1.525,
+          "new_to_old_percent": 11.2,
+          "per_task_percent": [
+            97.5,
+            86.2,
+            90.60000000000001,
+            87.7,
+            87.6
+          ]
+        }
+      ],
+      "mechanism": {
+        "eta": 0.0,
+        "rounds": 25,
+        "layer_QV_records": 600,
+        "identity_records": 600,
+        "mean_relative_correction": 0.0,
+        "maximum_deployed_norm_relative_error": 0.0,
+        "mean_effective_energy_rank_before": 16.08298661568009,
+        "mean_effective_energy_rank_after": 16.08298661568009,
+        "singular_scale_min": 1.0,
+        "singular_scale_max": 1.0,
+        "minimum_cosine_with_fedavg": 0.9999999999999879,
+        "operator_seconds": 8.57298384862952,
+        "clipping": "not used",
+        "Bures_fallback": "not used"
+      },
+      "cost": {
+        "client_rounds": 250,
+        "training_visits": 625000,
+        "stats_visits": 150000,
+        "anchor_forward_images": 500000,
+        "extra_probe_forward_images": 0,
+        "extra_probe_backward_images": 0,
+        "logical_communication_bytes": {
+          "RRS_raw_upload": 2831155200,
+          "A_broadcast": 58982400,
+          "B_download": 589824000,
+          "current_head_download": 7680000,
+          "head_Gram_upload": 1179648000,
+          "B_upload": 589824000,
+          "current_head_upload": 7680000,
+          "task_end_B_download": 117964800,
+          "task_end_head_download": 1536000
+        },
+        "peak_gpu_allocated_bytes": 2356820992,
+        "elapsed_seconds": 10257.19697880745
+      }
+    },
+    "global": {
+      "raw": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 98.9,
+          "old_percent": null,
+          "new_percent": 98.9,
+          "AIA_percent": 98.9,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 11,
+          "S": 0,
+          "errors": 11,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            98.9
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 93.55,
+          "old_percent": 96.89999999999999,
+          "new_percent": 90.2,
+          "AIA_percent": 96.225,
+          "forgetting_pp": 2.0000000000000018,
+          "signed_forgetting_pp": 2.0000000000000018,
+          "W": 27,
+          "S": 102,
+          "errors": 129,
+          "task_group_confusion": [
+            [
+              979,
+              21
+            ],
+            [
+              91,
+              909
+            ]
+          ],
+          "old_to_new_percent": 2.1,
+          "new_to_old_percent": 9.1,
+          "per_task_percent": [
+            96.89999999999999,
+            90.2
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 89.96666666666667,
+          "old_percent": 90.85,
+          "new_percent": 88.2,
+          "AIA_percent": 94.1388888888889,
+          "forgetting_pp": 3.7000000000000033,
+          "signed_forgetting_pp": 3.7000000000000033,
+          "W": 52,
+          "S": 249,
+          "errors": 301,
+          "task_group_confusion": [
+            [
+              953,
+              15,
+              32
+            ],
+            [
+              77,
+              878,
+              45
+            ],
+            [
+              96,
+              17,
+              887
+            ]
+          ],
+          "old_to_new_percent": 3.85,
+          "new_to_old_percent": 11.3,
+          "per_task_percent": [
+            94.5,
+            87.2,
+            88.2
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 86.55000000000001,
+          "old_percent": 88.03333333333333,
+          "new_percent": 82.1,
+          "AIA_percent": 92.24166666666667,
+          "forgetting_pp": 4.400000000000004,
+          "signed_forgetting_pp": 4.400000000000004,
+          "W": 71,
+          "S": 467,
+          "errors": 538,
+          "task_group_confusion": [
+            [
+              952,
+              15,
+              32,
+              1
+            ],
+            [
+              65,
+              826,
+              34,
+              75
+            ],
+            [
+              91,
+              20,
+              882,
+              7
+            ],
+            [
+              87,
+              62,
+              28,
+              823
+            ]
+          ],
+          "old_to_new_percent": 2.7666666666666666,
+          "new_to_old_percent": 17.7,
+          "per_task_percent": [
+            94.39999999999999,
+            82.1,
+            87.6,
+            82.1
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 83.78,
+          "old_percent": 85.675,
+          "new_percent": 76.2,
+          "AIA_percent": 90.54933333333334,
+          "forgetting_pp": 4.175000000000001,
+          "signed_forgetting_pp": 4.175000000000001,
+          "W": 100,
+          "S": 711,
+          "errors": 811,
+          "task_group_confusion": [
+            [
+              952,
+              15,
+              29,
+              1,
+              3
+            ],
+            [
+              63,
+              814,
+              30,
+              75,
+              18
+            ],
+            [
+              92,
+              17,
+              864,
+              7,
+              20
+            ],
+            [
+              90,
+              60,
+              25,
+              816,
+              9
+            ],
+            [
+              136,
+              27,
+              45,
+              29,
+              763
+            ]
+          ],
+          "old_to_new_percent": 1.25,
+          "new_to_old_percent": 23.7,
+          "per_task_percent": [
+            94.39999999999999,
+            80.9,
+            85.9,
+            81.5,
+            76.2
+          ]
+        }
+      ],
+      "centered": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 98.9,
+          "old_percent": null,
+          "new_percent": 98.9,
+          "AIA_percent": 98.9,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 11,
+          "S": 0,
+          "errors": 11,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            98.9
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 95.5,
+          "old_percent": 98.3,
+          "new_percent": 92.7,
+          "AIA_percent": 97.2,
+          "forgetting_pp": 0.6000000000000005,
+          "signed_forgetting_pp": 0.6000000000000005,
+          "W": 27,
+          "S": 63,
+          "errors": 90,
+          "task_group_confusion": [
+            [
+              994,
+              6
+            ],
+            [
+              64,
+              936
+            ]
+          ],
+          "old_to_new_percent": 0.6,
+          "new_to_old_percent": 6.4,
+          "per_task_percent": [
+            98.3,
+            92.7
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 93.86666666666666,
+          "old_percent": 94.39999999999999,
+          "new_percent": 92.80000000000001,
+          "AIA_percent": 96.08888888888889,
+          "forgetting_pp": 1.4000000000000012,
+          "signed_forgetting_pp": 1.4000000000000012,
+          "W": 52,
+          "S": 132,
+          "errors": 184,
+          "task_group_confusion": [
+            [
+              989,
+              6,
+              5
+            ],
+            [
+              58,
+              916,
+              26
+            ],
+            [
+              47,
+              16,
+              937
+            ]
+          ],
+          "old_to_new_percent": 1.55,
+          "new_to_old_percent": 6.3,
+          "per_task_percent": [
+            97.89999999999999,
+            90.9,
+            92.80000000000001
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 91.75,
+          "old_percent": 92.46666666666667,
+          "new_percent": 89.60000000000001,
+          "AIA_percent": 95.00416666666666,
+          "forgetting_pp": 2.3333333333333357,
+          "signed_forgetting_pp": 2.3333333333333357,
+          "W": 71,
+          "S": 259,
+          "errors": 330,
+          "task_group_confusion": [
+            [
+              990,
+              5,
+              5,
+              0
+            ],
+            [
+              57,
+              879,
+              25,
+              39
+            ],
+            [
+              48,
+              15,
+              930,
+              7
+            ],
+            [
+              51,
+              37,
+              13,
+              899
+            ]
+          ],
+          "old_to_new_percent": 1.5333333333333334,
+          "new_to_old_percent": 10.1,
+          "per_task_percent": [
+            98.0,
+            87.4,
+            92.0,
+            89.60000000000001
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 90.2,
+          "old_percent": 90.7,
+          "new_percent": 88.2,
+          "AIA_percent": 94.04333333333334,
+          "forgetting_pp": 2.8000000000000025,
+          "signed_forgetting_pp": 2.8000000000000025,
+          "W": 100,
+          "S": 390,
+          "errors": 490,
+          "task_group_confusion": [
+            [
+              985,
+              5,
+              5,
+              0,
+              5
+            ],
+            [
+              57,
+              868,
+              22,
+              34,
+              19
+            ],
+            [
+              47,
+              12,
+              912,
+              6,
+              23
+            ],
+            [
+              49,
+              37,
+              11,
+              886,
+              17
+            ],
+            [
+              46,
+              15,
+              23,
+              21,
+              895
+            ]
+          ],
+          "old_to_new_percent": 1.6,
+          "new_to_old_percent": 10.5,
+          "per_task_percent": [
+            97.5,
+            86.5,
+            90.3,
+            88.5,
+            88.2
+          ]
+        }
+      ],
+      "mechanism": {
+        "eta": 0.1,
+        "rounds": 25,
+        "layer_QV_records": 600,
+        "identity_records": 0,
+        "mean_relative_correction": 0.011674257699742946,
+        "maximum_deployed_norm_relative_error": 2.1243576450513814e-08,
+        "mean_effective_energy_rank_before": 16.100496824855618,
+        "mean_effective_energy_rank_after": 16.264795693455074,
+        "singular_scale_min": 0.956012528941487,
+        "singular_scale_max": 1.1213669423466055,
+        "minimum_cosine_with_fedavg": 0.9994304371229801,
+        "operator_seconds": 9.136619991390035,
+        "clipping": "not used",
+        "Bures_fallback": "not used"
+      },
+      "cost": {
+        "client_rounds": 250,
+        "training_visits": 625000,
+        "stats_visits": 150000,
+        "anchor_forward_images": 500000,
+        "extra_probe_forward_images": 0,
+        "extra_probe_backward_images": 0,
+        "logical_communication_bytes": {
+          "RRS_raw_upload": 2831155200,
+          "A_broadcast": 58982400,
+          "B_download": 589824000,
+          "current_head_download": 7680000,
+          "head_Gram_upload": 1179648000,
+          "B_upload": 589824000,
+          "current_head_upload": 7680000,
+          "task_end_B_download": 117964800,
+          "task_end_head_download": 1536000
+        },
+        "peak_gpu_allocated_bytes": 2356820992,
+        "elapsed_seconds": 9982.057297945023
+      }
+    }
+  },
+  "paired_vs_control": {
+    "1": {
+      "raw": {
+        "images": 1000,
+        "corrected": 1,
+        "destroyed": 1,
+        "net_corrected": 0,
+        "accuracy_delta_pp": 0.0
+      },
+      "centered": {
+        "images": 1000,
+        "corrected": 1,
+        "destroyed": 1,
+        "net_corrected": 0,
+        "accuracy_delta_pp": 0.0
+      }
+    },
+    "2": {
+      "raw": {
+        "images": 2000,
+        "corrected": 10,
+        "destroyed": 8,
+        "net_corrected": 2,
+        "accuracy_delta_pp": 0.1
+      },
+      "centered": {
+        "images": 2000,
+        "corrected": 3,
+        "destroyed": 2,
+        "net_corrected": 1,
+        "accuracy_delta_pp": 0.05
+      }
+    },
+    "3": {
+      "raw": {
+        "images": 3000,
+        "corrected": 20,
+        "destroyed": 16,
+        "net_corrected": 4,
+        "accuracy_delta_pp": 0.13333333333333333
+      },
+      "centered": {
+        "images": 3000,
+        "corrected": 11,
+        "destroyed": 6,
+        "net_corrected": 5,
+        "accuracy_delta_pp": 0.16666666666666666
+      }
+    },
+    "4": {
+      "raw": {
+        "images": 4000,
+        "corrected": 36,
+        "destroyed": 21,
+        "net_corrected": 15,
+        "accuracy_delta_pp": 0.375
+      },
+      "centered": {
+        "images": 4000,
+        "corrected": 22,
+        "destroyed": 14,
+        "net_corrected": 8,
+        "accuracy_delta_pp": 0.2
+      }
+    },
+    "5": {
+      "raw": {
+        "images": 5000,
+        "corrected": 59,
+        "destroyed": 34,
+        "net_corrected": 25,
+        "accuracy_delta_pp": 0.5
+      },
+      "centered": {
+        "images": 5000,
+        "corrected": 35,
+        "destroyed": 21,
+        "net_corrected": 14,
+        "accuracy_delta_pp": 0.28
+      }
+    }
+  },
+  "validation": {
+    "same_configs_except_eta_output": true,
+    "matrix_and_W_plus_S": true,
+    "paired_counts_match_accuracy": true
+  },
+  "limitations": [
+    "single seed2 development pilot; no statistical significance",
+    "T5 endpoint; no T10 claim",
+    "current-input KL is not old-task risk guarantee",
+    "norm is preserved, but vectorized direction changes under nonuniform spectral scaling",
+    "no causal attribution from spectral proxy improvements alone"
+  ],
+  "source_revision": "f4136eb43e5bf13775200c7585f9e98717826291"
+}

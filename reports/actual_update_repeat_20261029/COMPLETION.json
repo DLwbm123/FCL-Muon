@@ -1,0 +1,17 @@
+{
+  "status": "COMPLETED_QUALIFIED",
+  "seeds": {
+    "1": {
+      "elapsed_seconds": 10263.853615999222,
+      "allocated_bytes_at_exit": 2811473920,
+      "all_recorded_processes_exited": true
+    },
+    "2": {
+      "elapsed_seconds": 10263.983577251434,
+      "allocated_bytes_at_exit": 2807824384,
+      "all_recorded_processes_exited": true
+    }
+  },
+  "elapsed_seconds": 10263.983577251434,
+  "allocated_bytes_at_exit": 5619298304
+}

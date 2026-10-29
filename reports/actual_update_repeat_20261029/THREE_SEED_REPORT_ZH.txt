@@ -1,0 +1,53 @@
+实际更新全局谱修正：三seed五任务探索性复验最终报告
+
+结论：未通过冻结的三seed探索性继续门槛。工程验收全部通过；这不等于科学收益成立。
+seed0原失败判定保持。seed1/2为看到seed0后预注册的探索性重复，不是独立确认，不作显著性或T10结论。
+配置：CIFAR100 alpha=.05，10客户端；同seed fresh同预训练权重。control eta0、global eta.1，其余训练配方一致；每路线5任务/250客户端轮/625000访问。
+
+T5逐seed（精度为%，差值pp；S为计数）
+seed | control raw | global raw | Δraw | Δold | Δnew | ΔAIA | ΔS | 原单seed门槛
+0 | 86.1400 | 86.2400 | +0.100000 | -0.075000 | +0.800000 | +0.061667 | -4.000000 | False
+1 | 86.1600 | 85.7000 | -0.460000 | -0.250000 | -1.300000 | -0.295333 | +25.000000 | False
+2 | 83.2800 | 83.7800 | +0.500000 | +0.100000 | +2.100000 | +0.221667 | -29.000000 | True
+
+全部任务配对差（global-control；均值±样本标准差；括号为seed0/1/2，绝不选最好seed）
+raw T1: +0.000000 ± 0.000000 pp; [0.0, 0.0, 0.0]
+raw T2: -0.083333 ± 0.407226 pp; [0.20000000000000284, -0.5499999999999972, 0.09999999999999432]
+raw T3: -0.000000 ± 0.230940 pp; [0.13333333333332575, -0.26666666666667993, 0.13333333333333997]
+raw T4: +0.016667 ± 0.312583 pp; [-0.125, -0.20000000000000284, 0.3750000000000142]
+raw T5: +0.046667 ± 0.482217 pp; [0.10000000000000853, -0.45999999999999375, 0.5]
+centered T1: +0.000000 ± 0.000000 pp; [0.0, 0.0, 0.0]
+centered T2: +0.033333 ± 0.028868 pp; [0.05000000000001137, 0.0, 0.04999999999999716]
+centered T3: -0.066667 ± 0.233333 pp; [-0.29999999999999716, -0.06666666666667709, 0.1666666666666572]
+centered T4: +0.050000 ± 0.180278 pp; [-0.15000000000000568, 0.10000000000000853, 0.20000000000000284]
+centered T5: +0.013333 ± 0.318957 pp; [-0.3399999999999892, 0.09999999999999432, 0.28000000000000114]
+
+T5 raw各指标三seed配对统计：
+overall_percent: mean=+0.046667, sample_std=0.482217, min=-0.460000, max=+0.500000
+old_percent: mean=-0.075000, sample_std=0.175000, min=-0.250000, max=+0.100000
+new_percent: mean=+0.533333, sample_std=1.715615, min=-1.300000, max=+2.100000
+AIA_percent: mean=-0.004000, sample_std=0.264682, min=-0.295333, max=+0.221667
+forgetting_pp: mean=+0.083333, sample_std=0.236291, min=-0.100000, max=+0.350000
+signed_forgetting_pp: mean=+0.083333, sample_std=0.236291, min=-0.100000, max=+0.350000
+W: mean=+0.333333, sample_std=3.214550, min=-2.000000, max=+4.000000
+S: mean=-2.666667, sample_std=27.024680, min=-29.000000, max=+25.000000
+old_to_new_percent: mean=+0.041667, sample_std=0.128290, min=-0.100000, max=+0.150000
+new_to_old_percent: mean=-0.466667, sample_std=1.662328, min=-2.000000, max=+1.300000
+
+冻结条件：{"mean_raw_overall_at_least_0.2pp": false, "mean_raw_AIA_nonnegative": false, "mean_raw_old_nonnegative": false, "every_seed_new_at_least_minus1pp": false, "mean_S_not_increased": true, "at_least_two_positive_raw_seeds": true, "all_reload_qualified": true}
+
+T5同图配对纠正/破坏（逐seed计数，不将跨seed重复图当独立样本）：
+0: {"raw": {"images": 5000, "corrected": 44, "destroyed": 39, "net_corrected": 5, "accuracy_delta_pp": 0.1}, "centered": {"images": 5000, "corrected": 19, "destroyed": 36, "net_corrected": -17, "accuracy_delta_pp": -0.34}}
+1: {"raw": {"images": 5000, "corrected": 26, "destroyed": 49, "net_corrected": -23, "accuracy_delta_pp": -0.46}, "centered": {"images": 5000, "corrected": 25, "destroyed": 20, "net_corrected": 5, "accuracy_delta_pp": 0.1}}
+2: {"raw": {"images": 5000, "corrected": 59, "destroyed": 34, "net_corrected": 25, "accuracy_delta_pp": 0.5}, "centered": {"images": 5000, "corrected": 35, "destroyed": 21, "net_corrected": 14, "accuracy_delta_pp": 0.28}}
+
+机制审计（每seed600个层/QV/通信轮记录，不视作600个独立实验）：
+seed0: active=600/600, correction mean=1.1119%, max=3.0137%, angle max=1.7268deg, norm error max=1.76e-08, rank increase=440/600, top-mode decrease=291/600
+seed1: active=600/600, correction mean=1.1223%, max=3.3560%, angle max=1.9229deg, norm error max=1.83e-08, rank increase=440/600, top-mode decrease=288/600
+seed2: active=600/600, correction mean=1.1674%, max=3.3751%, angle max=1.9339deg, norm error max=2.12e-08, rank increase=422/600, top-mode decrease=289/600
+
+解释：正负seed均实际部署温和谱修正，不能归因于某seed算子没生效或范数失控。谱能量/有效秩变化不含分类损失方向，不能据此认定放大eta能改善性能。新类与旧类、任务间误判的损益随seed不同，纯谱形目标没有提供稳定分类收益证据。
+下一步不增加同配置seed、不扩展T10、不搜索eta。先做训练输入上的共同状态单轮诊断，比较同一批客户端终点产生的原聚合与eta=.1修正的CE/KL变化及梯度方向；不使用测试图或测试标签，目的仅定位谱代理是否与既有训练目标一致。须另立冻结诊断协议和硬预算，不能把该诊断称为泛化收益或据此改写本报告。
+
+资源与验收：新增seed1/2四路线全部T3/T5预测重载一致；三seed共12个里程碑通过。每路线625000训练访问、500000 teacher前向、额外probe0；所有成本完整保存在JSON各seed/arm。新增复验共同历时2.8511小时，退出新增占用5.6193GB，记录进程均退出。不同GPU墙钟差异不能解释为方法加速。
+完整各seed T1-T5 raw/centered、old/new/AIA/两种遗忘、W+S/方向混淆、逻辑通信/显存/时长见THREE_SEED_REPORT.json与各seed FINAL_REPORT.json；资格逐层谱细节保留。权重、teacher、逐图logits/ID与完整日志留服务器，不公开。
