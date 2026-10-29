@@ -1,0 +1,33 @@
+{
+  "status": "running",
+  "scientific_result_available": false,
+  "tasks": 5,
+  "shared_budget_seconds": 28660,
+  "allocated_bytes_at_check": 1299435520,
+  "storage_limit_bytes": 20000000000,
+  "write_stop_bytes": 16000000000,
+  "arms": {
+    "control": {
+      "process_alive": true,
+      "neutral_command_verified": true,
+      "task_zero_based": 0,
+      "round_zero_based": 0,
+      "phase": "clients",
+      "client_rounds": 2,
+      "training_visits": 9385,
+      "eta": 0.0,
+      "neutral_GPU_process_verified": true
+    },
+    "global": {
+      "process_alive": true,
+      "neutral_command_verified": true,
+      "task_zero_based": 0,
+      "round_zero_based": 0,
+      "phase": "clients",
+      "client_rounds": 2,
+      "training_visits": 9385,
+      "eta": 0.1,
+      "neutral_GPU_process_verified": true
+    }
+  }
+}

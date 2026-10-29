@@ -1,0 +1,8 @@
+{
+  "commit": "fb83f2ad1edd9cdc3f20b42f610eeb38147f01af",
+  "protocol": "actual-update-global-v1-20261029",
+  "control_eta": 0.0,
+  "global_eta": 0.1,
+  "tasks": 5,
+  "training_code_frozen": true
+}

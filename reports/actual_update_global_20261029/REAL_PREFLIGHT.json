@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "method": "actual_update_global",
+  "images": 4,
+  "eta_zero_logits_exact": true,
+  "corrected_logits_max_difference": 9.47713851928711e-06,
+  "maximum_norm_relative_error": 1.229323725243834e-15,
+  "peak_gpu_allocated_bytes": 416464384,
+  "scope": "real ViT GPU forward with synthetic actual-increment inputs; full local learning tested in CPU lifecycle and formal run"
+}
