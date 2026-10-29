@@ -1,0 +1,23 @@
+{
+  "status": "RUNNING",
+  "registered_seeds": [
+    0,
+    1,
+    2
+  ],
+  "fresh_training": true,
+  "control_reused_read_only": true,
+  "gpus": [
+    0,
+    1,
+    2
+  ],
+  "neutral_process_identity_verified": true,
+  "initial_allocated_bytes": 6684672,
+  "original_clock_preserved": true,
+  "preparation_notes": [
+    "Repaired a new-root dependency symlink before CPU tests; reused existing dependencies, no download.",
+    "Independent per-client gradient oracle replaced an invalid bit-close expectation against FP32 weighted accumulation; original scientific thresholds unchanged.",
+    "Final CPU fixtures stay inside new experiment root; failed invocation temporary fixtures removed."
+  ]
+}

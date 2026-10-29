@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "scope": "matrix and prior gate lifecycle, client aggregation, operator invariants and probe isolation",
+  "tests_passed": 29
+}
