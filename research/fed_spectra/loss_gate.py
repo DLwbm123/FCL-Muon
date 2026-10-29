@@ -67,6 +67,8 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
                 selected.append(value);operators.append(record)
             candidate=selected
             proposal=deployed_record(proposal,origin,baseline,candidate,'spectral_tangent')
+            for record,op in zip([v for pair in proposal['layers'].values() for v in pair],operators):
+                if op['identity_reason'] is not None:record['identity_reason']=op['identity_reason']
             self.s['actual_update_rounds'][-1]=copy.deepcopy(proposal)
             tangent_record={'operators':operators,'positive_round':positive_proposal,
                 'gradient_aggregation':'client_local_fp64_modes'}
