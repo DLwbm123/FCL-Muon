@@ -1,0 +1,4550 @@
+{
+  "status": "STOPPED_BY_USER_INCOMPLETE_T10",
+  "report_date": "2026-10-29",
+  "source_revision": {
+    "commit": "f935467407272d527ad2ed752ced73d083cb0b5a",
+    "branch": "codex/fedspectra-20261028",
+    "protocol": "research/fed_spectra/PROTOCOL_ZH.txt",
+    "cpu_tests_passed": 28,
+    "methods": [
+      "controlled_adam",
+      "fed_spectra_mvp",
+      "fed_spectra_full"
+    ],
+    "fresh_training": true,
+    "prior_T1_not_imported": true,
+    "milestones": [
+      3,
+      10
+    ]
+  },
+  "scope": "Single seed0 CIFAR100 alpha0.05. T8 latest common evaluated stage. T9 only control/full. Historical references are original-system comparisons, not matched mechanism ablations.",
+  "definitions": {
+    "accuracy": "percent; deltas percentage points",
+    "AIA": "mean all-seen stage accuracy over T1 through reported Tn; never substitute T10 AIA",
+    "forgetting": "mean(max accuracy before Tn - accuracy at Tn) over previous tasks; no nonnegative clipping",
+    "W": "errors within true task block",
+    "S": "correct within true task block but another task wins globally; W+S=global errors",
+    "task_numbering": "report tables 1-based; STOP_STATUS progress task/round 0-based"
+  },
+  "stop": {
+    "status": "STOPPED_BY_USER",
+    "reason": "Explicit user stop; training and monitoring remain paused.",
+    "elapsed_seconds": 16199.767226696014,
+    "allocated_bytes_at_exit": 5032189952,
+    "all_recorded_processes_exited": true,
+    "arms": {
+      "control": {
+        "progress": {
+          "method": "controlled_adam",
+          "task": 9,
+          "round": 0,
+          "phase": "clients",
+          "next_client": 4,
+          "client_rounds": 454,
+          "training_visits": 1138215,
+          "stages": [
+            {
+              "task": 1,
+              "raw": 0.994,
+              "centered": 0.994
+            },
+            {
+              "task": 2,
+              "raw": 0.942,
+              "centered": 0.963
+            },
+            {
+              "task": 3,
+              "raw": 0.8973333333333333,
+              "centered": 0.936
+            },
+            {
+              "task": 4,
+              "raw": 0.8775,
+              "centered": 0.92025
+            },
+            {
+              "task": 5,
+              "raw": 0.8614,
+              "centered": 0.9096
+            },
+            {
+              "task": 6,
+              "raw": 0.8245,
+              "centered": 0.8918333333333334
+            },
+            {
+              "task": 7,
+              "raw": 0.7974285714285714,
+              "centered": 0.8727142857142857
+            },
+            {
+              "task": 8,
+              "raw": 0.776375,
+              "centered": 0.862125
+            },
+            {
+              "task": 9,
+              "raw": 0.7797777777777778,
+              "centered": 0.8653333333333333
+            }
+          ],
+          "geometry_rounds": 0,
+          "transport_rounds": 0,
+          "qualified_milestones": [
+            3
+          ]
+        },
+        "complete": false,
+        "qualification_t10": false,
+        "checkpoint_retained": true
+      },
+      "mvp": {
+        "progress": {
+          "method": "fed_spectra_mvp",
+          "task": 8,
+          "round": 5,
+          "phase": "ready_evaluation",
+          "next_client": 0,
+          "client_rounds": 450,
+          "training_visits": 1125000,
+          "stages": [
+            {
+              "task": 1,
+              "raw": 0.993,
+              "centered": 0.993
+            },
+            {
+              "task": 2,
+              "raw": 0.938,
+              "centered": 0.958
+            },
+            {
+              "task": 3,
+              "raw": 0.8903333333333333,
+              "centered": 0.9286666666666666
+            },
+            {
+              "task": 4,
+              "raw": 0.87,
+              "centered": 0.91625
+            },
+            {
+              "task": 5,
+              "raw": 0.8566,
+              "centered": 0.9052
+            },
+            {
+              "task": 6,
+              "raw": 0.8161666666666667,
+              "centered": 0.887
+            },
+            {
+              "task": 7,
+              "raw": 0.789,
+              "centered": 0.8682857142857143
+            },
+            {
+              "task": 8,
+              "raw": 0.769875,
+              "centered": 0.857375
+            }
+          ],
+          "geometry_rounds": 45,
+          "transport_rounds": 45,
+          "qualified_milestones": [
+            3
+          ]
+        },
+        "complete": false,
+        "qualification_t10": false,
+        "checkpoint_retained": true
+      },
+      "full": {
+        "progress": {
+          "method": "fed_spectra_full",
+          "task": 9,
+          "round": 1,
+          "phase": "local_done",
+          "next_client": 10,
+          "client_rounds": 470,
+          "training_visits": 1175000,
+          "stages": [
+            {
+              "task": 1,
+              "raw": 0.993,
+              "centered": 0.993
+            },
+            {
+              "task": 2,
+              "raw": 0.9335,
+              "centered": 0.959
+            },
+            {
+              "task": 3,
+              "raw": 0.8863333333333333,
+              "centered": 0.9326666666666666
+            },
+            {
+              "task": 4,
+              "raw": 0.8505,
+              "centered": 0.917
+            },
+            {
+              "task": 5,
+              "raw": 0.8296,
+              "centered": 0.9044
+            },
+            {
+              "task": 6,
+              "raw": 0.787,
+              "centered": 0.8838333333333334
+            },
+            {
+              "task": 7,
+              "raw": 0.753,
+              "centered": 0.8602857142857143
+            },
+            {
+              "task": 8,
+              "raw": 0.724,
+              "centered": 0.848125
+            },
+            {
+              "task": 9,
+              "raw": 0.7206666666666667,
+              "centered": 0.8486666666666667
+            }
+          ],
+          "geometry_rounds": 47,
+          "transport_rounds": 46,
+          "qualified_milestones": [
+            3
+          ]
+        },
+        "complete": false,
+        "qualification_t10": false,
+        "checkpoint_retained": true
+      }
+    },
+    "monitor_status": "PAUSED",
+    "counter_scope": "Last persisted PROGRESS snapshot; may lag last event/checkpoint. Task and round are zero-based."
+  },
+  "methods": {
+    "control": {
+      "raw": {
+        "matrix_percent": [
+          [
+            99.4
+          ],
+          [
+            98.0,
+            90.4
+          ],
+          [
+            98.0,
+            89.1,
+            82.1
+          ],
+          [
+            97.3,
+            82.19999999999999,
+            81.2,
+            90.3
+          ],
+          [
+            97.1,
+            81.39999999999999,
+            78.9,
+            88.4,
+            84.89999999999999
+          ],
+          [
+            95.89999999999999,
+            78.4,
+            76.9,
+            81.3,
+            83.89999999999999,
+            78.3
+          ],
+          [
+            95.89999999999999,
+            76.2,
+            75.2,
+            80.30000000000001,
+            83.7,
+            78.0,
+            68.89999999999999
+          ],
+          [
+            95.89999999999999,
+            75.2,
+            74.7,
+            79.60000000000001,
+            82.8,
+            77.60000000000001,
+            67.80000000000001,
+            67.5
+          ],
+          [
+            95.1,
+            74.4,
+            73.8,
+            79.4,
+            81.39999999999999,
+            76.8,
+            67.30000000000001,
+            66.9,
+            86.7
+          ]
+        ],
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.4,
+            "old_percent": null,
+            "new_percent": 99.4,
+            "AIA_percent": 99.4,
+            "forgetting_pp": null,
+            "W_within_task_error_count": 6,
+            "S_restricted_correct_stolen_count": 0,
+            "total_error_count": 6,
+            "test_images": 1000,
+            "old_to_new_error_percent": null,
+            "new_to_old_error_percent": null,
+            "task_group_confusion": [
+              [
+                1000
+              ]
+            ]
+          },
+          {
+            "task": 2,
+            "overall_percent": 94.19999999999999,
+            "old_percent": 98.0,
+            "new_percent": 90.4,
+            "AIA_percent": 96.80000000000001,
+            "forgetting_pp": 1.4000000000000057,
+            "W_within_task_error_count": 23,
+            "S_restricted_correct_stolen_count": 93,
+            "total_error_count": 116,
+            "test_images": 2000,
+            "old_to_new_error_percent": 1.5,
+            "new_to_old_error_percent": 9.1,
+            "task_group_confusion": [
+              [
+                985,
+                15
+              ],
+              [
+                91,
+                909
+              ]
+            ]
+          },
+          {
+            "task": 3,
+            "overall_percent": 89.73333333333333,
+            "old_percent": 93.55,
+            "new_percent": 82.1,
+            "AIA_percent": 94.44444444444446,
+            "forgetting_pp": 1.3500000000000085,
+            "W_within_task_error_count": 50,
+            "S_restricted_correct_stolen_count": 258,
+            "total_error_count": 308,
+            "test_images": 3000,
+            "old_to_new_error_percent": 1.35,
+            "new_to_old_error_percent": 17.599999999999998,
+            "task_group_confusion": [
+              [
+                986,
+                12,
+                2
+              ],
+              [
+                80,
+                895,
+                25
+              ],
+              [
+                161,
+                15,
+                824
+              ]
+            ]
+          },
+          {
+            "task": 4,
+            "overall_percent": 87.75,
+            "old_percent": 86.89999999999999,
+            "new_percent": 90.3,
+            "AIA_percent": 92.77083333333334,
+            "forgetting_pp": 3.733333333333339,
+            "W_within_task_error_count": 63,
+            "S_restricted_correct_stolen_count": 427,
+            "total_error_count": 490,
+            "test_images": 4000,
+            "old_to_new_error_percent": 3.8,
+            "new_to_old_error_percent": 9.6,
+            "task_group_confusion": [
+              [
+                980,
+                9,
+                2,
+                9
+              ],
+              [
+                63,
+                825,
+                18,
+                94
+              ],
+              [
+                159,
+                15,
+                815,
+                11
+              ],
+              [
+                56,
+                28,
+                12,
+                904
+              ]
+            ]
+          },
+          {
+            "task": 5,
+            "overall_percent": 86.14,
+            "old_percent": 86.45,
+            "new_percent": 84.89999999999999,
+            "AIA_percent": 91.44466666666668,
+            "forgetting_pp": 4.100000000000001,
+            "W_within_task_error_count": 87,
+            "S_restricted_correct_stolen_count": 606,
+            "total_error_count": 693,
+            "test_images": 5000,
+            "old_to_new_error_percent": 2.0500000000000003,
+            "new_to_old_error_percent": 14.299999999999999,
+            "task_group_confusion": [
+              [
+                978,
+                10,
+                2,
+                9,
+                1
+              ],
+              [
+                58,
+                816,
+                13,
+                89,
+                24
+              ],
+              [
+                153,
+                12,
+                792,
+                9,
+                34
+              ],
+              [
+                55,
+                26,
+                11,
+                885,
+                23
+              ],
+              [
+                85,
+                9,
+                17,
+                32,
+                857
+              ]
+            ]
+          },
+          {
+            "task": 6,
+            "overall_percent": 82.45,
+            "old_percent": 83.28,
+            "new_percent": 78.3,
+            "AIA_percent": 89.94555555555557,
+            "forgetting_pp": 6.140000000000001,
+            "W_within_task_error_count": 118,
+            "S_restricted_correct_stolen_count": 935,
+            "total_error_count": 1053,
+            "test_images": 6000,
+            "old_to_new_error_percent": 4.38,
+            "new_to_old_error_percent": 21.7,
+            "task_group_confusion": [
+              [
+                964,
+                8,
+                1,
+                9,
+                1,
+                17
+              ],
+              [
+                51,
+                785,
+                11,
+                82,
+                24,
+                47
+              ],
+              [
+                139,
+                13,
+                772,
+                6,
+                31,
+                39
+              ],
+              [
+                43,
+                25,
+                7,
+                814,
+                20,
+                91
+              ],
+              [
+                72,
+                9,
+                18,
+                32,
+                844,
+                25
+              ],
+              [
+                29,
+                5,
+                10,
+                56,
+                117,
+                783
+              ]
+            ]
+          },
+          {
+            "task": 7,
+            "overall_percent": 79.74285714285713,
+            "old_percent": 81.55,
+            "new_percent": 68.89999999999999,
+            "AIA_percent": 88.48802721088437,
+            "forgetting_pp": 6.016666666666663,
+            "W_within_task_error_count": 155,
+            "S_restricted_correct_stolen_count": 1263,
+            "total_error_count": 1418,
+            "test_images": 7000,
+            "old_to_new_error_percent": 1.4000000000000001,
+            "new_to_old_error_percent": 30.599999999999998,
+            "task_group_confusion": [
+              [
+                964,
+                8,
+                1,
+                9,
+                1,
+                17,
+                0
+              ],
+              [
+                49,
+                763,
+                10,
+                75,
+                20,
+                47,
+                36
+              ],
+              [
+                137,
+                9,
+                754,
+                5,
+                31,
+                39,
+                25
+              ],
+              [
+                43,
+                24,
+                6,
+                803,
+                19,
+                98,
+                7
+              ],
+              [
+                71,
+                10,
+                16,
+                27,
+                843,
+                26,
+                7
+              ],
+              [
+                28,
+                5,
+                10,
+                53,
+                115,
+                780,
+                9
+              ],
+              [
+                92,
+                7,
+                38,
+                29,
+                17,
+                123,
+                694
+              ]
+            ]
+          },
+          {
+            "task": 8,
+            "overall_percent": 77.6375,
+            "old_percent": 79.08571428571429,
+            "new_percent": 67.5,
+            "AIA_percent": 87.13171130952381,
+            "forgetting_pp": 5.814285714285709,
+            "W_within_task_error_count": 169,
+            "S_restricted_correct_stolen_count": 1620,
+            "total_error_count": 1789,
+            "test_images": 8000,
+            "old_to_new_error_percent": 1.1714285714285713,
+            "new_to_old_error_percent": 32.5,
+            "task_group_confusion": [
+              [
+                964,
+                8,
+                1,
+                9,
+                1,
+                16,
+                0,
+                1
+              ],
+              [
+                50,
+                753,
+                9,
+                65,
+                20,
+                44,
+                36,
+                23
+              ],
+              [
+                138,
+                8,
+                749,
+                5,
+                32,
+                38,
+                26,
+                4
+              ],
+              [
+                40,
+                25,
+                6,
+                796,
+                20,
+                99,
+                7,
+                7
+              ],
+              [
+                75,
+                10,
+                15,
+                26,
+                833,
+                26,
+                7,
+                8
+              ],
+              [
+                30,
+                5,
+                6,
+                51,
+                112,
+                776,
+                5,
+                15
+              ],
+              [
+                92,
+                6,
+                27,
+                29,
+                13,
+                126,
+                683,
+                24
+              ],
+              [
+                114,
+                5,
+                29,
+                24,
+                5,
+                137,
+                11,
+                675
+              ]
+            ]
+          },
+          {
+            "task": 9,
+            "overall_percent": 77.97777777777777,
+            "old_percent": 76.8875,
+            "new_percent": 86.7,
+            "AIA_percent": 86.11460758377424,
+            "forgetting_pp": 5.837499999999997,
+            "W_within_task_error_count": 181,
+            "S_restricted_correct_stolen_count": 1801,
+            "total_error_count": 1982,
+            "test_images": 9000,
+            "old_to_new_error_percent": 1.125,
+            "new_to_old_error_percent": 13.3,
+            "task_group_confusion": [
+              [
+                957,
+                8,
+                1,
+                9,
+                1,
+                15,
+                0,
+                2,
+                7
+              ],
+              [
+                50,
+                745,
+                9,
+                64,
+                21,
+                49,
+                34,
+                23,
+                5
+              ],
+              [
+                141,
+                8,
+                740,
+                6,
+                30,
+                34,
+                24,
+                4,
+                13
+              ],
+              [
+                39,
+                25,
+                5,
+                794,
+                18,
+                100,
+                7,
+                7,
+                5
+              ],
+              [
+                76,
+                10,
+                13,
+                26,
+                817,
+                26,
+                7,
+                8,
+                17
+              ],
+              [
+                25,
+                5,
+                7,
+                53,
+                112,
+                768,
+                4,
+                14,
+                12
+              ],
+              [
+                89,
+                6,
+                27,
+                30,
+                11,
+                112,
+                677,
+                24,
+                24
+              ],
+              [
+                114,
+                6,
+                28,
+                25,
+                5,
+                135,
+                11,
+                669,
+                7
+              ],
+              [
+                36,
+                9,
+                3,
+                17,
+                16,
+                28,
+                8,
+                16,
+                867
+              ]
+            ]
+          }
+        ]
+      },
+      "centered": {
+        "matrix_percent": [
+          [
+            99.4
+          ],
+          [
+            98.2,
+            94.39999999999999
+          ],
+          [
+            98.2,
+            93.10000000000001,
+            89.5
+          ],
+          [
+            98.0,
+            88.1,
+            88.6,
+            93.4
+          ],
+          [
+            97.6,
+            87.5,
+            85.8,
+            92.10000000000001,
+            91.8
+          ],
+          [
+            97.0,
+            86.2,
+            85.2,
+            89.7,
+            88.2,
+            88.8
+          ],
+          [
+            97.0,
+            83.2,
+            83.5,
+            89.1,
+            88.3,
+            89.0,
+            80.80000000000001
+          ],
+          [
+            96.7,
+            81.5,
+            82.5,
+            88.8,
+            87.9,
+            88.1,
+            79.60000000000001,
+            84.6
+          ],
+          [
+            96.39999999999999,
+            80.30000000000001,
+            81.8,
+            88.6,
+            87.1,
+            87.7,
+            79.2,
+            84.6,
+            93.10000000000001
+          ]
+        ],
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.4,
+            "old_percent": null,
+            "new_percent": 99.4,
+            "AIA_percent": 99.4,
+            "forgetting_pp": null,
+            "W_within_task_error_count": 6,
+            "S_restricted_correct_stolen_count": 0,
+            "total_error_count": 6,
+            "test_images": 1000,
+            "old_to_new_error_percent": null,
+            "new_to_old_error_percent": null,
+            "task_group_confusion": [
+              [
+                1000
+              ]
+            ]
+          },
+          {
+            "task": 2,
+            "overall_percent": 96.3,
+            "old_percent": 98.2,
+            "new_percent": 94.39999999999999,
+            "AIA_percent": 97.85,
+            "forgetting_pp": 1.2000000000000028,
+            "W_within_task_error_count": 23,
+            "S_restricted_correct_stolen_count": 51,
+            "total_error_count": 74,
+            "test_images": 2000,
+            "old_to_new_error_percent": 1.2,
+            "new_to_old_error_percent": 4.9,
+            "task_group_confusion": [
+              [
+                988,
+                12
+              ],
+              [
+                49,
+                951
+              ]
+            ]
+          },
+          {
+            "task": 3,
+            "overall_percent": 93.60000000000001,
+            "old_percent": 95.65,
+            "new_percent": 89.5,
+            "AIA_percent": 96.43333333333334,
+            "forgetting_pp": 1.249999999999993,
+            "W_within_task_error_count": 50,
+            "S_restricted_correct_stolen_count": 142,
+            "total_error_count": 192,
+            "test_images": 3000,
+            "old_to_new_error_percent": 0.75,
+            "new_to_old_error_percent": 9.4,
+            "task_group_confusion": [
+              [
+                988,
+                10,
+                2
+              ],
+              [
+                50,
+                937,
+                13
+              ],
+              [
+                74,
+                20,
+                906
+              ]
+            ]
+          },
+          {
+            "task": 4,
+            "overall_percent": 92.025,
+            "old_percent": 91.56666666666666,
+            "new_percent": 93.4,
+            "AIA_percent": 95.33125000000001,
+            "forgetting_pp": 2.8666666666666694,
+            "W_within_task_error_count": 63,
+            "S_restricted_correct_stolen_count": 256,
+            "total_error_count": 319,
+            "test_images": 4000,
+            "old_to_new_error_percent": 2.466666666666667,
+            "new_to_old_error_percent": 6.3,
+            "task_group_confusion": [
+              [
+                986,
+                5,
+                2,
+                7
+              ],
+              [
+                45,
+                886,
+                12,
+                57
+              ],
+              [
+                77,
+                17,
+                896,
+                10
+              ],
+              [
+                34,
+                21,
+                8,
+                937
+              ]
+            ]
+          },
+          {
+            "task": 5,
+            "overall_percent": 90.96,
+            "old_percent": 90.75,
+            "new_percent": 91.8,
+            "AIA_percent": 94.45700000000001,
+            "forgetting_pp": 3.4250000000000007,
+            "W_within_task_error_count": 87,
+            "S_restricted_correct_stolen_count": 365,
+            "total_error_count": 452,
+            "test_images": 5000,
+            "old_to_new_error_percent": 2.0500000000000003,
+            "new_to_old_error_percent": 7.000000000000001,
+            "task_group_confusion": [
+              [
+                981,
+                5,
+                2,
+                7,
+                5
+              ],
+              [
+                38,
+                880,
+                10,
+                49,
+                23
+              ],
+              [
+                77,
+                14,
+                868,
+                8,
+                33
+              ],
+              [
+                28,
+                20,
+                7,
+                924,
+                21
+              ],
+              [
+                31,
+                4,
+                14,
+                21,
+                930
+              ]
+            ]
+          },
+          {
+            "task": 6,
+            "overall_percent": 89.18333333333334,
+            "old_percent": 89.26,
+            "new_percent": 88.8,
+            "AIA_percent": 93.57805555555557,
+            "forgetting_pp": 4.439999999999998,
+            "W_within_task_error_count": 118,
+            "S_restricted_correct_stolen_count": 531,
+            "total_error_count": 649,
+            "test_images": 6000,
+            "old_to_new_error_percent": 2.16,
+            "new_to_old_error_percent": 10.5,
+            "task_group_confusion": [
+              [
+                975,
+                4,
+                2,
+                6,
+                4,
+                9
+              ],
+              [
+                37,
+                866,
+                9,
+                50,
+                22,
+                16
+              ],
+              [
+                76,
+                14,
+                862,
+                8,
+                31,
+                9
+              ],
+              [
+                23,
+                17,
+                5,
+                901,
+                19,
+                35
+              ],
+              [
+                31,
+                4,
+                16,
+                18,
+                892,
+                39
+              ],
+              [
+                16,
+                7,
+                3,
+                30,
+                49,
+                895
+              ]
+            ]
+          },
+          {
+            "task": 7,
+            "overall_percent": 87.27142857142857,
+            "old_percent": 88.35000000000001,
+            "new_percent": 80.80000000000001,
+            "AIA_percent": 92.67710884353743,
+            "forgetting_pp": 4.533333333333334,
+            "W_within_task_error_count": 155,
+            "S_restricted_correct_stolen_count": 736,
+            "total_error_count": 891,
+            "test_images": 7000,
+            "old_to_new_error_percent": 1.2166666666666666,
+            "new_to_old_error_percent": 18.4,
+            "task_group_confusion": [
+              [
+                975,
+                4,
+                2,
+                6,
+                4,
+                9,
+                0
+              ],
+              [
+                36,
+                836,
+                9,
+                51,
+                22,
+                18,
+                28
+              ],
+              [
+                76,
+                11,
+                846,
+                6,
+                30,
+                9,
+                22
+              ],
+              [
+                22,
+                15,
+                6,
+                894,
+                19,
+                34,
+                10
+              ],
+              [
+                28,
+                4,
+                12,
+                16,
+                893,
+                39,
+                8
+              ],
+              [
+                15,
+                7,
+                3,
+                26,
+                49,
+                895,
+                5
+              ],
+              [
+                58,
+                6,
+                23,
+                19,
+                17,
+                61,
+                816
+              ]
+            ]
+          },
+          {
+            "task": 8,
+            "overall_percent": 86.2125,
+            "old_percent": 86.44285714285715,
+            "new_percent": 84.6,
+            "AIA_percent": 91.86903273809524,
+            "forgetting_pp": 4.742857142857143,
+            "W_within_task_error_count": 169,
+            "S_restricted_correct_stolen_count": 934,
+            "total_error_count": 1103,
+            "test_images": 8000,
+            "old_to_new_error_percent": 1.4142857142857144,
+            "new_to_old_error_percent": 15.4,
+            "task_group_confusion": [
+              [
+                972,
+                5,
+                2,
+                6,
+                3,
+                10,
+                0,
+                2
+              ],
+              [
+                38,
+                820,
+                8,
+                42,
+                19,
+                18,
+                29,
+                26
+              ],
+              [
+                77,
+                10,
+                833,
+                6,
+                31,
+                8,
+                20,
+                15
+              ],
+              [
+                21,
+                14,
+                5,
+                890,
+                19,
+                33,
+                10,
+                8
+              ],
+              [
+                29,
+                5,
+                14,
+                14,
+                889,
+                40,
+                7,
+                2
+              ],
+              [
+                14,
+                6,
+                2,
+                24,
+                48,
+                886,
+                3,
+                17
+              ],
+              [
+                58,
+                5,
+                11,
+                19,
+                15,
+                59,
+                804,
+                29
+              ],
+              [
+                45,
+                0,
+                12,
+                17,
+                7,
+                61,
+                12,
+                846
+              ]
+            ]
+          },
+          {
+            "task": 9,
+            "overall_percent": 86.53333333333333,
+            "old_percent": 85.7125,
+            "new_percent": 93.10000000000001,
+            "AIA_percent": 91.27617724867724,
+            "forgetting_pp": 4.650000000000002,
+            "W_within_task_error_count": 181,
+            "S_restricted_correct_stolen_count": 1031,
+            "total_error_count": 1212,
+            "test_images": 9000,
+            "old_to_new_error_percent": 0.8125,
+            "new_to_old_error_percent": 6.5,
+            "task_group_confusion": [
+              [
+                970,
+                5,
+                2,
+                6,
+                3,
+                7,
+                0,
+                2,
+                5
+              ],
+              [
+                38,
+                807,
+                10,
+                45,
+                20,
+                17,
+                26,
+                26,
+                11
+              ],
+              [
+                77,
+                9,
+                827,
+                6,
+                30,
+                10,
+                20,
+                14,
+                7
+              ],
+              [
+                22,
+                13,
+                3,
+                887,
+                19,
+                32,
+                8,
+                8,
+                8
+              ],
+              [
+                27,
+                5,
+                12,
+                15,
+                879,
+                40,
+                9,
+                3,
+                10
+              ],
+              [
+                12,
+                6,
+                2,
+                25,
+                49,
+                881,
+                3,
+                17,
+                5
+              ],
+              [
+                54,
+                5,
+                12,
+                19,
+                13,
+                55,
+                798,
+                29,
+                15
+              ],
+              [
+                44,
+                0,
+                10,
+                17,
+                7,
+                60,
+                12,
+                846,
+                4
+              ],
+              [
+                15,
+                6,
+                5,
+                2,
+                24,
+                6,
+                4,
+                3,
+                935
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "mvp": {
+      "raw": {
+        "matrix_percent": [
+          [
+            99.3
+          ],
+          [
+            98.1,
+            89.5
+          ],
+          [
+            98.0,
+            88.1,
+            81.0
+          ],
+          [
+            97.6,
+            82.0,
+            79.80000000000001,
+            88.6
+          ],
+          [
+            97.3,
+            81.39999999999999,
+            78.5,
+            87.2,
+            83.89999999999999
+          ],
+          [
+            95.8,
+            78.2,
+            76.4,
+            79.7,
+            82.1,
+            77.5
+          ],
+          [
+            95.8,
+            75.3,
+            75.0,
+            79.10000000000001,
+            82.8,
+            77.2,
+            67.10000000000001
+          ],
+          [
+            95.6,
+            74.6,
+            74.6,
+            78.60000000000001,
+            82.3,
+            76.6,
+            66.10000000000001,
+            67.5
+          ]
+        ],
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.3,
+            "old_percent": null,
+            "new_percent": 99.3,
+            "AIA_percent": 99.3,
+            "forgetting_pp": null,
+            "W_within_task_error_count": 7,
+            "S_restricted_correct_stolen_count": 0,
+            "total_error_count": 7,
+            "test_images": 1000,
+            "old_to_new_error_percent": null,
+            "new_to_old_error_percent": null,
+            "task_group_confusion": [
+              [
+                1000
+              ]
+            ]
+          },
+          {
+            "task": 2,
+            "overall_percent": 93.8,
+            "old_percent": 98.1,
+            "new_percent": 89.5,
+            "AIA_percent": 96.55,
+            "forgetting_pp": 1.2000000000000028,
+            "W_within_task_error_count": 25,
+            "S_restricted_correct_stolen_count": 99,
+            "total_error_count": 124,
+            "test_images": 2000,
+            "old_to_new_error_percent": 1.2,
+            "new_to_old_error_percent": 10.2,
+            "task_group_confusion": [
+              [
+                988,
+                12
+              ],
+              [
+                102,
+                898
+              ]
+            ]
+          },
+          {
+            "task": 3,
+            "overall_percent": 89.03333333333333,
+            "old_percent": 93.05,
+            "new_percent": 81.0,
+            "AIA_percent": 94.04444444444444,
+            "forgetting_pp": 1.3500000000000014,
+            "W_within_task_error_count": 53,
+            "S_restricted_correct_stolen_count": 276,
+            "total_error_count": 329,
+            "test_images": 3000,
+            "old_to_new_error_percent": 1.15,
+            "new_to_old_error_percent": 18.6,
+            "task_group_confusion": [
+              [
+                987,
+                11,
+                2
+              ],
+              [
+                95,
+                884,
+                21
+              ],
+              [
+                169,
+                17,
+                814
+              ]
+            ]
+          },
+          {
+            "task": 4,
+            "overall_percent": 87.0,
+            "old_percent": 86.46666666666665,
+            "new_percent": 88.6,
+            "AIA_percent": 92.28333333333333,
+            "forgetting_pp": 3.4666666666666637,
+            "W_within_task_error_count": 69,
+            "S_restricted_correct_stolen_count": 451,
+            "total_error_count": 520,
+            "test_images": 4000,
+            "old_to_new_error_percent": 3.4666666666666663,
+            "new_to_old_error_percent": 11.4,
+            "task_group_confusion": [
+              [
+                983,
+                8,
+                2,
+                7
+              ],
+              [
+                75,
+                823,
+                16,
+                86
+              ],
+              [
+                171,
+                16,
+                802,
+                11
+              ],
+              [
+                67,
+                35,
+                12,
+                886
+              ]
+            ]
+          },
+          {
+            "task": 5,
+            "overall_percent": 85.66,
+            "old_percent": 86.1,
+            "new_percent": 83.89999999999999,
+            "AIA_percent": 90.95866666666667,
+            "forgetting_pp": 3.5,
+            "W_within_task_error_count": 87,
+            "S_restricted_correct_stolen_count": 630,
+            "total_error_count": 717,
+            "test_images": 5000,
+            "old_to_new_error_percent": 2.025,
+            "new_to_old_error_percent": 15.4,
+            "task_group_confusion": [
+              [
+                981,
+                7,
+                2,
+                8,
+                2
+              ],
+              [
+                72,
+                816,
+                10,
+                76,
+                26
+              ],
+              [
+                159,
+                13,
+                788,
+                9,
+                31
+              ],
+              [
+                63,
+                34,
+                9,
+                872,
+                22
+              ],
+              [
+                96,
+                10,
+                19,
+                29,
+                846
+              ]
+            ]
+          },
+          {
+            "task": 6,
+            "overall_percent": 81.61666666666667,
+            "old_percent": 82.44,
+            "new_percent": 77.5,
+            "AIA_percent": 89.40166666666666,
+            "forgetting_pp": 6.019999999999996,
+            "W_within_task_error_count": 126,
+            "S_restricted_correct_stolen_count": 977,
+            "total_error_count": 1103,
+            "test_images": 6000,
+            "old_to_new_error_percent": 4.7,
+            "new_to_old_error_percent": 22.3,
+            "task_group_confusion": [
+              [
+                964,
+                7,
+                1,
+                9,
+                1,
+                18
+              ],
+              [
+                60,
+                784,
+                11,
+                71,
+                25,
+                49
+              ],
+              [
+                148,
+                12,
+                767,
+                7,
+                32,
+                34
+              ],
+              [
+                46,
+                31,
+                6,
+                797,
+                18,
+                102
+              ],
+              [
+                84,
+                9,
+                21,
+                28,
+                826,
+                32
+              ],
+              [
+                41,
+                6,
+                8,
+                57,
+                111,
+                777
+              ]
+            ]
+          },
+          {
+            "task": 7,
+            "overall_percent": 78.9,
+            "old_percent": 80.86666666666666,
+            "new_percent": 67.10000000000001,
+            "AIA_percent": 87.90142857142857,
+            "forgetting_pp": 5.766666666666663,
+            "W_within_task_error_count": 162,
+            "S_restricted_correct_stolen_count": 1315,
+            "total_error_count": 1477,
+            "test_images": 7000,
+            "old_to_new_error_percent": 1.4166666666666665,
+            "new_to_old_error_percent": 32.4,
+            "task_group_confusion": [
+              [
+                964,
+                7,
+                1,
+                9,
+                1,
+                18,
+                0
+              ],
+              [
+                57,
+                756,
+                10,
+                65,
+                23,
+                48,
+                41
+              ],
+              [
+                145,
+                8,
+                752,
+                6,
+                32,
+                34,
+                23
+              ],
+              [
+                48,
+                26,
+                6,
+                791,
+                17,
+                106,
+                6
+              ],
+              [
+                78,
+                9,
+                18,
+                25,
+                833,
+                30,
+                7
+              ],
+              [
+                39,
+                5,
+                8,
+                56,
+                111,
+                773,
+                8
+              ],
+              [
+                116,
+                11,
+                43,
+                26,
+                10,
+                118,
+                676
+              ]
+            ]
+          },
+          {
+            "task": 8,
+            "overall_percent": 76.9875,
+            "old_percent": 78.34285714285714,
+            "new_percent": 67.5,
+            "AIA_percent": 86.5371875,
+            "forgetting_pp": 5.5,
+            "W_within_task_error_count": 176,
+            "S_restricted_correct_stolen_count": 1665,
+            "total_error_count": 1841,
+            "test_images": 8000,
+            "old_to_new_error_percent": 1.2428571428571429,
+            "new_to_old_error_percent": 32.5,
+            "task_group_confusion": [
+              [
+                962,
+                8,
+                1,
+                8,
+                2,
+                17,
+                0,
+                2
+              ],
+              [
+                57,
+                749,
+                9,
+                53,
+                21,
+                44,
+                40,
+                27
+              ],
+              [
+                148,
+                7,
+                748,
+                5,
+                30,
+                35,
+                23,
+                4
+              ],
+              [
+                47,
+                27,
+                4,
+                786,
+                17,
+                105,
+                7,
+                7
+              ],
+              [
+                79,
+                9,
+                15,
+                25,
+                829,
+                29,
+                7,
+                7
+              ],
+              [
+                37,
+                5,
+                6,
+                55,
+                111,
+                768,
+                3,
+                15
+              ],
+              [
+                115,
+                8,
+                35,
+                25,
+                8,
+                118,
+                666,
+                25
+              ],
+              [
+                124,
+                4,
+                28,
+                17,
+                3,
+                141,
+                8,
+                675
+              ]
+            ]
+          }
+        ]
+      },
+      "centered": {
+        "matrix_percent": [
+          [
+            99.3
+          ],
+          [
+            98.3,
+            93.30000000000001
+          ],
+          [
+            98.0,
+            92.2,
+            88.4
+          ],
+          [
+            97.89999999999999,
+            87.5,
+            87.9,
+            93.2
+          ],
+          [
+            97.39999999999999,
+            86.7,
+            85.39999999999999,
+            91.9,
+            91.2
+          ],
+          [
+            96.39999999999999,
+            85.5,
+            84.6,
+            89.4,
+            87.5,
+            88.8
+          ],
+          [
+            96.3,
+            83.1,
+            83.0,
+            88.8,
+            87.4,
+            88.7,
+            80.5
+          ],
+          [
+            96.1,
+            80.9,
+            82.1,
+            88.8,
+            86.8,
+            87.8,
+            79.10000000000001,
+            84.3
+          ]
+        ],
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.3,
+            "old_percent": null,
+            "new_percent": 99.3,
+            "AIA_percent": 99.3,
+            "forgetting_pp": null,
+            "W_within_task_error_count": 7,
+            "S_restricted_correct_stolen_count": 0,
+            "total_error_count": 7,
+            "test_images": 1000,
+            "old_to_new_error_percent": null,
+            "new_to_old_error_percent": null,
+            "task_group_confusion": [
+              [
+                1000
+              ]
+            ]
+          },
+          {
+            "task": 2,
+            "overall_percent": 95.8,
+            "old_percent": 98.3,
+            "new_percent": 93.30000000000001,
+            "AIA_percent": 97.55000000000001,
+            "forgetting_pp": 1.0,
+            "W_within_task_error_count": 25,
+            "S_restricted_correct_stolen_count": 59,
+            "total_error_count": 84,
+            "test_images": 2000,
+            "old_to_new_error_percent": 1.0,
+            "new_to_old_error_percent": 6.0,
+            "task_group_confusion": [
+              [
+                990,
+                10
+              ],
+              [
+                60,
+                940
+              ]
+            ]
+          },
+          {
+            "task": 3,
+            "overall_percent": 92.86666666666666,
+            "old_percent": 95.1,
+            "new_percent": 88.4,
+            "AIA_percent": 95.9888888888889,
+            "forgetting_pp": 1.2000000000000028,
+            "W_within_task_error_count": 53,
+            "S_restricted_correct_stolen_count": 161,
+            "total_error_count": 214,
+            "test_images": 3000,
+            "old_to_new_error_percent": 0.8500000000000001,
+            "new_to_old_error_percent": 10.299999999999999,
+            "task_group_confusion": [
+              [
+                988,
+                9,
+                3
+              ],
+              [
+                57,
+                929,
+                14
+              ],
+              [
+                84,
+                19,
+                897
+              ]
+            ]
+          },
+          {
+            "task": 4,
+            "overall_percent": 91.625,
+            "old_percent": 91.10000000000001,
+            "new_percent": 93.2,
+            "AIA_percent": 94.89791666666667,
+            "forgetting_pp": 2.566666666666672,
+            "W_within_task_error_count": 69,
+            "S_restricted_correct_stolen_count": 266,
+            "total_error_count": 335,
+            "test_images": 4000,
+            "old_to_new_error_percent": 2.1999999999999997,
+            "new_to_old_error_percent": 6.5,
+            "task_group_confusion": [
+              [
+                986,
+                7,
+                3,
+                4
+              ],
+              [
+                51,
+                880,
+                13,
+                56
+              ],
+              [
+                83,
+                18,
+                893,
+                6
+              ],
+              [
+                34,
+                20,
+                11,
+                935
+              ]
+            ]
+          },
+          {
+            "task": 5,
+            "overall_percent": 90.52,
+            "old_percent": 90.35,
+            "new_percent": 91.2,
+            "AIA_percent": 94.02233333333334,
+            "forgetting_pp": 3.2000000000000064,
+            "W_within_task_error_count": 87,
+            "S_restricted_correct_stolen_count": 387,
+            "total_error_count": 474,
+            "test_images": 5000,
+            "old_to_new_error_percent": 2.125,
+            "new_to_old_error_percent": 7.8,
+            "task_group_confusion": [
+              [
+                980,
+                6,
+                3,
+                5,
+                6
+              ],
+              [
+                50,
+                870,
+                11,
+                45,
+                24
+              ],
+              [
+                82,
+                16,
+                866,
+                5,
+                31
+              ],
+              [
+                30,
+                18,
+                6,
+                922,
+                24
+              ],
+              [
+                35,
+                6,
+                14,
+                23,
+                922
+              ]
+            ]
+          },
+          {
+            "task": 6,
+            "overall_percent": 88.7,
+            "old_percent": 88.67999999999999,
+            "new_percent": 88.8,
+            "AIA_percent": 93.13527777777779,
+            "forgetting_pp": 4.400000000000006,
+            "W_within_task_error_count": 126,
+            "S_restricted_correct_stolen_count": 552,
+            "total_error_count": 678,
+            "test_images": 6000,
+            "old_to_new_error_percent": 2.52,
+            "new_to_old_error_percent": 10.4,
+            "task_group_confusion": [
+              [
+                970,
+                5,
+                2,
+                5,
+                4,
+                14
+              ],
+              [
+                45,
+                859,
+                12,
+                45,
+                21,
+                18
+              ],
+              [
+                78,
+                15,
+                858,
+                5,
+                30,
+                14
+              ],
+              [
+                25,
+                16,
+                5,
+                897,
+                20,
+                37
+              ],
+              [
+                32,
+                5,
+                14,
+                21,
+                885,
+                43
+              ],
+              [
+                18,
+                7,
+                3,
+                29,
+                47,
+                896
+              ]
+            ]
+          },
+          {
+            "task": 7,
+            "overall_percent": 86.82857142857144,
+            "old_percent": 87.88333333333333,
+            "new_percent": 80.5,
+            "AIA_percent": 92.23431972789116,
+            "forgetting_pp": 4.483333333333337,
+            "W_within_task_error_count": 162,
+            "S_restricted_correct_stolen_count": 760,
+            "total_error_count": 922,
+            "test_images": 7000,
+            "old_to_new_error_percent": 1.1666666666666667,
+            "new_to_old_error_percent": 18.6,
+            "task_group_confusion": [
+              [
+                969,
+                5,
+                2,
+                5,
+                5,
+                14,
+                0
+              ],
+              [
+                43,
+                835,
+                10,
+                43,
+                22,
+                19,
+                28
+              ],
+              [
+                78,
+                10,
+                841,
+                5,
+                30,
+                14,
+                22
+              ],
+              [
+                24,
+                15,
+                5,
+                891,
+                18,
+                37,
+                10
+              ],
+              [
+                33,
+                5,
+                14,
+                18,
+                883,
+                41,
+                6
+              ],
+              [
+                19,
+                6,
+                3,
+                27,
+                47,
+                894,
+                4
+              ],
+              [
+                56,
+                7,
+                24,
+                20,
+                16,
+                63,
+                814
+              ]
+            ]
+          },
+          {
+            "task": 8,
+            "overall_percent": 85.7375,
+            "old_percent": 85.94285714285715,
+            "new_percent": 84.3,
+            "AIA_percent": 91.42221726190476,
+            "forgetting_pp": 4.728571428571432,
+            "W_within_task_error_count": 176,
+            "S_restricted_correct_stolen_count": 965,
+            "total_error_count": 1141,
+            "test_images": 8000,
+            "old_to_new_error_percent": 1.4571428571428573,
+            "new_to_old_error_percent": 15.7,
+            "task_group_confusion": [
+              [
+                967,
+                5,
+                2,
+                5,
+                4,
+                14,
+                0,
+                3
+              ],
+              [
+                43,
+                813,
+                10,
+                39,
+                21,
+                18,
+                28,
+                28
+              ],
+              [
+                79,
+                9,
+                831,
+                5,
+                28,
+                12,
+                22,
+                14
+              ],
+              [
+                24,
+                12,
+                4,
+                890,
+                18,
+                37,
+                10,
+                5
+              ],
+              [
+                34,
+                6,
+                12,
+                17,
+                878,
+                42,
+                6,
+                5
+              ],
+              [
+                17,
+                6,
+                2,
+                27,
+                44,
+                885,
+                2,
+                17
+              ],
+              [
+                61,
+                4,
+                10,
+                20,
+                14,
+                62,
+                799,
+                30
+              ],
+              [
+                49,
+                1,
+                9,
+                15,
+                5,
+                66,
+                12,
+                843
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "full": {
+      "raw": {
+        "matrix_percent": [
+          [
+            99.3
+          ],
+          [
+            97.3,
+            89.4
+          ],
+          [
+            97.0,
+            88.1,
+            80.80000000000001
+          ],
+          [
+            97.0,
+            81.6,
+            79.5,
+            82.1
+          ],
+          [
+            96.89999999999999,
+            80.0,
+            78.7,
+            80.4,
+            78.8
+          ],
+          [
+            95.8,
+            78.5,
+            75.9,
+            72.1,
+            77.7,
+            72.2
+          ],
+          [
+            95.6,
+            76.4,
+            74.4,
+            71.89999999999999,
+            77.0,
+            71.1,
+            60.699999999999996
+          ],
+          [
+            95.39999999999999,
+            75.5,
+            73.9,
+            71.7,
+            76.7,
+            70.39999999999999,
+            59.699999999999996,
+            55.900000000000006
+          ],
+          [
+            95.1,
+            74.5,
+            72.1,
+            70.5,
+            73.2,
+            69.8,
+            59.0,
+            55.300000000000004,
+            79.10000000000001
+          ]
+        ],
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.3,
+            "old_percent": null,
+            "new_percent": 99.3,
+            "AIA_percent": 99.3,
+            "forgetting_pp": null,
+            "W_within_task_error_count": 7,
+            "S_restricted_correct_stolen_count": 0,
+            "total_error_count": 7,
+            "test_images": 1000,
+            "old_to_new_error_percent": null,
+            "new_to_old_error_percent": null,
+            "task_group_confusion": [
+              [
+                1000
+              ]
+            ]
+          },
+          {
+            "task": 2,
+            "overall_percent": 93.35,
+            "old_percent": 97.3,
+            "new_percent": 89.4,
+            "AIA_percent": 96.32499999999999,
+            "forgetting_pp": 2.0,
+            "W_within_task_error_count": 23,
+            "S_restricted_correct_stolen_count": 110,
+            "total_error_count": 133,
+            "test_images": 2000,
+            "old_to_new_error_percent": 2.0,
+            "new_to_old_error_percent": 10.100000000000001,
+            "task_group_confusion": [
+              [
+                980,
+                20
+              ],
+              [
+                101,
+                899
+              ]
+            ]
+          },
+          {
+            "task": 3,
+            "overall_percent": 88.63333333333333,
+            "old_percent": 92.55,
+            "new_percent": 80.80000000000001,
+            "AIA_percent": 93.7611111111111,
+            "forgetting_pp": 1.8000000000000043,
+            "W_within_task_error_count": 41,
+            "S_restricted_correct_stolen_count": 300,
+            "total_error_count": 341,
+            "test_images": 3000,
+            "old_to_new_error_percent": 1.4000000000000001,
+            "new_to_old_error_percent": 19.1,
+            "task_group_confusion": [
+              [
+                977,
+                21,
+                2
+              ],
+              [
+                89,
+                885,
+                26
+              ],
+              [
+                174,
+                17,
+                809
+              ]
+            ]
+          },
+          {
+            "task": 4,
+            "overall_percent": 85.05,
+            "old_percent": 86.03333333333335,
+            "new_percent": 82.1,
+            "AIA_percent": 91.58333333333333,
+            "forgetting_pp": 3.8000000000000065,
+            "W_within_task_error_count": 58,
+            "S_restricted_correct_stolen_count": 540,
+            "total_error_count": 598,
+            "test_images": 4000,
+            "old_to_new_error_percent": 2.8666666666666667,
+            "new_to_old_error_percent": 17.9,
+            "task_group_confusion": [
+              [
+                977,
+                17,
+                1,
+                5
+              ],
+              [
+                89,
+                819,
+                18,
+                74
+              ],
+              [
+                180,
+                17,
+                796,
+                7
+              ],
+              [
+                88,
+                76,
+                15,
+                821
+              ]
+            ]
+          },
+          {
+            "task": 5,
+            "overall_percent": 82.96,
+            "old_percent": 84.0,
+            "new_percent": 78.8,
+            "AIA_percent": 89.85866666666666,
+            "forgetting_pp": 3.900000000000002,
+            "W_within_task_error_count": 78,
+            "S_restricted_correct_stolen_count": 774,
+            "total_error_count": 852,
+            "test_images": 5000,
+            "old_to_new_error_percent": 1.35,
+            "new_to_old_error_percent": 20.599999999999998,
+            "task_group_confusion": [
+              [
+                976,
+                17,
+                1,
+                5,
+                1
+              ],
+              [
+                94,
+                804,
+                15,
+                72,
+                15
+              ],
+              [
+                172,
+                15,
+                788,
+                9,
+                16
+              ],
+              [
+                84,
+                77,
+                13,
+                804,
+                22
+              ],
+              [
+                115,
+                28,
+                35,
+                28,
+                794
+              ]
+            ]
+          },
+          {
+            "task": 6,
+            "overall_percent": 78.7,
+            "old_percent": 80.0,
+            "new_percent": 72.2,
+            "AIA_percent": 87.99888888888889,
+            "forgetting_pp": 6.080000000000001,
+            "W_within_task_error_count": 109,
+            "S_restricted_correct_stolen_count": 1169,
+            "total_error_count": 1278,
+            "test_images": 6000,
+            "old_to_new_error_percent": 4.36,
+            "new_to_old_error_percent": 27.800000000000004,
+            "task_group_confusion": [
+              [
+                963,
+                18,
+                1,
+                7,
+                1,
+                10
+              ],
+              [
+                87,
+                788,
+                13,
+                73,
+                15,
+                24
+              ],
+              [
+                172,
+                13,
+                760,
+                7,
+                17,
+                31
+              ],
+              [
+                58,
+                73,
+                12,
+                721,
+                14,
+                122
+              ],
+              [
+                102,
+                25,
+                30,
+                30,
+                782,
+                31
+              ],
+              [
+                72,
+                3,
+                12,
+                66,
+                125,
+                722
+              ]
+            ]
+          },
+          {
+            "task": 7,
+            "overall_percent": 75.3,
+            "old_percent": 77.73333333333333,
+            "new_percent": 60.699999999999996,
+            "AIA_percent": 86.1847619047619,
+            "forgetting_pp": 6.033333333333336,
+            "W_within_task_error_count": 146,
+            "S_restricted_correct_stolen_count": 1583,
+            "total_error_count": 1729,
+            "test_images": 7000,
+            "old_to_new_error_percent": 0.8833333333333334,
+            "new_to_old_error_percent": 38.9,
+            "task_group_confusion": [
+              [
+                962,
+                16,
+                1,
+                8,
+                1,
+                12,
+                0
+              ],
+              [
+                85,
+                766,
+                14,
+                68,
+                12,
+                24,
+                31
+              ],
+              [
+                177,
+                11,
+                745,
+                9,
+                15,
+                32,
+                11
+              ],
+              [
+                58,
+                69,
+                11,
+                719,
+                14,
+                126,
+                3
+              ],
+              [
+                109,
+                25,
+                33,
+                26,
+                775,
+                31,
+                1
+              ],
+              [
+                76,
+                3,
+                10,
+                65,
+                128,
+                711,
+                7
+              ],
+              [
+                163,
+                5,
+                74,
+                28,
+                4,
+                115,
+                611
+              ]
+            ]
+          },
+          {
+            "task": 8,
+            "overall_percent": 72.39999999999999,
+            "old_percent": 74.75714285714285,
+            "new_percent": 55.900000000000006,
+            "AIA_percent": 84.46166666666667,
+            "forgetting_pp": 5.714285714285716,
+            "W_within_task_error_count": 163,
+            "S_restricted_correct_stolen_count": 2045,
+            "total_error_count": 2208,
+            "test_images": 8000,
+            "old_to_new_error_percent": 0.6285714285714286,
+            "new_to_old_error_percent": 44.1,
+            "task_group_confusion": [
+              [
+                959,
+                19,
+                1,
+                8,
+                1,
+                12,
+                0,
+                0
+              ],
+              [
+                86,
+                757,
+                14,
+                56,
+                12,
+                22,
+                32,
+                21
+              ],
+              [
+                186,
+                9,
+                740,
+                7,
+                14,
+                29,
+                13,
+                2
+              ],
+              [
+                58,
+                70,
+                13,
+                717,
+                15,
+                124,
+                2,
+                1
+              ],
+              [
+                106,
+                27,
+                32,
+                27,
+                771,
+                33,
+                1,
+                3
+              ],
+              [
+                81,
+                3,
+                9,
+                64,
+                128,
+                704,
+                5,
+                6
+              ],
+              [
+                166,
+                6,
+                70,
+                27,
+                5,
+                116,
+                599,
+                11
+              ],
+              [
+                192,
+                4,
+                85,
+                29,
+                4,
+                124,
+                3,
+                559
+              ]
+            ]
+          },
+          {
+            "task": 9,
+            "overall_percent": 72.06666666666666,
+            "old_percent": 71.1875,
+            "new_percent": 79.10000000000001,
+            "AIA_percent": 83.08444444444444,
+            "forgetting_pp": 6.212500000000002,
+            "W_within_task_error_count": 169,
+            "S_restricted_correct_stolen_count": 2345,
+            "total_error_count": 2514,
+            "test_images": 9000,
+            "old_to_new_error_percent": 1.1375,
+            "new_to_old_error_percent": 20.9,
+            "task_group_confusion": [
+              [
+                956,
+                19,
+                1,
+                10,
+                0,
+                11,
+                0,
+                0,
+                3
+              ],
+              [
+                94,
+                746,
+                15,
+                55,
+                13,
+                21,
+                31,
+                22,
+                3
+              ],
+              [
+                191,
+                10,
+                723,
+                6,
+                18,
+                31,
+                13,
+                2,
+                6
+              ],
+              [
+                58,
+                71,
+                13,
+                705,
+                13,
+                128,
+                3,
+                2,
+                7
+              ],
+              [
+                111,
+                26,
+                29,
+                26,
+                733,
+                31,
+                1,
+                3,
+                40
+              ],
+              [
+                79,
+                4,
+                10,
+                67,
+                125,
+                698,
+                4,
+                5,
+                8
+              ],
+              [
+                152,
+                7,
+                69,
+                29,
+                5,
+                117,
+                592,
+                9,
+                20
+              ],
+              [
+                196,
+                3,
+                85,
+                29,
+                5,
+                122,
+                3,
+                553,
+                4
+              ],
+              [
+                72,
+                34,
+                5,
+                22,
+                17,
+                30,
+                9,
+                20,
+                791
+              ]
+            ]
+          }
+        ]
+      },
+      "centered": {
+        "matrix_percent": [
+          [
+            99.3
+          ],
+          [
+            97.7,
+            94.1
+          ],
+          [
+            97.5,
+            92.7,
+            89.60000000000001
+          ],
+          [
+            96.8,
+            87.2,
+            88.9,
+            93.89999999999999
+          ],
+          [
+            96.6,
+            85.2,
+            86.7,
+            92.80000000000001,
+            90.9
+          ],
+          [
+            95.3,
+            83.89999999999999,
+            86.1,
+            89.9,
+            88.0,
+            87.1
+          ],
+          [
+            94.8,
+            81.2,
+            84.7,
+            88.2,
+            87.6,
+            86.7,
+            79.0
+          ],
+          [
+            94.89999999999999,
+            78.9,
+            83.8,
+            87.8,
+            87.6,
+            85.39999999999999,
+            77.60000000000001,
+            82.5
+          ],
+          [
+            94.5,
+            78.7,
+            82.69999999999999,
+            86.3,
+            85.7,
+            84.89999999999999,
+            76.8,
+            81.2,
+            93.0
+          ]
+        ],
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.3,
+            "old_percent": null,
+            "new_percent": 99.3,
+            "AIA_percent": 99.3,
+            "forgetting_pp": null,
+            "W_within_task_error_count": 7,
+            "S_restricted_correct_stolen_count": 0,
+            "total_error_count": 7,
+            "test_images": 1000,
+            "old_to_new_error_percent": null,
+            "new_to_old_error_percent": null,
+            "task_group_confusion": [
+              [
+                1000
+              ]
+            ]
+          },
+          {
+            "task": 2,
+            "overall_percent": 95.89999999999999,
+            "old_percent": 97.7,
+            "new_percent": 94.1,
+            "AIA_percent": 97.6,
+            "forgetting_pp": 1.5999999999999943,
+            "W_within_task_error_count": 23,
+            "S_restricted_correct_stolen_count": 59,
+            "total_error_count": 82,
+            "test_images": 2000,
+            "old_to_new_error_percent": 1.6,
+            "new_to_old_error_percent": 5.2,
+            "task_group_confusion": [
+              [
+                984,
+                16
+              ],
+              [
+                52,
+                948
+              ]
+            ]
+          },
+          {
+            "task": 3,
+            "overall_percent": 93.26666666666667,
+            "old_percent": 95.1,
+            "new_percent": 89.60000000000001,
+            "AIA_percent": 96.15555555555557,
+            "forgetting_pp": 1.5999999999999943,
+            "W_within_task_error_count": 41,
+            "S_restricted_correct_stolen_count": 161,
+            "total_error_count": 202,
+            "test_images": 3000,
+            "old_to_new_error_percent": 1.15,
+            "new_to_old_error_percent": 9.700000000000001,
+            "task_group_confusion": [
+              [
+                982,
+                15,
+                3
+              ],
+              [
+                49,
+                931,
+                20
+              ],
+              [
+                78,
+                19,
+                903
+              ]
+            ]
+          },
+          {
+            "task": 4,
+            "overall_percent": 91.7,
+            "old_percent": 90.96666666666665,
+            "new_percent": 93.89999999999999,
+            "AIA_percent": 95.04166666666667,
+            "forgetting_pp": 3.366666666666665,
+            "W_within_task_error_count": 58,
+            "S_restricted_correct_stolen_count": 274,
+            "total_error_count": 332,
+            "test_images": 4000,
+            "old_to_new_error_percent": 2.966666666666667,
+            "new_to_old_error_percent": 5.800000000000001,
+            "task_group_confusion": [
+              [
+                974,
+                9,
+                2,
+                15
+              ],
+              [
+                43,
+                875,
+                17,
+                65
+              ],
+              [
+                78,
+                16,
+                897,
+                9
+              ],
+              [
+                29,
+                18,
+                11,
+                942
+              ]
+            ]
+          },
+          {
+            "task": 5,
+            "overall_percent": 90.44,
+            "old_percent": 90.325,
+            "new_percent": 90.9,
+            "AIA_percent": 94.12133333333334,
+            "forgetting_pp": 3.899999999999995,
+            "W_within_task_error_count": 78,
+            "S_restricted_correct_stolen_count": 400,
+            "total_error_count": 478,
+            "test_images": 5000,
+            "old_to_new_error_percent": 1.875,
+            "new_to_old_error_percent": 8.3,
+            "task_group_confusion": [
+              [
+                972,
+                9,
+                2,
+                14,
+                3
+              ],
+              [
+                47,
+                856,
+                15,
+                57,
+                25
+              ],
+              [
+                75,
+                15,
+                875,
+                7,
+                28
+              ],
+              [
+                28,
+                16,
+                7,
+                930,
+                19
+              ],
+              [
+                31,
+                9,
+                21,
+                22,
+                917
+              ]
+            ]
+          },
+          {
+            "task": 6,
+            "overall_percent": 88.38333333333334,
+            "old_percent": 88.64,
+            "new_percent": 87.1,
+            "AIA_percent": 93.165,
+            "forgetting_pp": 4.920000000000002,
+            "W_within_task_error_count": 109,
+            "S_restricted_correct_stolen_count": 588,
+            "total_error_count": 697,
+            "test_images": 6000,
+            "old_to_new_error_percent": 2.52,
+            "new_to_old_error_percent": 12.1,
+            "task_group_confusion": [
+              [
+                958,
+                9,
+                1,
+                16,
+                3,
+                13
+              ],
+              [
+                44,
+                842,
+                15,
+                61,
+                24,
+                14
+              ],
+              [
+                68,
+                11,
+                869,
+                5,
+                27,
+                20
+              ],
+              [
+                24,
+                12,
+                6,
+                900,
+                17,
+                41
+              ],
+              [
+                31,
+                8,
+                18,
+                17,
+                888,
+                38
+              ],
+              [
+                17,
+                7,
+                4,
+                27,
+                66,
+                879
+              ]
+            ]
+          },
+          {
+            "task": 7,
+            "overall_percent": 86.02857142857144,
+            "old_percent": 87.2,
+            "new_percent": 79.0,
+            "AIA_percent": 92.14551020408165,
+            "forgetting_pp": 5.283333333333331,
+            "W_within_task_error_count": 146,
+            "S_restricted_correct_stolen_count": 832,
+            "total_error_count": 978,
+            "test_images": 7000,
+            "old_to_new_error_percent": 1.2833333333333334,
+            "new_to_old_error_percent": 20.3,
+            "task_group_confusion": [
+              [
+                953,
+                9,
+                1,
+                17,
+                4,
+                15,
+                1
+              ],
+              [
+                45,
+                815,
+                13,
+                59,
+                24,
+                14,
+                30
+              ],
+              [
+                63,
+                9,
+                855,
+                6,
+                27,
+                18,
+                22
+              ],
+              [
+                26,
+                10,
+                6,
+                883,
+                17,
+                45,
+                13
+              ],
+              [
+                30,
+                9,
+                18,
+                17,
+                882,
+                38,
+                6
+              ],
+              [
+                15,
+                5,
+                4,
+                26,
+                72,
+                873,
+                5
+              ],
+              [
+                67,
+                7,
+                27,
+                17,
+                11,
+                74,
+                797
+              ]
+            ]
+          },
+          {
+            "task": 8,
+            "overall_percent": 84.8125,
+            "old_percent": 85.14285714285714,
+            "new_percent": 82.5,
+            "AIA_percent": 91.22888392857143,
+            "forgetting_pp": 5.4142857142857155,
+            "W_within_task_error_count": 163,
+            "S_restricted_correct_stolen_count": 1052,
+            "total_error_count": 1215,
+            "test_images": 8000,
+            "old_to_new_error_percent": 1.3571428571428572,
+            "new_to_old_error_percent": 17.4,
+            "task_group_confusion": [
+              [
+                953,
+                8,
+                1,
+                18,
+                4,
+                14,
+                0,
+                2
+              ],
+              [
+                41,
+                792,
+                13,
+                48,
+                26,
+                13,
+                31,
+                36
+              ],
+              [
+                65,
+                9,
+                846,
+                7,
+                27,
+                17,
+                21,
+                8
+              ],
+              [
+                23,
+                7,
+                6,
+                880,
+                17,
+                47,
+                12,
+                8
+              ],
+              [
+                28,
+                8,
+                18,
+                16,
+                883,
+                36,
+                5,
+                6
+              ],
+              [
+                18,
+                7,
+                3,
+                23,
+                77,
+                859,
+                4,
+                9
+              ],
+              [
+                69,
+                3,
+                13,
+                16,
+                12,
+                77,
+                784,
+                26
+              ],
+              [
+                46,
+                0,
+                13,
+                20,
+                5,
+                80,
+                10,
+                826
+              ]
+            ]
+          },
+          {
+            "task": 9,
+            "overall_percent": 84.86666666666667,
+            "old_percent": 83.85,
+            "new_percent": 93.0,
+            "AIA_percent": 90.5219708994709,
+            "forgetting_pp": 5.700000000000001,
+            "W_within_task_error_count": 169,
+            "S_restricted_correct_stolen_count": 1193,
+            "total_error_count": 1362,
+            "test_images": 9000,
+            "old_to_new_error_percent": 0.8750000000000001,
+            "new_to_old_error_percent": 6.800000000000001,
+            "task_group_confusion": [
+              [
+                949,
+                10,
+                1,
+                18,
+                3,
+                13,
+                0,
+                2,
+                4
+              ],
+              [
+                39,
+                790,
+                12,
+                46,
+                23,
+                11,
+                31,
+                37,
+                11
+              ],
+              [
+                66,
+                9,
+                836,
+                6,
+                26,
+                16,
+                23,
+                9,
+                9
+              ],
+              [
+                25,
+                7,
+                6,
+                865,
+                19,
+                52,
+                11,
+                8,
+                7
+              ],
+              [
+                29,
+                8,
+                18,
+                17,
+                864,
+                35,
+                5,
+                6,
+                18
+              ],
+              [
+                18,
+                7,
+                3,
+                25,
+                79,
+                853,
+                3,
+                8,
+                4
+              ],
+              [
+                69,
+                5,
+                16,
+                14,
+                11,
+                73,
+                774,
+                25,
+                13
+              ],
+              [
+                55,
+                0,
+                12,
+                19,
+                5,
+                81,
+                11,
+                813,
+                4
+              ],
+              [
+                16,
+                16,
+                5,
+                3,
+                18,
+                4,
+                4,
+                2,
+                932
+              ]
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "historical_references_T1_T9": {
+    "A": {
+      "raw": {
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.0,
+            "old_percent": null,
+            "new_percent": 99.0,
+            "AIA_percent": 99.0,
+            "forgetting_pp": null
+          },
+          {
+            "task": 2,
+            "overall_percent": 94.85,
+            "old_percent": 97.8,
+            "new_percent": 91.9,
+            "AIA_percent": 96.925,
+            "forgetting_pp": 1.2000000000000028
+          },
+          {
+            "task": 3,
+            "overall_percent": 91.10000000000001,
+            "old_percent": 93.9,
+            "new_percent": 85.5,
+            "AIA_percent": 94.98333333333333,
+            "forgetting_pp": 1.5499999999999972
+          },
+          {
+            "task": 4,
+            "overall_percent": 89.375,
+            "old_percent": 88.16666666666667,
+            "new_percent": 93.0,
+            "AIA_percent": 93.58125,
+            "forgetting_pp": 3.9666666666666734
+          },
+          {
+            "task": 5,
+            "overall_percent": 88.08,
+            "old_percent": 87.725,
+            "new_percent": 89.5,
+            "AIA_percent": 92.481,
+            "forgetting_pp": 4.625
+          },
+          {
+            "task": 6,
+            "overall_percent": 83.35000000000001,
+            "old_percent": 84.75999999999999,
+            "new_percent": 76.3,
+            "AIA_percent": 90.95916666666666,
+            "forgetting_pp": 7.019999999999999
+          },
+          {
+            "task": 7,
+            "overall_percent": 80.94285714285715,
+            "old_percent": 82.63333333333334,
+            "new_percent": 70.8,
+            "AIA_percent": 89.52826530612245,
+            "forgetting_pp": 6.566666666666667
+          },
+          {
+            "task": 8,
+            "overall_percent": 79.4375,
+            "old_percent": 80.62857142857142,
+            "new_percent": 71.1,
+            "AIA_percent": 88.26691964285715,
+            "forgetting_pp": 5.942857142857144
+          },
+          {
+            "task": 9,
+            "overall_percent": 80.12222222222223,
+            "old_percent": 79.0875,
+            "new_percent": 88.4,
+            "AIA_percent": 87.3619532627866,
+            "forgetting_pp": 5.550000000000001
+          }
+        ],
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            97.8,
+            91.9
+          ],
+          [
+            97.7,
+            90.10000000000001,
+            85.5
+          ],
+          [
+            97.3,
+            83.3,
+            83.89999999999999,
+            93.0
+          ],
+          [
+            96.8,
+            82.1,
+            80.80000000000001,
+            91.2,
+            89.5
+          ],
+          [
+            94.3,
+            79.5,
+            78.4,
+            83.2,
+            88.4,
+            76.3
+          ],
+          [
+            94.6,
+            77.7,
+            77.5,
+            82.3,
+            87.9,
+            75.8,
+            70.8
+          ],
+          [
+            94.69999999999999,
+            77.10000000000001,
+            77.7,
+            82.0,
+            87.9,
+            75.3,
+            69.69999999999999,
+            71.1
+          ],
+          [
+            93.8,
+            77.4,
+            77.10000000000001,
+            82.39999999999999,
+            86.3,
+            75.0,
+            69.8,
+            70.89999999999999,
+            88.4
+          ]
+        ]
+      },
+      "centered": {
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.0,
+            "old_percent": null,
+            "new_percent": 99.0,
+            "AIA_percent": 99.0,
+            "forgetting_pp": null
+          },
+          {
+            "task": 2,
+            "overall_percent": 96.5,
+            "old_percent": 98.0,
+            "new_percent": 95.0,
+            "AIA_percent": 97.75,
+            "forgetting_pp": 1.0
+          },
+          {
+            "task": 3,
+            "overall_percent": 94.03333333333333,
+            "old_percent": 95.75,
+            "new_percent": 90.60000000000001,
+            "AIA_percent": 96.5111111111111,
+            "forgetting_pp": 1.25
+          },
+          {
+            "task": 4,
+            "overall_percent": 92.925,
+            "old_percent": 92.5,
+            "new_percent": 94.19999999999999,
+            "AIA_percent": 95.61458333333333,
+            "forgetting_pp": 2.3666666666666694
+          },
+          {
+            "task": 5,
+            "overall_percent": 91.74,
+            "old_percent": 91.55,
+            "new_percent": 92.5,
+            "AIA_percent": 94.83966666666666,
+            "forgetting_pp": 3.1999999999999957
+          },
+          {
+            "task": 6,
+            "overall_percent": 89.55000000000001,
+            "old_percent": 89.92,
+            "new_percent": 87.7,
+            "AIA_percent": 93.95805555555556,
+            "forgetting_pp": 4.3799999999999955
+          },
+          {
+            "task": 7,
+            "overall_percent": 87.8,
+            "old_percent": 88.76666666666665,
+            "new_percent": 82.0,
+            "AIA_percent": 93.07833333333333,
+            "forgetting_pp": 4.433333333333333
+          },
+          {
+            "task": 8,
+            "overall_percent": 87.0375,
+            "old_percent": 87.21428571428571,
+            "new_percent": 85.8,
+            "AIA_percent": 92.32322916666666,
+            "forgetting_pp": 4.385714285714286
+          },
+          {
+            "task": 9,
+            "overall_percent": 87.37777777777778,
+            "old_percent": 86.625,
+            "new_percent": 93.4,
+            "AIA_percent": 91.77373456790123,
+            "forgetting_pp": 4.25
+          }
+        ],
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            98.0,
+            95.0
+          ],
+          [
+            97.89999999999999,
+            93.60000000000001,
+            90.60000000000001
+          ],
+          [
+            97.7,
+            89.0,
+            90.8,
+            94.19999999999999
+          ],
+          [
+            96.89999999999999,
+            87.9,
+            88.4,
+            93.0,
+            92.5
+          ],
+          [
+            95.5,
+            86.8,
+            87.4,
+            90.10000000000001,
+            89.8,
+            87.7
+          ],
+          [
+            95.5,
+            84.89999999999999,
+            86.1,
+            89.4,
+            89.2,
+            87.5,
+            82.0
+          ],
+          [
+            95.19999999999999,
+            84.1,
+            85.6,
+            88.9,
+            88.7,
+            86.8,
+            81.2,
+            85.8
+          ],
+          [
+            94.89999999999999,
+            83.2,
+            85.1,
+            88.6,
+            87.9,
+            86.8,
+            81.10000000000001,
+            85.39999999999999,
+            93.4
+          ]
+        ]
+      }
+    },
+    "B": {
+      "raw": {
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.0,
+            "old_percent": null,
+            "new_percent": 99.0,
+            "AIA_percent": 99.0,
+            "forgetting_pp": null
+          },
+          {
+            "task": 2,
+            "overall_percent": 94.6,
+            "old_percent": 98.1,
+            "new_percent": 91.10000000000001,
+            "AIA_percent": 96.8,
+            "forgetting_pp": 0.9000000000000057
+          },
+          {
+            "task": 3,
+            "overall_percent": 90.46666666666667,
+            "old_percent": 93.55,
+            "new_percent": 84.3,
+            "AIA_percent": 94.68888888888888,
+            "forgetting_pp": 1.500000000000007
+          },
+          {
+            "task": 4,
+            "overall_percent": 88.875,
+            "old_percent": 87.60000000000001,
+            "new_percent": 92.7,
+            "AIA_percent": 93.23541666666667,
+            "forgetting_pp": 3.8666666666666694
+          },
+          {
+            "task": 5,
+            "overall_percent": 87.62,
+            "old_percent": 87.3,
+            "new_percent": 88.9,
+            "AIA_percent": 92.11233333333334,
+            "forgetting_pp": 4.475000000000001
+          },
+          {
+            "task": 6,
+            "overall_percent": 82.78333333333333,
+            "old_percent": 84.08,
+            "new_percent": 76.3,
+            "AIA_percent": 90.5575,
+            "forgetting_pp": 7.1200000000000045
+          },
+          {
+            "task": 7,
+            "overall_percent": 80.51428571428572,
+            "old_percent": 82.18333333333334,
+            "new_percent": 70.5,
+            "AIA_percent": 89.12275510204083,
+            "forgetting_pp": 6.5333333333333385
+          },
+          {
+            "task": 8,
+            "overall_percent": 79.025,
+            "old_percent": 80.18571428571428,
+            "new_percent": 70.89999999999999,
+            "AIA_percent": 87.86053571428572,
+            "forgetting_pp": 5.928571428571435
+          },
+          {
+            "task": 9,
+            "overall_percent": 80.02222222222221,
+            "old_percent": 79.0,
+            "new_percent": 88.2,
+            "AIA_percent": 86.98961199294533,
+            "forgetting_pp": 5.212500000000004
+          }
+        ],
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            98.1,
+            91.10000000000001
+          ],
+          [
+            98.0,
+            89.1,
+            84.3
+          ],
+          [
+            97.7,
+            81.8,
+            83.3,
+            92.7
+          ],
+          [
+            97.1,
+            80.9,
+            80.4,
+            90.8,
+            88.9
+          ],
+          [
+            94.39999999999999,
+            78.60000000000001,
+            77.7,
+            82.19999999999999,
+            87.5,
+            76.3
+          ],
+          [
+            95.0,
+            76.3,
+            77.0,
+            81.6,
+            87.1,
+            76.1,
+            70.5
+          ],
+          [
+            95.1,
+            75.1,
+            76.8,
+            81.6,
+            87.1,
+            75.6,
+            70.0,
+            70.89999999999999
+          ],
+          [
+            94.3,
+            76.3,
+            76.8,
+            82.0,
+            86.3,
+            75.3,
+            70.1,
+            70.89999999999999,
+            88.2
+          ]
+        ]
+      },
+      "centered": {
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 99.0,
+            "old_percent": null,
+            "new_percent": 99.0,
+            "AIA_percent": 99.0,
+            "forgetting_pp": null
+          },
+          {
+            "task": 2,
+            "overall_percent": 96.55,
+            "old_percent": 98.1,
+            "new_percent": 95.0,
+            "AIA_percent": 97.775,
+            "forgetting_pp": 0.9000000000000057
+          },
+          {
+            "task": 3,
+            "overall_percent": 94.26666666666668,
+            "old_percent": 95.85000000000001,
+            "new_percent": 91.10000000000001,
+            "AIA_percent": 96.60555555555555,
+            "forgetting_pp": 1.1499999999999986
+          },
+          {
+            "task": 4,
+            "overall_percent": 92.8,
+            "old_percent": 92.30000000000001,
+            "new_percent": 94.3,
+            "AIA_percent": 95.65416666666667,
+            "forgetting_pp": 2.7333333333333343
+          },
+          {
+            "task": 5,
+            "overall_percent": 91.75999999999999,
+            "old_percent": 91.575,
+            "new_percent": 92.5,
+            "AIA_percent": 94.87533333333333,
+            "forgetting_pp": 3.2749999999999986
+          },
+          {
+            "task": 6,
+            "overall_percent": 89.53333333333333,
+            "old_percent": 89.8,
+            "new_percent": 88.2,
+            "AIA_percent": 93.985,
+            "forgetting_pp": 4.580000000000001
+          },
+          {
+            "task": 7,
+            "overall_percent": 87.77142857142857,
+            "old_percent": 88.64999999999999,
+            "new_percent": 82.5,
+            "AIA_percent": 93.09734693877552,
+            "forgetting_pp": 4.7
+          },
+          {
+            "task": 8,
+            "overall_percent": 87.0125,
+            "old_percent": 87.18571428571428,
+            "new_percent": 85.8,
+            "AIA_percent": 92.33674107142858,
+            "forgetting_pp": 4.614285714285718
+          },
+          {
+            "task": 9,
+            "overall_percent": 87.43333333333332,
+            "old_percent": 86.675,
+            "new_percent": 93.5,
+            "AIA_percent": 91.79191798941798,
+            "forgetting_pp": 4.3750000000000036
+          }
+        ],
+        "matrix_percent": [
+          [
+            99.0
+          ],
+          [
+            98.1,
+            95.0
+          ],
+          [
+            98.0,
+            93.7,
+            91.10000000000001
+          ],
+          [
+            97.7,
+            88.6,
+            90.60000000000001,
+            94.3
+          ],
+          [
+            97.0,
+            87.8,
+            88.4,
+            93.10000000000001,
+            92.5
+          ],
+          [
+            95.39999999999999,
+            86.7,
+            87.5,
+            89.8,
+            89.60000000000001,
+            88.2
+          ],
+          [
+            95.5,
+            84.3,
+            86.2,
+            89.3,
+            88.9,
+            87.7,
+            82.5
+          ],
+          [
+            95.39999999999999,
+            83.2,
+            85.3,
+            89.1,
+            88.5,
+            87.2,
+            81.6,
+            85.8
+          ],
+          [
+            94.89999999999999,
+            82.3,
+            85.1,
+            88.9,
+            87.7,
+            87.1,
+            81.89999999999999,
+            85.5,
+            93.5
+          ]
+        ]
+      }
+    },
+    "LoRM": {
+      "raw": {
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 97.7,
+            "old_percent": null,
+            "new_percent": 97.7,
+            "AIA_percent": 97.7,
+            "forgetting_pp": null
+          },
+          {
+            "task": 2,
+            "overall_percent": 91.14999999999999,
+            "old_percent": 87.5,
+            "new_percent": 94.8,
+            "AIA_percent": 94.425,
+            "forgetting_pp": 10.200000000000003
+          },
+          {
+            "task": 3,
+            "overall_percent": 88.73333333333333,
+            "old_percent": 86.1,
+            "new_percent": 94.0,
+            "AIA_percent": 92.52777777777777,
+            "forgetting_pp": 10.149999999999999
+          },
+          {
+            "task": 4,
+            "overall_percent": 86.65,
+            "old_percent": 84.10000000000001,
+            "new_percent": 94.3,
+            "AIA_percent": 91.05833333333334,
+            "forgetting_pp": 11.399999999999991
+          },
+          {
+            "task": 5,
+            "overall_percent": 85.50000000000001,
+            "old_percent": 84.05,
+            "new_percent": 91.3,
+            "AIA_percent": 89.94666666666667,
+            "forgetting_pp": 11.149999999999999
+          },
+          {
+            "task": 6,
+            "overall_percent": 82.45,
+            "old_percent": 82.34,
+            "new_percent": 83.0,
+            "AIA_percent": 88.69722222222224,
+            "forgetting_pp": 12.080000000000002
+          },
+          {
+            "task": 7,
+            "overall_percent": 81.74285714285713,
+            "old_percent": 81.01666666666667,
+            "new_percent": 86.1,
+            "AIA_percent": 87.70374149659865,
+            "forgetting_pp": 11.500000000000005
+          },
+          {
+            "task": 8,
+            "overall_percent": 81.33749999999999,
+            "old_percent": 80.39999999999999,
+            "new_percent": 87.9,
+            "AIA_percent": 86.90796130952381,
+            "forgetting_pp": 11.2
+          },
+          {
+            "task": 9,
+            "overall_percent": 81.24444444444445,
+            "old_percent": 80.075,
+            "new_percent": 90.60000000000001,
+            "AIA_percent": 86.27868165784832,
+            "forgetting_pp": 11.062500000000002
+          }
+        ],
+        "matrix_percent": [
+          [
+            97.7
+          ],
+          [
+            87.5,
+            94.8
+          ],
+          [
+            82.0,
+            90.2,
+            94.0
+          ],
+          [
+            79.80000000000001,
+            80.80000000000001,
+            91.7,
+            94.3
+          ],
+          [
+            77.4,
+            78.8,
+            88.5,
+            91.5,
+            91.3
+          ],
+          [
+            72.8,
+            74.8,
+            87.1,
+            89.0,
+            88.0,
+            83.0
+          ],
+          [
+            71.89999999999999,
+            72.3,
+            86.1,
+            87.0,
+            86.6,
+            82.19999999999999,
+            86.1
+          ],
+          [
+            70.8,
+            70.39999999999999,
+            85.1,
+            86.9,
+            85.9,
+            79.7,
+            84.0,
+            87.9
+          ],
+          [
+            69.5,
+            67.5,
+            84.8,
+            86.6,
+            83.7,
+            79.5,
+            82.39999999999999,
+            86.6,
+            90.60000000000001
+          ]
+        ]
+      },
+      "centered": {
+        "stages": [
+          {
+            "task": 1,
+            "overall_percent": 97.7,
+            "old_percent": null,
+            "new_percent": 97.7,
+            "AIA_percent": 97.7,
+            "forgetting_pp": null
+          },
+          {
+            "task": 2,
+            "overall_percent": 92.35,
+            "old_percent": 90.0,
+            "new_percent": 94.69999999999999,
+            "AIA_percent": 95.025,
+            "forgetting_pp": 7.700000000000003
+          },
+          {
+            "task": 3,
+            "overall_percent": 90.8,
+            "old_percent": 89.3,
+            "new_percent": 93.8,
+            "AIA_percent": 93.61666666666667,
+            "forgetting_pp": 6.8999999999999915
+          },
+          {
+            "task": 4,
+            "overall_percent": 89.17500000000001,
+            "old_percent": 88.36666666666666,
+            "new_percent": 91.60000000000001,
+            "AIA_percent": 92.50625,
+            "forgetting_pp": 7.033333333333327
+          },
+          {
+            "task": 5,
+            "overall_percent": 88.27999999999999,
+            "old_percent": 86.45,
+            "new_percent": 95.6,
+            "AIA_percent": 91.661,
+            "forgetting_pp": 8.0
+          },
+          {
+            "task": 6,
+            "overall_percent": 86.21666666666667,
+            "old_percent": 86.28,
+            "new_percent": 85.9,
+            "AIA_percent": 90.75361111111111,
+            "forgetting_pp": 8.399999999999997
+          },
+          {
+            "task": 7,
+            "overall_percent": 85.68571428571428,
+            "old_percent": 85.05,
+            "new_percent": 89.5,
+            "AIA_percent": 90.02962585034014,
+            "forgetting_pp": 8.166666666666663
+          },
+          {
+            "task": 8,
+            "overall_percent": 85.2125,
+            "old_percent": 84.12857142857142,
+            "new_percent": 92.80000000000001,
+            "AIA_percent": 89.42748511904762,
+            "forgetting_pp": 8.557142857142855
+          },
+          {
+            "task": 9,
+            "overall_percent": 85.1888888888889,
+            "old_percent": 84.0125,
+            "new_percent": 94.6,
+            "AIA_percent": 88.9565299823633,
+            "forgetting_pp": 8.6875
+          }
+        ],
+        "matrix_percent": [
+          [
+            97.7
+          ],
+          [
+            90.0,
+            94.69999999999999
+          ],
+          [
+            86.3,
+            92.30000000000001,
+            93.8
+          ],
+          [
+            85.0,
+            87.4,
+            92.7,
+            91.60000000000001
+          ],
+          [
+            83.3,
+            84.89999999999999,
+            89.60000000000001,
+            88.0,
+            95.6
+          ],
+          [
+            81.10000000000001,
+            81.89999999999999,
+            88.4,
+            86.5,
+            93.5,
+            85.9
+          ],
+          [
+            80.30000000000001,
+            80.30000000000001,
+            86.9,
+            84.39999999999999,
+            92.5,
+            85.9,
+            89.5
+          ],
+          [
+            79.2,
+            79.10000000000001,
+            85.2,
+            83.7,
+            92.0,
+            82.19999999999999,
+            87.5,
+            92.80000000000001
+          ],
+          [
+            78.4,
+            74.0,
+            84.7,
+            82.6,
+            91.0,
+            82.1,
+            86.7,
+            92.60000000000001,
+            94.6
+          ]
+        ]
+      }
+    }
+  },
+  "T8_deltas_pp": {
+    "mvp": {
+      "control": {
+        "raw": {
+          "overall_percent": -0.6500000000000057,
+          "old_percent": -0.7428571428571473,
+          "new_percent": 0.0,
+          "AIA_percent": -0.5945238095238068,
+          "forgetting_pp": -0.31428571428570873
+        },
+        "centered": {
+          "overall_percent": -0.4750000000000085,
+          "old_percent": -0.5,
+          "new_percent": -0.29999999999999716,
+          "AIA_percent": -0.4468154761904799,
+          "forgetting_pp": -0.014285714285710682
+        }
+      },
+      "LoRM": {
+        "raw": {
+          "overall_percent": -4.349999999999994,
+          "old_percent": -2.05714285714285,
+          "new_percent": -20.400000000000006,
+          "AIA_percent": -0.37077380952381134,
+          "forgetting_pp": -5.699999999999999
+        },
+        "centered": {
+          "overall_percent": 0.5249999999999915,
+          "old_percent": 1.814285714285731,
+          "new_percent": -8.500000000000014,
+          "AIA_percent": 1.9947321428571456,
+          "forgetting_pp": -3.828571428571423
+        }
+      }
+    },
+    "full": {
+      "control": {
+        "raw": {
+          "overall_percent": -5.237500000000011,
+          "old_percent": -4.328571428571436,
+          "new_percent": -11.599999999999994,
+          "AIA_percent": -2.6700446428571354,
+          "forgetting_pp": -0.09999999999999254
+        },
+        "centered": {
+          "overall_percent": -1.4000000000000057,
+          "old_percent": -1.3000000000000114,
+          "new_percent": -2.0999999999999943,
+          "AIA_percent": -0.6401488095238079,
+          "forgetting_pp": 0.6714285714285726
+        }
+      },
+      "LoRM": {
+        "raw": {
+          "overall_percent": -8.9375,
+          "old_percent": -5.642857142857139,
+          "new_percent": -32.0,
+          "AIA_percent": -2.44629464285714,
+          "forgetting_pp": -5.485714285714283
+        },
+        "centered": {
+          "overall_percent": -0.4000000000000057,
+          "old_percent": 1.0142857142857196,
+          "new_percent": -10.300000000000011,
+          "AIA_percent": 1.8013988095238176,
+          "forgetting_pp": -3.1428571428571397
+        }
+      }
+    }
+  },
+  "T3_qualified_mechanism_and_cost": {
+    "control": {
+      "metrics": {
+        "raw": {
+          "final_overall_percent": 89.73333333333335,
+          "final_old_percent": 93.55,
+          "final_new_percent": 82.1,
+          "AIA_percent": 94.44444444444446,
+          "forgetting_pp": 1.3500000000000012
+        },
+        "centered": {
+          "final_overall_percent": 93.6,
+          "final_old_percent": 95.65,
+          "final_new_percent": 89.5,
+          "AIA_percent": 96.43333333333332,
+          "forgetting_pp": 1.2499999999999956
+        }
+      },
+      "clip_fraction": null,
+      "clip_modes": 0,
+      "total_modes": 0,
+      "barycenter_fallbacks": 0,
+      "barycenter_calls": 0,
+      "global_norm_caps": 0,
+      "aggregate_maps": 0,
+      "aggregate_bures_improved": 0,
+      "extra_probe_forward_images": 0,
+      "extra_probe_backward_images": 0,
+      "teacher_forward_images": 250000,
+      "logical_communication_bytes": 3230576640
+    },
+    "mvp": {
+      "metrics": {
+        "raw": {
+          "final_overall_percent": 89.03333333333335,
+          "final_old_percent": 93.05,
+          "final_new_percent": 81.0,
+          "AIA_percent": 94.04444444444444,
+          "forgetting_pp": 1.3500000000000012
+        },
+        "centered": {
+          "final_overall_percent": 92.86666666666666,
+          "final_old_percent": 95.10000000000001,
+          "final_new_percent": 88.4,
+          "AIA_percent": 95.98888888888888,
+          "forgetting_pp": 1.200000000000001
+        }
+      },
+      "clip_fraction": 0.591328125,
+      "clip_modes": 68121,
+      "total_modes": 115200,
+      "barycenter_fallbacks": 3,
+      "barycenter_calls": 180,
+      "global_norm_caps": 0,
+      "aggregate_maps": 360,
+      "aggregate_bures_improved": 360,
+      "extra_probe_forward_images": 2814,
+      "extra_probe_backward_images": 4374,
+      "teacher_forward_images": 250000,
+      "logical_communication_bytes": 3447336960
+    },
+    "full": {
+      "metrics": {
+        "raw": {
+          "final_overall_percent": 88.63333333333333,
+          "final_old_percent": 92.55,
+          "final_new_percent": 80.80000000000001,
+          "AIA_percent": 93.7611111111111,
+          "forgetting_pp": 1.8000000000000016
+        },
+        "centered": {
+          "final_overall_percent": 93.26666666666667,
+          "final_old_percent": 95.10000000000001,
+          "final_new_percent": 89.60000000000001,
+          "AIA_percent": 96.15555555555555,
+          "forgetting_pp": 1.5999999999999959
+        }
+      },
+      "clip_fraction": 0.7125954861111111,
+      "clip_modes": 82091,
+      "total_modes": 115200,
+      "barycenter_fallbacks": 0,
+      "barycenter_calls": 180,
+      "global_norm_caps": 0,
+      "aggregate_maps": 360,
+      "aggregate_bures_improved": 360,
+      "extra_probe_forward_images": 2814,
+      "extra_probe_backward_images": 4374,
+      "teacher_forward_images": 250000,
+      "logical_communication_bytes": 3091968000
+    }
+  },
+  "gates": {
+    "T3_reload": "passed all three arms, 3000 images raw/centered predictions identical",
+    "T10_reload": "NOT_EVALUABLE_MISSING",
+    "T10_scientific_gate": "NOT_EVALUABLE_MISSING",
+    "T8_MVP_vs_control_raw_overall_AIA": "both lower",
+    "T8_Full_vs_control_raw_overall_AIA": "both lower"
+  },
+  "limitations": [
+    "T4-T9 metrics are saved contemporaneous evaluations, not separately checkpoint-reload-qualified endpoints.",
+    "MVP T9 training complete but no T9 metric; do not fill missing values or compare different stages.",
+    "T3 mechanism/cost diagnostics are scoped to T3, not extrapolated to T8/T9 or exit.",
+    "No late-stage paired per-image corrections/destructions, full mechanism/cost audit, or T10 results are claimed.",
+    "Full changes dynamic subspace, accumulated effective rank and random stream; Full-control does not isolate spectral transport.",
+    "Single seed, known historical comparison, user-interrupted run; no statistical significance or complete-run success claim.",
+    "No training/evaluation rerun, automatic continuation or monitor reactivation authorized by this report request."
+  ]
+}

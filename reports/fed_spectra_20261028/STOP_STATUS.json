@@ -1,0 +1,204 @@
+{
+  "status": "STOPPED_BY_USER",
+  "reason": "Explicit user stop; training and monitoring remain paused.",
+  "elapsed_seconds": 16199.767226696014,
+  "allocated_bytes_at_exit": 5032189952,
+  "all_recorded_processes_exited": true,
+  "arms": {
+    "control": {
+      "progress": {
+        "method": "controlled_adam",
+        "task": 9,
+        "round": 0,
+        "phase": "clients",
+        "next_client": 4,
+        "client_rounds": 454,
+        "training_visits": 1138215,
+        "stages": [
+          {
+            "task": 1,
+            "raw": 0.994,
+            "centered": 0.994
+          },
+          {
+            "task": 2,
+            "raw": 0.942,
+            "centered": 0.963
+          },
+          {
+            "task": 3,
+            "raw": 0.8973333333333333,
+            "centered": 0.936
+          },
+          {
+            "task": 4,
+            "raw": 0.8775,
+            "centered": 0.92025
+          },
+          {
+            "task": 5,
+            "raw": 0.8614,
+            "centered": 0.9096
+          },
+          {
+            "task": 6,
+            "raw": 0.8245,
+            "centered": 0.8918333333333334
+          },
+          {
+            "task": 7,
+            "raw": 0.7974285714285714,
+            "centered": 0.8727142857142857
+          },
+          {
+            "task": 8,
+            "raw": 0.776375,
+            "centered": 0.862125
+          },
+          {
+            "task": 9,
+            "raw": 0.7797777777777778,
+            "centered": 0.8653333333333333
+          }
+        ],
+        "geometry_rounds": 0,
+        "transport_rounds": 0,
+        "qualified_milestones": [
+          3
+        ]
+      },
+      "complete": false,
+      "qualification_t10": false,
+      "checkpoint_retained": true
+    },
+    "mvp": {
+      "progress": {
+        "method": "fed_spectra_mvp",
+        "task": 8,
+        "round": 5,
+        "phase": "ready_evaluation",
+        "next_client": 0,
+        "client_rounds": 450,
+        "training_visits": 1125000,
+        "stages": [
+          {
+            "task": 1,
+            "raw": 0.993,
+            "centered": 0.993
+          },
+          {
+            "task": 2,
+            "raw": 0.938,
+            "centered": 0.958
+          },
+          {
+            "task": 3,
+            "raw": 0.8903333333333333,
+            "centered": 0.9286666666666666
+          },
+          {
+            "task": 4,
+            "raw": 0.87,
+            "centered": 0.91625
+          },
+          {
+            "task": 5,
+            "raw": 0.8566,
+            "centered": 0.9052
+          },
+          {
+            "task": 6,
+            "raw": 0.8161666666666667,
+            "centered": 0.887
+          },
+          {
+            "task": 7,
+            "raw": 0.789,
+            "centered": 0.8682857142857143
+          },
+          {
+            "task": 8,
+            "raw": 0.769875,
+            "centered": 0.857375
+          }
+        ],
+        "geometry_rounds": 45,
+        "transport_rounds": 45,
+        "qualified_milestones": [
+          3
+        ]
+      },
+      "complete": false,
+      "qualification_t10": false,
+      "checkpoint_retained": true
+    },
+    "full": {
+      "progress": {
+        "method": "fed_spectra_full",
+        "task": 9,
+        "round": 1,
+        "phase": "local_done",
+        "next_client": 10,
+        "client_rounds": 470,
+        "training_visits": 1175000,
+        "stages": [
+          {
+            "task": 1,
+            "raw": 0.993,
+            "centered": 0.993
+          },
+          {
+            "task": 2,
+            "raw": 0.9335,
+            "centered": 0.959
+          },
+          {
+            "task": 3,
+            "raw": 0.8863333333333333,
+            "centered": 0.9326666666666666
+          },
+          {
+            "task": 4,
+            "raw": 0.8505,
+            "centered": 0.917
+          },
+          {
+            "task": 5,
+            "raw": 0.8296,
+            "centered": 0.9044
+          },
+          {
+            "task": 6,
+            "raw": 0.787,
+            "centered": 0.8838333333333334
+          },
+          {
+            "task": 7,
+            "raw": 0.753,
+            "centered": 0.8602857142857143
+          },
+          {
+            "task": 8,
+            "raw": 0.724,
+            "centered": 0.848125
+          },
+          {
+            "task": 9,
+            "raw": 0.7206666666666667,
+            "centered": 0.8486666666666667
+          }
+        ],
+        "geometry_rounds": 47,
+        "transport_rounds": 46,
+        "qualified_milestones": [
+          3
+        ]
+      },
+      "complete": false,
+      "qualification_t10": false,
+      "checkpoint_retained": true
+    }
+  },
+  "monitor_status": "PAUSED",
+  "counter_scope": "Last persisted PROGRESS snapshot; may lag last event/checkpoint. Task and round are zero-based."
+}

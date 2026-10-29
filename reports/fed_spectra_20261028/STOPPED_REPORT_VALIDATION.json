@@ -1,0 +1,320 @@
+{
+  "passed": true,
+  "stage_view_checks": [
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 1,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 2,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 3,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 4,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 5,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 6,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 7,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 8,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "raw",
+      "task": 9,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 1,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 2,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 3,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 4,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 5,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 6,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 7,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 8,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "control",
+      "view": "centered",
+      "task": 9,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 1,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 2,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 3,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 4,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 5,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 6,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 7,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "raw",
+      "task": 8,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 1,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 2,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 3,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 4,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 5,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 6,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 7,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "mvp",
+      "view": "centered",
+      "task": 8,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 1,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 2,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 3,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 4,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 5,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 6,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 7,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 8,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "raw",
+      "task": 9,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 1,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 2,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 3,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 4,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 5,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 6,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 7,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 8,
+      "matrix_mean_and_error_decomposition_passed": true
+    },
+    {
+      "arm": "full",
+      "view": "centered",
+      "task": 9,
+      "matrix_mean_and_error_decomposition_passed": true
+    }
+  ],
+  "stage_view_count": 52,
+  "T10_missing_all_arms": true,
+  "source_progress_matches_saved_metrics": true
+}
