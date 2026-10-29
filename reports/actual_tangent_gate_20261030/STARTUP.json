@@ -1,0 +1,23 @@
+{
+  "status": "RUNNING_NOT_COMPLETED",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "tasks": 5,
+  "fresh_start": true,
+  "control_reused_not_retrained": true,
+  "planned_new_training_visits": 1875000,
+  "cpu_tests_passed": 30,
+  "real_tangent_preflight_all_passed": true,
+  "mount_capacity_write_read_probe_passed": true,
+  "gpu_admission_passed": true,
+  "neutral_processes_verified": true,
+  "no_immediate_failure": true,
+  "shared_internal_max_seconds": 27900,
+  "shared_outer_max_seconds": 28600,
+  "external_kill_grace_seconds": 60,
+  "shared_storage_limit_bytes": 24000000000,
+  "shared_write_stop_bytes": 20000000000
+}

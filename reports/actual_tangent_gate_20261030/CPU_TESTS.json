@@ -1,0 +1,1 @@
+{"passed": true, "exit_code": 0, "seconds": 11.79386019706726, "suites": ["tangent_gate", "spectral_tangent", "direction_gate", "direction_diagnostic", "loss_gate", "alignment_diagnostic", "actual_update"]}
