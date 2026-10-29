@@ -1,0 +1,15 @@
+损失引导奇异值切向更新：有限训练内诊断（2026-10-30，运行前冻结）
+
+依据：固定谱形、单向门、梯度符号门三轮T5科学门槛均失败。符号门接受61/75却未改善泛化；它仍只能在同一条客户端谱形方向上选正负。新假设直接用原CE+KL的训练梯度分配各奇异值下降方向，不再以接受率为优化目标。本轮仅有限机制诊断，未承诺新训练收益。
+
+只读复用：既有共同T4首轮seed0/1/2的latest.pt/pair_private.pt，控制组原端点、同A/头/教师。原预训练/数据/环境共享，不下载、不新增本地训练、不访问test、不改历史。原定向诊断RESULT的确认loss作为已冻结配对参考，不改变probe选择。
+
+算子：每层Q/V实际FedAvg增量D=U diag(s) V^T；在baseline处固定训练selection probe求原CE+temp2/lambda1旧KL梯度G。模式梯度a=diag(U^T G V)。同奇异值块（相对差<=1e-10）取a块均值，避免任意基底；仅s>1e-12*smax支持内。投影t=a-(a·s)/(s·s)s，h=-t/||t||；零增量/参考零角度/零切向梯度原样返回。
+参考角theta由原eta=.1正向谱候选与D的夹角唯一确定，不改变强度。令theta_used=min(theta,min_{h_i<0}atan2(s_i,-||s||h_i))，这是非负奇异值的解析上限，不搜索。snew=cos(theta_used)s+sin(theta_used)||s||h，Dnew=U diag(snew)V^T。只允许数值级负系数clamp到0；保持范数、支持和固定奇异方向；需要缩角时如实报告，不能声称所有层角度完全相同。理论范数相对误差<=1e-10、FP32<=5e-4。报告参考/实际角度、cap次数、全部模式梯度、投影范数、预测方向导数与真实损失。
+
+探针：完全沿用已注册selection（各client<=32、seed61029+1009seed+31client）与其不重合confirmation（从排除selection的训练池独立seed61030+1009seed+31client取<=32），训练用过的图，不是真holdout。baseline一次梯度生成唯一候选；selection额外候选前向记录原接受门是否会接受，不据此调候选；confirmation仅baseline/候选两点评测，不挑方案。覆盖按有效client样本权重归一，并报告缺席client。
+
+固定诊断条件：全部seed原baseline selection与旧诊断复现<=1e-6；confirmation baseline与原定向诊断复现<=1e-6；所有数值/同头/模型恢复/不重合/0新增训练/0test检查通过；各confirmation覆盖>=95%；至少2/3 seed confirmation CE+KL下降>1e-6，平均差<-1e-6；此外相对已冻结符号选择候选，confirmation平均loss差<=0。不改阈值、不补seed/边界/放大尺度。保留seed1不转移风险与全部负结果。通过仅支持新有限T5主线验证，不等于泛化、旧类安全或显著性；失败则不扩大此方案。
+
+成本和预算：一次独立诊断所有seed共同首次时钟，内部2400秒/外部2700秒+30killgrace，总<46分钟，重试不重置；实际新增上限2GB/1GB写停止、预计<100MB。独立root，不借旧完成root测试/覆盖源码。仅小型聚合日志，无模型副本。student/teacher各点前向和baseline student反向逐项计；未来分布式模式梯度可client本地投影后上传32维/层Q/V数值（基于固定SVD广播），不声称当前模拟已实现分布式，更不发布完整梯度/图像。未来训练协议另明确通信账本。
+启动前挂载/空间/写读探针、GPU>=18GB、中性e17.py进程；相关数学/探针CPU检查及旧基线真实复现。沿用唯一30分钟心跳，完成公开源码/协议/聚合结果、进程退出和预算证据，私有模型/ID/梯度保留。依结果推进主线，不自动复活旧实验、加seed/T10或调参搜索。
