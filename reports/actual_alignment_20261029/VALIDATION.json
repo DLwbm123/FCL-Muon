@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "registered_seeds": [
+    0,
+    1,
+    2
+  ],
+  "new_visits": 75000,
+  "no_test_images": true,
+  "single_round_per_seed": true,
+  "baseline_repeat_passed": true,
+  "no_active_processes": true
+}
