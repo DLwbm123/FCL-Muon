@@ -1,0 +1,84 @@
+{
+  "dataset": "seq-cifar100",
+  "clients": 10,
+  "alpha": 0.05,
+  "seed": 2,
+  "tasks": 5,
+  "cpt": 10,
+  "rounds": 5,
+  "epochs": 5,
+  "batch": 16,
+  "rank": 32,
+  "lr": 0.0002,
+  "cosine_scale": 16,
+  "backbone": "vit_base_patch16_224.augreg_in21k",
+  "aggregation": "regmean",
+  "inference_rule": "raw primary; fixed per-task mean subtraction diagnostic",
+  "math_sdpa": true,
+  "precision": "FP32 deterministic algorithms, math SDPA, TF32 off",
+  "retain_task_checkpoints": false,
+  "retain_round_checkpoints": false,
+  "retain_first_round_endpoints": false,
+  "source_revision": "recorded at launch in reports/SOURCE.json",
+  "manifest": "manifests/seq-cifar100_n10_a0.05_s2.json",
+  "output": "runs/global",
+  "required_free_mib": 18000,
+  "maximum_seconds": 27900,
+  "storage_limit_bytes": 24000000000,
+  "write_stop_bytes": 20000000000,
+  "protocol_version": "actual-update-training-gate-v1-20261029",
+  "milestones": [
+    3,
+    5
+  ],
+  "fed_spectra": {
+    "candidate_dim": 64,
+    "candidate_current_rank": 16,
+    "sketch_dim": 16,
+    "probe_images": 16,
+    "probe_seed": 610283,
+    "history_ema": 0.9,
+    "lambda_old": 0.5,
+    "lambda_dis": 0.25,
+    "lambda_hist": 0.5,
+    "barycenter_type": "bures",
+    "barycenter_ridge": 1e-05,
+    "barycenter_iterations": 60,
+    "barycenter_tolerance": 1e-07,
+    "transport_ridge": 0.0001,
+    "transport_clip_min": 0.5,
+    "transport_clip_max": 2.0,
+    "global_norm_cap": 2.0,
+    "anchor_weight": 1.0,
+    "anchor_temperature": 2.0,
+    "adam_betas": [
+      0.9,
+      0.999
+    ],
+    "adam_eps": 1e-08
+  },
+  "method": "actual_update_global",
+  "report_entry": "scripts/actual_update_report.py",
+  "actual_update": {
+    "operator": {
+      "eta": 0.1,
+      "epsilon": 1e-12,
+      "degeneracy_tolerance": 1e-10
+    },
+    "deployed_norm_tolerance": 0.0005
+  },
+  "scientific_gate": {
+    "final_task": 5,
+    "raw_gain_min_pp": 0.2,
+    "raw_AIA_delta_min_pp": 0.0,
+    "raw_old_delta_min_pp": 0.0,
+    "raw_new_delta_min_pp": -1.0,
+    "cross_task_stolen_delta_max": 0,
+    "single_seed_only": true
+  },
+  "training_gate": {
+    "minimum_improvement": 1e-06,
+    "probe_per_client": 32,
+    "selection_seed_base": 61029
+  }
+}

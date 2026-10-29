@@ -96,7 +96,7 @@ def main():
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
     seed=int(os.environ.get('EXPERIMENT_SEED','0'))
     if seed not in (0,1,2):raise ValueError('Unregistered seed')
-    if prefix not in ('spectra','actual_update'):raise ValueError('Unknown configuration family')
+    if prefix not in ('spectra','actual_update','actual_gate'):raise ValueError('Unknown configuration family')
     cfg=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
     if time.time()>=clock['deadline']:raise TimeoutError('Original deadline exhausted')
@@ -114,6 +114,9 @@ def main():
               'source_revision':source['commit'],'method':cfg['method'],'purpose':'revised spectral study'}
     model=new_model(cfg,weights)
     pilot_class=ActualUpdatePilot if cfg['method']=='actual_update_global' else SpectraPilot
+    if cfg.get('training_gate'):
+        from research.fed_spectra.loss_gate import GatedActualUpdatePilot
+        pilot_class=GatedActualUpdatePilot
     p=pilot_class(model,raw,manifest,loader,train_tf,test_tf,cfg,root/cfg['output'],identity,clock)
     if (p.out/'latest.pt').exists():
         assert os.environ.get('RESUME_RUN')=='1','No implicit restart';p.restore()
@@ -126,6 +129,7 @@ def main():
               'stages':[{'task':v['task']+1,'raw':v['all_seen'],'centered':v['centered']['all_seen_accuracy']} for v in p.s['stages']],
               'geometry_rounds':len(p.s['spectra_geometry']),'transport_rounds':len(p.s['spectra_rounds']),
               'actual_update_rounds':len(p.s.get('actual_update_rounds',[])),
+              'accepted_gate_rounds':sum(v['accepted'] for v in p.s.get('training_gate_records',[])),
               'worker_started':worker_started,'original_clock':clock,
               'qualified_milestones':[n for n in cfg['milestones'] if (p.out/f'QUALIFICATION_T{n}.json').exists()]})
     progress()

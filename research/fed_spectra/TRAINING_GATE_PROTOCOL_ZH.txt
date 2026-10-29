@@ -1,0 +1,19 @@
+实际更新谱修正：训练目标接受门，三seed五任务（2026-10-29，运行前冻结）
+
+动机与边界
+原eta=.1无门控的三seed均值收益只有+.0467pp，科学门槛失败。共同状态T4首轮诊断发现2/3 seed修正使训练CE+KL略增，但局部损失方向与原T5收益排序不一致，不能声称因果解释或预言门控必有收益。本实验直接检验主线改动：先产生原谱候选，再用训练目标接受门避免已测到的局部上升。可能拒绝有泛化益处的更新，也可能过拟合探针，完整保留负结果。
+
+唯一新机制
+每轮先产生精确原FP32 FedAvg B和既有eta=.1谱候选，原Head-RegMean只求解一次，两点共享头、A、冻结基座、教师。对当前任务各client排序训练索引用独立Generator seed=61029+1009*seed+31*client固定取至多32图；每任务内各轮相同probe，按原client样本数加权。使用原确定性预处理；probe来自本轮训练内，不是holdout。两个候选点各前向一次，T1仅当前CE，T2+为当前CE+温度2/lambda1旧类KL。若candidate loss比FedAvg低超过1e-6，接受固定候选；否则精确保留原FedAvg端点。此1e-6沿用数值零带，不搜索、不调eta、不根据测试集选门槛。无梯度probe、无线搜索、无第二候选。观测恢复RNG和模型模式，不改变后续数据增强轨迹。
+客户端仅回传标量CE/KL，原图/ID不上传。单进程模拟需计入实现通信的两个B候选广播、公共当前头广播和两点CE/KL标量回传；额外student/teacher前向分别计数。原RRS/损失/AdamW/头求解/数据划分/rank/学习率均不改。
+资格中actual_update_rounds表示真正部署的更新；拒绝时correction=0、sigma/energy after回到before、范数误差0，明确标记training_loss_gate_rejected。原谱候选的完整记录另存training_gate_records.candidate_round，不用候选范数冒充实际部署。记录全部门控决策、loss delta、逐client损失和额外成本，不因接受率低就重跑。
+
+固定比较与效能验收
+全部seed0/1/2，CIFAR100 alpha.05，fresh原预训练权重，前5任务；每seed5轮/任务、10client、5epochs、batch16，总每seed625000训练访问，新训练共1875000。同seed已完成且合格的原control与无门控eta=.1结果作为冻结比较，不重训/强化对照；代码检查拒绝所有候选时轨迹精确等于control，接受所有时轨迹精确等于原eta=.1。统计原对照既有成本并明确复用，不把历史成本当本次新增。
+T3/T5分别150/250 client轮、375000/625000访问、3000/5000图实际重载，raw/centered预测一致。全部完成T5，不按T3结果改参数或筛seed。错误/数值/预算失败保留，不补抽seed。原测试图仅统一报告，不用于probe、门槛、checkpoint或中途选择。
+完整报告T1-T5 raw/centered/old/new/AIA/遗忘/W+S/方向混淆，以及逐seed相对control和原无门控的变化。主要条件仍为3seed平均raw overall>=+.20pp、平均AIA>=0、平均old>=0、每seed new>=-1pp、平均S不增加、至少2/3 seed raw正、全部工程合格；还要求相对原无门控的平均raw>=0。centered仅诊断，单数据集/alpha/T5三seed探索，不宣称显著性或T10收益。若全部拒绝导致等同control，应报告机制无实际收益，不包装稳定性成功。
+
+统一预算与运行
+三个seed同属一次实验，共享ORIGIN.started；内部27900秒，外部started+28600秒加60killgrace，总<8h，准备/重试/排队计入，不重置。三个新路线各用一张显存空闲>=18000MiB的GPU并行；映射启动记录。独立总root实际新增上限24GB、20GB写停止、预计峰值<18GB。每个主管对共同BUDGET_ROOT计数，不能将三份全root计数相加；源checkpoint/数据/依赖只读共享不新增副本。共同超限时各主管停止自己的worker，外部timeout独立于SSH。挂载/容量/小写读探针及中性ps/GPU命令行检查。
+每seed root/runs/control仅只读链接已合格原control，RUN_ARMS=global仅启动新路线；seed0/1/2实际训练全部fresh，不续旧实验checkpoint。各主管自动调用报告器比较同seed既有control；完成后另汇总三seed及原无门控。只维护本会话唯一30分钟心跳，健康静默。
+完成后公开源码/协议/聚合结果与全部门控决策，私有权重/逐图ID/logits/完整日志不公开；代理push并验证远端与匿名访问。无论结果如何不自动搜索eta/门槛、加seed或进T10；先解释主线证据，下一假设另立协议。

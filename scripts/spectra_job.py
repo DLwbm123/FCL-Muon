@@ -11,9 +11,15 @@ def main():
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
     seed=int(os.environ.get('EXPERIMENT_SEED','0'))
     if seed not in (0,1,2):raise ValueError('Unregistered seed')
-    if prefix not in ('spectra','actual_update'):raise ValueError('Unknown configuration family')
-    arms=('control','global') if prefix=='actual_update' else ('control','mvp','full')
+    if prefix not in ('spectra','actual_update','actual_gate'):raise ValueError('Unknown configuration family')
+    arms=('control','global') if prefix in ('actual_update','actual_gate') else ('control','mvp','full')
+    if os.environ.get('RUN_ARMS')=='global':
+        assert prefix in ('actual_update','actual_gate') and (root/'runs/control/QUALIFICATION_T5.json').exists()
+        arms=('global',)
     cfg=json.loads((root/f'configs/{prefix}_{arms[-1]}_seed{seed}.json').read_text())
+    if len(arms)==1:assert cfg.get('training_gate')
+    budget_root=Path(os.environ.get('BUDGET_ROOT',str(root)))
+    assert root.is_relative_to(budget_root)
     assert set(gpus)==set(arms) and len(set(gpus.values()))==len(arms)
     for arm in arms:
         other=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
@@ -29,7 +35,7 @@ def main():
     if time.time()>=deadline:raise TimeoutError('Original budget exhausted')
     def size():
         total=0
-        for directory,_,files in os.walk(root,followlinks=False):
+        for directory,_,files in os.walk(budget_root,followlinks=False):
             for name in files:
                 p=Path(directory)/name
                 try:

@@ -60,6 +60,18 @@ def paired(reference,candidate,cpt):
     return result
 
 
+def validate_comparison_configs(reference,candidate):
+    a=json.loads(json.dumps(reference));b=json.loads(json.dumps(candidate))
+    for c in [a,b]:c.pop('output');c['actual_update']['operator'].pop('eta')
+    gated=bool(b.get('training_gate'))
+    if gated:
+        assert b.pop('training_gate')=={'minimum_improvement':1e-6,'probe_per_client':32,'selection_seed_base':61029}
+        for k in ['protocol_version','maximum_seconds','storage_limit_bytes','write_stop_bytes']:
+            a.pop(k);b.pop(k)
+    assert a==b,'Unmatched scientific training configuration'
+    return gated
+
+
 def main():
     root=Path(os.environ['PROJECT_ROOT']);report=root/'reports';arms={};records={}
     for arm in ['control','global']:
@@ -67,7 +79,7 @@ def main():
         assert q['qualified'] and q['tasks']==5 and q['client_rounds']==250 and q['training_visits']==625000
         cfg=q['config'];cfg_copy=json.loads(json.dumps(cfg));cfg_copy.pop('output');cfg_copy['actual_update']['operator'].pop('eta')
         if arm=='control':frozen=cfg_copy
-        else:assert cfg_copy==frozen
+        else:validate_comparison_configs(records['control']['config'],cfg)
         records[arm]=q
         rr=[v for r in q['actual_update_rounds'] for layer in r['layers'].values() for v in layer]
         measured=[r for r in rr if 'singular_values_before' in r]
@@ -85,6 +97,12 @@ def main():
             'clipping':'not used','Bures_fallback':'not used'}
         arms[arm]['cost']={k:q[k] for k in ['client_rounds','training_visits','stats_visits','anchor_forward_images',
             'extra_probe_forward_images','extra_probe_backward_images','logical_communication_bytes','peak_gpu_allocated_bytes','elapsed_seconds']}
+    gated=bool(records['global']['config'].get('training_gate'))
+    if gated:
+        q=records['global'];gates=q['training_gate_records']
+        arms['global']['training_gate']={'accepted_rounds':q['gate_accepted_rounds'],'rounds':len(gates),
+            'decisions':[{'task':v['task'],'round':v['round'],'accepted':v['accepted'],'loss_difference':v['loss_difference']} for v in gates],
+            'student_forward_images':q['gate_student_forward_images'],'teacher_forward_images':q['gate_teacher_forward_images']}
     a,b=arms['control']['raw'][-1],arms['global']['raw'][-1]
     differences={k:b[k]-a[k] for k in ['overall_percent','old_percent','new_percent','AIA_percent','forgetting_pp','S']}
     gate=frozen['scientific_gate']
@@ -100,13 +118,15 @@ def main():
             assert abs(expected-pairs[str(t)][view]['accuracy_delta_pp'])<1e-10
     result={'status':'COMPLETED_QUALIFIED','seed':cfg['seed'],'hypothesis_supported_in_this_pilot':all(conditions.values()),
         'scientific_conditions':conditions,'frozen_gate':gate,'T5_raw_differences_pp_except_S_count':differences,
-        'arms':arms,'paired_vs_control':pairs,'validation':{'same_configs_except_eta_output':True,
+        'arms':arms,'paired_vs_control':pairs,'comparison_control_reused':gated,
+        'validation':{('same_scientific_config_except_gate_eta' if gated else 'same_configs_except_eta_output'):True,
         'matrix_and_W_plus_S':True,'paired_counts_match_accuracy':True},
         'limitations':[f"single seed{cfg['seed']} development pilot; no statistical significance",
             'T5 endpoint; no T10 claim','current-input KL is not old-task risk guarantee',
             'norm is preserved, but vectorized direction changes under nonuniform spectral scaling',
             'no causal attribution from spectral proxy improvements alone'],
         'source_revision':json.loads((report/'SOURCE.json').read_text())['commit']}
+    if gated:result['limitations'].append('Control is the qualified existing same-seed run; gate uses extra current-training probes and logical communication, not held-out data.')
     write(report/'FINAL_REPORT.json',result)
     lines=['实际更新全局谱修正：五任务配对实验结果',
         '结论：'+('满足预先固定的单seed初步收益条件。' if result['hypothesis_supported_in_this_pilot'] else '未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。'),
@@ -129,6 +149,7 @@ def main():
     lines+=['','本报告不证明普遍优于LoRM、不作统计显著性或T10结论。不因Bures/有效秩等代理变化宣称性能收益。',
         '完整分阶段新旧类、方向混淆、矩阵与同图净变化见FINAL_REPORT.json；逐层谱细节见QUALIFICATION_T5.json。',
         '权重、teacher、逐图logits/ID及完整运行日志保留私有；公开聚合报告、配置、源码和验收摘要。']
+    if gated:lines+=['训练目标门：仅同probe CE+KL改善>1e-6时接受eta=.1候选，否则精确原FedAvg。对照复用已合格同seed五任务运行；新方案有额外probe/逻辑通信开销，不是零成本比较。',json.dumps(arms['global']['training_gate'],ensure_ascii=False)]
     (report/'FINAL_REPORT_ZH.txt').write_text('\n'.join(lines)+'\n')
     print(json.dumps({'report_ready':True,'scientific_conditions':conditions}))
 

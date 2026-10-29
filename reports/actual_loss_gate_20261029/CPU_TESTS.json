@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "seconds": 13.735044240951538,
+  "suites": [
+    "tests/test_loss_gate.py",
+    "tests/test_alignment_diagnostic.py",
+    "tests/test_actual_update.py",
+    "tests/test_fed_spectra.py"
+  ]
+}

@@ -81,6 +81,15 @@ def qualify(p,n):
             'shape correction does not guarantee classification improvement',
             'active rank per task is fixed; task-boundary merges are shared with control',
             'original LoRM is a system comparison; eta-zero arm is the matched comparison']
+    if cfg.get('training_gate'):
+        gates=s['training_gate_records'];assert len(gates)==n*rounds
+        q['training_gate_records']=gates
+        q['gate_student_forward_images']=sum(v['student_forward_images'] for v in gates)
+        q['gate_teacher_forward_images']=sum(v['teacher_forward_images'] for v in gates)
+        q['extra_probe_forward_images']+=q['gate_student_forward_images']+q['gate_teacher_forward_images']
+        q['extra_probe_forward_calls']+=sum(v['forward_calls'] for v in gates)
+        q['gate_accepted_rounds']=sum(v['accepted'] for v in gates)
+        q['limitations'].append('Training-internal loss gate is not a held-out or old-task risk guarantee; extra forward and logical communication costs are reported.')
     if path.exists():raise ValueError('Do not overwrite a qualified milestone')
     write(path,q)
     checkpoint=p.out/f'task{n}.pt'
