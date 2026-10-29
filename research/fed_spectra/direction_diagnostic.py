@@ -41,7 +41,7 @@ def choose_direction(grads,baseline,positive,negative):
     return ('negative' if dots['negative']<dots['positive']-1e-12 else 'positive'),dots
 
 
-def reflected_record(proposal,origin,baseline,negative):
+def deployed_record(proposal,origin,baseline,negative,direction):
     """Describe the selected FP32 endpoint, never copy positive spectral effects."""
     import copy
     record=copy.deepcopy(proposal)
@@ -55,7 +55,7 @@ def reflected_record(proposal,origin,baseline,negative):
             r.update(output_norm=outnorm,norm_relative_error=error,relative_correction=correction,
                 actual_FP32_norm=outnorm,actual_FP32_norm_relative_error=error,actual_FP32_relative_correction=correction,
                 cosine_with_fedavg=float((actual*old).sum())/max(norm*outnorm,1e-30) if norm else 1.,
-                direction='negative_reflection',target_energy_role='positive_proposal_reference_only')
+                direction=direction,target_energy_role='positive_proposal_reference_only')
             if 'singular_values_before' in r and norm:
                 before=torch.linalg.svdvals(old);after=torch.linalg.svdvals(actual)
                 active=before>1e-12*before[0]
@@ -67,3 +67,7 @@ def reflected_record(proposal,origin,baseline,negative):
                     after_spectrum_measurement='descending SVD of deployed FP32 update')
             if error>5e-4:raise ArithmeticError('Reflected record norm mismatch')
     return record
+
+
+def reflected_record(proposal,origin,baseline,negative):
+    return deployed_record(proposal,origin,baseline,negative,'negative_reflection')

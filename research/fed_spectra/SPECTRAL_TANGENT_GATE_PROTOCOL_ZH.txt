@@ -1,0 +1,16 @@
+损失引导奇异值切向接受门：三seed五任务（2026-10-30，训练前冻结）
+
+依据：原三轮完整T5均未达冻结科学门槛。新的共同T4首轮训练内诊断3/3 seed在不重合训练probe改善，confirmation CE+KL差-3.276887e-5/-7.570884e-5/-8.668258e-5、均值-6.505343e-5，均优于只选正负方向；未提升该probe准确率，非泛化或旧类安全证据。此次完整轨迹检验而不改写历史失败。
+
+唯一机制：沿用原同client实际增量、RRS A、AdamW resets、当前CE+temp2/lambda1旧KL、cosine Head-RegMean。每轮同一求解头下，先得到原FP32 FedAvg与eta=.1正向谱参考候选；参考仅确定每层QV最大角度。baseline训练probe梯度沿固定D=U diag(s)V^T的模式投影，投影a后除去沿s分量，以负切向给每个奇异值下降方向；原参考夹角为上限，解析非负约束必要时缩角，保持更新范数和支持。零增量/零角度/零切向精确原样返回；公式与epsilon1e-12、重复奇异值相对容差1e-10沿用已冻结诊断。理论范数误差<=1e-10、FP32<=5e-4。
+每client固定最多32当前训练图（61029+1009seed+31client），各任务各轮固定，不扰动RNG。只生成一个候选；其CE+KL比baseline低>1e-6接受，否则精确保留原FedAvg。无确认probe、无测试图决定参数/方向，无强度/门槛/步长搜索，不增加参考角度。
+
+梯度和通信明确实现：在单进程联邦模拟中，每client先清空梯度，逐batch按client内均值反向，立即用公共FP64 U/Vh投影为32维模式梯度；只将该向量按原client样本权重FP64累加。不将完整client梯度放入server通信账本或保存；模型内梯度在观测退出清空。原诊断先累计FP32完整梯度后投影，本实现先client内投影再FP64累加，因此仅数学线性等价，舍入可能不同，必须披露，不称逐bit等价。CPU线性投影检查及真实ViT预检；不用这种数值差异重跑原诊断/调参。
+逻辑通信：两B点（baseline和已选candidate）/共享当前head下发、FP64每层U与Vh广播、每client每层32维FP64模式向量上传、两点CE/KL标量回传。只统计这些明确数据载荷，不将单进程GPU墙钟当分布式通信实测或加速。probe student/teacher前向与student反向分开；基础训练teacher/RRS/头统计单独。相比原对照不声称免费改进。
+资格：training_gate_records.tangent保存无梯度向量的算子范数/投影范数/原参考角/实际角/正性cap/谱和positive_round；candidate_round是切向候选，actual_update_rounds是部署（拒绝时零修正/原谱）。mode_gradient数组不进入checkpoint资格/公开报告，完整梯度/图像/ID不上传不发布；target_energy仅正向参考，不称新候选目标。负切向不应被误称为原负向反射，实际方向标为spectral_tangent。
+
+训练：CIFAR100 alpha.05，seed0/1/2全部fresh原预训练，前5任务，每任务5轮/10client/5epochs，batch16、rank32、lr.0002等原配方固定。每seed250client/625000访问，总新1875000。旧同seed合格control复用只读链接不重训；旧无门控、单向门、符号门完整比较，不优化baseline。T3/T5分别150/250client、375000/625000访问、实际3000/5000图checkpoint重载raw和centered预测一致；所有seed必须到T5，不能按中间精度或cap/接受率筛选。
+科学门槛相对control：mean raw overall>=+.20pp、mean AIA>=0、mean old>=0、每seed new>=-1pp、mean S不增、至少2/3seed raw差正、全部工程通过；同时对旧单向门和符号门mean raw均>=0。报告旧无门控全部比较。所有T1–T5 raw/centered/old/new/AIA/遗忘/W+S/方向混淆、同图净变与三seed均值/样本SD/范围都保留。centered仅诊断，无显著性或T10/通用优越性结论。
+
+预算：三seed同一次实验，共同首次起点含CPU/准备；内部27900秒、外部28600秒+60killgrace，总<8h，不重置。共同新增root24GB硬上限/20GB写停止、预计<18GB；三个主管统计同group不能相加。每GPU>=18GB显存；只读共享数据/权重/依赖/历史control，共用新source树，不改旧root。10秒主管检查与独立外部timeout；挂载/空间/小写读探针和中性e17.py主子ps/nvidia-smi。
+启动前CPU检查需覆盖全拒绝=control、强制参考候选=旧单向门、自然候选逐转移恢复/资格/成本、配置漂移和互斥、模式投影线性检查、算子零/退化/正性/范数/角度/重复谱等变。真实ViT四图合成增量梯度/切向预检通过才训练。运行中科学源码冻结；报告错误只修报告不重训。唯一30分钟心跳继续，完成公开去私有信息的源码/协议/全seed聚合结果与成本，保留全部负结果，按证据自主选择有限下一假设，不擅自补seed/T10或调门槛。

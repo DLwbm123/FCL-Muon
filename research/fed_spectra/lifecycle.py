@@ -96,6 +96,13 @@ def qualify(p,n):
             q['extra_probe_backward_calls']+=sum(v['backward_calls'] for v in gates)
             q['negative_direction_rounds']=sum(v['direction']['selected']=='negative' for v in gates)
             q['limitations'].append('Gradient-oriented reflected proposals use extra training backward passes; negative reflection is not original spectral interpolation.')
+        if cfg.get('spectral_tangent'):
+            assert all('tangent' in v and v['backward_images']>0 for v in gates)
+            q['gate_backward_images']=sum(v['backward_images'] for v in gates)
+            q['extra_probe_backward_images']+=q['gate_backward_images']
+            q['extra_probe_backward_calls']+=sum(v['backward_calls'] for v in gates)
+            q['tangent_capped_layers']=sum(o.get('angle_capped',False) for v in gates for o in v['tangent']['operators'])
+            q['limitations'].append('Client-local projected gradients are aggregated in FP64; diagnostic previously accumulated full gradients in FP32, so rounding differs.')
         q['limitations'].append('Training-internal loss gate is not a held-out or old-task risk guarantee; extra forward and logical communication costs are reported.')
     if path.exists():raise ValueError('Do not overwrite a qualified milestone')
     write(path,q)
