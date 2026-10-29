@@ -1,0 +1,9 @@
+{
+  "started": 1793312735.6509101,
+  "baseline_allocated_bytes": 0,
+  "storage_limit_bytes": 2000000000,
+  "write_stop_bytes": 1000000000,
+  "maximum_seconds": 2400,
+  "outer_timeout_seconds": 2700,
+  "kill_grace_seconds": 30
+}
