@@ -65,6 +65,12 @@ def deployed_record(proposal,origin,baseline,negative,direction):
                     singular_scale_min=float((after[active]/before[active]).min()),
                     singular_scale_max=float((after[active]/before[active]).max()),
                     after_spectrum_measurement='descending SVD of deployed FP32 update')
+                if direction=='matrix_tangent':
+                    active_after=after>1e-12*after[0]
+                    energy=after[active_after].square();energy=energy/energy.sum()
+                    r.update(energy_after=energy.tolist(),retained_rank_before=int(active.sum()),
+                        retained_rank_after=int(active_after.sum()),spectral_support_preserved=False,
+                        effective_energy_rank_after=float(torch.exp(-(energy*energy.clamp_min(1e-300).log()).sum())))
             if error>5e-4:raise ArithmeticError('Reflected record norm mismatch')
     return record
 

@@ -93,6 +93,21 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
             result.update(tangent_preflight=True,tangent_checks=checks,gradient_images=len(ids),
                 tangent_scope='real ViT synthetic-increment projected logit-squared gradient; client-local CE/KL aggregation tested separately')
             del z
+        if cfg.get('matrix_tangent'):
+            from research.fed_spectra.matrix_tangent import tangent_candidate
+            with torch.no_grad():
+                for b,v in zip(model.b_parameters(),original):b.copy_(v)
+            model.zero_grad(set_to_none=True)
+            z=model(x);z.square().mean().backward();checks=[]
+            with torch.no_grad():
+                for b,baseline,reference in zip(model.b_parameters(),original,changed):
+                    value,record=tangent_candidate(torch.zeros_like(baseline),baseline,reference,b.grad.detach().cpu().double())
+                    checks.append(record);b.copy_(value)
+                assert torch.isfinite(model(x)).all()
+            assert any(v['identity_reason'] is None for v in checks)
+            result.update(matrix_tangent_preflight=True,matrix_tangent_checks=checks,gradient_images=len(ids),
+                matrix_scope='real ViT synthetic-increment logit-squared gradient; client-local CE/KL aggregation checked separately')
+            model.zero_grad(set_to_none=True);del z
         del model;gc.collect();torch.cuda.empty_cache();return result
     from research.fed_spectra.math import gaussian_map,orthogonal_pool,rebase_adapter,fisher_coefficients
     model=new_model(cfg,weights);model.add_head(10);model.add_head(10);model.eval()
@@ -130,7 +145,7 @@ def main():
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
     seed=int(os.environ.get('EXPERIMENT_SEED','0'))
     if seed not in (0,1,2):raise ValueError('Unregistered seed')
-    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent'):raise ValueError('Unknown configuration family')
+    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix'):raise ValueError('Unknown configuration family')
     cfg=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
     if time.time()>=clock['deadline']:raise TimeoutError('Original deadline exhausted')

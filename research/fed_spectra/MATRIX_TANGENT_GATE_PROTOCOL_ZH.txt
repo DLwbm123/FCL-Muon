@@ -1,0 +1,16 @@
+全矩阵范数球切向接受门：三seed五任务（2026-10-30，运行前冻结）
+
+科学依据与决策：原无门控、单向门、符号门、谱切向门四轮完整T5均失败，保留全部结果。有限共同T4首轮全矩阵诊断3seed确认loss差-.000244935/-.000576046/-.000776712，平均-.000532564，比谱切向约8.19倍；准确率均未变。谱切向只覆盖全切向能量0.7141/0.5484/0.8613%，选择/确认联合cosine .2124/.2852/.3457，预测与实际确认loss差接近；层级负cosine1/2/3层保留。完整梯度上传预计每seed25轮589824000bytes，比谱基广播+模式上传少640512000bytes。基于表示限制、方向转移和成本共同证据，决定一次完整轨迹验证，不以训练接受率或局部通过直接认定成功。
+
+唯一机制变化：原同client endpoint、一次Head-RegMean求解、FP32 FedAvg baseline、eta=.1正向谱参考不变。每层QV D=B_FedAvg-B_origin，G为训练probe梯度，T=G-<G,D>/||D||² D，H=-T/||T||，theta取D与原eta=.1参考增量夹角，Dnew=cos(theta)D+sin(theta)||D||H。角度不扩大/不搜索；FP64范数误差<=1e-10、实际FP32<=5e-4。零增量/零参考角/零切向精确baseline。允许改变奇异向量及谱支持，B维度仍rank<=32；实际谱重新测量，含新出现支持，不把原positive目标谱当部署效果。模式不与旧符号/谱切向组合。
+
+原训练配方不变：CIFAR100 alpha.05，seed0/1/2全部fresh原预训练，T5、每任务5round×10client×5epoch、batch16、rank32、lr.0002，RRS A、当前CE+temp2/lambda1旧KL、AdamW reset、cosine Head-RegMean。每seed250client/625000训练访问，总新1875000；同seed已合格control只读复用，不重训或优化baseline。三条不按T3成绩/接受率筛选，全部完成T5。
+
+梯度与接受门：固定同selection每client最多32当前训练图，61029+1009seed+31client、各任务固定，不扰训练RNG。每client单独清空梯度、按client内均值FP32反向；模拟上传完整FP32 B梯度，在server按原client样本权重FP64累加，随后清空。与诊断FP32加权累积仅数学线性等价，不承诺逐bit。梯度完整/向量不保存checkpoint或公开。只有一个全矩阵candidate，同probe CE+KL改善>1e-6才接受，否则精确FedAvg。无confirmation或test用于方向、参数、门槛或选择，无角度/强度/步长搜索。
+逻辑通信：baseline/candidate两B点及共享head下发、每client完整FP32 B梯度上传、两点CE/KL标量回传。无SVD基下发/模式上传/第三候选。额外student/teacher前向、student backward单独计数，原训练teacher/RRS/head统计另计。单进程联邦模拟消息不等于网络通信实测，不能按GPU墙钟宣称加速。完整client梯度是新增信息需求，不能说和纯FedAvg隐私暴露等价；不新增安全聚合或正式隐私保证。
+
+验收：CPU全拒绝=control、强制原参考=旧单向门、自然规则逐转移恢复/资格/通信、client本地梯度线性一致与RNG清空、配置漂移/互斥、矩阵范数/角度/零/等变、新谱支持记录。真实ViT四图合成增量梯度+矩阵候选GPU预检每seed通过才训练。T3/T5各150/250client、375000/625000访问，实际3000/5000图checkpoint重载raw/centered预测一致；冻结运行不改训练代码，报告故障只修报告不重训。
+
+科学门槛不变：对control三seed平均T5 raw>=+.20pp、平均AIA>=0、平均old>=0、每seednew>=-1pp、平均S不增、至少2/3seedraw正、全工程通过；同时对旧单向门、符号门及谱切向门平均raw均>=0。比较无门控完整结果。报告所有T1–T5 raw/centered/old/new/AIA/遗忘/W+S/方向混淆、同图纠正与破坏、接受/identity、预测方向/实际谱、成本与3seed均值/样本SD/范围。centered仅诊断，无显著性/T10/通用优势结论。失败不修改门槛、不补seed或放大角度；后继转向目标/跨任务竞争失配的有限分析，不继续靠局部下降扩大同类方向自由度。
+
+资源：三seed同一次实验，共同首次起点含准备/CPU/排队/重试；内部27900s，外部至started+28600加60killgrace，总<8h。共用新source和grouproot，24GB上限/20GB写停止、预计<18GB；各主管统计同root不得相加。10秒资源主管及独立timeout，GPU各>=18GB，挂载/空间/小读写探针和中性入口主子ps/nvidia-smi。data/deps/weights/control和所有旧结果只读，新增仅独立root。唯一30分钟监测，完整结果公开，模型/teacher/完整梯度/ID/logits/原日志留服务器；持续自主推进不复活旧停止三arm或优化LoRM/历史A/B。

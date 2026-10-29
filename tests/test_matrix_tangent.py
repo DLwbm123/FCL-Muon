@@ -46,3 +46,13 @@ def test_coverage_diagonal_and_opposite_confirmation():
     assert abs(v['spectral_fraction_of_tangent_energy']-1)<1e-12
     assert abs(v['fit_confirmation_tangent_cosine']+1)<1e-12
     assert v['confirmation_predicted_delta']>0
+
+
+def test_deployed_spectrum_includes_new_support():
+    from research.fed_spectra.direction_diagnostic import deployed_record
+    b=torch.diag(torch.tensor([1.,0.]));o=torch.zeros_like(b)
+    n=torch.diag(torch.tensor([math.cos(.1),math.sin(.1)]))
+    proposal={'layers':{'0':[{'singular_values_before':[1.,0.]}]}}
+    record=deployed_record(proposal,[o],[b],[n],'matrix_tangent')['layers']['0'][0]
+    assert record['retained_rank_before']==1 and record['retained_rank_after']==2
+    assert len(record['energy_after'])==2 and abs(sum(record['energy_after'])-1)<1e-12

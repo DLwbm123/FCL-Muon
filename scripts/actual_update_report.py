@@ -63,11 +63,14 @@ def paired(reference,candidate,cpt):
 def validate_comparison_configs(reference,candidate):
     a=json.loads(json.dumps(reference));b=json.loads(json.dumps(candidate))
     for c in [a,b]:c.pop('output');c['actual_update']['operator'].pop('eta')
+    assert sum(bool(b.get(k)) for k in ['direction_selection','spectral_tangent','matrix_tangent'])<=1
     gated=bool(b.get('training_gate'))
     if b.get('direction_selection'):
         assert b.pop('direction_selection')=={'type':'gradient_reflection','tie_tolerance':1e-12}
     if b.get('spectral_tangent'):
         assert b.pop('spectral_tangent')=={'reference':'original_eta_angle','mode_gradient':'client_local_fp64'}
+    if b.get('matrix_tangent'):
+        assert b.pop('matrix_tangent')=={'reference':'original_eta_angle','gradient':'client_fp32_server_fp64'}
     if gated:
         assert b.pop('training_gate')=={'minimum_improvement':1e-6,'probe_per_client':32,'selection_seed_base':61029}
         for k in ['protocol_version','maximum_seconds','storage_limit_bytes','write_stop_bytes']:
@@ -112,6 +115,8 @@ def main():
               direction_choices=[v['direction']['selected'] for v in gates])
         if q['config'].get('spectral_tangent'):
             arms['global']['training_gate'].update(backward_images=q['gate_backward_images'],tangent_capped_layers=q['tangent_capped_layers'])
+        if q['config'].get('matrix_tangent'):
+            arms['global']['training_gate'].update(backward_images=q['gate_backward_images'],matrix_tangent=True)
     a,b=arms['control']['raw'][-1],arms['global']['raw'][-1]
     differences={k:b[k]-a[k] for k in ['overall_percent','old_percent','new_percent','AIA_percent','forgetting_pp','S']}
     gate=frozen['scientific_gate']
@@ -140,6 +145,8 @@ def main():
         result['limitations'].append('Direction selected by training gradient, then loss-gated; extra backward cost included; reflection is not original spectral interpolation.')
     if records['global']['config'].get('spectral_tangent'):
         result['limitations'].append('Loss-directed singular-value tangent with fixed reference angle ceiling; client-local mode gradients, basis broadcasts, and backward costs included.')
+    if records['global']['config'].get('matrix_tangent'):
+        result['limitations'].append('Full matrix norm-sphere tangent; reference angle unchanged; full client FP32 gradients accumulated in FP64, charged and cleared. No spectral support guarantee.')
     write(report/'FINAL_REPORT.json',result)
     lines=['实际更新全局谱修正：五任务配对实验结果',
         '结论：'+('满足预先固定的单seed初步收益条件。' if result['hypothesis_supported_in_this_pilot'] else '未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。'),
@@ -167,6 +174,8 @@ def main():
         lines+=['方向版本：训练梯度在原候选与等范数反射方向间固定选择，再应用原训练接受门；新增反向成本，负向不是原谱插值，不能将原候选统计当实际部署。']
     if records['global']['config'].get('spectral_tangent'):
         lines+=['谱切向版本：客户端训练梯度先投影到公共SVD模式，再FP64聚合；按梯度切向调整奇异值，参考角度不超过eta.1候选并解析限制非负，随后沿用训练接受门。成本包含SVD基下发/模式向量上传和额外反向。']
+    if records['global']['config'].get('matrix_tangent'):
+        lines+=['全矩阵切向版本：每client本地FP32完整B梯度作为模拟消息，server按原权重FP64累加；范数球切向在原参考角内旋转，允许改变奇异向量/谱，无原支持保持声明。通信包含完整梯度上传，梯度不落盘，训练门不保证旧类安全。']
     (report/'FINAL_REPORT_ZH.txt').write_text('\n'.join(lines)+'\n')
     print(json.dumps({'report_ready':True,'scientific_conditions':conditions}))
 

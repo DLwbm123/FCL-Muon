@@ -103,6 +103,12 @@ def qualify(p,n):
             q['extra_probe_backward_calls']+=sum(v['backward_calls'] for v in gates)
             q['tangent_capped_layers']=sum(o.get('angle_capped',False) for v in gates for o in v['tangent']['operators'])
             q['limitations'].append('Client-local projected gradients are aggregated in FP64; diagnostic previously accumulated full gradients in FP32, so rounding differs.')
+        if cfg.get('matrix_tangent'):
+            assert all('matrix_tangent' in v and v['backward_images']>0 for v in gates)
+            q['gate_backward_images']=sum(v['backward_images'] for v in gates)
+            q['extra_probe_backward_images']+=q['gate_backward_images']
+            q['extra_probe_backward_calls']+=sum(v['backward_calls'] for v in gates)
+            q['limitations'].append('Full client FP32 gradients are temporary simulated messages, accumulated in FP64 and charged; diagnostic used FP32 weighted accumulation. Matrix tangent changes singular vectors at the unchanged reference angle.')
         q['limitations'].append('Training-internal loss gate is not a held-out or old-task risk guarantee; extra forward and logical communication costs are reported.')
     if path.exists():raise ValueError('Do not overwrite a qualified milestone')
     write(path,q)
