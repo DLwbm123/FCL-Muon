@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "qualified": true,
+  "exit_codes": {
+    "global": 0
+  },
+  "started": 1793302023.503294,
+  "ended": 1793311809.0168853,
+  "allocated_bytes": 5093081088
+}
