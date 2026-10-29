@@ -1,0 +1,21 @@
+{
+  "status": "STARTED_NOT_COMPLETED",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "new_training_visits_planned": 0,
+  "test_images_planned": 0,
+  "source_endpoints_reused": true,
+  "cpu_tests_passed": 9,
+  "mount_capacity_write_read_probe_passed": true,
+  "gpu_memory_check_passed": true,
+  "neutral_process_verified": true,
+  "no_immediate_failure": true,
+  "internal_max_seconds": 2400,
+  "outer_max_seconds": 2700,
+  "termination_grace_seconds": 30,
+  "storage_limit_bytes": 2000000000,
+  "write_stop_bytes": 1000000000
+}
