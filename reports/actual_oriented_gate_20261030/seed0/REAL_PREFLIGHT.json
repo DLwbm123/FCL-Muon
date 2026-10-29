@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "method": "actual_update_global",
+  "images": 4,
+  "eta_zero_logits_exact": true,
+  "corrected_logits_max_difference": 9.47713851928711e-06,
+  "maximum_norm_relative_error": 1.229323725243834e-15,
+  "peak_gpu_allocated_bytes": 416464384,
+  "scope": "real ViT GPU forward with synthetic actual-increment inputs; full local learning tested in CPU lifecycle and formal run",
+  "direction_preflight": true,
+  "selected_direction": "positive",
+  "directional_derivatives": {
+    "positive": -1.9114379622314173e-07,
+    "negative": 1.9083393728639127e-07
+  },
+  "reflection_checks": [
+    {
+      "norm_relative_error": 4.944733691768704e-11,
+      "correction_length_relative_error": 2.7246354332872053e-10
+    },
+    {
+      "norm_relative_error": 7.463310120025454e-10,
+      "correction_length_relative_error": 1.1267101776657597e-10
+    },
+    {
+      "norm_relative_error": 1.0001927059084497e-10,
+      "correction_length_relative_error": 3.916373042292551e-11
+    },
+    {
+      "norm_relative_error": 3.2112362095470716e-12,
+      "correction_length_relative_error": 1.6565562776425617e-10
+    },
+    {
+      "norm_relative_error": 2.2217362436928976e-10,
+      "correction_length_relative_error": 1.17301195136991e-11
+    },
+    {
+      "norm_relative_error": 5.486509636978364e-10,
+      "correction_length_relative_error": 7.993390024559271e-11
+    },
+    {
+      "norm_relative_error": 6.864121127975926e-10,
+      "correction_length_relative_error": 1.4717173906446407e-10
+    },
+    {
+      "norm_relative_error": 2.610145386416911e-10,
+      "correction_length_relative_error": 1.6565667210984946e-11
+    },
+    {
+      "norm_relative_error": 3.7384004080186506e-10,
+      "correction_length_relative_error": 2.5298539774304406e-10
+    },
+    {
+      "norm_relative_error": 7.148691037840714e-10,
+      "correction_length_relative_error": 8.905352581516425e-11
+    },
+    {
+      "norm_relative_error": 2.179614774217462e-11,
+      "correction_length_relative_error": 5.4849653598044975e-11
+    },
+    {
+      "norm_relative_error": 4.471071878708322e-10,
+      "correction_length_relative_error": 3.1288194650110424e-10
+    },
+    {
+      "norm_relative_error": 6.346874422807259e-11,
+      "correction_length_relative_error": 1.9569473800170165e-10
+    },
+    {
+      "norm_relative_error": 3.946769872567262e-10,
+      "correction_length_relative_error": 1.8064395818677117e-12
+    },
+    {
+      "norm_relative_error": 4.4648659156074773e-10,
+      "correction_length_relative_error": 6.70615419921198e-11
+    },
+    {
+      "norm_relative_error": 9.876443807894123e-12,
+      "correction_length_relative_error": 1.6027238576084823e-10
+    },
+    {
+      "norm_relative_error": 2.9530573270250136e-10,
+      "correction_length_relative_error": 1.2597610543525185e-10
+    },
+    {
+      "norm_relative_error": 3.655458636508116e-10,
+      "correction_length_relative_error": 1.3096697428261526e-10
+    },
+    {
+      "norm_relative_error": 1.1433704786280901e-10,
+      "correction_length_relative_error": 2.561678568404095e-10
+    },
+    {
+      "norm_relative_error": 1.8607081818391038e-10,
+      "correction_length_relative_error": 2.9639552687290943e-10
+    },
+    {
+      "norm_relative_error": 9.741143649236427e-10,
+      "correction_length_relative_error": 6.071643703131322e-11
+    },
+    {
+      "norm_relative_error": 3.6328113077455314e-10,
+      "correction_length_relative_error": 1.674217623785653e-10
+    },
+    {
+      "norm_relative_error": 6.115092238884063e-10,
+      "correction_length_relative_error": 6.359072354114973e-11
+    },
+    {
+      "norm_relative_error": 1.0813274970868739e-10,
+      "correction_length_relative_error": 4.22931864824217e-11
+    }
+  ],
+  "gradient_images": 4,
+  "direction_scope": "real ViT synthetic-increment logit-squared gradient and reflection; CE/KL lifecycle tested separately"
+}
