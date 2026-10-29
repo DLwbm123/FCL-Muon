@@ -1,0 +1,14 @@
+{
+  "commit": "f4136eb43e5bf13775200c7585f9e98717826291",
+  "protocol": "actual-update-repetition-v1-20261029",
+  "seeds": [
+    1,
+    2
+  ],
+  "control_eta": 0.0,
+  "global_eta": 0.1,
+  "tasks": 5,
+  "training_code_frozen": true,
+  "shared_total_budget_seconds": 28660,
+  "original_seed0_result": "benefit_gate_not_met"
+}

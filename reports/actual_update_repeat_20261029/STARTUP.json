@@ -1,0 +1,86 @@
+{
+  "checked": 1793264701.9289188,
+  "status": "running",
+  "scientific_result_available": false,
+  "seeds": {
+    "1": {
+      "allocated_bytes_at_check": 1007038464,
+      "baseline_allocated_bytes": 6270976,
+      "arms": {
+        "control": {
+          "process_alive": true,
+          "neutral_command_verified": true,
+          "neutral_GPU_process_verified": true,
+          "gpu": 0,
+          "task_zero_based": 0,
+          "round_zero_based": 0,
+          "phase": "clients",
+          "client_rounds": 2,
+          "training_visits": 5125
+        },
+        "global": {
+          "process_alive": true,
+          "neutral_command_verified": true,
+          "neutral_GPU_process_verified": true,
+          "gpu": 1,
+          "task_zero_based": 0,
+          "round_zero_based": 0,
+          "phase": "clients",
+          "client_rounds": 2,
+          "training_visits": 5125
+        }
+      },
+      "gpu_preflight": {
+        "passed": true,
+        "method": "actual_update_global",
+        "images": 4,
+        "eta_zero_logits_exact": true,
+        "corrected_logits_max_difference": 5.587935447692871e-06,
+        "maximum_norm_relative_error": 1.229323725243834e-15,
+        "peak_gpu_allocated_bytes": 416464384,
+        "scope": "real ViT GPU forward with synthetic actual-increment inputs; full local learning tested in CPU lifecycle and formal run"
+      }
+    },
+    "2": {
+      "allocated_bytes_at_check": 1989890048,
+      "baseline_allocated_bytes": 2387968,
+      "arms": {
+        "control": {
+          "process_alive": true,
+          "neutral_command_verified": true,
+          "neutral_GPU_process_verified": true,
+          "gpu": 2,
+          "task_zero_based": 0,
+          "round_zero_based": 0,
+          "phase": "clients",
+          "client_rounds": 1,
+          "training_visits": 3365
+        },
+        "global": {
+          "process_alive": true,
+          "neutral_command_verified": true,
+          "neutral_GPU_process_verified": true,
+          "gpu": 3,
+          "task_zero_based": 0,
+          "round_zero_based": 0,
+          "phase": "clients",
+          "client_rounds": 2,
+          "training_visits": 6970
+        }
+      },
+      "gpu_preflight": {
+        "passed": true,
+        "method": "actual_update_global",
+        "images": 4,
+        "eta_zero_logits_exact": true,
+        "corrected_logits_max_difference": 9.119510650634766e-06,
+        "maximum_norm_relative_error": 1.229323725243834e-15,
+        "peak_gpu_allocated_bytes": 416464384,
+        "scope": "real ViT GPU forward with synthetic actual-increment inputs; full local learning tested in CPU lifecycle and formal run"
+      }
+    }
+  },
+  "total_storage_limit_bytes": 40000000000,
+  "shared_budget_seconds": 28660,
+  "common_original_clock_verified": true
+}
