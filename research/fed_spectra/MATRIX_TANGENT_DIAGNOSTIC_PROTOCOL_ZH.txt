@@ -1,0 +1,15 @@
+全矩阵切向表示限制诊断（2026-10-30，运行前冻结）
+
+依据：谱切向完整三seed五任务已失败：T5 raw差+.14/-.66/+.32pp，均值-.066667pp，old-.158333pp、AIA-.023333pp、seed1new-1.40pp；75/75候选被接受且无正性cap。此前训练确认改善不构成泛化保证。所有负结果保持，不继续增加接受率或同配置加seed/T10。
+
+目的：仅判断固定奇异向量是否排除了能在另一训练probe转移的下降方向。复用原共同T4首轮三seed baseline/positive端点，0新增本地训练、0test、不生成checkpoint、不改旧root。新实验不是完整训练，结果只支持或否定这一局部机制假设。
+
+唯一候选：对每层QV的D=B_FedAvg-B_origin，G为原selection当前CE+温度2/lambda1旧类KL梯度；T=G-<G,D>/||D||² D，H=-T/||T||。theta严格取原eta.1正向参考与D的夹角，不加大、不搜索；Dnew=cos(theta)D+sin(theta)||D||H。FP64理论范数误差<=1e-10、真实FP32<=5e-4，零D/零theta/零切向原样返回。此处允许改变奇异向量/奇异值，不承诺原谱支持；B矩阵维度不变，rank仍不超过32。全梯度仅诊断内存临时使用，清空且不保存/公开；未来可能完整梯度上传成本单独按FP32计算，未实现分布式算法，不声称通信可部署或免费。
+
+保持原head、原client样本权重、原selection最多32图、原不重合confirmation及覆盖。所有均为已用于本地训练的图，不是真holdout。方向只由selection决定。候选一次，不用confirmation选方向或尺度。baseline selection/confirmation必须与旧诊断复现<=1e-6，head不变、baseline恢复、RNG隔离。
+
+额外读一次confirmation baseline梯度，仅报告选择/确认的全切向cosine、候选在确认梯度上的预测变化、谱切向能量占全切向能量比例，不影响候选。能量诊断仅适用于共同端点非退化全rank且无重复谱；不满足则明确失败，不静默套用。实际probe CE/KL/loss/accuracy、coverage、逐seed差和成本全部报告。
+
+固定局部条件：3/3 confirmation loss相对baseline下降>1e-6；3/3相对旧谱切向confirmation loss额外下降>1e-6；mean loss下降幅度至少为旧谱切向的2倍；各coverage>=95%；全工程检查通过。所有seed保留，无修改条件/补seed/角度搜索。即使通过，仍不证明五任务泛化/旧类安全，也不自动启动新完整训练；下一步须结合梯度转移、成本及四轮失败证据决定并另立协议。若失败转向目标失配分析，不继续搜索同一角度强度。
+
+预算：新独立root，总准备/CPU/GPU共同原始起点；内部2400s、外部至started+2700加30s killgrace，总<46min，重试不重置。新增实际2GB硬上限/1GB写停止，预计<100MB；只读复用data/deps/weights/原端点，GPU可用显存>=18GB。保持独立timeout与10秒预算检查。源码/聚合结果公开，所有梯度/模型/ID/logits/完整日志留服务器。唯一30分钟监测跟进。
