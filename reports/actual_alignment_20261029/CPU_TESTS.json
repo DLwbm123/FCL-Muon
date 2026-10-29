@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "seconds": 4.87881326675415,
+  "suites": [
+    "tests/test_alignment_diagnostic.py",
+    "tests/test_actual_update.py"
+  ]
+}

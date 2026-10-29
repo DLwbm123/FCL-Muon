@@ -1,0 +1,48 @@
+"""Read-only endpoint probes on current training inputs, never test selection."""
+import torch
+from torch.nn import functional as F
+from fcl.checkpoint import rng_state,restore_rng
+
+
+def select_probes(groups,seed):
+    chosen=[]
+    for client,ids in enumerate(groups):
+        ids=sorted(ids);g=torch.Generator().manual_seed(61029+1009*seed+31*client)
+        order=torch.randperm(len(ids),generator=g).tolist()[:32]
+        chosen.append([ids[i] for i in order])
+    return chosen
+
+
+def measure(p,probes,gradient=False):
+    state=rng_state();modes={m:m.training for m in p.model.modules()}
+    p.model.eval();p.model.zero_grad(set_to_none=True)
+    total=sum(len(p.ids('train',p.s['task'],k)) for k in range(p.cfg['clients']))
+    rows=[];forward=teacher_forward=backward=0
+    try:
+        for k,ids in enumerate(probes):
+            if not ids:continue
+            weight=len(p.ids('train',p.s['task'],k))/total
+            row={'client':k,'images':len(ids),'weight':weight,'ce':0.,'kl':0.,'accuracy':0.}
+            for x,y in p.loader(p.raw[0],ids,p.cfg['batch']):
+                p.budget();p.check_labels(y);x=p.test_tf(x.to(p.device));y=y.to(p.device)
+                old=p.s['task']*p.cfg['cpt'];temperature=p.settings['anchor_temperature']
+                with torch.no_grad():target=(p.get_teacher()(x)[:,:old]/temperature).softmax(-1)
+                with torch.set_grad_enabled(gradient):
+                    z=p.model(x);ce=F.cross_entropy(z[:,old:old+p.cfg['cpt']],y-old)
+                    kl=F.kl_div((z[:,:old]/temperature).log_softmax(-1),target,reduction='batchmean')*temperature**2
+                    loss=ce+p.settings['anchor_weight']*kl
+                    if not torch.isfinite(loss):raise ArithmeticError('Nonfinite probe objective')
+                    fraction=len(y)/len(ids)
+                    if gradient:(loss*(weight*fraction)).backward();backward+=len(y)
+                row['ce']+=float(ce.detach())*fraction;row['kl']+=float(kl.detach())*fraction
+                row['accuracy']+=float((z[:,old:old+p.cfg['cpt']].argmax(-1)==y-old).float().sum())/len(ids)
+                forward+=len(y);teacher_forward+=len(y)
+            row['loss']=row['ce']+p.settings['anchor_weight']*row['kl'];rows.append(row)
+        totals={k:sum(v['weight']*v[k] for v in rows) for k in ['ce','kl','loss','accuracy']}
+        grads=[b.grad.detach().cpu().double().clone() for b in p.model.b_parameters()] if gradient else None
+        return {'clients':rows,'weighted':totals,'student_forward_images':forward,
+                'teacher_forward_images':teacher_forward,'backward_images':backward},grads
+    finally:
+        p.model.zero_grad(set_to_none=True)
+        for module,mode in modes.items():module.training=mode
+        restore_rng(state)
