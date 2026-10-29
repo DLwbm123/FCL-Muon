@@ -1,0 +1,521 @@
+{
+  "seed": 2,
+  "status": "COMPLETED",
+  "task": 4,
+  "round": 1,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "selected_direction": "negative",
+  "directional_derivatives": {
+    "positive": 3.6965664205911445e-05,
+    "negative": -3.573558127004318e-05
+  },
+  "confirmation_weight_coverage": 0.9954,
+  "selection_baseline": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.183,
+        "ce": 0.03341314848512411,
+        "kl": 0.0010989573784172535,
+        "accuracy": 1.0,
+        "loss": 0.034512105863541365
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.03666895814239979,
+        "kl": 0.0011253543198108673,
+        "accuracy": 1.0,
+        "loss": 0.037794312462210655
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.0652,
+        "ce": 0.06585967913269997,
+        "kl": 0.0014402822125703096,
+        "accuracy": 1.0,
+        "loss": 0.06729996134527028
+      },
+      {
+        "client": 3,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.05036058835685253,
+        "kl": 0.00173569330945611,
+        "accuracy": 1.0,
+        "loss": 0.05209628166630864
+      },
+      {
+        "client": 4,
+        "images": 7,
+        "weight": 0.0014,
+        "ce": 0.01569346897304058,
+        "kl": 0.0015698788920417428,
+        "accuracy": 1.0,
+        "loss": 0.017263347865082324
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.1382,
+        "ce": 0.11169282905757427,
+        "kl": 0.0011247671209275723,
+        "accuracy": 1.0,
+        "loss": 0.11281759617850184
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0526,
+        "ce": 0.04981870763003826,
+        "kl": 0.0020935669308528304,
+        "accuracy": 1.0,
+        "loss": 0.05191227456089109
+      },
+      {
+        "client": 7,
+        "images": 16,
+        "weight": 0.0032,
+        "ce": 0.024342933669686317,
+        "kl": 0.0014093192294239998,
+        "accuracy": 1.0,
+        "loss": 0.025752252899110317
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.1632,
+        "ce": 0.12095313938334584,
+        "kl": 0.001197722041979432,
+        "accuracy": 0.96875,
+        "loss": 0.12215086142532527
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.098,
+        "ce": 0.01717799762263894,
+        "kl": 0.0008502546697854996,
+        "accuracy": 1.0,
+        "loss": 0.01802825229242444
+      }
+    ],
+    "weighted": {
+      "ce": 0.06283349567130209,
+      "kl": 0.0012683715141378342,
+      "loss": 0.06410186718543992,
+      "accuracy": 0.9949
+    },
+    "student_forward_images": 279,
+    "teacher_forward_images": 279,
+    "backward_images": 279,
+    "student_forward_calls": 18,
+    "teacher_forward_calls": 18
+  },
+  "selection_positive_reproduction": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.183,
+        "ce": 0.03341968823224306,
+        "kl": 0.0011051192414015532,
+        "accuracy": 1.0,
+        "loss": 0.034524807473644614
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.0367499478161335,
+        "kl": 0.0011126170866191387,
+        "accuracy": 1.0,
+        "loss": 0.03786256490275264
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.0652,
+        "ce": 0.06586136110126972,
+        "kl": 0.0014415334444493055,
+        "accuracy": 1.0,
+        "loss": 0.06730289454571903
+      },
+      {
+        "client": 3,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.050419580191373825,
+        "kl": 0.0017415937036275864,
+        "accuracy": 1.0,
+        "loss": 0.05216117389500141
+      },
+      {
+        "client": 4,
+        "images": 7,
+        "weight": 0.0014,
+        "ce": 0.01569479890167713,
+        "kl": 0.0015764652052894235,
+        "accuracy": 1.0,
+        "loss": 0.017271264106966555
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.1382,
+        "ce": 0.11172738298773766,
+        "kl": 0.0011295522563159466,
+        "accuracy": 1.0,
+        "loss": 0.1128569352440536
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0526,
+        "ce": 0.04983429331332445,
+        "kl": 0.0020993936341255903,
+        "accuracy": 1.0,
+        "loss": 0.05193368694745004
+      },
+      {
+        "client": 7,
+        "images": 16,
+        "weight": 0.0032,
+        "ce": 0.024343935772776604,
+        "kl": 0.0014110985212028027,
+        "accuracy": 1.0,
+        "loss": 0.025755034293979406
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.1632,
+        "ce": 0.12099266797304153,
+        "kl": 0.0012032079976052046,
+        "accuracy": 0.96875,
+        "loss": 0.12219587597064674
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.098,
+        "ce": 0.01717915153130889,
+        "kl": 0.0008596922270953655,
+        "accuracy": 1.0,
+        "loss": 0.018038843758404255
+      }
+    ],
+    "weighted": {
+      "ce": 0.06286762775760144,
+      "kl": 0.001271374491392635,
+      "loss": 0.06413900224899408,
+      "accuracy": 0.9949
+    },
+    "student_forward_images": 279,
+    "teacher_forward_images": 279,
+    "backward_images": 0,
+    "student_forward_calls": 18,
+    "teacher_forward_calls": 18
+  },
+  "confirmation_baseline": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.183,
+        "ce": 0.11879417300224304,
+        "kl": 0.0013020162004977465,
+        "accuracy": 0.96875,
+        "loss": 0.12009618920274079
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.11628726869821548,
+        "kl": 0.0012746863067150116,
+        "accuracy": 0.9375,
+        "loss": 0.1175619550049305
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.0652,
+        "ce": 0.014343837508931756,
+        "kl": 0.001345010008662939,
+        "accuracy": 1.0,
+        "loss": 0.015688847517594695
+      },
+      {
+        "client": 3,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.06992558389902115,
+        "kl": 0.0016267627943307161,
+        "accuracy": 1.0,
+        "loss": 0.07155234669335186
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.1382,
+        "ce": 0.1728106290102005,
+        "kl": 0.0012887471821159124,
+        "accuracy": 0.96875,
+        "loss": 0.1740993761923164
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0526,
+        "ce": 0.06753109022974968,
+        "kl": 0.002192899351939559,
+        "accuracy": 1.0,
+        "loss": 0.06972398958168924
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.1632,
+        "ce": 0.03374674543738365,
+        "kl": 0.0012328566517680883,
+        "accuracy": 1.0,
+        "loss": 0.03497960208915174
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.098,
+        "ce": 0.007704690098762512,
+        "kl": 0.0011072740890085697,
+        "accuracy": 1.0,
+        "loss": 0.008811964187771082
+      }
+    ],
+    "weighted": {
+      "ce": 0.08385666166869923,
+      "kl": 0.0013573839373420924,
+      "loss": 0.08521404560604133,
+      "accuracy": 0.9761375
+    },
+    "student_forward_images": 256,
+    "teacher_forward_images": 256,
+    "backward_images": 0,
+    "student_forward_calls": 16,
+    "teacher_forward_calls": 16
+  },
+  "confirmation_selected": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.183,
+        "ce": 0.11884713917970657,
+        "kl": 0.001296062720939517,
+        "accuracy": 0.96875,
+        "loss": 0.12014320190064609
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.1161239966750145,
+        "kl": 0.0012920331209897995,
+        "accuracy": 0.9375,
+        "loss": 0.1174160297960043
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.0652,
+        "ce": 0.014318877132609487,
+        "kl": 0.0013474980369210243,
+        "accuracy": 1.0,
+        "loss": 0.01566637516953051
+      },
+      {
+        "client": 3,
+        "images": 32,
+        "weight": 0.1476,
+        "ce": 0.06986799836158752,
+        "kl": 0.0016263318248093128,
+        "accuracy": 1.0,
+        "loss": 0.07149433018639684
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.1382,
+        "ce": 0.17271097004413605,
+        "kl": 0.0012860232964158058,
+        "accuracy": 0.96875,
+        "loss": 0.17399699334055185
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0526,
+        "ce": 0.06753783859312534,
+        "kl": 0.0021928190253674984,
+        "accuracy": 1.0,
+        "loss": 0.06973065761849284
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.1632,
+        "ce": 0.0337589755654335,
+        "kl": 0.0012269197031855583,
+        "accuracy": 1.0,
+        "loss": 0.03498589526861906
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.098,
+        "ce": 0.007708482211455703,
+        "kl": 0.0010941014625132084,
+        "accuracy": 1.0,
+        "loss": 0.008802583673968911
+      }
+    ],
+    "weighted": {
+      "ce": 0.0838210781654343,
+      "kl": 0.0013563129551243038,
+      "loss": 0.08517739112055861,
+      "accuracy": 0.9761375
+    },
+    "student_forward_images": 256,
+    "teacher_forward_images": 256,
+    "backward_images": 0,
+    "student_forward_calls": 16,
+    "teacher_forward_calls": 16
+  },
+  "confirmation_normalized_difference": {
+    "ce": -3.5747943806445075e-05,
+    "kl": -1.0759315027010156e-06,
+    "loss": -3.68238753091426e-05,
+    "accuracy": 0.0
+  },
+  "selection_confirmation_disjoint": true,
+  "baseline_restored": true,
+  "heads_unchanged": true,
+  "reproduction_max_abs_difference": {
+    "baseline": 0.0,
+    "positive": 0.0
+  },
+  "reflection": [
+    {
+      "norm_relative_error": 3.0047088056198624e-10,
+      "correction_length_relative_error": 2.3091433065983876e-11
+    },
+    {
+      "norm_relative_error": 6.432032924603381e-10,
+      "correction_length_relative_error": 1.7987387914373008e-11
+    },
+    {
+      "norm_relative_error": 2.624630338144307e-10,
+      "correction_length_relative_error": 8.42765246350699e-11
+    },
+    {
+      "norm_relative_error": 6.536985196675752e-11,
+      "correction_length_relative_error": 1.7718829747683954e-10
+    },
+    {
+      "norm_relative_error": 9.598275536575366e-11,
+      "correction_length_relative_error": 1.8799614128691456e-10
+    },
+    {
+      "norm_relative_error": 2.6571254553960126e-10,
+      "correction_length_relative_error": 4.3942269173456115e-10
+    },
+    {
+      "norm_relative_error": 3.6981444852011946e-10,
+      "correction_length_relative_error": 4.265175416778951e-11
+    },
+    {
+      "norm_relative_error": 2.775831078481349e-10,
+      "correction_length_relative_error": 4.026032179823747e-11
+    },
+    {
+      "norm_relative_error": 2.0221805165397105e-10,
+      "correction_length_relative_error": 7.133167874308514e-11
+    },
+    {
+      "norm_relative_error": 2.2054206248435505e-10,
+      "correction_length_relative_error": 7.84458774918431e-12
+    },
+    {
+      "norm_relative_error": 7.847000829290456e-11,
+      "correction_length_relative_error": 2.4213480984174667e-11
+    },
+    {
+      "norm_relative_error": 7.524029298716701e-11,
+      "correction_length_relative_error": 9.167526038271362e-11
+    },
+    {
+      "norm_relative_error": 5.099370992554039e-10,
+      "correction_length_relative_error": 7.600438838335389e-11
+    },
+    {
+      "norm_relative_error": 5.768487803666881e-10,
+      "correction_length_relative_error": 1.8695496363834374e-10
+    },
+    {
+      "norm_relative_error": 2.496274847740524e-10,
+      "correction_length_relative_error": 3.454365302790931e-11
+    },
+    {
+      "norm_relative_error": 7.136613292629203e-10,
+      "correction_length_relative_error": 5.1232014525183485e-11
+    },
+    {
+      "norm_relative_error": 3.594660453214596e-10,
+      "correction_length_relative_error": 6.203934541016451e-11
+    },
+    {
+      "norm_relative_error": 2.7835486127951173e-10,
+      "correction_length_relative_error": 2.900915953962642e-10
+    },
+    {
+      "norm_relative_error": 5.842210907655418e-11,
+      "correction_length_relative_error": 1.7592847838840524e-10
+    },
+    {
+      "norm_relative_error": 3.502488635236161e-10,
+      "correction_length_relative_error": 1.0165565014863658e-11
+    },
+    {
+      "norm_relative_error": 4.606701841114207e-10,
+      "correction_length_relative_error": 1.0545490132219953e-10
+    },
+    {
+      "norm_relative_error": 4.776000618132083e-10,
+      "correction_length_relative_error": 8.790494420109775e-11
+    },
+    {
+      "norm_relative_error": 1.1226469041388247e-10,
+      "correction_length_relative_error": 3.795912107892588e-11
+    },
+    {
+      "norm_relative_error": 8.594651502218965e-12,
+      "correction_length_relative_error": 1.9181835674665458e-10
+    }
+  ],
+  "student_forward_images": 1070,
+  "teacher_forward_images": 1070,
+  "student_backward_images": 279,
+  "positive_reproduction_forward_images": 558,
+  "confirmation_forward_images": 1024,
+  "direction_logical_communication_estimate": {
+    "three_B_points_broadcast": 70778880,
+    "shared_head_broadcast": 307200,
+    "two_direction_scalar_upload": 160
+  },
+  "peak_gpu_allocated_bytes": 2264984064,
+  "elapsed_from_common_start": 65.5975410938263
+}

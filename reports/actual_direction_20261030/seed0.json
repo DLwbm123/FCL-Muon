@@ -1,0 +1,539 @@
+{
+  "seed": 0,
+  "status": "COMPLETED",
+  "task": 4,
+  "round": 1,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "selected_direction": "negative",
+  "directional_derivatives": {
+    "positive": 2.618972234789111e-05,
+    "negative": -2.5349084976093203e-05
+  },
+  "confirmation_weight_coverage": 0.995,
+  "selection_baseline": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.0668,
+        "ce": 0.07304857857525349,
+        "kl": 0.002313531469553709,
+        "accuracy": 1.0,
+        "loss": 0.0753621100448072
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1538,
+        "ce": 0.04526464734226465,
+        "kl": 0.001295651774853468,
+        "accuracy": 0.96875,
+        "loss": 0.04656029911711812
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.1874,
+        "ce": 0.006618300685659051,
+        "kl": 0.0014725492801517248,
+        "accuracy": 1.0,
+        "loss": 0.008090849965810776
+      },
+      {
+        "client": 3,
+        "images": 25,
+        "weight": 0.005,
+        "ce": 0.01726619876921177,
+        "kl": 0.0013638413092121483,
+        "accuracy": 1.0,
+        "loss": 0.01863004007842392
+      },
+      {
+        "client": 4,
+        "images": 32,
+        "weight": 0.172,
+        "ce": 0.04583198530599475,
+        "kl": 0.001743955072015524,
+        "accuracy": 1.0,
+        "loss": 0.04757594037801027
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.0918,
+        "ce": 0.2759549617767334,
+        "kl": 0.0013978751376271248,
+        "accuracy": 0.9375,
+        "loss": 0.2773528369143605
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0734,
+        "ce": 0.06826070323586464,
+        "kl": 0.002091185888275504,
+        "accuracy": 0.96875,
+        "loss": 0.07035188912414014
+      },
+      {
+        "client": 7,
+        "images": 32,
+        "weight": 0.0642,
+        "ce": 0.09343299269676208,
+        "kl": 0.002230508951470256,
+        "accuracy": 0.96875,
+        "loss": 0.09566350164823234
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.015,
+        "ce": 0.08252415060997009,
+        "kl": 0.0021364911226555705,
+        "accuracy": 1.0,
+        "loss": 0.08466064173262566
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.1706,
+        "ce": 0.03615123685449362,
+        "kl": 0.0016750094946473837,
+        "accuracy": 1.0,
+        "loss": 0.037826246349141
+      }
+    ],
+    "weighted": {
+      "ce": 0.06479771233131178,
+      "kl": 0.001679371002316475,
+      "loss": 0.06647708333362826,
+      "accuracy": 0.98515625
+    },
+    "student_forward_images": 313,
+    "teacher_forward_images": 313,
+    "backward_images": 313,
+    "student_forward_calls": 20,
+    "teacher_forward_calls": 20
+  },
+  "selection_positive_reproduction": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.0668,
+        "ce": 0.07308773696422577,
+        "kl": 0.0023169880732893944,
+        "accuracy": 1.0,
+        "loss": 0.07540472503751516
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1538,
+        "ce": 0.04529111087322235,
+        "kl": 0.001291510183364153,
+        "accuracy": 0.96875,
+        "loss": 0.046582621056586504
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.1874,
+        "ce": 0.006620615255087614,
+        "kl": 0.0014740019105374813,
+        "accuracy": 1.0,
+        "loss": 0.008094617165625095
+      },
+      {
+        "client": 3,
+        "images": 25,
+        "weight": 0.005,
+        "ce": 0.017257318757474424,
+        "kl": 0.0013729792973026633,
+        "accuracy": 1.0,
+        "loss": 0.01863029805477709
+      },
+      {
+        "client": 4,
+        "images": 32,
+        "weight": 0.172,
+        "ce": 0.04583057528361678,
+        "kl": 0.0017677177675068378,
+        "accuracy": 1.0,
+        "loss": 0.04759829305112362
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.0918,
+        "ce": 0.2759904060512781,
+        "kl": 0.0014013443142175674,
+        "accuracy": 0.9375,
+        "loss": 0.2773917503654957
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0734,
+        "ce": 0.06829787231981754,
+        "kl": 0.0020760258194059134,
+        "accuracy": 0.96875,
+        "loss": 0.07037389813922346
+      },
+      {
+        "client": 7,
+        "images": 32,
+        "weight": 0.0642,
+        "ce": 0.09352545440196991,
+        "kl": 0.002233875682577491,
+        "accuracy": 0.96875,
+        "loss": 0.0957593300845474
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.015,
+        "ce": 0.08250753208994865,
+        "kl": 0.002139538526535034,
+        "accuracy": 1.0,
+        "loss": 0.08464707061648369
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.1706,
+        "ce": 0.036173051223158836,
+        "kl": 0.0016799349104985595,
+        "accuracy": 1.0,
+        "loss": 0.037852986133657396
+      }
+    ],
+    "weighted": {
+      "ce": 0.0648199353192933,
+      "kl": 0.001683677875669673,
+      "loss": 0.06650361319496297,
+      "accuracy": 0.98515625
+    },
+    "student_forward_images": 313,
+    "teacher_forward_images": 313,
+    "backward_images": 0,
+    "student_forward_calls": 20,
+    "teacher_forward_calls": 20
+  },
+  "confirmation_baseline": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.0668,
+        "ce": 0.05175156891345978,
+        "kl": 0.002530335448682308,
+        "accuracy": 1.0,
+        "loss": 0.054281904362142086
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1538,
+        "ce": 0.01866827765479684,
+        "kl": 0.0011521088890731335,
+        "accuracy": 1.0,
+        "loss": 0.019820386543869972
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.1874,
+        "ce": 0.02443171013146639,
+        "kl": 0.0014295666478574276,
+        "accuracy": 1.0,
+        "loss": 0.025861276779323816
+      },
+      {
+        "client": 4,
+        "images": 32,
+        "weight": 0.172,
+        "ce": 0.053530664183199406,
+        "kl": 0.0015992484986782074,
+        "accuracy": 0.96875,
+        "loss": 0.05512991268187761
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.0918,
+        "ce": 0.10448361188173294,
+        "kl": 0.0019016284495592117,
+        "accuracy": 1.0,
+        "loss": 0.10638524033129215
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0734,
+        "ce": 0.035039120353758335,
+        "kl": 0.0019333383534103632,
+        "accuracy": 1.0,
+        "loss": 0.0369724587071687
+      },
+      {
+        "client": 7,
+        "images": 32,
+        "weight": 0.0642,
+        "ce": 0.021355515345931053,
+        "kl": 0.0019707800820469856,
+        "accuracy": 1.0,
+        "loss": 0.02332629542797804
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.015,
+        "ce": 0.03817655425518751,
+        "kl": 0.002513063373044133,
+        "accuracy": 1.0,
+        "loss": 0.040689617628231645
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.1706,
+        "ce": 0.03455932252109051,
+        "kl": 0.0015528437215834856,
+        "accuracy": 1.0,
+        "loss": 0.03611216624267399
+      }
+    ],
+    "weighted": {
+      "ce": 0.04011692245071754,
+      "kl": 0.0016348039842676372,
+      "loss": 0.041751726434985176,
+      "accuracy": 0.989625
+    },
+    "student_forward_images": 288,
+    "teacher_forward_images": 288,
+    "backward_images": 0,
+    "student_forward_calls": 18,
+    "teacher_forward_calls": 18
+  },
+  "confirmation_selected": {
+    "clients": [
+      {
+        "client": 0,
+        "images": 32,
+        "weight": 0.0668,
+        "ce": 0.05175891052931547,
+        "kl": 0.0025208687875419855,
+        "accuracy": 1.0,
+        "loss": 0.05427977931685746
+      },
+      {
+        "client": 1,
+        "images": 32,
+        "weight": 0.1538,
+        "ce": 0.01864193845540285,
+        "kl": 0.001154768280684948,
+        "accuracy": 1.0,
+        "loss": 0.0197967067360878
+      },
+      {
+        "client": 2,
+        "images": 32,
+        "weight": 0.1874,
+        "ce": 0.024460317566990852,
+        "kl": 0.0014244248159229755,
+        "accuracy": 1.0,
+        "loss": 0.025884742382913828
+      },
+      {
+        "client": 4,
+        "images": 32,
+        "weight": 0.172,
+        "ce": 0.0534972520545125,
+        "kl": 0.0015772383194416761,
+        "accuracy": 0.96875,
+        "loss": 0.05507449037395418
+      },
+      {
+        "client": 5,
+        "images": 32,
+        "weight": 0.0918,
+        "ce": 0.10437591001391411,
+        "kl": 0.0018967236392199993,
+        "accuracy": 1.0,
+        "loss": 0.10627263365313411
+      },
+      {
+        "client": 6,
+        "images": 32,
+        "weight": 0.0734,
+        "ce": 0.03498111758381128,
+        "kl": 0.0019449787214398384,
+        "accuracy": 1.0,
+        "loss": 0.03692609630525112
+      },
+      {
+        "client": 7,
+        "images": 32,
+        "weight": 0.0642,
+        "ce": 0.021326618269085884,
+        "kl": 0.0019697758834809065,
+        "accuracy": 1.0,
+        "loss": 0.02329639415256679
+      },
+      {
+        "client": 8,
+        "images": 32,
+        "weight": 0.015,
+        "ce": 0.0381957795470953,
+        "kl": 0.002508939942345023,
+        "accuracy": 1.0,
+        "loss": 0.04070471948944032
+      },
+      {
+        "client": 9,
+        "images": 32,
+        "weight": 0.1706,
+        "ce": 0.0345461331307888,
+        "kl": 0.0015456511173397303,
+        "accuracy": 1.0,
+        "loss": 0.03609178424812853
+      }
+    ],
+    "weighted": {
+      "ce": 0.04009501469135284,
+      "kl": 0.0016288820577319712,
+      "loss": 0.04172389674908481,
+      "accuracy": 0.989625
+    },
+    "student_forward_images": 288,
+    "teacher_forward_images": 288,
+    "backward_images": 0,
+    "student_forward_calls": 18,
+    "teacher_forward_calls": 18
+  },
+  "confirmation_normalized_difference": {
+    "ce": -2.201784860773637e-05,
+    "kl": -5.951684960468335e-06,
+    "loss": -2.796953356820536e-05,
+    "accuracy": 0.0
+  },
+  "selection_confirmation_disjoint": true,
+  "baseline_restored": true,
+  "heads_unchanged": true,
+  "reproduction_max_abs_difference": {
+    "baseline": 0.0,
+    "positive": 0.0
+  },
+  "reflection": [
+    {
+      "norm_relative_error": 6.707340677601876e-10,
+      "correction_length_relative_error": 1.2491600409985415e-10
+    },
+    {
+      "norm_relative_error": 1.8372988264023024e-10,
+      "correction_length_relative_error": 1.0051059358053535e-10
+    },
+    {
+      "norm_relative_error": 2.7672937771871653e-10,
+      "correction_length_relative_error": 1.1923632227972716e-11
+    },
+    {
+      "norm_relative_error": 2.0490671848146802e-10,
+      "correction_length_relative_error": 1.3786061711271335e-10
+    },
+    {
+      "norm_relative_error": 2.770493453068602e-10,
+      "correction_length_relative_error": 2.0722493315373383e-11
+    },
+    {
+      "norm_relative_error": 4.940736314915699e-10,
+      "correction_length_relative_error": 2.640230832877356e-10
+    },
+    {
+      "norm_relative_error": 5.681610850473831e-10,
+      "correction_length_relative_error": 6.109412062408083e-11
+    },
+    {
+      "norm_relative_error": 4.804226968955888e-10,
+      "correction_length_relative_error": 5.136567825259221e-11
+    },
+    {
+      "norm_relative_error": 7.236783174845962e-10,
+      "correction_length_relative_error": 7.510735453724752e-11
+    },
+    {
+      "norm_relative_error": 1.3345577771329666e-11,
+      "correction_length_relative_error": 2.133333122830257e-10
+    },
+    {
+      "norm_relative_error": 5.371096224395896e-11,
+      "correction_length_relative_error": 1.159918969694637e-10
+    },
+    {
+      "norm_relative_error": 5.829277417555839e-10,
+      "correction_length_relative_error": 7.792951202929637e-11
+    },
+    {
+      "norm_relative_error": 5.045688095078951e-10,
+      "correction_length_relative_error": 3.5330725861436234e-10
+    },
+    {
+      "norm_relative_error": 3.5974422830440446e-10,
+      "correction_length_relative_error": 6.348559720861168e-11
+    },
+    {
+      "norm_relative_error": 1.9818420030925065e-10,
+      "correction_length_relative_error": 1.0158293699173958e-10
+    },
+    {
+      "norm_relative_error": 3.924633031822839e-10,
+      "correction_length_relative_error": 1.8774416785599403e-10
+    },
+    {
+      "norm_relative_error": 4.437607131728925e-12,
+      "correction_length_relative_error": 2.0033348144730188e-10
+    },
+    {
+      "norm_relative_error": 1.7500251719653185e-10,
+      "correction_length_relative_error": 1.6661255669769332e-11
+    },
+    {
+      "norm_relative_error": 1.5738532011862486e-10,
+      "correction_length_relative_error": 8.123401923979112e-12
+    },
+    {
+      "norm_relative_error": 6.626983371301271e-10,
+      "correction_length_relative_error": 1.4052439668694925e-10
+    },
+    {
+      "norm_relative_error": 2.3334886398680817e-10,
+      "correction_length_relative_error": 1.9317985808484558e-10
+    },
+    {
+      "norm_relative_error": 2.3195390806789958e-10,
+      "correction_length_relative_error": 2.0403365089206657e-10
+    },
+    {
+      "norm_relative_error": 5.1978426159824736e-11,
+      "correction_length_relative_error": 2.09714703490881e-10
+    },
+    {
+      "norm_relative_error": 2.1877268671646062e-10,
+      "correction_length_relative_error": 6.545619931508976e-11
+    }
+  ],
+  "student_forward_images": 1202,
+  "teacher_forward_images": 1202,
+  "student_backward_images": 313,
+  "positive_reproduction_forward_images": 626,
+  "confirmation_forward_images": 1152,
+  "direction_logical_communication_estimate": {
+    "three_B_points_broadcast": 70778880,
+    "shared_head_broadcast": 307200,
+    "two_direction_scalar_upload": 160
+  },
+  "peak_gpu_allocated_bytes": 2263715328,
+  "elapsed_from_common_start": 44.992586612701416
+}
