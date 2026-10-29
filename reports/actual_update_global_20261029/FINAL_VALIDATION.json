@@ -1,0 +1,64 @@
+{
+  "qualified_milestones": [
+    {
+      "arm": "control",
+      "task": 3,
+      "client_rounds": 150,
+      "visits": 375000,
+      "reload_images": 3000,
+      "max_reload_logit_difference": 0.0001506805419921875
+    },
+    {
+      "arm": "control",
+      "task": 5,
+      "client_rounds": 250,
+      "visits": 625000,
+      "reload_images": 5000,
+      "max_reload_logit_difference": 0.0001304149627685547
+    },
+    {
+      "arm": "global",
+      "task": 3,
+      "client_rounds": 150,
+      "visits": 375000,
+      "reload_images": 3000,
+      "max_reload_logit_difference": 0.0003046989440917969
+    },
+    {
+      "arm": "global",
+      "task": 5,
+      "client_rounds": 250,
+      "visits": 625000,
+      "reload_images": 5000,
+      "max_reload_logit_difference": 0.00017642974853515625
+    }
+  ],
+  "operator": {
+    "control": {
+      "records": 600,
+      "mean_relative_correction": 0.0,
+      "max_relative_correction": 0.0,
+      "max_norm_error": 0.0,
+      "correction_degrees_max": 8.706816964856289e-06,
+      "rank_values": [
+        32
+      ],
+      "skipped_records": 600,
+      "target_outside_support_max": 0.0
+    },
+    "global": {
+      "records": 600,
+      "mean_relative_correction": 0.011119350376972226,
+      "max_relative_correction": 0.030137449650493794,
+      "max_norm_error": 1.7600991209494886e-08,
+      "correction_degrees_max": 1.7268140402456107,
+      "rank_values": [
+        32
+      ],
+      "skipped_records": 0,
+      "target_outside_support_max": 0.0
+    }
+  },
+  "validated": true,
+  "interpretation": "All 600 global layer/QV records apply a small finite correction, without clipping, fallback or norm drift. This rules out an inactive or norm-unstable operator as the observed explanation; it does not establish the cause of the small mixed performance differences."
+}

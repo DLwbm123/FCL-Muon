@@ -1,0 +1,18 @@
+{
+  "status": "COMPLETED_QUALIFIED",
+  "all_recorded_processes_exited": true,
+  "elapsed_seconds": 8191.555299282074,
+  "allocated_bytes_at_exit": 2809974784,
+  "arms": {
+    "control": {
+      "qualified": true,
+      "tasks": 5,
+      "completed": 1793262623.667101
+    },
+    "global": {
+      "qualified": true,
+      "tasks": 5,
+      "completed": 1793262457.3644028
+    }
+  }
+}

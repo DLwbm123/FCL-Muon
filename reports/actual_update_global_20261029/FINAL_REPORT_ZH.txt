@@ -1,0 +1,48 @@
+实际更新全局谱修正：五任务配对实验结果
+结论：未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。
+Control eta=0；新方案eta=.1。RRS、当前任务CE+旧类KL、AdamW、Head-RegMean和数据访问相同，仅服务器增量谱形修正不同。
+单位：精度/AIA为%，遗忘为pp。raw主指标，centered仅诊断。
+任务 | 路线 | 视图 | overall | old | new | AIA | forgetting | W | S
+T1 | control | raw | 99.4000 | NA | 99.4000 | 99.4000 | NA | 6 | 0
+T1 | control | centered | 99.4000 | NA | 99.4000 | 99.4000 | NA | 6 | 0
+T1 | global | raw | 99.4000 | NA | 99.4000 | 99.4000 | NA | 6 | 0
+T1 | global | centered | 99.4000 | NA | 99.4000 | 99.4000 | NA | 6 | 0
+T2 | control | raw | 94.2000 | 98.0000 | 90.4000 | 96.8000 | 1.4000 | 23 | 93
+T2 | control | centered | 96.3000 | 98.2000 | 94.4000 | 97.8500 | 1.2000 | 23 | 51
+T2 | global | raw | 94.4000 | 98.0000 | 90.8000 | 96.9000 | 1.4000 | 20 | 92
+T2 | global | centered | 96.3500 | 98.3000 | 94.4000 | 97.8750 | 1.1000 | 20 | 53
+T3 | control | raw | 89.7333 | 93.5500 | 82.1000 | 94.4444 | 1.3500 | 50 | 258
+T3 | control | centered | 93.6000 | 95.6500 | 89.5000 | 96.4333 | 1.2500 | 50 | 142
+T3 | global | raw | 89.8667 | 93.6000 | 82.4000 | 94.5556 | 1.5000 | 48 | 256
+T3 | global | centered | 93.3000 | 95.6000 | 88.7000 | 96.3500 | 1.3000 | 48 | 153
+T4 | control | raw | 87.7500 | 86.9000 | 90.3000 | 92.7708 | 3.7333 | 63 | 427
+T4 | control | centered | 92.0250 | 91.5667 | 93.4000 | 95.3313 | 2.8667 | 63 | 256
+T4 | global | raw | 87.6250 | 87.0667 | 89.3000 | 92.8229 | 3.8000 | 66 | 429
+T4 | global | centered | 91.8750 | 91.3000 | 93.6000 | 95.2313 | 2.8667 | 66 | 259
+T5 | control | raw | 86.1400 | 86.4500 | 84.9000 | 91.4447 | 4.1000 | 87 | 606
+T5 | control | centered | 90.9600 | 90.7500 | 91.8000 | 94.4570 | 3.4250 | 87 | 365
+T5 | global | raw | 86.2400 | 86.3750 | 85.7000 | 91.5063 | 4.1000 | 86 | 602
+T5 | global | centered | 90.6200 | 90.5750 | 90.8000 | 94.3090 | 3.4500 | 86 | 383
+
+T5 raw新方案减Control：{"overall_percent": 0.10000000000000853, "old_percent": -0.07500000000000284, "new_percent": 0.8000000000000114, "AIA_percent": 0.061666666666653214, "forgetting_pp": 0.0, "S": -4}
+预先固定条件：{"T5_raw_gain": false, "raw_AIA": true, "raw_old": false, "raw_new": true, "cross_task_stolen": true, "both_reload_qualified": true}
+T5同图纠正/破坏：{"raw": {"images": 5000, "corrected": 44, "destroyed": 39, "net_corrected": 5, "accuracy_delta_pp": 0.1}, "centered": {"images": 5000, "corrected": 19, "destroyed": 36, "net_corrected": -17, "accuracy_delta_pp": -0.34}}
+遗忘主表最大值包含当前阶段，与评测代码一致；排除当前阶段的有符号版本另存JSON。
+两路线均250客户端轮/625000训练访问，T3/T5实际checkpoint重载raw和centered预测一致；没有按T3分数选择eta或省略T5。
+
+control机制：{"eta": 0.0, "rounds": 25, "layer_QV_records": 600, "identity_records": 600, "mean_relative_correction": 0.0, "maximum_deployed_norm_relative_error": 0.0, "mean_effective_energy_rank_before": 16.17230405187362, "mean_effective_energy_rank_after": 16.17230405187362, "singular_scale_min": 1.0, "singular_scale_max": 1.0, "minimum_cosine_with_fedavg": 0.9999999999999885, "operator_seconds": 8.978923328686506, "clipping": "not used", "Bures_fallback": "not used"}
+control成本：{"client_rounds": 250, "training_visits": 625000, "stats_visits": 150000, "anchor_forward_images": 500000, "extra_probe_forward_images": 0, "extra_probe_backward_images": 0, "logical_communication_bytes": {"RRS_raw_upload": 2831155200, "A_broadcast": 58982400, "B_download": 589824000, "current_head_download": 7680000, "head_Gram_upload": 1179648000, "B_upload": 589824000, "current_head_upload": 7680000, "task_end_B_download": 117964800, "task_end_head_download": 1536000}, "peak_gpu_allocated_bytes": 2357373952, "elapsed_seconds": 8186.5726273059845}
+
+global机制：{"eta": 0.1, "rounds": 25, "layer_QV_records": 600, "identity_records": 0, "mean_relative_correction": 0.011119350376972228, "maximum_deployed_norm_relative_error": 1.7600991209494886e-08, "mean_effective_energy_rank_before": 16.150859993417136, "mean_effective_energy_rank_after": 16.30651907303318, "singular_scale_min": 0.9591525976569775, "singular_scale_max": 1.1036084862120137, "minimum_cosine_with_fedavg": 0.9995458670561198, "operator_seconds": 8.544304406968877, "clipping": "not used", "Bures_fallback": "not used"}
+global成本：{"client_rounds": 250, "training_visits": 625000, "stats_visits": 150000, "anchor_forward_images": 500000, "extra_probe_forward_images": 0, "extra_probe_backward_images": 0, "logical_communication_bytes": {"RRS_raw_upload": 2831155200, "A_broadcast": 58982400, "B_download": 589824000, "current_head_download": 7680000, "head_Gram_upload": 1179648000, "B_upload": 589824000, "current_head_upload": 7680000, "task_end_B_download": 117964800, "task_end_head_download": 1536000}, "peak_gpu_allocated_bytes": 2357373952, "elapsed_seconds": 8020.273969173431}
+
+本报告不证明普遍优于LoRM、不作统计显著性或T10结论。不因Bures/有效秩等代理变化宣称性能收益。
+完整分阶段新旧类、方向混淆、矩阵与同图净变化见FINAL_REPORT.json；逐层谱细节见QUALIFICATION_T5.json。
+权重、teacher、逐图logits/ID及完整运行日志保留私有；公开聚合报告、配置、源码和验收摘要。
+
+补充分析与后续决策（2026-10-29）
+T5 raw总体Control86.14%、global86.24%，差+0.10pp，低于预注册+0.20pp门槛；raw旧类86.450→86.375%，下降0.075pp，也未通过旧类不降条件。新类84.9→85.7%（+0.8pp），AIA91.444667→91.506333%（+0.061667pp）。因此原实验判定不支持，不能因总体略涨就改写成功。
+5000图同图配对raw纠正44/破坏39/净+5；centered纠正19/破坏36/净-17（总体90.96→90.62%，-0.34pp）。Raw错误分解W87→86、S606→602；旧→新混淆2.05→2.20%，新→旧14.3→13.6%。新类的小幅获益伴随旧类损伤，尚不能建立稳定抗遗忘收益。
+机制核对覆盖600个层/QV/通信轮记录，global全部实际生效，没有clip、fallback或数值旁路。修正相对范数平均1.1119%、最大3.0137%，相对FedAvg最大夹角1.7268度；活动支持秩全部32，无目标能量落在被排除支持。实际FP32增量范数最大相对误差1.7601e-8。说明算子温和且按定义部署，不能把结果不佳归咎于“修正未执行”或范数失控；也不能据此认定增大eta一定有用。
+两路线各625000训练访问、500000 teacher前向、0额外probe前/反向、逻辑通信5384294400bytes；峰值已分配显存均2357373952bytes。共同实验总历时约2.28小时，退出root约2.81GB。不同GPU耗时有调度差异，不从global稍快声称算法加速。
+后续限定为固定原算法、eta=.1、同样五任务，新增seed1和seed2配对复验，判断这类微小混合差异是否依赖seed。先冻结全部重复计划再运行，两个seed都完整报告，seed0必须并入三seed总表；不选最好seed、不修改原失败判定、不调eta/训练配方，不进入动态Full或T10。此为失败后预注册的探索性稳健性检查，不称独立确认或统计显著性。
