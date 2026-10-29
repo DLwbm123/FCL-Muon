@@ -34,7 +34,7 @@ def probe_ids(indices, task, client, count, seed):
 class SpectraPilot(ConfirmationPilot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        if self.cfg['method'] not in ('controlled_adam','fed_spectra_mvp','fed_spectra_full'):
+        if self.cfg['method'] not in ('controlled_adam','fed_spectra_mvp','fed_spectra_full','actual_update_global'):
             raise ValueError('Unknown spectral method')
         self.teacher=None
         self.s.update(spectra_history={},spectra_rounds=[],spectra_geometry=[],spectra_probes=[],
@@ -46,7 +46,7 @@ class SpectraPilot(ConfirmationPilot):
     def settings(self):return self.cfg['fed_spectra']
 
     @property
-    def spectral(self):return self.cfg['method']!='controlled_adam'
+    def spectral(self):return self.cfg['method'] in ('fed_spectra_mvp','fed_spectra_full')
 
     def restore(self):
         super().restore();self.teacher=None

@@ -8,6 +8,7 @@ from torchvision.datasets import CIFAR100
 from fcl.data import loader,transforms
 from fcl.model import MuLoRAFL
 from research.fed_spectra.pilot import SpectraPilot
+from research.fed_spectra.actual_update import ActualUpdatePilot,global_shape_update
 from research.fed_spectra.lifecycle import qualify,write
 
 
@@ -27,6 +28,38 @@ def new_model(cfg,weights):
 
 
 def real_preflight(cfg,weights,raw,manifest,test_tf):
+    if cfg['method']=='actual_update_global':
+        model=new_model(cfg,weights);model.add_head(10);model.eval()
+        generator=torch.Generator().manual_seed(73129);receipts=[];original=[];changed=[]
+        for a in model.adapters.values():
+            d=a.A.shape[1];r=cfg['rank']
+            u=torch.linalg.qr(torch.randn(d,r,generator=generator)).Q
+            a.start(u.T.to(a.A))
+            for b in (a.Bq,a.Bv):
+                ds=[torch.randn(d,r,generator=generator,dtype=torch.float64)*.0001 for _ in range(2)]
+                baseline=(.4*ds[0]+.6*ds[1]).float()
+                identity,_=global_shape_update(ds,[.4,.6],baseline,eta=0.)
+                assert torch.equal(identity.float(),baseline)
+                value,record=global_shape_update(ds,[.4,.6],baseline,**cfg['actual_update']['operator'])
+                assert abs(float(value.float().norm())-float(baseline.norm()))/float(baseline.norm())<1e-5
+                original.append(baseline);changed.append(value.float());receipts.append(record)
+                with torch.no_grad():b.copy_(baseline)
+        ids=[i for group in manifest['partitions']['train'][0] for i in group][:4]
+        x,_=next(iter(loader(raw[0],ids,4)));x=test_tf(x.cuda())
+        with torch.no_grad():
+            before=model(x)
+            for b,v in zip(model.b_parameters(),original):b.copy_(v)
+            same=model(x)
+            assert torch.equal(before,same)
+            for b,v in zip(model.b_parameters(),changed):b.copy_(v)
+            after=model(x)
+        assert torch.isfinite(after).all()
+        result={'passed':True,'method':cfg['method'],'images':len(ids),'eta_zero_logits_exact':True,
+            'corrected_logits_max_difference':float((after-before).abs().max()),
+            'maximum_norm_relative_error':max(v['norm_relative_error'] for v in receipts),
+            'peak_gpu_allocated_bytes':torch.cuda.max_memory_allocated(),
+            'scope':'real ViT GPU forward with synthetic actual-increment inputs; full local learning tested in CPU lifecycle and formal run'}
+        del model;gc.collect();torch.cuda.empty_cache();return result
     from research.fed_spectra.math import gaussian_map,orthogonal_pool,rebase_adapter,fisher_coefficients
     model=new_model(cfg,weights);model.add_head(10);model.add_head(10);model.eval()
     for name,a in model.adapters.items():
@@ -60,7 +93,9 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
 
 def main():
     root=Path(os.environ['PROJECT_ROOT']);arm=os.environ.get('ARM','full');report=root/'reports'/arm
-    cfg=json.loads((root/f'configs/spectra_{arm}_seed0.json').read_text())
+    prefix=os.environ.get('CONFIG_PREFIX','spectra')
+    if prefix not in ('spectra','actual_update'):raise ValueError('Unknown configuration family')
+    cfg=json.loads((root/f'configs/{prefix}_{arm}_seed0.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
     if time.time()>=clock['deadline']:raise TimeoutError('Original deadline exhausted')
     initialize_rng()
@@ -75,7 +110,8 @@ def main():
     identity={'manifest':cfg['manifest'],'weight_identity':weights['sha256'],
               'source_revision':source['commit'],'method':cfg['method'],'purpose':'revised spectral study'}
     model=new_model(cfg,weights)
-    p=SpectraPilot(model,raw,manifest,loader,train_tf,test_tf,cfg,root/cfg['output'],identity,clock)
+    pilot_class=ActualUpdatePilot if cfg['method']=='actual_update_global' else SpectraPilot
+    p=pilot_class(model,raw,manifest,loader,train_tf,test_tf,cfg,root/cfg['output'],identity,clock)
     if (p.out/'latest.pt').exists():
         assert os.environ.get('RESUME_RUN')=='1','No implicit restart';p.restore()
     torch.cuda.reset_peak_memory_stats()
@@ -86,6 +122,7 @@ def main():
               'client_rounds':len(p.s['training_records']),'training_visits':sum(v['visited'] for v in p.s['training_records']),
               'stages':[{'task':v['task']+1,'raw':v['all_seen'],'centered':v['centered']['all_seen_accuracy']} for v in p.s['stages']],
               'geometry_rounds':len(p.s['spectra_geometry']),'transport_rounds':len(p.s['spectra_rounds']),
+              'actual_update_rounds':len(p.s.get('actual_update_rounds',[])),
               'worker_started':worker_started,'original_clock':clock,
               'qualified_milestones':[n for n in cfg['milestones'] if (p.out/f'QUALIFICATION_T{n}.json').exists()]})
     progress()

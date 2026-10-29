@@ -28,6 +28,9 @@ def qualify(p,n):
     if p.spectral:
         assert len(s['spectra_geometry'])==len(s['spectra_rounds'])==n*rounds
         assert len(s['spectra_commits'])==n and len(s['spectra_probes'])==n*(rounds+1)
+    if cfg['method']=='actual_update_global':
+        assert len(s['actual_update_rounds'])==n*rounds and not s['actual_update_endpoints']
+        assert not s['spectra_geometry'] and not s['spectra_probes']
     private=p.out/f'task{n}_private_logits.npz'
     with np.load(private) as f:before={k:f[k].copy() for k in f.files}
     stages=copy.deepcopy(s['stages'])
@@ -71,6 +74,13 @@ def qualify(p,n):
                      'Full cumulative task update may exceed active rank','per-client covariance transport does not guarantee aggregate Gram',
                      'original LoRM is a system comparison; controlled Adam is the matched comparison']}
     path=p.out/f'QUALIFICATION_T{n}.json'
+    if cfg['method']=='actual_update_global':
+        q['actual_update_rounds']=s['actual_update_rounds']
+        q['limitations']=['single development seed; no significance claim',
+            'current-input KL is not an old-task risk guarantee',
+            'shape correction does not guarantee classification improvement',
+            'active rank per task is fixed; task-boundary merges are shared with control',
+            'original LoRM is a system comparison; eta-zero arm is the matched comparison']
     if path.exists():raise ValueError('Do not overwrite a qualified milestone')
     write(path,q)
     checkpoint=p.out/f'task{n}.pt'

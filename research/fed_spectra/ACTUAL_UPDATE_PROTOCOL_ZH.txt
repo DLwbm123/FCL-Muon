@@ -1,0 +1,35 @@
+实际更新全局谱修正 v1：2026-10-29 预注册协议
+
+目的与授权
+用户明确要求“按照你的建议实现新方案并继续实验，先验证基于实际更新的全局谱修正有没有收益”。本轮只检验这个服务器算子，恢复本会话唯一30分钟监测用于此新实验。旧FedSPECTRA Control/MVP/Full保持用户停止状态，不续跑旧checkpoint。不调优原LoRM、A/B或对比方法。源码/配置/本协议在真实训练前冻结；保留所有负结果。
+
+唯一机制差异
+两路线都用ActualUpdatePilot，control eta=0，global eta=.1，不搜索eta。eta=0通过完整toy训练轨迹与旧controlled_adam逐权重、指标、数据访问、通信和RNG完全一致检查。backbone、rank、RRS、CE+task-start old-class KL、AdamW每客户端每轮重置、cosine/Head-RegMean、数据划分、精度均相同。
+固定A指每个任务内沿用既有RRS子空间；任务边界仍执行原RRS和原merge。没有每轮动态换基，也没有将历次任务累积权重强行截断为rank32。活动rank32和跨任务累积rank严格区分；两路线的参数化/merge完全相同。
+无旧FedSPECTRA probe、Fisher、Bures重心、可靠度q、客户端谱缩放、SSB、boundary repair或训练侧centered。只保留已有当前输入old KL，不宣称它保证旧任务风险。
+
+算子（每层Q/V分别执行）
+共同起点B0，客户端终点Bk，本轮增量Dk=Bk-B0。沿用原FP32样本加权FedAvg终点Bavg；D0=double(Bavg)-double(B0)是实际部署的基准增量。计算仍在服务器CPU FP64完成。
+每个非零Dk的Gk=Dk^T Dk / ||Dk||F^2；按原样本权重对非零贡献者重归一化，G=sum(pk Gk)。零增量没有谱形，不用任意epsilon赋予其方向。服务器已经接收B，不额外上传Gram，不增加客户端前后向。
+D0=U diag(sigma) V^T。目标方向能量gi=vi^T G vi，而非把G排序特征值直接配给sigma。sigma差<=1e-10*sigma_max的重复奇异值组共享组内平均gi，避免SVD任意选基造成结果差异。
+活动支持为sigma_i>1e-12*sigma_max。pi=sigma_i^2在支持内归一化；qi=(gi+1e-12)在支持内归一化。xi正比pi^(1-eta)*qi^eta。sigma_hat_i=||D0||F sqrt(xi)，非支持方向为0。Dhat=U diag(sigma_hat) V^T；不生成新的零空间方向。
+这个能量分布解在固定支持上最小化(1-eta)KL(x||p)+eta KL(x||q)，是谱形插值，不是训练分类损失的近端解；不保证分类收益，也不保证消除客户端冲突。固定奇异方向但不同模式缩放仍会改变向量化更新方向，记录夹角和修正范数。
+eta=0直接保留原Bavg，不经重构；D0为零、无非零客户端或||D0||<=1e-12*sqrt(sum pk||Dk||²)时保留原Bavg，不复活抵消更新。全局修正最终部署Bavg+(Dhat-D0)。FP64范数相对误差<=1e-10；FP32实际增量范数相对误差<=5e-4，否则停止并保存失败证据，不自动降eta或重启。
+没有clip或Bures fallback，记录身份旁路原因、各层sigma/p/q/x、奇异值缩放范围、谱能量有效秩、实际FP32范数、夹角、相对修正大小、计算耗时。重复奇异值块、被排除方向的目标能量也记录。
+
+固定训练与预算
+CIFAR100 alpha=.05 seed0，既有固定manifest；10客户端全参与；前5任务各10类；每任务5通信轮、每轮5本地epochs、batch16。ViT-B/16 augreg_in21k、Q/V rank32、cosine scale16、Head-RegMean alpha=.5。B AdamW lr=.0002、betas(.9,.999)、eps1e-8、wd0；头AdamW lr=.001/wd0；旧头冻结；旧类KL权重1、温度2，教师每任务起点冻结，仅当前训练输入。
+FP32、deterministic、math SDPA、TF32 off；初始化seed0、固定客户端次序，所有额外数学不消耗训练RNG。两路线fresh，同一预训练权重、训练增强和初始随机流；参数导致后续特征/RRS差异是机制后果，不把每任务A强行绑定为同一数值。
+每路线T3=150客户端轮/375000训练访问，T5=250/625000；T3和T5均重载实际checkpoint，在全部3000/5000张seen测试图上确认raw/centered预测一致。T3性能不用于选配置或决定是否完成T5，工程不合格时停止。测试集只报告，不用于选择eta、阈值、checkpoint或中途重启。
+两条路线共同8小时硬时钟：内部27900秒、外部28600秒加60秒kill grace，包含准备/验证/重试，不延长。独立root实际存储上限20GB、16GB停止阈值，预计峰值<12GB；共享只读数据/权重不新增副本。通过已有中性入口后台运行，进程命令行核对。首次起点见私有ORIGIN；启动前目标挂载/容量/写读探针、GPU空闲>=18000MiB。
+
+预先固定的结论条件
+主要阶段T5；T3为过程诊断，完整公布T1-T5。
+初步支持必须同时满足：global-control T5 raw总体>=+0.20pp；raw AIA>=0pp；raw旧类>=0pp；raw新类>=-1.00pp；raw跨任务夺取S不增加；两条工程资格均通过。centered不能单独支持收益。阈值不根据结果修改。
+不满足时如实区分无收益/新旧类权衡/工程失败，不包装成功；单seed开发性结果无统计显著性，不证明普遍优于LoRM。原LoRM/A/B仅引用已保存同阶段数据，不能因本轮主线结果不佳而重训或强化参照。
+T5出结果后先完成报告和公开交付，再依据本门槛决定主线后继；本次不自动进入动态子空间Full。任何新科学假设/配置另立协议，不能复用本轮时钟或结果冒充独立确认。
+
+报告与恢复
+复用既有逐客户端/聚合/任务边界checkpoint。CPU测试覆盖解析对角解、正交坐标等变性（含重特征值）、缩放和客户端排列不变性、零/抵消/秩亏、eta0完整轨迹、每转移恢复、旧头不变、实际重载资格。GPU预检是实际ViT四张当前训练图的合成增量/eta0/范数前向检查，不冒充完整训练。
+完成后自动生成FINAL_REPORT_ZH.txt、FINAL_REPORT.json：raw/centered各阶段overall/old/new/AIA/遗忘、W+S、old→new/new→old、同图纠正/破坏/净变化、谱修正幅度/有效秩、teacher前向、额外probe为0、逻辑通信、峰值显存、资格耗时。遗忘主表沿用实际评测代码定义（最大值包含当前阶段，因而非负）；另外保存排除当前阶段的有符号遗忘，避免与历史报表定义混淆。
+只公开源码/配置/本协议、聚合资格/数值检查和报告；权重/teacher/逐图logits/ID/完整日志/私有路径/PID留私有存储。通过指定代理push并核对远端提交及匿名访问。每30分钟唯一心跳统一状态、分析、故障与交付，健康无变化静默。

@@ -1,5 +1,5 @@
-"""One common clock/storage supervisor, a real GPU preflight, and three arms."""
-import json,os,signal,subprocess,sys,time
+"""One common clock/storage supervisor and real GPU preflight for matched arms."""
+import json,os,runpy,signal,subprocess,sys,time
 from pathlib import Path
 
 
@@ -8,8 +8,14 @@ def main():
     if receipt.exists():raise RuntimeError('Existing experiment: do not duplicate or reset its clock')
     assert json.loads((report/'CPU_TESTS.json').read_text())['passed']
     entry=os.environ['WORKER_ENTRY'];gpus=json.loads(os.environ['LANE_GPUS'])
-    cfg=json.loads((root/'configs/spectra_full_seed0.json').read_text())
-    assert set(gpus)=={'control','mvp','full'} and len(set(gpus.values()))==3
+    prefix=os.environ.get('CONFIG_PREFIX','spectra')
+    if prefix not in ('spectra','actual_update'):raise ValueError('Unknown configuration family')
+    arms=('control','global') if prefix=='actual_update' else ('control','mvp','full')
+    cfg=json.loads((root/f'configs/{prefix}_{arms[-1]}_seed0.json').read_text())
+    assert set(gpus)==set(arms) and len(set(gpus.values()))==len(arms)
+    for arm in arms:
+        other=json.loads((root/f'configs/{prefix}_{arm}_seed0.json').read_text())
+        assert all(other[k]==cfg[k] for k in ('tasks','maximum_seconds','storage_limit_bytes','write_stop_bytes'))
     for gpu in gpus.values():
         free=int(subprocess.check_output(['nvidia-smi','-i',str(gpu),'--query-gpu=memory.free','--format=csv,noheader,nounits'],text=True).strip())
         if free<cfg['required_free_mib']:raise RuntimeError('Insufficient GPU admission memory')
@@ -64,23 +70,24 @@ def main():
         return p
     save()
     try:
-        preflight=spawn('full',True)
+        preflight=spawn(arms[-1],True)
         while preflight.poll() is None:
             if not poll_budget():return
             time.sleep(10)
         if preflight.returncode!=0 or not json.loads((report/'REAL_PREFLIGHT.json').read_text())['passed']:
             raise RuntimeError('Real GPU preflight failed; formal training not launched')
         state['status']='running';save()
-        workers=[spawn(arm) for arm in ('control','mvp','full')]
+        workers=[spawn(arm) for arm in arms]
         while any(p.poll() is None for p in workers):
             if not poll_budget():return
             time.sleep(10)
         qualified=all(p.returncode==0 and (root/'runs'/arm/'COMPLETE.json').exists()
-                      for arm,p in zip(('control','mvp','full'),workers))
+                      for arm,p in zip(arms,workers))
         state.update(status='completed' if qualified else 'failed',qualified=qualified,
-                     exit_codes={arm:p.returncode for arm,p in zip(('control','mvp','full'),workers)})
+                     exit_codes={arm:p.returncode for arm,p in zip(arms,workers)})
         if qualified:
-            (report/'COMPLETE.json').write_text(json.dumps({'qualified':True,'arms':3,'tasks_per_arm':10,'completed':time.time()}))
+            if cfg.get('report_entry'):runpy.run_path(str(root/cfg['report_entry']),run_name='__main__')
+            (report/'COMPLETE.json').write_text(json.dumps({'qualified':True,'arms':len(arms),'tasks_per_arm':cfg['tasks'],'completed':time.time()}))
     except BaseException as exc:
         state.update(status='supervisor_failure',error=repr(exc));terminate();raise
     finally:

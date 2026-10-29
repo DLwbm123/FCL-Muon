@@ -5,7 +5,7 @@ from pathlib import Path
 root=Path(os.environ['PROJECT_ROOT']);report=root/'reports'
 assert not (report/'LAUNCH.json').exists() and not (report/'job.json').exists()
 origin=json.loads((report/'ORIGIN.json').read_text())
-remaining=int(origin['started']+86200-time.time())
+remaining=int(origin['started']+int(os.environ.get('EXTERNAL_MAX_SECONDS','86200'))-time.time())
 assert remaining>0
 env=dict(os.environ,ENTRY_FILE='scripts/spectra_job.py',CUBLAS_WORKSPACE_CONFIG=':4096:8',PYTHONHASHSEED='0',
          PYTHONUNBUFFERED='1',OMP_NUM_THREADS='4',MKL_NUM_THREADS='4',HF_HUB_OFFLINE='1',
