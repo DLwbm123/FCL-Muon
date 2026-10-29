@@ -1,0 +1,16 @@
+{
+  "commit": "52362b24a9e65400fc30929a17b765e6e4892145",
+  "protocol": "actual-update-training-gate-v1-20261029",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "tasks": 5,
+  "eta": 0.1,
+  "gate_minimum_improvement": 1e-06,
+  "new_training_visits": 1875000,
+  "control_reused": true,
+  "shared_budget_seconds": 28660,
+  "shared_storage_limit_bytes": 24000000000
+}
