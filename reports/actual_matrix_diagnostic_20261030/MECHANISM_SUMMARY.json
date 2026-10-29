@@ -1,0 +1,32 @@
+[
+  {
+    "seed": 0,
+    "spectral_energy_fraction": 0.007140699872058529,
+    "joint_tangent_cosine": 0.21241654451951117,
+    "negative_layer_cosines": 1,
+    "confirmation_predicted_delta": -0.0002566174073281156,
+    "confirmation_actual_delta": -0.0002449346524686652,
+    "full_gradient_upload_bytes": 23592960,
+    "backward_images": 601
+  },
+  {
+    "seed": 1,
+    "spectral_energy_fraction": 0.00548402970899969,
+    "joint_tangent_cosine": 0.28523931226388366,
+    "negative_layer_cosines": 2,
+    "confirmation_predicted_delta": -0.000598031854036432,
+    "confirmation_actual_delta": -0.0005760460248048303,
+    "full_gradient_upload_bytes": 23592960,
+    "backward_images": 570
+  },
+  {
+    "seed": 2,
+    "spectral_energy_fraction": 0.008613173967198693,
+    "joint_tangent_cosine": 0.34574699730652125,
+    "negative_layer_cosines": 3,
+    "confirmation_predicted_delta": -0.0007923147044748619,
+    "confirmation_actual_delta": -0.0007767118217224538,
+    "full_gradient_upload_bytes": 23592960,
+    "backward_images": 535
+  }
+]
