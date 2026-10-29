@@ -1,0 +1,1156 @@
+{
+  "status": "COMPLETED_QUALIFIED",
+  "seed": 1,
+  "hypothesis_supported_in_this_pilot": false,
+  "scientific_conditions": {
+    "T5_raw_gain": false,
+    "raw_AIA": false,
+    "raw_old": false,
+    "raw_new": false,
+    "cross_task_stolen": false,
+    "both_reload_qualified": true
+  },
+  "frozen_gate": {
+    "final_task": 5,
+    "raw_gain_min_pp": 0.2,
+    "raw_AIA_delta_min_pp": 0.0,
+    "raw_old_delta_min_pp": 0.0,
+    "raw_new_delta_min_pp": -1.0,
+    "cross_task_stolen_delta_max": 0,
+    "single_seed_only": true
+  },
+  "T5_raw_differences_pp_except_S_count": {
+    "overall_percent": -0.4199999999999875,
+    "old_percent": -0.20000000000000284,
+    "new_percent": -1.3000000000000114,
+    "AIA_percent": -0.24733333333333007,
+    "forgetting_pp": -0.10000000000000053,
+    "S": 23
+  },
+  "arms": {
+    "control": {
+      "raw": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 99.1,
+          "old_percent": null,
+          "new_percent": 99.1,
+          "AIA_percent": 99.1,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 9,
+          "S": 0,
+          "errors": 9,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            99.1
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 95.05,
+          "old_percent": 98.3,
+          "new_percent": 91.8,
+          "AIA_percent": 97.07499999999999,
+          "forgetting_pp": 0.8000000000000007,
+          "signed_forgetting_pp": 0.8000000000000007,
+          "W": 23,
+          "S": 76,
+          "errors": 99,
+          "task_group_confusion": [
+            [
+              992,
+              8
+            ],
+            [
+              78,
+              922
+            ]
+          ],
+          "old_to_new_percent": 0.8,
+          "new_to_old_percent": 7.8,
+          "per_task_percent": [
+            98.3,
+            91.8
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 91.10000000000001,
+          "old_percent": 93.95,
+          "new_percent": 85.39999999999999,
+          "AIA_percent": 95.08333333333333,
+          "forgetting_pp": 1.5000000000000013,
+          "signed_forgetting_pp": 1.5000000000000013,
+          "W": 45,
+          "S": 222,
+          "errors": 267,
+          "task_group_confusion": [
+            [
+              986,
+              8,
+              6
+            ],
+            [
+              76,
+              906,
+              18
+            ],
+            [
+              116,
+              23,
+              861
+            ]
+          ],
+          "old_to_new_percent": 1.2,
+          "new_to_old_percent": 13.9,
+          "per_task_percent": [
+            97.7,
+            90.2,
+            85.39999999999999
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 88.8,
+          "old_percent": 89.23333333333333,
+          "new_percent": 87.5,
+          "AIA_percent": 93.5125,
+          "forgetting_pp": 2.866666666666669,
+          "signed_forgetting_pp": 2.866666666666669,
+          "W": 67,
+          "S": 381,
+          "errors": 448,
+          "task_group_confusion": [
+            [
+              979,
+              6,
+              6,
+              9
+            ],
+            [
+              63,
+              860,
+              16,
+              61
+            ],
+            [
+              113,
+              23,
+              857,
+              7
+            ],
+            [
+              83,
+              22,
+              17,
+              878
+            ]
+          ],
+          "old_to_new_percent": 2.566666666666667,
+          "new_to_old_percent": 12.2,
+          "per_task_percent": [
+            97.0,
+            85.7,
+            85.0,
+            87.5
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 86.16,
+          "old_percent": 87.8,
+          "new_percent": 79.60000000000001,
+          "AIA_percent": 92.042,
+          "forgetting_pp": 3.150000000000003,
+          "signed_forgetting_pp": 3.150000000000003,
+          "W": 93,
+          "S": 599,
+          "errors": 692,
+          "task_group_confusion": [
+            [
+              976,
+              6,
+              6,
+              9,
+              3
+            ],
+            [
+              62,
+              844,
+              10,
+              63,
+              21
+            ],
+            [
+              106,
+              16,
+              840,
+              8,
+              30
+            ],
+            [
+              83,
+              20,
+              15,
+              871,
+              11
+            ],
+            [
+              142,
+              17,
+              16,
+              27,
+              798
+            ]
+          ],
+          "old_to_new_percent": 1.625,
+          "new_to_old_percent": 20.2,
+          "per_task_percent": [
+            96.7,
+            84.2,
+            83.3,
+            87.0,
+            79.60000000000001
+          ]
+        }
+      ],
+      "centered": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 99.1,
+          "old_percent": null,
+          "new_percent": 99.1,
+          "AIA_percent": 99.1,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 9,
+          "S": 0,
+          "errors": 9,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            99.1
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 95.85000000000001,
+          "old_percent": 97.7,
+          "new_percent": 94.0,
+          "AIA_percent": 97.475,
+          "forgetting_pp": 1.4000000000000012,
+          "signed_forgetting_pp": 1.4000000000000012,
+          "W": 23,
+          "S": 60,
+          "errors": 83,
+          "task_group_confusion": [
+            [
+              986,
+              14
+            ],
+            [
+              53,
+              947
+            ]
+          ],
+          "old_to_new_percent": 1.4,
+          "new_to_old_percent": 5.3,
+          "per_task_percent": [
+            97.7,
+            94.0
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 94.13333333333334,
+          "old_percent": 95.19999999999999,
+          "new_percent": 92.0,
+          "AIA_percent": 96.36111111111113,
+          "forgetting_pp": 1.3499999999999956,
+          "signed_forgetting_pp": 1.3499999999999956,
+          "W": 45,
+          "S": 131,
+          "errors": 176,
+          "task_group_confusion": [
+            [
+              984,
+              13,
+              3
+            ],
+            [
+              49,
+              935,
+              16
+            ],
+            [
+              51,
+              16,
+              933
+            ]
+          ],
+          "old_to_new_percent": 0.95,
+          "new_to_old_percent": 6.7,
+          "per_task_percent": [
+            97.6,
+            92.80000000000001,
+            92.0
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 91.8,
+          "old_percent": 93.2,
+          "new_percent": 87.6,
+          "AIA_percent": 95.22083333333333,
+          "forgetting_pp": 1.8333333333333313,
+          "signed_forgetting_pp": 1.8333333333333313,
+          "W": 67,
+          "S": 261,
+          "errors": 328,
+          "task_group_confusion": [
+            [
+              982,
+              15,
+              3,
+              0
+            ],
+            [
+              44,
+              911,
+              17,
+              28
+            ],
+            [
+              52,
+              14,
+              930,
+              4
+            ],
+            [
+              39,
+              67,
+              12,
+              882
+            ]
+          ],
+          "old_to_new_percent": 1.0666666666666667,
+          "new_to_old_percent": 11.8,
+          "per_task_percent": [
+            97.39999999999999,
+            90.60000000000001,
+            91.60000000000001,
+            87.6
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 90.44,
+          "old_percent": 90.8,
+          "new_percent": 89.0,
+          "AIA_percent": 94.26466666666667,
+          "forgetting_pp": 2.374999999999999,
+          "signed_forgetting_pp": 2.374999999999999,
+          "W": 93,
+          "S": 385,
+          "errors": 478,
+          "task_group_confusion": [
+            [
+              977,
+              17,
+              2,
+              0,
+              4
+            ],
+            [
+              42,
+              899,
+              14,
+              24,
+              21
+            ],
+            [
+              47,
+              11,
+              912,
+              2,
+              28
+            ],
+            [
+              38,
+              66,
+              9,
+              874,
+              13
+            ],
+            [
+              45,
+              16,
+              14,
+              28,
+              897
+            ]
+          ],
+          "old_to_new_percent": 1.65,
+          "new_to_old_percent": 10.3,
+          "per_task_percent": [
+            96.89999999999999,
+            89.4,
+            90.0,
+            86.9,
+            89.0
+          ]
+        }
+      ],
+      "mechanism": {
+        "eta": 0.0,
+        "rounds": 25,
+        "layer_QV_records": 600,
+        "identity_records": 600,
+        "mean_relative_correction": 0.0,
+        "maximum_deployed_norm_relative_error": 0.0,
+        "mean_effective_energy_rank_before": 15.907543467171951,
+        "mean_effective_energy_rank_after": 15.907543467171951,
+        "singular_scale_min": 1.0,
+        "singular_scale_max": 1.0,
+        "minimum_cosine_with_fedavg": 0.9999999999999889,
+        "operator_seconds": 8.898277130909264,
+        "clipping": "not used",
+        "Bures_fallback": "not used"
+      },
+      "cost": {
+        "client_rounds": 250,
+        "training_visits": 625000,
+        "stats_visits": 150000,
+        "anchor_forward_images": 500000,
+        "extra_probe_forward_images": 0,
+        "extra_probe_backward_images": 0,
+        "logical_communication_bytes": {
+          "RRS_raw_upload": 2831155200,
+          "A_broadcast": 58982400,
+          "B_download": 589824000,
+          "current_head_download": 7680000,
+          "head_Gram_upload": 1179648000,
+          "B_upload": 589824000,
+          "current_head_upload": 7680000,
+          "task_end_B_download": 117964800,
+          "task_end_head_download": 1536000
+        },
+        "peak_gpu_allocated_bytes": 2356347392,
+        "elapsed_seconds": 10252.655414581299
+      }
+    },
+    "global": {
+      "raw": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 99.1,
+          "old_percent": null,
+          "new_percent": 99.1,
+          "AIA_percent": 99.1,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 9,
+          "S": 0,
+          "errors": 9,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            99.1
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 94.55,
+          "old_percent": 98.1,
+          "new_percent": 91.0,
+          "AIA_percent": 96.82499999999999,
+          "forgetting_pp": 1.0000000000000009,
+          "signed_forgetting_pp": 1.0000000000000009,
+          "W": 23,
+          "S": 86,
+          "errors": 109,
+          "task_group_confusion": [
+            [
+              990,
+              10
+            ],
+            [
+              86,
+              914
+            ]
+          ],
+          "old_to_new_percent": 1.0,
+          "new_to_old_percent": 8.6,
+          "per_task_percent": [
+            98.1,
+            91.0
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 90.93333333333334,
+          "old_percent": 93.60000000000001,
+          "new_percent": 85.6,
+          "AIA_percent": 94.8611111111111,
+          "forgetting_pp": 1.4500000000000013,
+          "signed_forgetting_pp": 1.4500000000000013,
+          "W": 45,
+          "S": 227,
+          "errors": 272,
+          "task_group_confusion": [
+            [
+              984,
+              9,
+              7
+            ],
+            [
+              82,
+              901,
+              17
+            ],
+            [
+              114,
+              24,
+              862
+            ]
+          ],
+          "old_to_new_percent": 1.2,
+          "new_to_old_percent": 13.8,
+          "per_task_percent": [
+            97.5,
+            89.7,
+            85.6
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 88.64999999999999,
+          "old_percent": 89.26666666666667,
+          "new_percent": 86.8,
+          "AIA_percent": 93.30833333333334,
+          "forgetting_pp": 2.6666666666666687,
+          "signed_forgetting_pp": 2.633333333333336,
+          "W": 64,
+          "S": 390,
+          "errors": 454,
+          "task_group_confusion": [
+            [
+              981,
+              6,
+              7,
+              6
+            ],
+            [
+              67,
+              852,
+              15,
+              66
+            ],
+            [
+              110,
+              22,
+              862,
+              6
+            ],
+            [
+              89,
+              23,
+              19,
+              869
+            ]
+          ],
+          "old_to_new_percent": 2.6,
+          "new_to_old_percent": 13.1,
+          "per_task_percent": [
+            97.2,
+            84.89999999999999,
+            85.7,
+            86.8
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 85.74000000000001,
+          "old_percent": 87.6,
+          "new_percent": 78.3,
+          "AIA_percent": 91.79466666666667,
+          "forgetting_pp": 3.0500000000000025,
+          "signed_forgetting_pp": 3.0500000000000025,
+          "W": 91,
+          "S": 622,
+          "errors": 713,
+          "task_group_confusion": [
+            [
+              979,
+              6,
+              6,
+              6,
+              3
+            ],
+            [
+              65,
+              840,
+              10,
+              67,
+              18
+            ],
+            [
+              108,
+              17,
+              838,
+              8,
+              29
+            ],
+            [
+              87,
+              22,
+              16,
+              865,
+              10
+            ],
+            [
+              154,
+              14,
+              19,
+              28,
+              785
+            ]
+          ],
+          "old_to_new_percent": 1.5,
+          "new_to_old_percent": 21.5,
+          "per_task_percent": [
+            97.0,
+            83.7,
+            83.3,
+            86.4,
+            78.3
+          ]
+        }
+      ],
+      "centered": [
+        {
+          "task": 1,
+          "images": 1000,
+          "overall_percent": 99.1,
+          "old_percent": null,
+          "new_percent": 99.1,
+          "AIA_percent": 99.1,
+          "forgetting_pp": null,
+          "signed_forgetting_pp": null,
+          "W": 9,
+          "S": 0,
+          "errors": 9,
+          "task_group_confusion": [
+            [
+              1000
+            ]
+          ],
+          "old_to_new_percent": null,
+          "new_to_old_percent": null,
+          "per_task_percent": [
+            99.1
+          ]
+        },
+        {
+          "task": 2,
+          "images": 2000,
+          "overall_percent": 95.7,
+          "old_percent": 97.6,
+          "new_percent": 93.8,
+          "AIA_percent": 97.4,
+          "forgetting_pp": 1.5000000000000013,
+          "signed_forgetting_pp": 1.5000000000000013,
+          "W": 23,
+          "S": 63,
+          "errors": 86,
+          "task_group_confusion": [
+            [
+              985,
+              15
+            ],
+            [
+              54,
+              946
+            ]
+          ],
+          "old_to_new_percent": 1.5,
+          "new_to_old_percent": 5.4,
+          "per_task_percent": [
+            97.6,
+            93.8
+          ]
+        },
+        {
+          "task": 3,
+          "images": 3000,
+          "overall_percent": 94.0,
+          "old_percent": 95.0,
+          "new_percent": 92.0,
+          "AIA_percent": 96.26666666666667,
+          "forgetting_pp": 1.4499999999999957,
+          "signed_forgetting_pp": 1.4499999999999957,
+          "W": 45,
+          "S": 135,
+          "errors": 180,
+          "task_group_confusion": [
+            [
+              982,
+              14,
+              4
+            ],
+            [
+              50,
+              934,
+              16
+            ],
+            [
+              55,
+              14,
+              931
+            ]
+          ],
+          "old_to_new_percent": 1.0,
+          "new_to_old_percent": 6.9,
+          "per_task_percent": [
+            97.39999999999999,
+            92.60000000000001,
+            92.0
+          ]
+        },
+        {
+          "task": 4,
+          "images": 4000,
+          "overall_percent": 91.9,
+          "old_percent": 93.36666666666666,
+          "new_percent": 87.5,
+          "AIA_percent": 95.175,
+          "forgetting_pp": 1.5999999999999976,
+          "signed_forgetting_pp": 1.5999999999999976,
+          "W": 64,
+          "S": 260,
+          "errors": 324,
+          "task_group_confusion": [
+            [
+              982,
+              14,
+              4,
+              0
+            ],
+            [
+              45,
+              915,
+              16,
+              24
+            ],
+            [
+              52,
+              14,
+              929,
+              5
+            ],
+            [
+              41,
+              69,
+              10,
+              880
+            ]
+          ],
+          "old_to_new_percent": 0.9666666666666667,
+          "new_to_old_percent": 12.0,
+          "per_task_percent": [
+            97.39999999999999,
+            90.8,
+            91.9,
+            87.5
+          ]
+        },
+        {
+          "task": 5,
+          "images": 5000,
+          "overall_percent": 90.46,
+          "old_percent": 90.925,
+          "new_percent": 88.6,
+          "AIA_percent": 94.232,
+          "forgetting_pp": 2.174999999999999,
+          "signed_forgetting_pp": 2.174999999999999,
+          "W": 91,
+          "S": 386,
+          "errors": 477,
+          "task_group_confusion": [
+            [
+              980,
+              15,
+              2,
+              0,
+              3
+            ],
+            [
+              44,
+              902,
+              12,
+              22,
+              20
+            ],
+            [
+              48,
+              11,
+              910,
+              3,
+              28
+            ],
+            [
+              39,
+              68,
+              8,
+              871,
+              14
+            ],
+            [
+              48,
+              14,
+              16,
+              28,
+              894
+            ]
+          ],
+          "old_to_new_percent": 1.625,
+          "new_to_old_percent": 10.6,
+          "per_task_percent": [
+            97.2,
+            89.7,
+            90.10000000000001,
+            86.7,
+            88.6
+          ]
+        }
+      ],
+      "mechanism": {
+        "eta": 0.1,
+        "rounds": 25,
+        "layer_QV_records": 600,
+        "identity_records": 456,
+        "mean_relative_correction": 0.003002938242099504,
+        "maximum_deployed_norm_relative_error": 1.0250978725389872e-08,
+        "mean_effective_energy_rank_before": 15.98865311724145,
+        "mean_effective_energy_rank_after": 16.051897563728286,
+        "singular_scale_min": 0.9542112203400689,
+        "singular_scale_max": 1.118582663424226,
+        "minimum_cosine_with_fedavg": 0.9994368668799408,
+        "operator_seconds": 8.883916971972212,
+        "clipping": "not used",
+        "Bures_fallback": "not used"
+      },
+      "cost": {
+        "client_rounds": 250,
+        "training_visits": 625000,
+        "stats_visits": 150000,
+        "anchor_forward_images": 500000,
+        "extra_probe_forward_images": 27960,
+        "extra_probe_backward_images": 0,
+        "logical_communication_bytes": {
+          "RRS_raw_upload": 2831155200,
+          "A_broadcast": 58982400,
+          "B_download": 589824000,
+          "current_head_download": 7680000,
+          "head_Gram_upload": 1179648000,
+          "B_upload": 589824000,
+          "current_head_upload": 7680000,
+          "gate_B_candidates_broadcast": 1179648000,
+          "gate_shared_head_broadcast": 7680000,
+          "gate_scalar_upload": 8000,
+          "task_end_B_download": 117964800,
+          "task_end_head_download": 1536000
+        },
+        "peak_gpu_allocated_bytes": 2357602304,
+        "elapsed_seconds": 9090.266107320786
+      },
+      "training_gate": {
+        "accepted_rounds": 6,
+        "rounds": 25,
+        "decisions": [
+          {
+            "task": 1,
+            "round": 1,
+            "accepted": true,
+            "loss_difference": -0.00015966460276395367
+          },
+          {
+            "task": 1,
+            "round": 2,
+            "accepted": true,
+            "loss_difference": -5.3675400093176895e-06
+          },
+          {
+            "task": 1,
+            "round": 3,
+            "accepted": true,
+            "loss_difference": -3.375892634503719e-05
+          },
+          {
+            "task": 1,
+            "round": 4,
+            "accepted": true,
+            "loss_difference": -1.4946112642071074e-06
+          },
+          {
+            "task": 1,
+            "round": 5,
+            "accepted": false,
+            "loss_difference": -6.404867628588551e-07
+          },
+          {
+            "task": 2,
+            "round": 1,
+            "accepted": false,
+            "loss_difference": 8.719931016676341e-05
+          },
+          {
+            "task": 2,
+            "round": 2,
+            "accepted": false,
+            "loss_difference": 1.6877046041197108e-05
+          },
+          {
+            "task": 2,
+            "round": 3,
+            "accepted": false,
+            "loss_difference": 1.7052362766112328e-05
+          },
+          {
+            "task": 2,
+            "round": 4,
+            "accepted": false,
+            "loss_difference": 3.0355083756178347e-06
+          },
+          {
+            "task": 2,
+            "round": 5,
+            "accepted": false,
+            "loss_difference": 1.0397344827745014e-06
+          },
+          {
+            "task": 3,
+            "round": 1,
+            "accepted": false,
+            "loss_difference": 1.924328133465214e-05
+          },
+          {
+            "task": 3,
+            "round": 2,
+            "accepted": false,
+            "loss_difference": 9.842350892727558e-06
+          },
+          {
+            "task": 3,
+            "round": 3,
+            "accepted": false,
+            "loss_difference": 2.072794679552903e-05
+          },
+          {
+            "task": 3,
+            "round": 4,
+            "accepted": false,
+            "loss_difference": 9.38372125383613e-06
+          },
+          {
+            "task": 3,
+            "round": 5,
+            "accepted": false,
+            "loss_difference": 1.45165608264608e-06
+          },
+          {
+            "task": 4,
+            "round": 1,
+            "accepted": true,
+            "loss_difference": -1.0963562736290844e-05
+          },
+          {
+            "task": 4,
+            "round": 2,
+            "accepted": false,
+            "loss_difference": 1.614144309423915e-05
+          },
+          {
+            "task": 4,
+            "round": 3,
+            "accepted": false,
+            "loss_difference": 8.075047773309363e-06
+          },
+          {
+            "task": 4,
+            "round": 4,
+            "accepted": false,
+            "loss_difference": 1.4463270548714657e-06
+          },
+          {
+            "task": 4,
+            "round": 5,
+            "accepted": false,
+            "loss_difference": 8.941890206198844e-07
+          },
+          {
+            "task": 5,
+            "round": 1,
+            "accepted": false,
+            "loss_difference": 2.1986180776742414e-05
+          },
+          {
+            "task": 5,
+            "round": 2,
+            "accepted": false,
+            "loss_difference": 2.5871299789287372e-05
+          },
+          {
+            "task": 5,
+            "round": 3,
+            "accepted": false,
+            "loss_difference": 1.4567021792755153e-05
+          },
+          {
+            "task": 5,
+            "round": 4,
+            "accepted": false,
+            "loss_difference": 4.579578293500974e-06
+          },
+          {
+            "task": 5,
+            "round": 5,
+            "accepted": true,
+            "loss_difference": -2.8826208086779603e-06
+          }
+        ],
+        "student_forward_images": 15580,
+        "teacher_forward_images": 12380
+      }
+    }
+  },
+  "paired_vs_control": {
+    "1": {
+      "raw": {
+        "images": 1000,
+        "corrected": 0,
+        "destroyed": 0,
+        "net_corrected": 0,
+        "accuracy_delta_pp": 0.0
+      },
+      "centered": {
+        "images": 1000,
+        "corrected": 0,
+        "destroyed": 0,
+        "net_corrected": 0,
+        "accuracy_delta_pp": 0.0
+      }
+    },
+    "2": {
+      "raw": {
+        "images": 2000,
+        "corrected": 2,
+        "destroyed": 12,
+        "net_corrected": -10,
+        "accuracy_delta_pp": -0.5
+      },
+      "centered": {
+        "images": 2000,
+        "corrected": 2,
+        "destroyed": 5,
+        "net_corrected": -3,
+        "accuracy_delta_pp": -0.15
+      }
+    },
+    "3": {
+      "raw": {
+        "images": 3000,
+        "corrected": 11,
+        "destroyed": 16,
+        "net_corrected": -5,
+        "accuracy_delta_pp": -0.16666666666666666
+      },
+      "centered": {
+        "images": 3000,
+        "corrected": 11,
+        "destroyed": 15,
+        "net_corrected": -4,
+        "accuracy_delta_pp": -0.13333333333333333
+      }
+    },
+    "4": {
+      "raw": {
+        "images": 4000,
+        "corrected": 27,
+        "destroyed": 33,
+        "net_corrected": -6,
+        "accuracy_delta_pp": -0.15
+      },
+      "centered": {
+        "images": 4000,
+        "corrected": 22,
+        "destroyed": 18,
+        "net_corrected": 4,
+        "accuracy_delta_pp": 0.1
+      }
+    },
+    "5": {
+      "raw": {
+        "images": 5000,
+        "corrected": 29,
+        "destroyed": 50,
+        "net_corrected": -21,
+        "accuracy_delta_pp": -0.42
+      },
+      "centered": {
+        "images": 5000,
+        "corrected": 24,
+        "destroyed": 23,
+        "net_corrected": 1,
+        "accuracy_delta_pp": 0.02
+      }
+    }
+  },
+  "comparison_control_reused": true,
+  "validation": {
+    "same_scientific_config_except_gate_eta": true,
+    "matrix_and_W_plus_S": true,
+    "paired_counts_match_accuracy": true
+  },
+  "limitations": [
+    "single seed1 development pilot; no statistical significance",
+    "T5 endpoint; no T10 claim",
+    "current-input KL is not old-task risk guarantee",
+    "norm is preserved, but vectorized direction changes under nonuniform spectral scaling",
+    "no causal attribution from spectral proxy improvements alone",
+    "Control is the qualified existing same-seed run; gate uses extra current-training probes and logical communication, not held-out data."
+  ],
+  "source_revision": "52362b24a9e65400fc30929a17b765e6e4892145"
+}

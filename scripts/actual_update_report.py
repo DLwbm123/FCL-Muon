@@ -130,7 +130,7 @@ def main():
     write(report/'FINAL_REPORT.json',result)
     lines=['实际更新全局谱修正：五任务配对实验结果',
         '结论：'+('满足预先固定的单seed初步收益条件。' if result['hypothesis_supported_in_this_pilot'] else '未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。'),
-        'Control eta=0；新方案eta=.1。RRS、当前任务CE+旧类KL、AdamW、Head-RegMean和数据访问相同，仅服务器增量谱形修正不同。',
+        ('Control eta=0；新方案为eta=.1谱候选加训练目标接受门。原训练配方不变，新增probe前向和逻辑通信，复用历史对照。' if gated else 'Control eta=0；新方案eta=.1。RRS、当前任务CE+旧类KL、AdamW、Head-RegMean和数据访问相同，仅服务器增量谱形修正不同。'),
         '单位：精度/AIA为%，遗忘为pp。raw主指标，centered仅诊断。',
         '任务 | 路线 | 视图 | overall | old | new | AIA | forgetting | W | S']
     for t in range(5):

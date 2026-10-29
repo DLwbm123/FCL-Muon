@@ -1,0 +1,7 @@
+{
+  "status": "COMPLETED_QUALIFIED",
+  "elapsed_seconds": 9357.01378107071,
+  "allocated_bytes_at_exit": 2877771776,
+  "all_recorded_processes_exited": true,
+  "new_training_visits": 1875000
+}

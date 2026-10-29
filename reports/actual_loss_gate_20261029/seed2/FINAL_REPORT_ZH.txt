@@ -1,0 +1,43 @@
+实际更新全局谱修正：五任务配对实验结果
+结论：满足预先固定的单seed初步收益条件。
+Control eta=0；新方案为eta=.1谱候选加训练目标接受门。原训练配方不变，新增probe前向和逻辑通信，复用历史对照。
+单位：精度/AIA为%，遗忘为pp。raw主指标，centered仅诊断。
+任务 | 路线 | 视图 | overall | old | new | AIA | forgetting | W | S
+T1 | control | raw | 98.9000 | NA | 98.9000 | 98.9000 | NA | 11 | 0
+T1 | control | centered | 98.9000 | NA | 98.9000 | 98.9000 | NA | 11 | 0
+T1 | global | raw | 98.8000 | NA | 98.8000 | 98.8000 | NA | 12 | 0
+T1 | global | centered | 98.8000 | NA | 98.8000 | 98.8000 | NA | 12 | 0
+T2 | control | raw | 93.4500 | 97.3000 | 89.6000 | 96.1750 | 1.6000 | 27 | 104
+T2 | control | centered | 95.4500 | 98.3000 | 92.6000 | 97.1750 | 0.6000 | 27 | 64
+T2 | global | raw | 93.5500 | 96.9000 | 90.2000 | 96.1750 | 1.9000 | 27 | 102
+T2 | global | centered | 95.4500 | 98.4000 | 92.5000 | 97.1250 | 0.4000 | 27 | 64
+T3 | control | raw | 89.8333 | 90.8000 | 87.9000 | 94.0611 | 3.4500 | 51 | 254
+T3 | control | centered | 93.7000 | 94.2000 | 92.7000 | 96.0167 | 1.5500 | 51 | 138
+T3 | global | raw | 90.0333 | 90.9000 | 88.3000 | 94.1278 | 3.6000 | 53 | 246
+T3 | global | centered | 93.8000 | 94.3000 | 92.8000 | 96.0167 | 1.3500 | 53 | 133
+T4 | control | raw | 86.1750 | 87.8333 | 81.2000 | 92.0896 | 4.3000 | 67 | 486
+T4 | control | centered | 91.5500 | 92.4667 | 88.8000 | 94.9000 | 2.2667 | 67 | 271
+T4 | global | raw | 86.6750 | 88.2000 | 82.1000 | 92.2646 | 4.2333 | 70 | 463
+T4 | global | centered | 91.7250 | 92.5667 | 89.2000 | 94.9437 | 2.1333 | 70 | 261
+T5 | control | raw | 83.2800 | 85.5750 | 74.1000 | 90.3277 | 3.8250 | 96 | 740
+T5 | control | centered | 89.9200 | 90.5000 | 87.6000 | 93.9040 | 2.7500 | 96 | 408
+T5 | global | raw | 83.8600 | 85.8500 | 75.9000 | 90.5837 | 4.0000 | 100 | 707
+T5 | global | centered | 90.1400 | 90.6750 | 88.0000 | 93.9830 | 2.6500 | 100 | 393
+
+T5 raw新方案减Control：{"overall_percent": 0.5799999999999983, "old_percent": 0.2750000000000057, "new_percent": 1.8000000000000114, "AIA_percent": 0.2560000000000002, "forgetting_pp": 0.17500000000000027, "S": -33}
+预先固定条件：{"T5_raw_gain": true, "raw_AIA": true, "raw_old": true, "raw_new": true, "cross_task_stolen": true, "both_reload_qualified": true}
+T5同图纠正/破坏：{"raw": {"images": 5000, "corrected": 59, "destroyed": 30, "net_corrected": 29, "accuracy_delta_pp": 0.58}, "centered": {"images": 5000, "corrected": 31, "destroyed": 20, "net_corrected": 11, "accuracy_delta_pp": 0.22}}
+遗忘主表最大值包含当前阶段，与评测代码一致；排除当前阶段的有符号版本另存JSON。
+两路线均250客户端轮/625000训练访问，T3/T5实际checkpoint重载raw和centered预测一致；没有按T3分数选择eta或省略T5。
+
+control机制：{"eta": 0.0, "rounds": 25, "layer_QV_records": 600, "identity_records": 600, "mean_relative_correction": 0.0, "maximum_deployed_norm_relative_error": 0.0, "mean_effective_energy_rank_before": 16.08298661568009, "mean_effective_energy_rank_after": 16.08298661568009, "singular_scale_min": 1.0, "singular_scale_max": 1.0, "minimum_cosine_with_fedavg": 0.9999999999999879, "operator_seconds": 8.57298384862952, "clipping": "not used", "Bures_fallback": "not used"}
+control成本：{"client_rounds": 250, "training_visits": 625000, "stats_visits": 150000, "anchor_forward_images": 500000, "extra_probe_forward_images": 0, "extra_probe_backward_images": 0, "logical_communication_bytes": {"RRS_raw_upload": 2831155200, "A_broadcast": 58982400, "B_download": 589824000, "current_head_download": 7680000, "head_Gram_upload": 1179648000, "B_upload": 589824000, "current_head_upload": 7680000, "task_end_B_download": 117964800, "task_end_head_download": 1536000}, "peak_gpu_allocated_bytes": 2356820992, "elapsed_seconds": 10257.19697880745}
+
+global机制：{"eta": 0.1, "rounds": 25, "layer_QV_records": 600, "identity_records": 408, "mean_relative_correction": 0.003941979997554906, "maximum_deployed_norm_relative_error": 1.6636852014977555e-08, "mean_effective_energy_rank_before": 16.059112835919358, "mean_effective_energy_rank_after": 16.13823699639609, "singular_scale_min": 0.9558754395839876, "singular_scale_max": 1.106160190351794, "minimum_cosine_with_fedavg": 0.9994304371229801, "operator_seconds": 8.409397839568555, "clipping": "not used", "Bures_fallback": "not used"}
+global成本：{"client_rounds": 250, "training_visits": 625000, "stats_visits": 150000, "anchor_forward_images": 500000, "extra_probe_forward_images": 27420, "extra_probe_backward_images": 0, "logical_communication_bytes": {"RRS_raw_upload": 2831155200, "A_broadcast": 58982400, "B_download": 589824000, "current_head_download": 7680000, "head_Gram_upload": 1179648000, "B_upload": 589824000, "current_head_upload": 7680000, "gate_B_candidates_broadcast": 1179648000, "gate_shared_head_broadcast": 7680000, "gate_scalar_upload": 8000, "task_end_B_download": 117964800, "task_end_head_download": 1536000}, "peak_gpu_allocated_bytes": 2356820992, "elapsed_seconds": 9221.118758678436}
+
+本报告不证明普遍优于LoRM、不作统计显著性或T10结论。不因Bures/有效秩等代理变化宣称性能收益。
+完整分阶段新旧类、方向混淆、矩阵与同图净变化见FINAL_REPORT.json；逐层谱细节见QUALIFICATION_T5.json。
+权重、teacher、逐图logits/ID及完整运行日志保留私有；公开聚合报告、配置、源码和验收摘要。
+训练目标门：仅同probe CE+KL改善>1e-6时接受eta=.1候选，否则精确原FedAvg。对照复用已合格同seed五任务运行；新方案有额外probe/逻辑通信开销，不是零成本比较。
+{"accepted_rounds": 8, "rounds": 25, "decisions": [{"task": 1, "round": 1, "accepted": true, "loss_difference": -0.00034779831916094406}, {"task": 1, "round": 2, "accepted": true, "loss_difference": -0.00016925046697724433}, {"task": 1, "round": 3, "accepted": false, "loss_difference": 7.203348430338818e-05}, {"task": 1, "round": 4, "accepted": false, "loss_difference": 1.2060626805754371e-05}, {"task": 1, "round": 5, "accepted": true, "loss_difference": -8.727761905170939e-06}, {"task": 2, "round": 1, "accepted": true, "loss_difference": -8.213745243847159e-05}, {"task": 2, "round": 2, "accepted": false, "loss_difference": 1.3782070111489908e-05}, {"task": 2, "round": 3, "accepted": false, "loss_difference": 1.4363762550054227e-05}, {"task": 2, "round": 4, "accepted": true, "loss_difference": -1.9772126339384632e-06}, {"task": 2, "round": 5, "accepted": false, "loss_difference": 5.685595702381585e-06}, {"task": 3, "round": 1, "accepted": true, "loss_difference": -6.63125843974044e-05}, {"task": 3, "round": 2, "accepted": false, "loss_difference": 5.066749500126644e-06}, {"task": 3, "round": 3, "accepted": true, "loss_difference": -2.2003187332420016e-06}, {"task": 3, "round": 4, "accepted": true, "loss_difference": -3.8779543247158266e-06}, {"task": 3, "round": 5, "accepted": false, "loss_difference": -9.28840204139636e-07}, {"task": 4, "round": 1, "accepted": false, "loss_difference": 3.4077627421358336e-05}, {"task": 4, "round": 2, "accepted": false, "loss_difference": 1.400652418378362e-05}, {"task": 4, "round": 3, "accepted": false, "loss_difference": 1.3344486150895785e-05}, {"task": 4, "round": 4, "accepted": false, "loss_difference": 2.865073108114513e-06}, {"task": 4, "round": 5, "accepted": false, "loss_difference": 1.1203219532004982e-06}, {"task": 5, "round": 1, "accepted": false, "loss_difference": 4.1272214287887965e-05}, {"task": 5, "round": 2, "accepted": false, "loss_difference": 1.8080188985913903e-05}, {"task": 5, "round": 3, "accepted": false, "loss_difference": 1.4157114760021683e-05}, {"task": 5, "round": 4, "accepted": false, "loss_difference": 7.622955914110552e-06}, {"task": 5, "round": 5, "accepted": false, "loss_difference": -7.5518225785276e-07}], "student_forward_images": 15270, "teacher_forward_images": 12150}
