@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "return_code": 0,
+  "all_recorded_processes_exited": true,
+  "elapsed_seconds": 75.23803949356079,
+  "allocated_bytes_at_collection": 3637248,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "four_point_reproduction": [
+    {
+      "seed": 0,
+      "four_point_reproduction_max_abs_difference": 0.0
+    },
+    {
+      "seed": 1,
+      "four_point_reproduction_max_abs_difference": 0.0
+    },
+    {
+      "seed": 2,
+      "four_point_reproduction_max_abs_difference": 0.0
+    }
+  ],
+  "rng_isolation": "CPU checks passed; measurement functions restore RNG in finally; exact four-point reproduction verified. No separate live RNG-state equality record.",
+  "CPU_checks_passed": true
+}

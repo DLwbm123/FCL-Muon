@@ -1,0 +1,44 @@
+{
+  "per_seed": [
+    {
+      "seed": 0,
+      "objective_student_forward_images": 1202,
+      "competition_extra_student_forward_images": 1202,
+      "total_student_forward_images": 2404,
+      "teacher_forward_images": 1202,
+      "objective_student_backward_images": 601,
+      "competition_extra_student_backward_images": 601,
+      "total_student_backward_images": 1202
+    },
+    {
+      "seed": 1,
+      "objective_student_forward_images": 1140,
+      "competition_extra_student_forward_images": 1140,
+      "total_student_forward_images": 2280,
+      "teacher_forward_images": 1140,
+      "objective_student_backward_images": 570,
+      "competition_extra_student_backward_images": 570,
+      "total_student_backward_images": 1140
+    },
+    {
+      "seed": 2,
+      "objective_student_forward_images": 1070,
+      "competition_extra_student_forward_images": 1070,
+      "total_student_forward_images": 2140,
+      "teacher_forward_images": 1070,
+      "objective_student_backward_images": 535,
+      "competition_extra_student_backward_images": 535,
+      "total_student_backward_images": 1070
+    }
+  ],
+  "totals": {
+    "objective_student_forward_images": 3412,
+    "competition_extra_student_forward_images": 3412,
+    "total_student_forward_images": 6824,
+    "teacher_forward_images": 3412,
+    "objective_student_backward_images": 1706,
+    "competition_extra_student_backward_images": 1706,
+    "total_student_backward_images": 3412
+  },
+  "communication": "Single-process diagnostic. No distributed network implemented. Hypothetical FP32 full-gradient upload per probe per seed: 23592960 bytes; not measured traffic."
+}

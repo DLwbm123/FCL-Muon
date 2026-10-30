@@ -1,0 +1,22 @@
+训练目标与跨任务竞争失配：三seed共同T4首轮诊断
+
+结论：冻结失配支持条件未通过。三个seed原CE+KL与跨任务竞争C均下降，不能用“当前候选降原目标却增竞争”解释这些端点。0新训练、0test、0checkpoint；完整T5五轮失败均保持。
+
+seed | 确认原目标差 | 确认C差 | 确认CE_all差 | 确认梯度cosine | 确认全已见类accuracy差
+0 | -0.0002449347 | -0.0012764466 | -0.0014530616 | 0.439705 | +0.000000
+1 | -0.0005760460 | -0.0017028260 | -0.0021466011 | 0.176526 | +0.000000
+2 | -0.0007767118 | -0.0017659405 | -0.0024539717 | 0.320500 | +0.000000
+
+平均确认C差-0.0015817377；平均CE_all差-0.0020178781。confirmation均按coverage归一。
+逐client二次分析全部纳入：seed0确认7/9客户端C下降、2/9上升，上升客户端权重26.2111%；seed1为9/9下降，seed2为8/8下降。不能称每客户端一致受益。所有client全已见类净accuracy变化均0；这尚不能排除逐图改善/恶化相互抵消。seed1 selection当前块accuracy增加0.3475pp，但正确当前类被旧类抢走比例也增加0.3475pp，全已见类净accuracy未增。
+
+完整计算费用（图次，非本地训练访问）：
+{'seed': 0, 'objective_student_forward_images': 1202, 'competition_extra_student_forward_images': 1202, 'total_student_forward_images': 2404, 'teacher_forward_images': 1202, 'objective_student_backward_images': 601, 'competition_extra_student_backward_images': 601, 'total_student_backward_images': 1202}
+{'seed': 1, 'objective_student_forward_images': 1140, 'competition_extra_student_forward_images': 1140, 'total_student_forward_images': 2280, 'teacher_forward_images': 1140, 'objective_student_backward_images': 570, 'competition_extra_student_backward_images': 570, 'total_student_backward_images': 1140}
+{'seed': 2, 'objective_student_forward_images': 1070, 'competition_extra_student_forward_images': 1070, 'total_student_forward_images': 2140, 'teacher_forward_images': 1070, 'objective_student_backward_images': 535, 'competition_extra_student_backward_images': 535, 'total_student_backward_images': 1070}
+三seed总student前向6824、student反向3412、teacher前向3412图次。竞争额外前向3412和反向1706已计入总数。逐client分析不产生新模型计算。假设每probe完整FP32梯度上传23592960bytes，仅作成本口径；诊断单进程未实现分布式网络，不称通信实测或免费。
+
+工程：四点原目标复现最大差均0；head不变、baseline恢复、probe不交叉，coverage99.50/99.74/99.54%。CPU隔离检查通过，函数finally恢复RNG；未另存实时RNG逐状态相等证书。worker0且全部记录进程退出，含准备共75.238039秒，实际分配3637248bytes，未超过原预算。
+限制：两probe均为已参与训练的当前图，并非独立holdout；没有旧图准确率，不能解释完整T5差异。loss下降不等于accuracy收益。
+
+下一有限问题：逐client净accuracy为0究竟是决策没有变化还是正负改变抵消，以及CE_all收益来自哪些baseline决策组。先冻结独立决策转移汇总协议；只复现同一候选，不扩大角度，不产生新候选，不自动开始完整T5。梯度向量、逐图ID/logits、模型、完整日志及私有来源留服务器。
