@@ -1,0 +1,10 @@
+全已见类选择目标：独立单候选诊断（2026-10-30，运行前冻结）
+
+依据与边界：原候选的竞争C与CE_all均下降，但1706张训练probe全已见类argmax零变化。不是正负翻转抵消，不支持“原目标改善引起竞争恶化”。错误组也有loss下降，不能称只改善易样本。旧KL只在旧块内softmax，不能单独约束新旧块的整体logit竞争；C梯度与原目标梯度不共线。下一问题是更直接的全已见类归一化目标能否在原几何预算下产生更有用的候选，而非放大角度。
+唯一新增候选：在原共同T4首轮三个seed相同baseline上，使用J_all=CE_all+原anchor_weight*KL_old=J_original+C。C系数固定1，无搜索，无新的温度、margin、mask或超参。g_all=g_original+g_C；二者各自沿旧FP32加权累积，再转FP64相加，仅数学目标相同，不宣称与单次FP32反向或正式clientFP32/serverFP64的bit轨迹一致。只使用原selection。对每个B矩阵沿原完整范数球切向负g_all旋转，角度完全沿用原eta.1 positive参考；不扩角、不保谱、无候选重试。
+对照原矩阵候选固定不变，按旧竞争诊断完整复现。新候选只测量，不部署训练、不更新head或优化器。原两probe不交叉，最多32图/client，全部三个seed，coverage>=95%，confirmation仅评价，均是已经参与local训练的当前图，非独立holdout，无旧图。
+测量新候选selection/confirmation的原CE+KL、CE_all、C、全已见类accuracy、旧类胜出率，并用固定baseline组的成对前向记录精确flip及loss贡献。分别比较新候选相对baseline/原候选的J_all和分类变化。无新训练、0test、0checkpoint；逐图ID/logits/梯度/预测不落盘。
+冻结局部支持条件全部同时满足：工程和coverage通过；三个seed确认J_all相对baseline均降>1e-6、相对原矩阵候选也均降>1e-6；三个seed确认原CE+KL相对baseline均不增加超过1e-6；三个seed确认全已见类accuracy均不下降（数值容差1e-10），均值严格增加>1e-10。精确flip计数独立报告，不能以loss下降替代纠错。否则不支持此单候选在这些端点的局部决策收益，不改门槛/系数/角度、不补seed。即使全部通过，也不能自动启动完整T5：仍须评估证据边界、成本、旧类风险并另立完整方案。
+工程：原候选四点及原竞争指标与公开competition结果最大差<=1e-6；原参考角一致、实际FP32范数误差<=5e-4；head不变/baseline恢复/无交叉probe。成对统计重构容差2e-6、转移/正确差计数一致，CPU检查全目标梯度恒等式、loss好但accuracy不变不能通过、负seed不能平均掩盖，以及旧矩阵算子/成对隔离。
+成本：完整重复旧竞争诊断；新候选额外selection+confirmation各一次原目标(student+teacher)和一次竞争student前向；再加两组baseline/new成对student前向，无新增反向。总费用按实际字段相加；预计三seed总student前向13648、反向3412、teacher前向5118图次，不当新本地训练访问。没有实测网络，完整梯度上传仅假设口径。
+资源：独立root与clock，协议准备/CPU/修复计入起点；内部2400s，外部至started+2700s加30s grace，总<46min不重置。新增2GB硬限/1GB写停止、预计<100MB；旧data/deps/weights/checkpoint只读，GPU>=18GB、挂载/剩余/小读写probe，中性入口/每batch预算/10秒存储检查。先CPU必要检查后GPU运行。完成公开三seed完整结果/费用/限制/源码，不公开模型、私有端点、逐图数据、完整日志。唯一30分钟心跳更新，原五轮T5失败和原竞争阴性均保持。

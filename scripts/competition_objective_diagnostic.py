@@ -28,7 +28,7 @@ class ReadOnlyPilot(DiagnosticPilot):
             if used>=1_000_000_000:raise RuntimeError('Diagnostic write stop')
 
 
-def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock,decision_audit=False):
+def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock,decision_audit=False,all_seen_candidate=False):
     initialize_rng(seed)
     x=torch.load(old/f'runs/seed{seed}/latest.pt',map_location='cpu',weights_only=False)
     pair=torch.load(old/f'runs/seed{seed}/pair_private.pt',map_location='cpu',weights_only=False)
@@ -65,6 +65,12 @@ def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock,decision
     fit_comp,fit_h=measure_competition(p,selection,True)
     generated=[tangent_candidate(o,b,v,g) for o,b,v,g in zip(pair['origin_B'],baseline,positive,grad)]
     selected=[v[0] for v in generated];operators=[v[1] for v in generated]
+    all_seen_values=all_seen_operators=None
+    if all_seen_candidate:
+        from research.fed_spectra.all_seen_diagnostic import combined_gradient
+        all_generated=[tangent_candidate(o,b,v,g) for o,b,v,g in zip(pair['origin_B'],baseline,positive,combined_gradient(grad,fit_h))]
+        all_seen_values=[v[0] for v in all_generated];all_seen_operators=[v[1] for v in all_generated]
+        assert all(abs(a['reference_angle']-b['reference_angle'])<=1e-12 for a,b in zip(operators,all_seen_operators))
     fit_alignment=gradient_alignment(grad,fit_h,baseline,selected);del fit_h
     deploy(selected);fit_candidate,_=measure(p,selection)
     fit_comp_candidate,_=measure_competition(p,selection)
@@ -133,6 +139,13 @@ def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock,decision
       'hypothetical_full_gradient_FP32_upload_bytes_per_probe':nonempty*bbytes,
       'communication_scope':'training-only single-process diagnostic; distributed execution not implemented',
       'peak_gpu_allocated_bytes':torch.cuda.max_memory_allocated(),'elapsed_from_common_start':time.time()-clock['started']}
+    if all_seen_candidate:
+        from research.fed_spectra.all_seen_diagnostic import evaluate_candidate
+        references={'selection':(fit_base,fit_comp,fit_candidate,fit_comp_candidate),'confirmation':(check_base,check_comp,check_selected,check_comp_candidate)}
+        row['all_seen_candidate']=evaluate_candidate(p,selection,confirm,baseline,all_seen_values,references)
+        row['all_seen_candidate']['operators']=all_seen_operators
+        assert all(torch.equal(a.detach().cpu(),b) for a,b in zip(model.b_parameters(),baseline))
+        assert all(torch.equal(a,b) for a,b in zip(heads,model.rows))
     if decision_rows is not None:
         row['decision_audit']=decision_rows
         row['decision_extra_student_forward_images']=sum(v['student_forward_images'] for v in decision_rows.values())
@@ -152,7 +165,7 @@ def main():
     for seed,source in enumerate(private['controls']):
         torch.cuda.reset_peak_memory_stats()
         write(root/'reports/PROGRESS.json',{'seed':seed,'phase':'loading','time':time.time()})
-        rows.append(run(root,seed,Path(source),Path(private['diagnostic']),Path(private['direction']),Path(private['tangent']),Path(private['matrix']),clock,decision_audit=os.environ.get('DECISION_AUDIT')=='1'))
+        rows.append(run(root,seed,Path(source),Path(private['diagnostic']),Path(private['direction']),Path(private['tangent']),Path(private['matrix']),clock,decision_audit=os.environ.get('DECISION_AUDIT')=='1',all_seen_candidate=os.environ.get('ALL_SEEN_CANDIDATE')=='1'))
     values=[r['confirmation_normalized_difference']['loss'] for r in rows]
     comp=[r['competition_confirmation_difference']['competition_ce'] for r in rows]
     all_ce=[r['competition_confirmation_difference']['all_seen_ce'] for r in rows]
@@ -160,6 +173,10 @@ def main():
         'original_objective_improves_all':all(v< -1e-6 for v in values),
         'competition_worsens_at_least_two':sum(v>1e-6 for v in comp)>=2,
         'mean_competition_worsens':sum(comp)/3>1e-6,'engineering_checks':True}
+    if os.environ.get('ALL_SEEN_CANDIDATE')=='1':
+        from research.fed_spectra.all_seen_diagnostic import local_conditions
+        new_conditions=local_conditions(rows)
+        write(root/'reports/ALL_SEEN_RESULT.json',{'conditions':new_conditions,'local_decision_support':all(new_conditions.values()),'new_training_visits':0,'test_images_used':0,'seeds':[0,1,2]})
     write(root/'reports/RESULT.json',{'status':'COMPLETED','seeds':[0,1,2],'new_training_visits':0,'test_images_used':0,
         'objective_conflict_supported_at_these_endpoints':all(conditions.values()),'conditions':conditions,'confirmation_loss_differences':values,
         'mean_confirmation_loss_difference':sum(values)/3,'confirmation_competition_differences':comp,'confirmation_all_seen_ce_differences':all_ce,'elapsed_seconds':time.time()-clock['started'],'per_seed':rows,
