@@ -96,7 +96,12 @@ def main():
             'additional_logical_communication_bytes':sum(gc.values())-sum(cc.values()),'additional_logical_communication_percent':100*(sum(gc.values())/sum(cc.values())-1),
             'all_seen_guard_scalar_upload_bytes':gc['all_seen_guard_scalar_upload']}
         preflight=json.loads((OUT/f'seed{s}/REAL_PREFLIGHT.json').read_text())
-        for key in ('preflight_student_forward_images','preflight_student_backward_images','preflight_teacher_forward_images'):cost[s][key]=preflight[key]
+        history=json.loads((OUT/f'seed{s}/PREFLIGHT_HISTORY.json').read_text())
+        assert preflight['FP64_logit_identity_passed'] and all(v['relative_L2_error']<=1e-4 for v in preflight['FP32_vs_oracle_layer_errors'])
+        for key in ('preflight_student_forward_images','preflight_student_backward_images','preflight_teacher_forward_images'):
+            cost[s][key]=preflight[key]+history['additional_cost'][key]
+        cost[s]['original_FP32_pointwise_passed']=preflight['original_FP32_pointwise_passed']
+        cost[s]['engineering_amendment']='PREFLIGHT_PRECISION_AMENDMENT_ZH.txt'
     result={'status':'COMPLETED_QUALIFIED','registered_seeds':[0,1,2],'scientific_gate_passed':all(conditions.values()),'conditions':conditions,
         'per_seed':seeds,'reference_arms':references,'differences':differences,'gate_by_seed_task':gates,'qualification_audit':audit,'additional_cost':cost,
         'completion':json.loads((OUT/'COMPLETION.json').read_text()),

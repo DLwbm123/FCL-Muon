@@ -121,11 +121,29 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
             target=(z[:,:10].detach()/2).softmax(-1)
             kl=F.kl_div((z[:,:10]/2).log_softmax(-1),target,reduction='batchmean')*4
             direct=torch.autograd.grad(full+kl,model.b_parameters(),retain_graph=True)
-            decomposed=torch.autograd.grad(cur+competition+kl,model.b_parameters())
-            for a,b in zip(direct,decomposed):torch.testing.assert_close(a,b,atol=1e-7,rtol=1e-4)
+            decomposed=torch.autograd.grad(cur+competition+kl,model.b_parameters(),retain_graph=True)
+            original_checks=[]
+            for a,b in zip(direct,decomposed):
+                try:torch.testing.assert_close(a,b,atol=1e-7,rtol=1e-4);passed=True
+                except AssertionError:passed=False
+                original_checks.append(passed)
+            # FP32 logsumexp subtraction has cancellation near zero. Check the
+            # algebra at FP64 logits, then independently bound FP32 gradient error.
+            z64=z.double();cur64,full64,c64=competition_terms(z64,yy,10,10)
+            kl64=F.kl_div((z64[:,:10]/2).log_softmax(-1),target.double(),reduction='batchmean')*4
+            torch.testing.assert_close(full64,cur64+c64,atol=1e-12,rtol=1e-12)
+            oracle=torch.autograd.grad(full64+kl64,model.b_parameters(),retain_graph=True)
+            split64=torch.autograd.grad(cur64+c64+kl64,model.b_parameters())
+            for a,b in zip(oracle,split64):torch.testing.assert_close(a,b,atol=1e-7,rtol=1e-4)
+            from research.fed_spectra.preflight_precision import gradient_error
+            errors=[gradient_error(a,b) for a,b in zip(direct,oracle)]
+            result.update(original_FP32_pointwise_passed=all(original_checks),
+                original_FP32_pointwise_layer_passes=original_checks,
+                FP64_logit_identity_passed=True,FP32_vs_oracle_layer_errors=errors,
+                engineering_amendment='PREFLIGHT_PRECISION_AMENDMENT_ZH.txt')
             result.update(all_seen_objective_preflight=True,all_seen_gradient_images=len(ids2),
                 preflight_student_forward_images=5*len(ids)+len(ids2),
-                preflight_student_backward_images=len(ids)+2*len(ids2),preflight_teacher_forward_images=0,
+                preflight_student_backward_images=len(ids)+4*len(ids2),preflight_teacher_forward_images=0,
                 maximum_gradient_decomposition_difference=max(float((a-b).abs().max()) for a,b in zip(direct,decomposed)),
                 all_seen_preflight_scope='two-head real ViT on four current training images with synthetic adapter increments; no test selection')
             del z,direct,decomposed

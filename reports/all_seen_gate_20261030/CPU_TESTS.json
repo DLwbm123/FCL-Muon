@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "scope": "all-seen protected gate, exact rejection, client gradient oracle, recovery, matrix and legacy regression"
+}
