@@ -1,0 +1,12 @@
+{
+  "original_preflight_passed": true,
+  "engineering_amendment_commit": "c9470b2",
+  "formal_scientific_source": "985477f80635e64f8a33c6bc21c27600c6488e40",
+  "original_started": 1793334478.271342,
+  "additional_cost": {
+    "preflight_student_forward_images": 24,
+    "preflight_student_backward_images": 12,
+    "preflight_teacher_forward_images": 0
+  },
+  "scope": "Original attempt plus seed1 precision diagnostic, excluding revised preflight recorded separately"
+}

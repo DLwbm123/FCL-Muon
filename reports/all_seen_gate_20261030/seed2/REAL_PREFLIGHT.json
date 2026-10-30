@@ -1,0 +1,461 @@
+{
+  "passed": true,
+  "method": "actual_update_global",
+  "images": 4,
+  "eta_zero_logits_exact": true,
+  "corrected_logits_max_difference": 9.119510650634766e-06,
+  "maximum_norm_relative_error": 1.229323725243834e-15,
+  "peak_gpu_allocated_bytes": 416464384,
+  "scope": "real ViT GPU forward with synthetic actual-increment inputs; full local learning tested in CPU lifecycle and formal run",
+  "matrix_tangent_preflight": true,
+  "matrix_tangent_checks": [
+    {
+      "identity_reason": null,
+      "input_norm": 0.01127273147994173,
+      "reference_angle": 0.004870083316517799,
+      "used_angle": 0.004870083316517799,
+      "norm_relative_error": 3.385507455703809e-15,
+      "actual_FP32_norm_relative_error": 3.0646136703819487e-10,
+      "tangent_gradient_norm": 0.13011494229340329,
+      "gradient_norm": 0.1301166208646081,
+      "tangent_first_order_slope": -0.0014667508060016488,
+      "actual_FP32_relative_correction": 0.004870078415995108,
+      "predicted_delta": -7.143258618461131e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011256227969658559,
+      "reference_angle": 0.005058771269644965,
+      "used_angle": 0.005058771269644965,
+      "norm_relative_error": 4.3151451319463605e-15,
+      "actual_FP32_norm_relative_error": 3.6259286103486267e-10,
+      "tangent_gradient_norm": 0.4734963787364942,
+      "gradient_norm": 0.47349639028121543,
+      "tangent_first_order_slope": -0.005329783181865768,
+      "actual_FP32_relative_correction": 0.0050587659435466234,
+      "predicted_delta": -2.6962024332540916e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011283763014555059,
+      "reference_angle": 0.004887061548644918,
+      "used_angle": 0.004887061548644918,
+      "norm_relative_error": 5.841977716306904e-15,
+      "actual_FP32_norm_relative_error": 2.9792564364233855e-10,
+      "tangent_gradient_norm": 0.10628818966610641,
+      "gradient_norm": 0.10629398546773625,
+      "tangent_first_order_slope": -0.0011993307434384247,
+      "actual_FP32_relative_correction": 0.004887056931691007,
+      "predicted_delta": -5.861030561413465e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.01132592248717187,
+      "reference_angle": 0.0049596073503495935,
+      "used_angle": 0.0049596073503495935,
+      "norm_relative_error": 4.441755703370461e-15,
+      "actual_FP32_norm_relative_error": 1.1865369225206353e-10,
+      "tangent_gradient_norm": 0.5650910011417652,
+      "gradient_norm": 0.5650910015244476,
+      "tangent_first_order_slope": -0.006400176877129984,
+      "actual_FP32_relative_correction": 0.004959602237652772,
+      "predicted_delta": -3.1742236860991035e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.01134582155109144,
+      "reference_angle": 0.004777858949242234,
+      "used_angle": 0.004777858949242234,
+      "norm_relative_error": 4.128174732914615e-15,
+      "actual_FP32_norm_relative_error": 2.279215725511117e-10,
+      "tangent_gradient_norm": 0.09229555742856581,
+      "gradient_norm": 0.09229606840507944,
+      "tangent_first_order_slope": -0.0010471689245430196,
+      "actual_FP32_relative_correction": 0.004777854203286444,
+      "predicted_delta": -5.003245943260839e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011302722484047643,
+      "reference_angle": 0.004893941877622763,
+      "used_angle": 0.004893941877622763,
+      "norm_relative_error": 4.45087286486325e-15,
+      "actual_FP32_norm_relative_error": 4.843743738725997e-10,
+      "tangent_gradient_norm": 0.5270488287299443,
+      "gradient_norm": 0.5270695272043714,
+      "tangent_first_order_slope": -0.005957086646676917,
+      "actual_FP32_relative_correction": 0.004893937015203612,
+      "predicted_delta": -2.915288735170258e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011269041481456181,
+      "reference_angle": 0.0050919864058424705,
+      "used_angle": 0.0050919864058424705,
+      "norm_relative_error": 5.0799240380325004e-15,
+      "actual_FP32_norm_relative_error": 6.733431615557476e-10,
+      "tangent_gradient_norm": 0.14739953920658708,
+      "gradient_norm": 0.14740029713606323,
+      "tangent_first_order_slope": -0.0016610515216665565,
+      "actual_FP32_relative_correction": 0.005091980702522701,
+      "predicted_delta": -8.457945817713937e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011336942889203,
+      "reference_angle": 0.0051004300449115185,
+      "used_angle": 0.0051004300449115185,
+      "norm_relative_error": 3.825377557535619e-15,
+      "actual_FP32_norm_relative_error": 9.743466161696674e-11,
+      "tangent_gradient_norm": 0.5966307721299224,
+      "gradient_norm": 0.5966311421229474,
+      "tangent_first_order_slope": -0.00676396898957802,
+      "actual_FP32_relative_correction": 0.005100424444614805,
+      "predicted_delta": -3.449890261363671e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011330888245407183,
+      "reference_angle": 0.00536325878556067,
+      "used_angle": 0.00536325878556067,
+      "norm_relative_error": 5.20529343382399e-15,
+      "actual_FP32_norm_relative_error": 3.600516777862624e-10,
+      "tangent_gradient_norm": 0.1132694634287215,
+      "gradient_norm": 0.11326968027721743,
+      "tangent_first_order_slope": -0.0012834436317280793,
+      "actual_FP32_relative_correction": 0.005363252161188346,
+      "predicted_delta": -6.883443201431496e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011296054323752554,
+      "reference_angle": 0.004765272431614027,
+      "used_angle": 0.004765272431614027,
+      "norm_relative_error": 4.299931280005997e-15,
+      "actual_FP32_norm_relative_error": 1.216415238249611e-10,
+      "tangent_gradient_norm": 0.5920976688507005,
+      "gradient_norm": 0.592109901769803,
+      "tangent_first_order_slope": -0.006688367432304763,
+      "actual_FP32_relative_correction": 0.00476526788096604,
+      "predicted_delta": -3.187226017672652e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011303163796303304,
+      "reference_angle": 0.005095111038007654,
+      "used_angle": 0.005095111038007654,
+      "norm_relative_error": 4.6041714706748245e-15,
+      "actual_FP32_norm_relative_error": 2.640130143609652e-10,
+      "tangent_gradient_norm": 0.14727272715484552,
+      "gradient_norm": 0.1472810911207122,
+      "tangent_first_order_slope": -0.0016646477577595045,
+      "actual_FP32_relative_correction": 0.005095105637683905,
+      "predicted_delta": -8.481758940559836e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011294800458723673,
+      "reference_angle": 0.004858232587329217,
+      "used_angle": 0.004858232587329217,
+      "norm_relative_error": 3.68606453700449e-15,
+      "actual_FP32_norm_relative_error": 2.1259530803195767e-11,
+      "tangent_gradient_norm": 0.4912144112965139,
+      "gradient_norm": 0.4912198975578289,
+      "tangent_first_order_slope": -0.005548168758043544,
+      "actual_FP32_relative_correction": 0.004858227794943317,
+      "predicted_delta": -2.6954497600233207e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011340401721593958,
+      "reference_angle": 0.005109062152348834,
+      "used_angle": 0.005109062152348834,
+      "norm_relative_error": 3.518273948928379e-15,
+      "actual_FP32_norm_relative_error": 1.617794142776806e-12,
+      "tangent_gradient_norm": 0.1341318604486465,
+      "gradient_norm": 0.1341322187260928,
+      "tangent_first_order_slope": -0.0015211091811524313,
+      "actual_FP32_relative_correction": 0.005109056648326302,
+      "predicted_delta": -7.771453502985735e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011366287878327093,
+      "reference_angle": 0.004780547747338614,
+      "used_angle": 0.004780547747338614,
+      "norm_relative_error": 4.731221690928694e-15,
+      "actual_FP32_norm_relative_error": 7.776800665412221e-11,
+      "tangent_gradient_norm": 0.5207372216976308,
+      "gradient_norm": 0.5207404679216541,
+      "tangent_first_order_slope": -0.005918849170775509,
+      "actual_FP32_relative_correction": 0.00478054331738663,
+      "predicted_delta": -2.829547283146176e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011339107008607489,
+      "reference_angle": 0.004712428621044211,
+      "used_angle": 0.004712428621044211,
+      "norm_relative_error": 3.67166156839684e-15,
+      "actual_FP32_norm_relative_error": 2.0139645049071663e-10,
+      "tangent_gradient_norm": 0.13468160006445654,
+      "gradient_norm": 0.13469112542341083,
+      "tangent_first_order_slope": -0.0015271690752213499,
+      "actual_FP32_relative_correction": 0.0047124239476854565,
+      "predicted_delta": -7.196849818562001e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011311378267915922,
+      "reference_angle": 0.004831389682480665,
+      "used_angle": 0.004831389682480665,
+      "norm_relative_error": 3.834023217350204e-15,
+      "actual_FP32_norm_relative_error": 4.1306999339087625e-11,
+      "tangent_gradient_norm": 0.5348326266816903,
+      "gradient_norm": 0.5348423864126538,
+      "tangent_first_order_slope": -0.0060496941504196615,
+      "actual_FP32_relative_correction": 0.004831384830050454,
+      "predicted_delta": -2.922788870633422e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011274749409905319,
+      "reference_angle": 0.005098619048355549,
+      "used_angle": 0.005098619048355549,
+      "norm_relative_error": 3.8464790056725855e-15,
+      "actual_FP32_norm_relative_error": 1.7015346073157338e-10,
+      "tangent_gradient_norm": 0.1152152519546619,
+      "gradient_norm": 0.11521622472755952,
+      "tangent_first_order_slope": -0.001299023093987917,
+      "actual_FP32_relative_correction": 0.005098613387921873,
+      "predicted_delta": -6.6231256338174625e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011288961176651678,
+      "reference_angle": 0.004484259645562716,
+      "used_angle": 0.004484259645562716,
+      "norm_relative_error": 4.609963969664378e-15,
+      "actual_FP32_norm_relative_error": 2.4951952448391673e-10,
+      "tangent_gradient_norm": 0.5344833674930258,
+      "gradient_norm": 0.5344854887855741,
+      "tangent_first_order_slope": -0.00603376198519482,
+      "actual_FP32_relative_correction": 0.0044842559166580875,
+      "predicted_delta": -2.7056693946308843e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011294776683350471,
+      "reference_angle": 0.004895270821623509,
+      "used_angle": 0.004895270821623509,
+      "norm_relative_error": 4.146831333143273e-15,
+      "actual_FP32_norm_relative_error": 9.673190581746776e-11,
+      "tangent_gradient_norm": 0.14747810668328293,
+      "gradient_norm": 0.14748424324056478,
+      "tangent_first_order_slope": -0.0016657322806710173,
+      "actual_FP32_relative_correction": 0.004895265760411188,
+      "predicted_delta": -8.153995702622378e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011437927769828087,
+      "reference_angle": 0.005142823368523623,
+      "used_angle": 0.005142823368523623,
+      "norm_relative_error": 4.7015883329091244e-15,
+      "actual_FP32_norm_relative_error": 2.0822212411820206e-10,
+      "tangent_gradient_norm": 0.49705357255889876,
+      "gradient_norm": 0.49708197633130774,
+      "tangent_first_order_slope": -0.005685262860663688,
+      "actual_FP32_relative_correction": 0.0051428177854058055,
+      "predicted_delta": -2.9238978067293602e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011250115092911099,
+      "reference_angle": 0.004916447891216857,
+      "used_angle": 0.004916447891216857,
+      "norm_relative_error": 4.4716858794650685e-15,
+      "actual_FP32_norm_relative_error": 1.5518955005470558e-10,
+      "tangent_gradient_norm": 0.1409203571182747,
+      "gradient_norm": 0.14092036843345068,
+      "tangent_first_order_slope": -0.001585370236514724,
+      "actual_FP32_relative_correction": 0.004916443247701338,
+      "predicted_delta": -7.794366922866026e-06
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011296487169314529,
+      "reference_angle": 0.004786646283901314,
+      "used_angle": 0.004786646283901314,
+      "norm_relative_error": 5.374708150345507e-15,
+      "actual_FP32_norm_relative_error": 1.086492645699644e-10,
+      "tangent_gradient_norm": 0.5876814487260078,
+      "gradient_norm": 0.587736690512227,
+      "tangent_first_order_slope": -0.006638735945177521,
+      "actual_FP32_relative_correction": 0.004786641392769144,
+      "predicted_delta": -3.1778200078814607e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011411462997344161,
+      "reference_angle": 0.005211611667602159,
+      "used_angle": 0.005211611667602159,
+      "norm_relative_error": 3.952412621054282e-15,
+      "actual_FP32_norm_relative_error": 2.393812147432935e-10,
+      "tangent_gradient_norm": 0.19586508886954493,
+      "gradient_norm": 0.19586826285334158,
+      "tangent_first_order_slope": -0.0022351072141063378,
+      "actual_FP32_relative_correction": 0.005211605595454607,
+      "predicted_delta": -1.164863052036589e-05
+    },
+    {
+      "identity_reason": null,
+      "input_norm": 0.011260849241669701,
+      "reference_angle": 0.004983699206601438,
+      "used_angle": 0.004983699206601438,
+      "norm_relative_error": 3.851227022819975e-15,
+      "actual_FP32_norm_relative_error": 1.1903418696856253e-10,
+      "tangent_gradient_norm": 0.5999084764410656,
+      "gradient_norm": 0.5999176484895393,
+      "tangent_first_order_slope": -0.0067554789120026,
+      "actual_FP32_relative_correction": 0.004983693920273788,
+      "predicted_delta": -3.36675985717548e-05
+    }
+  ],
+  "gradient_images": 4,
+  "matrix_scope": "real ViT synthetic-increment logit-squared gradient; client-local CE/KL aggregation checked separately",
+  "original_FP32_pointwise_passed": true,
+  "original_FP32_pointwise_layer_passes": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "FP64_logit_identity_passed": true,
+  "FP32_vs_oracle_layer_errors": [
+    {
+      "relative_L2_error": 1.806103120554129e-06,
+      "max_absolute_error": 3.608874976634979e-08
+    },
+    {
+      "relative_L2_error": 2.115738213781925e-06,
+      "max_absolute_error": 1.3597309589385986e-07
+    },
+    {
+      "relative_L2_error": 1.3586442504016321e-06,
+      "max_absolute_error": 1.862645149230957e-08
+    },
+    {
+      "relative_L2_error": 1.233527774526881e-06,
+      "max_absolute_error": 9.12696123123169e-08
+    },
+    {
+      "relative_L2_error": 9.422069602605454e-07,
+      "max_absolute_error": 1.280568540096283e-08
+    },
+    {
+      "relative_L2_error": 9.7857065235769e-07,
+      "max_absolute_error": 6.065238267183304e-08
+    },
+    {
+      "relative_L2_error": 1.0286251223969197e-06,
+      "max_absolute_error": 2.2351741790771484e-08
+    },
+    {
+      "relative_L2_error": 8.40454304242653e-07,
+      "max_absolute_error": 7.450580596923828e-08
+    },
+    {
+      "relative_L2_error": 9.174792573750484e-07,
+      "max_absolute_error": 1.30385160446167e-08
+    },
+    {
+      "relative_L2_error": 7.173513748334099e-07,
+      "max_absolute_error": 4.842877388000488e-08
+    },
+    {
+      "relative_L2_error": 8.201156169288471e-07,
+      "max_absolute_error": 1.6763806343078613e-08
+    },
+    {
+      "relative_L2_error": 6.311164474463151e-07,
+      "max_absolute_error": 4.0978193283081055e-08
+    },
+    {
+      "relative_L2_error": 6.300928317549423e-07,
+      "max_absolute_error": 2.2351741790771484e-08
+    },
+    {
+      "relative_L2_error": 5.319695719467213e-07,
+      "max_absolute_error": 2.9802322387695312e-08
+    },
+    {
+      "relative_L2_error": 5.111001614485438e-07,
+      "max_absolute_error": 1.3969838619232178e-08
+    },
+    {
+      "relative_L2_error": 4.216864509211068e-07,
+      "max_absolute_error": 3.166496753692627e-08
+    },
+    {
+      "relative_L2_error": 4.773521155076263e-07,
+      "max_absolute_error": 1.0477378964424133e-08
+    },
+    {
+      "relative_L2_error": 3.164046814018133e-07,
+      "max_absolute_error": 2.2351741790771484e-08
+    },
+    {
+      "relative_L2_error": 4.4033463244938496e-07,
+      "max_absolute_error": 2.0954757928848267e-08
+    },
+    {
+      "relative_L2_error": 2.68866611164715e-07,
+      "max_absolute_error": 1.862645149230957e-08
+    },
+    {
+      "relative_L2_error": 3.781549011397738e-07,
+      "max_absolute_error": 1.862645149230957e-08
+    },
+    {
+      "relative_L2_error": 2.559302565063023e-07,
+      "max_absolute_error": 1.955777406692505e-08
+    },
+    {
+      "relative_L2_error": 2.9411563549636304e-07,
+      "max_absolute_error": 1.4901161193847656e-08
+    },
+    {
+      "relative_L2_error": 2.3310017552725354e-07,
+      "max_absolute_error": 1.862645149230957e-08
+    }
+  ],
+  "engineering_amendment": "PREFLIGHT_PRECISION_AMENDMENT_ZH.txt",
+  "all_seen_objective_preflight": true,
+  "all_seen_gradient_images": 4,
+  "preflight_student_forward_images": 24,
+  "preflight_student_backward_images": 20,
+  "preflight_teacher_forward_images": 0,
+  "maximum_gradient_decomposition_difference": 1.1734664440155029e-07,
+  "all_seen_preflight_scope": "two-head real ViT on four current training images with synthetic adapter increments; no test selection"
+}

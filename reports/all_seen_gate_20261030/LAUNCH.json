@@ -1,0 +1,57 @@
+{
+  "status": "RUNNING_NOT_COMPLETE",
+  "started": 1793334478.271342,
+  "deadline": 1793362378.271342,
+  "outer_deadline": 1793363078.271342,
+  "external_kill_grace_seconds": 60,
+  "scientific_source": "985477f80635e64f8a33c6bc21c27600c6488e40",
+  "preflight_amendment": "c9470b2",
+  "all_three_revised_preflights_passed": true,
+  "original_seed1_preflight_failed": true,
+  "original_clock_preserved": true,
+  "neutral_main_and_worker_commands_verified": true,
+  "sources_and_historical_runs_read_only": true,
+  "new_training_visits_planned": 1875000,
+  "storage_limit_bytes": 24000000000,
+  "write_stop_bytes": 20000000000,
+  "original_launches": [
+    {
+      "seed": 0,
+      "gpu": 0,
+      "launched": 1793334930.623849,
+      "remaining_seconds": 28147
+    },
+    {
+      "seed": 1,
+      "gpu": 1,
+      "launched": 1793334930.6244798,
+      "remaining_seconds": 28147
+    },
+    {
+      "seed": 2,
+      "gpu": 2,
+      "launched": 1793334930.6250284,
+      "remaining_seconds": 28147
+    }
+  ],
+  "recovery_launches": [
+    {
+      "seed": 0,
+      "remaining_seconds": 600,
+      "launched": 1793336109.0826814,
+      "role": "supplemental_preflight_only"
+    },
+    {
+      "seed": 2,
+      "remaining_seconds": 600,
+      "launched": 1793336109.0835567,
+      "role": "supplemental_preflight_only"
+    },
+    {
+      "seed": 1,
+      "remaining_seconds": 26969,
+      "launched": 1793336109.0847692,
+      "role": "seed1_first_formal_after_preflight"
+    }
+  ]
+}

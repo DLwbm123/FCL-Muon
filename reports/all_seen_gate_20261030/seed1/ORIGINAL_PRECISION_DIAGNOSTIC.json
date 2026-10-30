@@ -1,0 +1,114 @@
+{
+  "diagnostic_only": true,
+  "original_preflight_still_failed": true,
+  "original_comparisons": [
+    {
+      "passed_original": true,
+      "max_abs": 2.5331974029541016e-07
+    },
+    {
+      "passed_original": false,
+      "max_abs": 1.1920928955078125e-06
+    },
+    {
+      "passed_original": true,
+      "max_abs": 1.1920928955078125e-07
+    },
+    {
+      "passed_original": false,
+      "max_abs": 5.364418029785156e-07
+    },
+    {
+      "passed_original": true,
+      "max_abs": 7.450580596923828e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 2.3096799850463867e-07
+    },
+    {
+      "passed_original": true,
+      "max_abs": 6.705522537231445e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 7.450580596923828e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 2.2351741790771484e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 4.470348358154297e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 1.862645149230957e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 3.3527612686157227e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 2.60770320892334e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 2.9802322387695312e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 1.1175870895385742e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 2.60770320892334e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 7.683411240577698e-09
+    },
+    {
+      "passed_original": true,
+      "max_abs": 1.4901161193847656e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 1.3969838619232178e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 2.2351741790771484e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 2.2351741790771484e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 1.4901161193847656e-08
+    },
+    {
+      "passed_original": true,
+      "max_abs": 6.984919309616089e-09
+    },
+    {
+      "passed_original": true,
+      "max_abs": 1.4901161193847656e-08
+    }
+  ],
+  "extra": {
+    "fp64_identity": {
+      "failed_layers": 0,
+      "max_abs": 0.0
+    },
+    "fp32_direct_vs_fp64_oracle": {
+      "failed_layers": 2,
+      "max_abs": 9.5367431640625e-07
+    }
+  },
+  "additional_preflight_student_forward_images": 28,
+  "additional_preflight_student_backward_images": 20
+}
