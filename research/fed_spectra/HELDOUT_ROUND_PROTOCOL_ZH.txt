@@ -1,0 +1,11 @@
+T4单轮训练外验证：固定双候选有限主线实验（2026-10-30，运行前冻结）
+
+依据：全已见类单候选在原训练内confirmation的813图上无纠错，局部条件失败；selection出现2张纠错，不能替代确认。关闭在旧三个训练端点继续换目标/搜角度。下一问题是两个已固定候选的信号是否迁移到未参与本轮训练的当前任务图。此实验直接检验主线候选有效性，不优化control/baseline，也不启动完整T5。
+从原三个seed各自合法Control task3.pt恢复相同T1–T3前缀，只进行一次T4 round1，10client、5本地epoch、原batch16/rank32/head/学习率/优化器/数据增强/聚合配置。改变仅为本轮预先固定训练/验证拆分及并列影子候选评价。旧root只读，绝不续跑旧失败fullT5/停止三arm。
+每client的T4训练图先按ID排序，以独立random.Random(20261030+1009*seed+31*client)打乱；n>=2时验证数max(1,n//5)，n=1则0，训练取其余。不根据标签/预测挑图、不重采样；全部验证图评价，不再截成32图。训练侧selection仍原select_probes最多32/client。验证与所有训练、统计、selection图严格不交叉；当前类与前T1–T3训练图不交叉。只加载原train=True CIFAR100，test不读取。此为该新模型增量训练未见的验证图，但这些图可能在既有探索实验中出现，且预训练数据重合未知，不能宣称全研究未触及的独立验证集。
+下游训练/统计接口只见剩余训练partition，原client权重按剩余训练样本数；验证按相同client权重聚合后除coverage，coverage>=95%，不足则工程不合格但不重分割。保留未归一原数值和原始计数。预先记录每seed/client训练和验证数量（不公开ID）。新增访问精确为sum(train_counts)*5，三seed共享起点与预算。旧T1–T3访问不算新增。训练/统计loader守卫拒绝验证图；验证图每次模型前向强制无梯度，不训练、不参与head/Gram/候选方向，禁止读取旧图回放。
+该单轮只训练一次，共享FedAvg B与原Head-RegMean head为baseline。原eta.1正向谱参考仅供生成原参考角，不继续部署训练。固定两个候选：原J_original=CE_cur+anchor_weight*KL_old全矩阵负切向；J_all=J_original+C、C系数1的全矩阵负切向。每矩阵同一baseline范数、同一原eta.1参考角，无搜索/加大角度/新候选。所有梯度来自训练selection，同一baseline，分开FP32累积转FP64相加；验证从不求梯度。候选均是影子，不形成后续训练轨迹。
+报告baseline/两候选在selection和全验证图的原CE+KL、CE_all、C、全已见类accuracy/旧类胜出，精确flip和baseline分组loss贡献。validation两候选都报告，不挑seed或只报最好者。全已见类候选的冻结局部条件沿用上轮：3seed验证J_all对baseline/原候选都降>1e-6；原CE+KL对baseline不增>1e-6；accuracy每seed不降（1e-10容差），mean严格增>1e-10；加工程与coverage通过。否则该训练外条件失败，不降低门槛/补seed/扩大角度/新增目标。原候选另作描述性对照，不事后换主角。即使通过也不能自动完整T5，要另立完整方案并披露验证重用/成本/旧类安全限制。
+工程：三seed前缀身份和task_start/3heads/150client记录，T4正好10新增client，epoch访问与拆分计数吻合，训练/统计0验证图、所有validation前向无grad、0test。矩阵范数FP32误差<=5e-4、同参考角；head不变/baseline恢复；成对统计重构2e-6、分类转移计数一致。CPU检查拆分可重复且不污染全局RNG、单例/小client边界、loader阻止训练泄漏、验证梯度拦截、条件判定/矩阵算子/成对统计。失败保留原clock，修复不改拆分/候选/判定。
+成本：全部新增本地训练访问、训练teacher、Gram/统计、选择梯度前向/反向、两候选评价、成对前向逐项计数；不把探针计算藏进训练，不把共享T3算新增。无数据下载，保留必要恢复checkpoint在新root，模型/ID/完整日志/梯度不公开。
+预算：独立root，协议准备/CPU/修复计入共同起点；内部6900s、外部至started+7200s加30s grace，总<121分钟，不重置。新增12GB硬限、10GB写停止、预计<8GB（含checkpoint/临时写），只读共享旧data/deps/weights/前缀；/data挂载/容量/小读写probe和GPU>=18GB通过，独立timeout、每batch预算、10秒存储检查、中性主子入口。出现真实错误/到限结束保留现场，不自动重试整个实验。唯一30分钟心跳原位更新，完成公开所有seed完整结果/成本/限制，全部既有阴性保持。
