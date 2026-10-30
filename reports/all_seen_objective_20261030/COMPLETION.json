@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "return_code": 0,
+  "all_recorded_processes_exited": true,
+  "elapsed_seconds": 205.49921894073486,
+  "allocated_bytes_at_collection": 3768320,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "checks": [
+    {
+      "seed": 0,
+      "original_objective_reproduction_max_difference": 0.0,
+      "competition_reproduction_max_difference": 0.0,
+      "max_reference_angle_difference": 0.0,
+      "max_actual_FP32_norm_relative_error": 6.99731833586222e-10
+    },
+    {
+      "seed": 1,
+      "original_objective_reproduction_max_difference": 0.0,
+      "competition_reproduction_max_difference": 0.0,
+      "max_reference_angle_difference": 0.0,
+      "max_actual_FP32_norm_relative_error": 5.323847625231177e-10
+    },
+    {
+      "seed": 2,
+      "original_objective_reproduction_max_difference": 0.0,
+      "competition_reproduction_max_difference": 0.0,
+      "max_reference_angle_difference": 0.0,
+      "max_actual_FP32_norm_relative_error": 6.867099768617336e-10
+    }
+  ],
+  "CPU_checks_passed": 13,
+  "RNG_scope": "CPU isolated-state tests and finally restoration; no separately stored live RNG equality certificate."
+}

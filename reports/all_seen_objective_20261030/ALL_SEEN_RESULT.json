@@ -1,0 +1,19 @@
+{
+  "conditions": {
+    "coverage_each_ge_95percent": true,
+    "combined_objective_improves_baseline_all": true,
+    "combined_objective_improves_original_all": true,
+    "original_objective_not_worse_all": true,
+    "all_seen_accuracy_not_worse_all": true,
+    "mean_all_seen_accuracy_strictly_improves": false,
+    "engineering_checks": true
+  },
+  "local_decision_support": false,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "seeds": [
+    0,
+    1,
+    2
+  ]
+}

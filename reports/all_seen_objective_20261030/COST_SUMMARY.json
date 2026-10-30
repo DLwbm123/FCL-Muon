@@ -1,0 +1,40 @@
+{
+  "per_seed": [
+    {
+      "seed": 0,
+      "old_objective_student_forward_images": 1202,
+      "old_competition_extra_student_forward_images": 1202,
+      "new_candidate_extra_student_forward_images": 2404,
+      "total_student_forward_images": 4808,
+      "total_student_backward_images": 1202,
+      "total_teacher_forward_images": 1803
+    },
+    {
+      "seed": 1,
+      "old_objective_student_forward_images": 1140,
+      "old_competition_extra_student_forward_images": 1140,
+      "new_candidate_extra_student_forward_images": 2280,
+      "total_student_forward_images": 4560,
+      "total_student_backward_images": 1140,
+      "total_teacher_forward_images": 1710
+    },
+    {
+      "seed": 2,
+      "old_objective_student_forward_images": 1070,
+      "old_competition_extra_student_forward_images": 1070,
+      "new_candidate_extra_student_forward_images": 2140,
+      "total_student_forward_images": 4280,
+      "total_student_backward_images": 1070,
+      "total_teacher_forward_images": 1605
+    }
+  ],
+  "totals": {
+    "old_objective_student_forward_images": 3412,
+    "old_competition_extra_student_forward_images": 3412,
+    "new_candidate_extra_student_forward_images": 6824,
+    "total_student_forward_images": 13648,
+    "total_student_backward_images": 3412,
+    "total_teacher_forward_images": 5118
+  },
+  "communication": "Single-process diagnostic; hypothetical upload is not measured traffic."
+}
