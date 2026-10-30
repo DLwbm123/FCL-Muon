@@ -1,0 +1,15 @@
+固定rank8客户端梯度传输：局部保真诊断
+
+结论：全部冻结局部条件通过，不等于完整T5通过。0新训练/0test/0checkpoint，原heldout端点及探索验证只读复用。
+seed | validation J_all差 | 保留full改善% | accuracy差pp | baseline错变对/对变错 | 聚合梯度cosine
+0 | -0.0043914418 | 99.628175 | +0.101414 | 1/0 | 0.993939104
+1 | -0.0056406657 | 99.875530 | +0.200301 | 2/0 | 0.991471880
+2 | -0.0043230032 | 100.068840 | +0.000000 | 0/0 | 0.989239161
+
+每seed单轮梯度载荷6144000/23592960bytes=26.041667%，减少73.958333%。validation的baseline相对纠错数1/2/0、无新增错；与full加权accuracy相同。并未做full-vs-compressed逐图直接配对，因此不能由相同计数断言同一批图/全部预测逐项一致。
+baseline/full重现最大误差1.591286e-7/1.147223e-7/3.008002e-7，均在冻结1e-6内；所有工程/覆盖/同角范数/验证no_grad/恢复检查通过。三seed聚合梯度相对误差约11.00/13.04/14.64%，并非无损压缩。
+全部新增成本：{"student_forward_images": 39592, "teacher_forward_images": 12495, "student_backward_images": 882, "client_SVDs": 720, "SVD_seconds": 0.6208114486653358}
+完成回执：{"status": "completed", "return_code": 0, "all_recorded_processes_exited": true, "elapsed_seconds": 708.2855026721954, "allocated_bytes_at_collection": 4956160, "new_training_visits": 0, "test_images_used": 0, "new_checkpoints": 0}
+费用是模型图次/逻辑消息与本地SVD计时，不是网络或分布式加速证据。固定rank8没有选择/搜索；验证已用于既有探索，不是独立最终确认。
+
+后续决策：保留超过99.6%局部loss改善、各seed准确率不低于full、固定角度和73.96%梯度载荷减少共同支持一次独立完整T5检验，以解决累计误差/旧类安全仍未知的问题。另立协议，不直接把局部通过视为成功。正式full T5原+.20pp等全部科学门槛保持，额外要求mean raw不低于未压缩全目标主线及通信额外比例<=25%；失败不补seed/改秩/增角/换目标。旧完整全梯度正向结果与所有历史阴性保持。

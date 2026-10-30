@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "return_code": 0,
+  "all_recorded_processes_exited": true,
+  "elapsed_seconds": 708.2855026721954,
+  "allocated_bytes_at_collection": 4956160,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "new_checkpoints": 0
+}

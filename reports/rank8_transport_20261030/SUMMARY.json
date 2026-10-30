@@ -1,0 +1,75 @@
+{
+  "conditions": {
+    "engineering": true,
+    "coverage": true,
+    "wire_le_27percent": true,
+    "selection_gate": true,
+    "validation_retains_90percent_loss_gain": true,
+    "validation_original_loss_safe": true,
+    "validation_accuracy_not_worse_than_full": true,
+    "mean_validation_accuracy_gain_positive": true
+  },
+  "local_fidelity_supported": true,
+  "per_seed": [
+    {
+      "seed": 0,
+      "loss_gain_retained_percent": 99.628175335456,
+      "validation_Jall_delta": -0.004391441756283421,
+      "validation_original_delta": -0.00025932912295033306,
+      "validation_accuracy_gain_pp": 0.10141373777736717,
+      "decision_counts": {
+        "prediction_changed": 1,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 1,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 1
+      },
+      "gradient_cosine": 0.993939104442112,
+      "gradient_relative_error": 0.1099596393207303
+    },
+    {
+      "seed": 1,
+      "loss_gain_retained_percent": 99.87552950694796,
+      "validation_Jall_delta": -0.005640665653378785,
+      "validation_original_delta": -0.000522728448658083,
+      "validation_accuracy_gain_pp": 0.20030116715199497,
+      "decision_counts": {
+        "prediction_changed": 2,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 2,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 2
+      },
+      "gradient_cosine": 0.9914718802265964,
+      "gradient_relative_error": 0.13037970654878414
+    },
+    {
+      "seed": 2,
+      "loss_gain_retained_percent": 100.06883981876538,
+      "validation_Jall_delta": -0.004323003193286323,
+      "validation_original_delta": -0.0005128705996801375,
+      "validation_accuracy_gain_pp": 0.0,
+      "decision_counts": {
+        "prediction_changed": 0,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 0
+      },
+      "gradient_cosine": 0.9892391610470399,
+      "gradient_relative_error": 0.14635536939788035
+    }
+  ],
+  "total_cost": {
+    "student_forward_images": 39592,
+    "teacher_forward_images": 12495,
+    "student_backward_images": 882,
+    "client_SVDs": 720,
+    "SVD_seconds": 0.6208114486653358
+  },
+  "wire_fraction": 0.2604166666666667,
+  "note": "Equal accuracy and baseline-relative flip counts do not prove identical per-image predictions between compressed and full candidates."
+}
