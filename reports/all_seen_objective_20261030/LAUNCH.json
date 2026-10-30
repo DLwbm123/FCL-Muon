@@ -1,0 +1,9 @@
+{
+  "status": "RUNNING",
+  "gpu": 0,
+  "neutral_process_identity_verified": true,
+  "initial_allocated_bytes": 2969600,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "CPU_checks_passed": 13
+}
