@@ -33,9 +33,16 @@ def main():
     report = root / 'reports'
     jobpath = report / 'job.json'
     job = json.loads(jobpath.read_text())
+    recovery = os.environ.get('RECOVERY_ATTEMPT') == '1'
     if job['deadline'] - job['started'] != 10800 or time.time() >= job['deadline']:
         raise ValueError('invalid or exhausted original diagnostic clock')
-    with (report / 'SUPERVISOR_CLAIM.json').open('x') as claim:
+    if recovery and (job.get('status') != 'worker_failed' or
+                     not (report / 'WORKER_CLAIM.json').exists() or
+                     not (report / 'PRETRAIN_FAILURE.json').exists() or
+                     (report / 'REAL_PREFLIGHT.json').exists() or (report / 'PROGRESS.json').exists()):
+        raise ValueError('recovery is allowed only after the recorded pre-training preflight failure')
+    claim_name = 'SUPERVISOR_RECOVERY1_CLAIM.json' if recovery else 'SUPERVISOR_CLAIM.json'
+    with (report / claim_name).open('x') as claim:
         json.dump({'started': time.time(), 'clock': {k: job[k] for k in ('started', 'deadline')}}, claim)
     stop_requested = False
     def signal_stop(*_):
@@ -58,7 +65,8 @@ def main():
         env = dict(os.environ, ENTRY_FILE='scripts/real_boundary_worker.py')
         env.pop('ENTRY_MODULE', None)
         env['PYTHONPATH'] = str(source / 'deps') + os.pathsep + env.get('PYTHONPATH', '')
-        with (report / 'worker.log').open('x') as log:
+        env['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'
+        with (report / ('worker_recovery1.log' if recovery else 'worker.log')).open('x') as log:
             child = subprocess.Popen([sys.executable, '/data/bmw/workers/e17.py'], env=env,
                                      stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
             job.update(status='running', worker_pid=child.pid, free_mib_at_admission=free)

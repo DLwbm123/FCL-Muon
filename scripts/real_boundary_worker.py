@@ -40,7 +40,9 @@ def main():
     clock = {k: clock[k] for k in ('started', 'deadline')}
     if not clock['started'] <= time.time() < clock['deadline']:
         raise TimeoutError('independent diagnostic clock exhausted')
-    with (root / 'reports/WORKER_CLAIM.json').open('x') as claim:
+    recovery = os.environ.get('RECOVERY_ATTEMPT') == '1'
+    claim_name = 'WORKER_RECOVERY1_CLAIM.json' if recovery else 'WORKER_CLAIM.json'
+    with (root / 'reports' / claim_name).open('x') as claim:
         json.dump({'started': time.time(), 'clock': clock}, claim)
     cfg = json.loads((source / 'configs/aggregation_utility_three_task_seed0.json').read_text())
     cfg['output'] = 'runs/diagnostic'

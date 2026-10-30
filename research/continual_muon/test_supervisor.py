@@ -50,6 +50,20 @@ class SupervisorTest(unittest.TestCase):
             self.assertEqual(job['status'], 'budget_or_signal_stop')
             kill.assert_called_once()
 
+    def test_recovery_rejects_missing_failure_receipt(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            report = root / 'reports'
+            report.mkdir()
+            now = time.time()
+            (report / 'job.json').write_text(json.dumps({'started': now, 'deadline': now + 10800,
+                                                         'status': 'worker_failed'}))
+            (report / 'WORKER_CLAIM.json').write_text('{}')
+            env = {'PROJECT_ROOT': str(root), 'SOURCE_ROOT': str(root), 'RECOVERY_ATTEMPT': '1'}
+            with patch.dict(os.environ, env):
+                with self.assertRaises(ValueError):
+                    main()
+
 
 if __name__ == '__main__':
     unittest.main()
