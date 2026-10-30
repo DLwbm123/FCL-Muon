@@ -1,0 +1,173 @@
+FCL-Muon：过去24小时实验汇总与Pro审阅材料
+统计窗口：2026-10-29 16:25—2026-10-30 16:25（Asia/Shanghai）
+运行状态快照：2026-10-30 16:24:59；本报告是固定快照，后续进度不在此内。
+公开分支：codex/actual-update-global-20261029
+
+请Pro先看结论、完整T5对照表和证据边界，再评价机制与后续优先级。原始聚合结果、协议和源码见文末固定提交链接；本文件不替代原实验记录。
+
+核心结论
+
+本窗口形成了6组完整三seed T5结果：前5组未通过各自冻结条件，最后的“全已见类目标＋原目标保护门”首次全部通过。后者相对匹配Control的T5 raw差为 +0.44/-0.12/+0.62pp，平均 +0.313333±0.385919pp；相对上一版原目标全矩阵门，三个seed分别再增加 +0.10/+0.14/+0.12pp。
+
+这是当前最值得保留的探索性主线证据。它仍不是显著性、所有seed受益、遗忘改善、T10或跨数据集优势：seed1仍负，平均遗忘增加0.133333pp，centered T5平均下降0.046667pp。完整T5已发表、无需重跑；旧5组失败结论全部保留。
+
+当前正在检验固定rank8客户端梯度因子传输，以降低此正向版本的通信成本。端点诊断通过，但完整T5尚在T1，没有最终收益结论。没有更改正在运行的配置，也没有增加seed或扩展T10。
+
+实验背景与比较口径
+
+研究对象是服务器对实际FedAvg更新的修正，不是复活已停止的旧FedSPECTRA Control/MVP/Full三arm，也不是调优LoRM或历史A/B。当前Control是同一正式训练配方下不加新服务器修正的匹配对照，不能将本报告解释为相对所有外部方法的胜出。
+
+共同设置：CIFAR100，Dirichlet alpha=0.05，seed0/1/2；前5任务各10类；10客户端全参与；每任务5通信轮，每轮每客户端5 epochs；batch16，Q/V LoRA rank32，ViT-B/16 augreg_in21k。任务内共享A、任务边界原RRS/merge；B采用AdamW lr=0.0002，原分类头AdamW与Head-RegMean。正式本地训练始终为当前任务CE＋旧类KL（温度2、权重1，任务起点教师，只使用当前训练图）；没有把正式client训练替换为全已见类CE，没有旧图回放。FP32、deterministic、math SDPA、TF32 off。
+
+每条完整T5路线250客户端轮、625000训练图次；T3/T5分别在3000/5000已见类测试图上重载核对预测。后续各变体均fresh从匹配预训练开始、复用已合格Control，未为提高比较难度额外优化baseline。最初无门控seed0单独完成，seed1/2是在看到seed0后预先冻结的探索性复验；不是三seed独立确认。
+
+主指标raw使用全已见类logits；centered是逐任务块去均值的诊断读出，不能替代raw。pp为百分点；均值±SD是三seed配对差的均值与样本标准差，不是标准误或置信区间。T5 old为旧40类、new为最新10类；AIA为T1—T5阶段总体accuracy的平均。S为真实任务内部本来能判对、但被其他任务类别夺取的计数；不等于全部跨任务混淆。跨seed图数之和只是计数口径，不能当作独立受试样本数。
+
+完整T5结果（对匹配Control；完整逐任务数据见EVIDENCE.json和各原报告）
+
+方案                         seed0 Δraw  seed1 Δraw  seed2 Δraw  mean±sample SD(pp)   mean Δold  mean ΔAIA  结论
+无门控实际更新谱修正            +0.10       -0.46       +0.50       +0.046667±0.482217    -0.075000   -0.004000   失败
+原训练目标单向接受门            +0.06       -0.42       +0.58       +0.073333±0.500133    -0.008333   +0.019111   失败
+梯度选正/反方向＋接受门         +0.10       -0.40       +0.48       +0.060000±0.441362    -0.025000   +0.013667   失败
+损失引导谱切向门                +0.14       -0.66       +0.32       -0.066667±0.521664    -0.158333   -0.023333   失败
+原目标全矩阵切向门              +0.34       -0.26       +0.50       +0.193333±0.400666    +0.150000   +0.148111   失败
+全已见类目标＋原目标保护门      +0.44       -0.12       +0.62       +0.313333±0.385919    +0.208333   +0.249889   通过
+
+共同核心门槛：mean T5 raw≥+0.20pp、mean AIA≥0、mean old≥0、每seed new≥-1pp、mean S不增、至少2/3 seed raw正，以及完整工程资格；每一后继另有相对既定前版平均raw不下降条件，详见各冻结协议/EVIDENCE.json的原始conditions。没有在看到结果后修改门槛。
+
+五组失败分别保留：
+• 无门控：raw、old、AIA以及seed1 new=-1.30pp未达要求。
+• 单向门：raw、old及seed1 new=-1.30pp失败；只接受18/75轮。
+• 符号门：接受升至61/75，但raw/old/seed1 new=-1.20pp失败；相对单向门平均再下降0.013333pp。
+• 谱切向：75/75接受、无正性缩角，平均raw却为负；old/AIA/S以及seed1 new=-1.40pp也失败。
+• 全矩阵原目标：75/75接受，其余冻结条件通过，但+0.193333pp严格小于+0.20pp。三seed净增29张正确，阈值对应30张；只差1张不能成为四舍五入、补seed或改强度的理由。
+
+局部证据如何改变主线判断
+
+1. 原始谱修正只是固定奇异向量下的谱能量形状插值，保留实际更新范数；其数学目标不保证分类损失下降。共同Control T3出发的T4首轮诊断新增75000训练图次、0测试图访问；seed0/2修正后训练CE+KL上升，seed1下降。但这个排序与最终T5表现相反，故只支持“谱代理不保证训练目标下降”，不能称为长期泛化失败的因果解释。
+
+2. 固定角度反射选符号后，确认probe损失仅2/3 seed下降；后续完整T5没有提升。再将梯度投影到固定奇异向量的奇异值切空间，确认loss三seed都降（mean -6.505343e-5），accuracy仍不变；完整T5反而失败。这两步直接否定“提高训练下降接受率即可提高泛化”的解释。
+
+3. 开放到每个矩阵的范数球切空间后，共同端点确认loss平均下降0.000532564，约为谱切向的8.19倍。谱切向分量只占全切向能量0.7141%/0.5484%/0.8613%。这支持表示自由度受限的局部解释，同时全梯度传输比旧谱基广播方案更省；但完整T5仅+0.193333pp，仍失败。它不证明全矩阵方向已解决泛化。
+
+4. “原目标下降但跨任务竞争恶化”的诊断假设不获支持：原矩阵候选的确认CE+KL、竞争项C和CE_all三seed均下降；这里C=CE_all−CE_cur，是全已见类归一化相对当前块归一化增加的竞争项。逐client存在seed0两个client的竞争项上升，但其他seed总体改善。不能将原目标与竞争目标描述成普遍冲突。
+
+5. 决策转移诊断直接核对1706张selection/confirmation图：全已见类argmax零变化，既没有错变对，也没有对变错或错换错；accuracy不变不是正负翻转抵消。损失改善也发生在原来被旧类夺取或当前块错误的样本上，不能说只改善简单样本。更准确的局部观察是“loss下降尚不足跨过决策边界”；这仍不能外推整个T5。
+
+6. 固定同角度的J_all=CE_all+旧KL候选比原矩阵候选进一步降低确认损失，但813张确认图仍零翻转，违反预先冻结的mean accuracy严格增加条件。该训练内单候选诊断判失败，关闭在同一旧端点继续换目标/搜索角度的支线；没有用selection上偶然改善替代confirmation。
+
+7. 随后独立冻结T4单轮训练外验证：从匹配Control T3恢复，当前T4各client固定80/20拆分，新模型训练/统计/梯度都不接触验证图。共60055新增训练图次，验证996/996/997图。全目标候选分别纠正1/2/0张，无新增错；原矩阵候选均零flip。client加权accuracy差+0.101414/+0.200301/0pp，mean+0.100572pp，J_all与原目标保护条件均通过。仅有3张纠错，而且验证图可能曾在旧探索中出现，预训练重合未知，不能称全研究未触及的独立holdout。综合同角几何、loss迁移、真实纠错和实现成本后，另立fresh完整T5，未复用这次80/20训练端点冒充正式全量结果。
+
+当前正向方案到底改变了什么
+
+每轮先完成原client训练与FedAvg端点Bavg。候选梯度来自固定当前训练selection上的J_all=CE_all+KL_old，而不是只在当前任务类别上做CE；每client独立FP32均值梯度，server按原训练样本权重FP64累计。保持原eta=0.1谱候选提供的参考角，在每个矩阵的范数球切空间构造一个候选，不增加角度、不搜候选。
+
+接受条件为J_all下降严格超过1e-6，且原J_original=CE_cur+KL_old不增加超过1e-6；否则精确返回FedAvg。原目标检查利用同一前向，只增加标量上传。selection每client最多32张当前训练图，不使用验证或测试决定方向、门或参数。它改的是服务器候选方向和接受规则，正式client优化、head更新及旧类KL均未改。
+
+正向结果细节：
+seed  Control raw%  新方案 raw%  Δold pp  Δnew pp  ΔAIA pp  纠正/破坏/净增加（5000张）
+0     86.14         86.58        +0.300   +1.000   +0.198000   61/39/+22
+1     86.16         86.04        +0.000   -0.600   +0.061000   27/33/-6
+2     83.28         83.90        +0.325   +1.800   +0.490667   64/33/+31
+
+合计纠正152、破坏105、净增47/15000；这是3个实验的配对计数合计，不是15000个独立统计单位。mean ΔS=-12.666667张，但seed1 ΔS=+9；mean new-to-old混淆下降0.700000pp，old-to-new反而增加0.075000pp。mean遗忘增加0.133333pp，三个seed分别增加0.10/0.05/0.25pp。mean centered T5差=-0.046667pp。这些代价不能从摘要中删去。
+
+75/75轮都接受、保护门零拒绝；因此这组实验不识别保护门的因果贡献。原目标下降也只约束当前图上的loss/KL，不证明旧类安全。相对原目标全矩阵版本的三seed一致提升支持继续研究候选目标，但仍不能独立归因整个收益给某一组件。
+
+工程、成本与资源
+
+已完成的五组门控完整实验均有6个T3/T5重载资格及门控/实际部署算子/成本/配对审计通过，全部进程退出、返回成功。无门控三seed包含Control与修正两路线，共12个里程碑。工程合格与科学条件失败分别记录，没有相互替代。
+
+方案                    接受/75   每seed额外逻辑通信bytes    相对Control增幅    全实验历时h   退出实际新增GB
+单向门                  18        1,187,336,000             22.051840%         2.5992         2.8778
+符号门                  61        1,777,166,000             33.006479%         2.7105         2.9137
+谱切向门                75        2,417,672,000             44.902300%         2.7297         2.9379
+原目标全矩阵门          75        1,777,160,000             33.006368%         2.6884         2.9202
+全目标保护门            75        1,777,164,000             33.006442%         2.9022         2.9213
+
+每一组三seed门控实验1875000新增正式训练图次，五组共9375000；这个子合计不含最初无门控/匹配Control、75000训练诊断、60055训练外验证、额外probe/统计/预检，也不含当前rank8在途访问，不应称“过去24小时总算力”。无门控seed0运行部分跨越窗口起点，故不将整个运行计作窗口内计算。
+
+正向方案每seed额外probe学生前向15210/15580/15270、反向7605/7790/7635，教师前向12200/12380/12150，另有训练teacher和统计成本，原JSON完整保留。保护标量新增仅4000bytes/seed，但完整梯度和候选广播使总额外通信仍达33%。这些都是逻辑字节/模型图次，不是分布式网络实测，也不是加速或隐私保证。表中历时含准备与预检，GB为十进制退出占用，不是峰值；三seed并行不能直接把墙钟等同GPU小时。
+
+正向实验曾发生seed1 FP32逐元素梯度预检失败。单独诊断支持FP64 loss恒等式，公开工程修订改为FP64恒等式＋FP32对独立oracle逐层L2相对误差≤1e-4，统一三seed通过。科学门槛和正式算法未改变，但工程验收协议确有修订，不能声称原协议完全未改。原失败和费用保留，预检学生前向48/76/48、反向32/52/32均已计入。
+
+正在进行：固定rank8梯度传输完整T5
+
+端点诊断使用上述训练外验证资源：每client 24个768×32梯度矩阵，FP64 SVD取固定前8，传FP32双因子L=(U*S)、R=Vh；server double重构后加权。每轮梯度上传23,592,960→6,144,000bytes，保留26.041667%，即该消息减少73.958333%。聚合梯度cosine为0.993939/0.991472/0.989239，相对误差约11.00%/13.04%/14.64%，不是无损。
+
+三个seed验证J_all改善保留99.628175%/99.875530%/100.068840%，accuracy与full相同；相对baseline仍纠正1/2/0张。未直接配对full与compressed逐图预测，不能由相同计数推出预测完全相同。验证资源已重用，只是端点保真证据。诊断0新训练/0test，共708.2855秒、4.956MB，新增学生39592前向/882反向、教师12495前向、720次SVD（合计0.620811秒）。
+
+完整T5已独立冻结并启动，rank=8固定、不搜索。保留原全部科学条件，新增“mean T5 raw不低于未压缩全目标版本”及“每seed额外逻辑通信≤25%”。预计完整T5每seed梯度上传153600000bytes，比full少436224000bytes；总额外通信预计1340940000bytes，约24.9047%。不能将梯度消息减少73.96%说成总通信减少73.96%。另需每seed6000次client/layer SVD，最终按实测记录其计算代价。
+
+16:24:59快照：三seed均running，T1第3轮；已完成client轮25/27/24，正式训练访问63705/63910/60660；各完成2轮聚合并接受2轮；无FAILURE、无T3/T5资格。共享root实际约1.580GB，只计一次；原时钟和硬预算保持。22项CPU检查与三seed真实GPU预检通过。此轮事前就采用已公开修订的oracle，seed1旧式pointwise=false仅作可比记录，不是本轮新启动失败。实验后台继续，由唯一30分钟监测跟进，不能按中间指标改配置。
+
+科学证据边界与请Pro重点评价的问题
+
+本系列反复使用同一数据集、alpha和三个seed进行顺序机制探索，虽然每一轮运行前冻结配置，且测试图未用于候选/门控梯度，路线选择已知既往测试结果，因此整个研究过程仍有适应性选择风险。尤其不能把“单轮预先冻结”写成全研究独立确认。当前结论宜表述为“本探索设置下首次通过事前操作性门槛”，不宜写成普遍优越或统计显著。
+
+希望Pro基于全部负结果一起评价：
+1. 当前结果最合理支持哪个机制解释？全矩阵表示自由度、全已见类候选目标与跨任务决策之间，哪些已有直接证据，哪些仍仅是推断？
+2. 同一数据设置反复探索后，怎样设计最小且有区分力的独立确认，使正向结果不依赖既有探索接触？请先明确要区分的假设与判据，不用扩充baseline或泛搜超参数代替主线判断。
+3. seed1各变体raw持续负、以及raw改善而centered略降/遗忘上升，最值得检验的结构性原因是什么？不得据seed1测试错例专门调参。
+4. 全目标门75/75接受、保护门零拒绝；若要说明保护机制的价值，应怎样区分“约束未触发”与“有实际保护作用”？现有结果不足以作因果消融结论。
+5. rank8仅在端点局部保真，完整轨迹判据严格不低于full且成本≤25%。请优先等待已冻结结果；无论通过与否都保留full正向与历史负结果，不靠补seed、改rank或四舍五入追求通过。
+
+本报告的提问供审阅，不构成启动新实验的额外指令。当前rank8继续按原协议执行。
+
+证据索引
+
+下列链接固定到产生结果的提交，可独立检查，避免分支后续变化。每目录的JSON提供全部逐seed/逐任务指标与成本，TXT为解释；research/fed_spectra保存冻结协议，scripts/summarize_*保存汇总与验收实现。配套EVIDENCE.json从原结果JSON直接摘录主指标、全部判定、各任务raw/centered差和正向方案配对计数，没有重新训练或重算预测。
+
+无门控谱修正（5c29aa8）
+https://github.com/DLwbm123/FCL-Muon/blob/5c29aa82b92ab3be9141d7a1705c5406316c9d7a/reports/actual_update_repeat_20261029/THREE_SEED_REPORT_ZH.txt
+
+单向门（0a04eab）
+https://github.com/DLwbm123/FCL-Muon/blob/0a04eab328964148f23d2b7cc7e8b232799e1d83/reports/actual_loss_gate_20261029/THREE_SEED_REPORT_ZH.txt
+
+符号门（a2d5987）
+https://github.com/DLwbm123/FCL-Muon/blob/a2d5987200a6c3ede6bfb8a6fff57bd129d972da/reports/actual_oriented_gate_20261030/THREE_SEED_REPORT_ZH.txt
+
+谱切向门（5f3f206）
+https://github.com/DLwbm123/FCL-Muon/blob/5f3f206d6f08b92a016bd500cbbd9eee80aa1e3a/reports/actual_tangent_gate_20261030/THREE_SEED_REPORT_ZH.txt
+
+原目标全矩阵门（eea3bb4）
+https://github.com/DLwbm123/FCL-Muon/blob/eea3bb473985be4b7baada30ebd5c6b8ac07b582/reports/actual_matrix_gate_20261030/THREE_SEED_REPORT_ZH.txt
+
+全目标保护门（ba5c070）
+https://github.com/DLwbm123/FCL-Muon/blob/ba5c070e2dd53f94d461f0da37263b199785ce02/reports/all_seen_gate_20261030/THREE_SEED_REPORT_ZH.txt
+
+共同状态训练目标诊断（205bc33）
+https://github.com/DLwbm123/FCL-Muon/blob/205bc33c59c8dd9b04e0517048d43211414fb45f/reports/actual_alignment_20261029/FINAL_REPORT_ZH.txt
+
+符号方向诊断（ff7eb35）
+https://github.com/DLwbm123/FCL-Muon/blob/ff7eb355452fa2656ca635b7f90e972f19050e5c/reports/actual_direction_20261030/FINAL_REPORT_ZH.txt
+
+谱切向诊断（c9ef9ea）
+https://github.com/DLwbm123/FCL-Muon/blob/c9ef9ea13363f4cbee7e1cc5f946edbea8348177/reports/actual_tangent_diagnostic_20261030/FINAL_REPORT_ZH.txt
+
+全矩阵诊断（555adbb）
+https://github.com/DLwbm123/FCL-Muon/blob/555adbb0b01b0868223ce83c2a843e868b5e38a3/reports/actual_matrix_diagnostic_20261030/FINAL_REPORT_ZH.txt
+
+竞争目标诊断（4e3f724）
+https://github.com/DLwbm123/FCL-Muon/blob/4e3f724c4910f9f7802e02d4f69f4a03a43a5e93/reports/competition_objective_20261030/FINAL_REPORT_ZH.txt
+
+决策转移诊断（adc0a6a）
+https://github.com/DLwbm123/FCL-Muon/blob/adc0a6aeb66c8b0dccb09cf58286b743e3941e35/reports/decision_transition_20261030/FINAL_REPORT_ZH.txt
+
+全目标训练内诊断失败（3bfa82d）
+https://github.com/DLwbm123/FCL-Muon/blob/3bfa82dcb324b1571d64e3e249c8269388305033/reports/all_seen_objective_20261030/FINAL_REPORT_ZH.txt
+
+T4单轮训练外验证（5c20c37）
+https://github.com/DLwbm123/FCL-Muon/blob/5c20c3769524049784cd3d25c43a2c70bedbf6a3/reports/heldout_round_20261030/FINAL_REPORT_ZH.txt
+
+rank8局部传输诊断（1b08235）
+https://github.com/DLwbm123/FCL-Muon/blob/1b0823596988808eb74027766e3fe7590f1c9029/reports/rank8_transport_20261030/FINAL_REPORT_ZH.txt
+
+全目标完整T5冻结协议（ba5c070）
+https://github.com/DLwbm123/FCL-Muon/blob/ba5c070e2dd53f94d461f0da37263b199785ce02/research/fed_spectra/ALL_SEEN_GATE_PROTOCOL_ZH.txt
+
+GPU预检工程修订（c9470b2）
+https://github.com/DLwbm123/FCL-Muon/blob/c9470b24626ce9654b56782501fe0e8cb3f1bcad/research/fed_spectra/PREFLIGHT_PRECISION_AMENDMENT_ZH.txt
+
+当前rank8完整T5冻结协议（4419752）
+https://github.com/DLwbm123/FCL-Muon/blob/441975239aa8782dfd82e8fd2e79c6e5f537fbca/research/fed_spectra/RANK8_GATE_PROTOCOL_ZH.txt
