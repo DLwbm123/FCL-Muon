@@ -1,0 +1,19 @@
+{
+  "status": "RUNNING_NOT_COMPLETE",
+  "started": 1793345278.54723,
+  "maximum_seconds": 2400,
+  "outer_deadline": 1793347978.54723,
+  "kill_grace_seconds": 30,
+  "storage_limit_bytes": 2000000000,
+  "write_stop_bytes": 1000000000,
+  "allocated_bytes_initial": 3608576,
+  "CPU_tests_passed": 10,
+  "GPU": 0,
+  "free_mib_at_launch": 72830,
+  "mount_and_write_probe_passed": true,
+  "neutral_main_and_worker_commands_verified": true,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "worker_started": true,
+  "failure_absent_at_startup": true
+}

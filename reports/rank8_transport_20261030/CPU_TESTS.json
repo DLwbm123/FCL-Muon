@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "scope": "rank8 wire oracle, bad-seed conditions, matrix operator and validation guards"
+}
