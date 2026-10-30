@@ -1,0 +1,83 @@
+FCL-Muon 已尝试路线梳理与回退选择
+编写时间：2026-10-30，背景：用户明确指出 Muon 是方法核心，并希望先逐一查看已尝试路线，再选择回退位置。
+
+核心结论
+
+10月28日前的主线包括 MuLoRA/SSB、Head-RegMean、联邦聚合效用选空间 A、历史加权边界修正 B、FCCA 聚合修正 C，均保留本地 SSB 更新。随后 FedSPECTRA 切换为 AdamW 客户端训练，而后来实际更新谱修正、全已见类门和 rank8 均继承 AdamW，不能称为 Muon 方法收益。
+
+这是路线判断和汇报上的偏差：尽管后续方案使用矩阵谱、SVD 或范数球几何，这些数学操作并不等于实际使用 Muon。此前介绍“目前的方法”时没有明确指出该根本变化，容易误导。AdamW 结果可保留为探索记录与候选机制线索，但不证明迁移到 Muon 后有效，也不能说已经优于 Muon、FedMuon 或 LoRM。用户选定回退位置之前，不启动新路线或训练；已有结果、停止和暂停边界不因本报告改变。
+
+口径说明
+
+下文将原 MuLoRA 的 SSB/五步 Newton–Schulz 型矩阵更新称“Muon/SSB 体系”，不等同于仓库中 corrected=true、带客户端校正及 muon_operator 的 FedMuon 变体。分类头即便使用 AdamW，也不等于 LoRA B 的客户端更新是 AdamW；判断优化器时需分别核实 B 和头。大部分开发性结果为 CIFAR100、10客户端、alpha=.05；A/B/C 十任务只在 seed0 完成，不是多seed统计显著结论。表中 raw 为所有已见类别上原始logits的整体准确率；centered 为固定任务类别块去均值后的诊断/部分历史协议主读出，不需要真实任务ID；两种读出不得混称。与标准 LoRM 的比较是整体系统比较，rank、优化器、头结构及精度有差异，不能把所有收益归因于某一模块。
+
+一、Muon/SSB 体系：按路线逐一列示
+
+1. 原始 MuLoRA-FL：RRS 选择共享空间，任务内固定 A、训练 B，本地原 SSB 更新，余弦头及原头聚合。早期 alpha=.05 的 T1 原头约83.2%，诊断发现主要受分类头学习/聚合问题影响；原方法得分不能用事后替换头后的结果取代。原正式 alpha=.05 seed0 T10 总体47.59%，见原 FedMuon 比较报告；这与后续 Head-RegMean 等完整新系统不能当作单因素比较。
+
+2. 原始 MuLoRA+FedMuon：在原系统引入 FedMuon 校正与矩阵更新。alpha=.05 seed0 T10 总体35.61%、旧33.5333%、新54.30%；低于同原队列 MuLoRA 的47.59%。alpha=.5 seed0 则为80.27%，对同alpha原 MuLoRA 的83.94%低3.67pp；不同alpha不能混成单因素结果。保留负结果，不以调优对比方法追平为由反复投入。
+
+3. 头部诊断：在同一 MuLoRA T1 编码器上，原头83.2%、事后全局原型余弦头99.1%，证明该编码器配不同读出时性能不同，提示头部是瓶颈；原型头是改变方法的诊断变体，99.1%不是原MuLoRA得分。D1/D2 的固定任务块去均值/竞争诊断也是只读机制观察，不能作为新方法训练收益。
+
+4. SSB + Head-RegMean：保留共享RRS、固定A、原SSB、余弦头和B-FedAvg，改变当前头联邦聚合。seed0 T3 raw总体91.1333%，标准 LoRM 88.7333%；优势主要来自旧类保持，T3新类弱于LoRM。seed0 T10 raw79.00%、centered85.87%。两个新seed的三任务运行完成，但 RegMean/FedAvg 严格配对验收仍失败；不能只以整体系统差异认定头机制因果作用。可作为较简单的Muon/SSB回退基座。
+
+5. 头部 all-seen CE：保持原SSB主干，把当前分类头训练改为全已见类竞争。三个seed T3 相对 current-only 头，raw新类均值+5.3000pp，但旧类-3.5833pp、总体-0.6222pp，冻结科学门槛失败；不能称整体改善。
+
+6. 训练内块去均值头目标：在 all-seen CE 内固定逐任务块去均值。三个seed相对current-only头，raw总体+0.4222pp、新类+4.4333pp、旧类-1.5833pp；centered总体-0.2556pp，原raw和附加centered门槛均失败。该阶段三seed并不证明后续A/B/C多seed有效。
+
+7. 旧类保持系列（受限 T2 分支，均为开发性诊断，不与后续T10终点混比）：
+   - 冻结编码器：三seed centered旧类均值+0.6667pp、新类-0.9pp、总体-0.1167pp；有限分支条件通过，但不是完整方法胜出，也不能把差异仅归因于编码器漂移。
+   - 当前训练图的旧响应约束：centered旧类+0.4667pp、新类-0.2667pp、总体+0.1000pp，整体冻结门槛失败。
+   - 新头约束到旧头空间正交补：centered旧类+2.1333pp、新类-5.9333pp、总体-1.90pp，失败。
+   - 全归一化特征保持：相对旧响应方案，centered总体-0.1167pp，失败。
+   - 客户端/全局头响应匹配：相对旧响应方案，centered总体-0.0167pp，失败。
+这些分支未因此自动扩至T3/T10；不要因别的路线正向改写其冻结失败。
+
+8. A：联邦聚合效用选空间 + 原 SSB + Head-RegMean。方法在RRS外构造64维候选池、选rank32共享子空间，效用按各客户端梯度及原 SSB 提案的联邦聚合定义；正式训练仍为当前类CE与原SSB/FedAvg。seed0 T3 raw91.10%、centered94.0333%，同阶段标准LoRM为88.7333%/90.8%。相对原RRS，T3 raw仅多2/3000张、centered多1/3000张；联邦对集中式效用目标的独有优势没有建立。扩展后的T10 A raw79.13%、centered85.89%；LoRM为80.09%/84.15%。它是可选的完整Muon/SSB系统起点，而非已经证明所有读出均优于LoRM。
+
+9. B：A + 历史加权跨任务边界修正。保留A的选空间和SSB；用当前样本的跨任务竞争信号，对实际基础B更新进行历史度量下的全局受限修正，分类头仍按原正式损失更新。seed0 T3 raw90.4667%、centered94.2667%；T10 raw79.18%、centered86.16%，相对A分别+0.05/+0.27pp；raw AIA相对A反而约-0.3301pp。修正实际触发、结果有小幅净收益，但不能把相对LoRM的系统差全部归给该模块。
+
+10. C：A + FCCA 服务器聚合修正。保留本地SSB、A的选空间和Head-RegMean；依据跨客户端候选及训练fit/check评估调整服务器聚合，不叠加B的本地边界修正。seed0 T3 raw91.10%，相对A净正确数0，预设科学进展门槛未通过。用户后来明确授权C从自身T3续跑T10；T10 raw79.21%、centered85.92%，相对A净多8/3张，raw仍比LoRM低0.88pp，centered高1.77pp。是单seed开发结果，收益小；A/B/C历史运行已经完成关闭，不应重新启动它们冒充新证据。
+
+二、AdamW 分支：从这里发生主线偏离
+
+11. FedSPECTRA（2026-10-28）：Control 使用 RRS + AdamW + 当前输入旧类KL + Head-RegMean + FedAvg；MVP 新增谱状态与客户端增量输运；Full 再增加动态共享子空间。这三arm都不是本地 Muon/SSB 更新。用户随后明确停止，T10 未完成；共同 T8 raw Control77.6375%、MVP76.9875%、Full72.4000%，Full明显退化。停止状态和未完成结论保持，不自动复活旧三arm。
+
+12. 实际更新谱修正及后继（2026-10-29–30）：此前重新授权验证实际聚合更新谱修正后，错误地继承 FedSPECTRA 的 AdamW 配方；服务器候选先后尝试无门控、原目标门、符号门、谱切向、全矩阵、全已见类目标及rank8压缩。各自三seed T5 raw相对同AdamW Control均值与冻结判定：
+   - 无门控：+0.046667pp，失败；
+   - 原目标单向门：+0.073333pp，失败；
+   - 符号门：+0.060000pp，失败；
+   - 谱切向门：-0.066667pp，失败；
+   - 原目标全矩阵门：+0.193333pp，严格低于+.20pp，失败；
+   - 全已见类目标＋原目标保护门：+0.313333±0.385919pp，通过预设操作条件；seed1 raw负、平均遗忘增加，保护门零拒绝；
+   - 固定rank8：+0.280000±0.520000pp，通信达标，但相对未压缩full平均-0.033333pp，冻结联合条件失败。
+相关训练探针、训练外单轮、决策变化和保护门余量诊断详见当前实验汇总。所有这些数字均针对匹配的 AdamW Control，不是 Muon 效果，也不是独立确认。原五轮失败及rank8失败不可改写。
+
+三、可供选择的回退位置
+
+选项 4：SSB + Head-RegMean。保留较简单的 RRS、客户端 SSB 与头聚合，不继承后面的 A/B/C 模块；适合从较基础体系重建机制。注意两个新seed的严格配对验收限制。
+
+选项 A（第8项）：联邦聚合效用选空间 + SSB + Head-RegMean。已有seed0完整T10及各阶段证据，保留用户方法中联邦选空间与本地 SSB；相比选项4结构更完整。若后续另立新假设，需匹配相同SSB对照、明确成本及对实际更新的影响，不可将AdamW的正向结果当作新组合已经通过。
+
+选项 B（第9项）：在 A 上保留历史加权的本地SSB边界修正；T10 centered相对A+0.27pp、raw+0.05pp，同时raw AIA下降，机制贡献有限且需审慎验证。
+
+选项 C（第10项）：在 A 上保留服务器 FCCA 聚合修正，T10 raw相对A+0.08pp、centered+0.03pp，T3先前失败判定保持；它没有叠加B。
+
+建议：以 A 为可审阅的回退基座，保留第4项作为简洁的 SSB 参考，保留 B/C 为历史变体和负/有限收益证据。最终回退位置由用户选择；本建议不启动实验、不撤销停止要求、不自动增加seed或T10。
+
+四、证据来源（固定版本）
+
+本报告与来源固定为 7f1ef6ef9a7e02fb046b269a292053664bb1ceea；对照数据与完整协议可直接查看：
+原alpha=.05 FedMuon及原MuLoRA比较：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/formal_cifar_a005_s0_fedmuon/RESULTS_ZH.txt
+T1头部诊断：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/basic_repair_20261025/RESULTS_ZH.txt
+SSB + Head-RegMean T3：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/head_regmean_pilot_20261025/RESULTS_ZH.txt
+分类头 all-seen CE：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/head_loss_intervention_20261026/FINAL_RESULTS_ZH.txt
+训练内块去均值头目标：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/head_centered_loss_20261026/FINAL_RESULTS_ZH.txt
+旧类保持各支线：https://github.com/DLwbm123/FCL-Muon/tree/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports （frozen_encoder_t2、old_response_t2、head_subspace_t2、feature_anchor_t2、transport_head_t2）
+A 联邦效用 T3：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/aggregation_utility_20261026/PRO_REPORT_ZH.txt
+A/B 完整十任务：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/boundary_repair_20261027/FINAL_COMPARISON_ZH.txt
+C T3与T10：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/fcca_three_20261028/FINAL_REPORT_ZH.txt
+https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/fcca_ten_20261028/FINAL_REPORT_ZH.txt
+FedSPECTRA停止报告：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/fed_spectra_20261028/STOPPED_REPORT_ZH.txt
+AdamW完整路线及rank8结果：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/reports/current_results_20261030/RESULTS_ZH.txt
+原本地更新实现：https://github.com/DLwbm123/FCL-Muon/blob/7f1ef6ef9a7e02fb046b269a292053664bb1ceea/fcl/math.py
