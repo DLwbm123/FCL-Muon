@@ -1,0 +1,40 @@
+{
+  "status": "completed",
+  "return_code": 0,
+  "all_recorded_processes_exited": true,
+  "elapsed_seconds": 1378.183205127716,
+  "allocated_bytes_at_collection": 2914451456,
+  "new_training_visits": 60055,
+  "test_images_used": 0,
+  "CPU_checks_passed": 15,
+  "checks": [
+    {
+      "seed": 0,
+      "validation_images": 996,
+      "training_visits": 20020,
+      "validation_training_or_stats_accesses": 0,
+      "validation_grad_violations": 0,
+      "max_reference_angle_difference": 0.0,
+      "max_actual_FP32_norm_relative_error": 6.733176504157747e-10
+    },
+    {
+      "seed": 1,
+      "validation_images": 996,
+      "training_visits": 20020,
+      "validation_training_or_stats_accesses": 0,
+      "validation_grad_violations": 0,
+      "max_reference_angle_difference": 0.0,
+      "max_actual_FP32_norm_relative_error": 6.43353246467803e-10
+    },
+    {
+      "seed": 2,
+      "validation_images": 997,
+      "training_visits": 20015,
+      "validation_training_or_stats_accesses": 0,
+      "validation_grad_violations": 0,
+      "max_reference_angle_difference": 0.0,
+      "max_actual_FP32_norm_relative_error": 6.569807424357035e-10
+    }
+  ],
+  "RNG_scope": "CPU isolation checks and production restoration in probe helpers; no separately saved live RNG equality certificate."
+}

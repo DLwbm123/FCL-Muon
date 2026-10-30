@@ -1,0 +1,44 @@
+{
+  "per_seed": [
+    {
+      "seed": 0,
+      "new_training_visits": 20020,
+      "training_teacher_forward_images": 20020,
+      "stats_student_forward_images": 8008,
+      "candidate_student_forward_images": 13040,
+      "candidate_student_backward_images": 616,
+      "candidate_teacher_forward_images": 3912
+    },
+    {
+      "seed": 1,
+      "new_training_visits": 20020,
+      "training_teacher_forward_images": 20020,
+      "stats_student_forward_images": 8008,
+      "candidate_student_forward_images": 12950,
+      "candidate_student_backward_images": 598,
+      "candidate_teacher_forward_images": 3885
+    },
+    {
+      "seed": 2,
+      "new_training_visits": 20015,
+      "training_teacher_forward_images": 20015,
+      "stats_student_forward_images": 8006,
+      "candidate_student_forward_images": 12720,
+      "candidate_student_backward_images": 550,
+      "candidate_teacher_forward_images": 3816
+    }
+  ],
+  "totals": {
+    "new_training_visits": 60055,
+    "training_teacher_forward_images": 60055,
+    "stats_student_forward_images": 24022,
+    "candidate_student_forward_images": 38710,
+    "candidate_student_backward_images": 1764,
+    "candidate_teacher_forward_images": 11613
+  },
+  "total_student_forward_images": 122787,
+  "total_student_backward_images": 61819,
+  "total_teacher_forward_images": 71668,
+  "new_spectra_probe_records": [],
+  "communication_scope": "Single-process simulation. No measured distributed traffic; prefix training not charged as new."
+}
