@@ -1,0 +1,134 @@
+{
+  "status": "completed",
+  "protocol": "BOUNDARY_MATH_PROTOCOL_ZH.txt",
+  "zero_training": true,
+  "zero_image_access": true,
+  "zero_test_access": true,
+  "synthetic_results": [
+    {
+      "seed": 0,
+      "angle_radians": 0,
+      "relative_residual": 4.253233892397741e-16,
+      "zero_baseline_residual_norm": 4.1953142393738885
+    },
+    {
+      "seed": 0,
+      "angle_radians": 0.7853981633974483,
+      "relative_residual": 0.7071067811865475,
+      "zero_baseline_residual_norm": 4.1953142393738885
+    },
+    {
+      "seed": 0,
+      "angle_radians": 1.5707963267948966,
+      "relative_residual": 1.0,
+      "zero_baseline_residual_norm": 4.1953142393738885
+    },
+    {
+      "seed": 1,
+      "angle_radians": 0,
+      "relative_residual": 2.857778215010887e-16,
+      "zero_baseline_residual_norm": 3.074845440402427
+    },
+    {
+      "seed": 1,
+      "angle_radians": 0.7853981633974483,
+      "relative_residual": 0.7071067811865474,
+      "zero_baseline_residual_norm": 3.074845440402427
+    },
+    {
+      "seed": 1,
+      "angle_radians": 1.5707963267948966,
+      "relative_residual": 1.0,
+      "zero_baseline_residual_norm": 3.074845440402427
+    },
+    {
+      "seed": 2,
+      "angle_radians": 0,
+      "relative_residual": 3.675701184230246e-16,
+      "zero_baseline_residual_norm": 4.072213836477697
+    },
+    {
+      "seed": 2,
+      "angle_radians": 0.7853981633974483,
+      "relative_residual": 0.7071067811865475,
+      "zero_baseline_residual_norm": 4.072213836477697
+    },
+    {
+      "seed": 2,
+      "angle_radians": 1.5707963267948966,
+      "relative_residual": 1.0,
+      "zero_baseline_residual_norm": 4.072213836477697
+    },
+    {
+      "seed": 3,
+      "angle_radians": 0,
+      "relative_residual": 4.585376802165224e-16,
+      "zero_baseline_residual_norm": 5.79017498712179
+    },
+    {
+      "seed": 3,
+      "angle_radians": 0.7853981633974483,
+      "relative_residual": 0.7071067811865475,
+      "zero_baseline_residual_norm": 5.79017498712179
+    },
+    {
+      "seed": 3,
+      "angle_radians": 1.5707963267948966,
+      "relative_residual": 1.0,
+      "zero_baseline_residual_norm": 5.79017498712179
+    },
+    {
+      "seed": 4,
+      "angle_radians": 0,
+      "relative_residual": 3.223941235400475e-16,
+      "zero_baseline_residual_norm": 5.139811604013171
+    },
+    {
+      "seed": 4,
+      "angle_radians": 0.7853981633974483,
+      "relative_residual": 0.7071067811865475,
+      "zero_baseline_residual_norm": 5.139811604013171
+    },
+    {
+      "seed": 4,
+      "angle_radians": 1.5707963267948966,
+      "relative_residual": 1.0,
+      "zero_baseline_residual_norm": 5.139811604013171
+    }
+  ],
+  "noncommutativity_cases": {
+    "same": {
+      "weights": [
+        0.3,
+        0.7
+      ],
+      "difference_norm": 1.210736513712618e-06,
+      "phi_of_mean_norm": 2.168928861618042,
+      "mean_of_phi_norm": 2.168928384780884
+    },
+    "noncollinear": {
+      "weights": [
+        0.3,
+        0.7
+      ],
+      "difference_norm": 0.7566797733306885,
+      "phi_of_mean_norm": 2.0482115745544434,
+      "mean_of_phi_norm": 1.580764889717102
+    },
+    "cancellation": {
+      "weights": [
+        0.5,
+        0.5
+      ],
+      "difference_norm": 0.0,
+      "phi_of_mean_norm": 0.0,
+      "mean_of_phi_norm": 0.0
+    }
+  },
+  "limitations": [
+    "Synthetic geometry only; not evidence of continual-learning efficacy.",
+    "Terminal state checkpoints contain no task-boundary client momentum; historical momentum replay is unsupported.",
+    "SSB of averaged terminal momenta versus mean SSB is not full-trajectory bias."
+  ],
+  "elapsed_seconds": 0.14881014823913574
+}
