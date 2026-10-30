@@ -28,7 +28,7 @@ class ReadOnlyPilot(DiagnosticPilot):
             if used>=1_000_000_000:raise RuntimeError('Diagnostic write stop')
 
 
-def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock):
+def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock,decision_audit=False):
     initialize_rng(seed)
     x=torch.load(old/f'runs/seed{seed}/latest.pt',map_location='cpu',weights_only=False)
     pair=torch.load(old/f'runs/seed{seed}/pair_private.pt',map_location='cpu',weights_only=False)
@@ -92,6 +92,20 @@ def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock):
     assert all(torch.equal(a,b) for a,b in zip(heads,model.rows))
     difference={k:(check_selected['weighted'][k]-check_base['weighted'][k])/coverage for k in check_base['weighted']}
     deploy(baseline);assert all(torch.equal(a.detach().cpu(),b) for a,b in zip(model.b_parameters(),baseline))
+    decision_rows=None
+    if decision_audit:
+        from research.fed_spectra.decision_diagnostic import measure_decision_pair
+        decision_rows={}
+        for name,probe,base,chosen in [('selection',selection,fit_comp,fit_comp_candidate),('confirmation',confirm,check_comp,check_comp_candidate)]:
+            item=measure_decision_pair(p,probe,baseline,selected)
+            for point,reference in [('baseline',base),('candidate',chosen)]:
+                assert max(abs(item[f'{point}_metrics'][k]-reference['weighted'][k]/item['coverage']) for k in item[f'{point}_metrics'])<=2e-6
+            t=item['transition_fraction']
+            assert abs(sum(t[0])-base['weighted']['all_seen_accuracy']/item['coverage'])<1e-7
+            assert abs(sum(v[0] for v in t)-chosen['weighted']['all_seen_accuracy']/item['coverage'])<1e-7
+            decision_rows[name]=item
+        assert all(torch.equal(a.detach().cpu(),b) for a,b in zip(model.b_parameters(),baseline))
+        assert all(torch.equal(a,b) for a,b in zip(heads,model.rows))
     nonempty=sum(bool(g) for g in groups);bbytes=sum(b.numel()*4 for b in model.b_parameters())
     evaluations=[fit_base,fit_candidate,check_base,check_selected]
     row={'seed':seed,'status':'COMPLETED','task':4,'round':1,'new_training_visits':0,'test_images_used':0,
@@ -119,6 +133,9 @@ def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock):
       'hypothetical_full_gradient_FP32_upload_bytes_per_probe':nonempty*bbytes,
       'communication_scope':'training-only single-process diagnostic; distributed execution not implemented',
       'peak_gpu_allocated_bytes':torch.cuda.max_memory_allocated(),'elapsed_from_common_start':time.time()-clock['started']}
+    if decision_rows is not None:
+        row['decision_audit']=decision_rows
+        row['decision_extra_student_forward_images']=sum(v['student_forward_images'] for v in decision_rows.values())
     write(root/f'reports/seed{seed}.json',row)
     del p,model,raw,train_tf,test_tf,pair;gc.collect();torch.cuda.empty_cache()
     return row
@@ -135,7 +152,7 @@ def main():
     for seed,source in enumerate(private['controls']):
         torch.cuda.reset_peak_memory_stats()
         write(root/'reports/PROGRESS.json',{'seed':seed,'phase':'loading','time':time.time()})
-        rows.append(run(root,seed,Path(source),Path(private['diagnostic']),Path(private['direction']),Path(private['tangent']),Path(private['matrix']),clock))
+        rows.append(run(root,seed,Path(source),Path(private['diagnostic']),Path(private['direction']),Path(private['tangent']),Path(private['matrix']),clock,decision_audit=os.environ.get('DECISION_AUDIT')=='1'))
     values=[r['confirmation_normalized_difference']['loss'] for r in rows]
     comp=[r['competition_confirmation_difference']['competition_ce'] for r in rows]
     all_ce=[r['competition_confirmation_difference']['all_seen_ce'] for r in rows]

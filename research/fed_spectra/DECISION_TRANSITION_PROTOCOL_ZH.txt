@@ -1,0 +1,11 @@
+原矩阵候选的决策转移诊断（2026-10-30，运行前冻结）
+
+依据：竞争目标诊断未支持失配假设；三个seed确认CE_all和C均下降，所有客户端全已见类净accuracy差0。净值不能区分没有决策改变和正负抵消。seed0还有26.2111%确认权重客户端C上升，需保留异质性。
+问题：同一候选的逐图决策究竟如何变化？CE_all下降主要对应哪些原决策组？这是描述性机制诊断，不新增成功门槛，不作为全T5因果证据。
+固定复用共同T4首轮三个seed、原baseline/positive、原selection梯度、原eta.1角/范数的唯一矩阵candidate。selection/confirmation沿用原32图/客户端上限和不交叉规则、原client权重及确认coverage>=95%。重新运行原竞争诊断作四点复现，原已公开baseline/candidate加权CE/KL/loss/accuracy差<=1e-6；原竞争指标复现<=1e-6。无新候选、无优化更新、无新训练/测试、无checkpoint、无旧图回放。
+新增两组probe的成对前向：每个batch同一输入，在baseline和candidate各一次student前向，始终eval/no_grad。按baseline决策把每图固定归入三类：全已见类正确；当前块正确却被旧类抢走；当前块错误。两点分别记录三类，并汇总3x3转移矩阵；另报全类别argmax改变、正确转错误、错误转正确、当前块argmax改变、旧类winner变化的无权计数和client加权比例。错误转错误也单独报告，不以净accuracy推断预测不变。
+每个baseline组报告原client权重乘每client组内sum/n_client的CE_all、CE_cur、C及真类对最大旧logit间隔变化贡献；同时报告组权重和条件均值。必须可重构总均值（FP32统计容差2e-6），零权重组标null。只报原组的分解，不按观察结果重划组/调阈值、不挑seed。无“80%成功”等事后阈值；带符号贡献可相互抵消，不强行解释为正比例归因。
+记录无权样本数和加权比例的分母。confirmation权重除coverage，selection总权重1。断言转移行列和、baseline/candidate aggregate accuracy、净正确差和flip计数一致，所有head/参数/buffer/RNG在测量前后恢复。每批只保留临时CPU/设备张量，逐图ID/logits/预测不落盘，只输出汇总。
+成本：原竞争诊断全成本重复且完整计入；新增成对student前向=2*(selection图数+confirmation图数)，无额外teacher/反向。当前图属于已训练图，不是真holdout，不测旧图安全。诊断计算不混称新本地训练访问。
+资源：独立root，准备/CPU起点计时。内部2400s、外部2700s+30s grace，总<46min；2GB硬限/1GB写停止，预计<100MB。旧资源只读复用，GPU至少18GB、挂载/容量/小读写探针；中性主子入口，原始clock不可重置。CPU检查三类分区、相互抵消翻转、组贡献重构和状态/RNG隔离通过后运行。
+完成发布所有seed汇总、完整成本、协议/源码和限制。三个端点结果只能支持下一主线假设设计，不能自动扩大角度、加seed/T10或启动完整训练；此前五轮T5失败保持。唯一30分钟心跳合并状态和后继分析。
