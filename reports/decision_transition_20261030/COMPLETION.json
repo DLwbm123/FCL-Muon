@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "return_code": 0,
+  "all_recorded_processes_exited": true,
+  "elapsed_seconds": 294.55729699134827,
+  "allocated_bytes_at_collection": 3510272,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "source_reproduction": [
+    {
+      "seed": 0,
+      "original_objective_max_abs_difference": 0.0,
+      "competition_max_abs_difference": 0.0
+    },
+    {
+      "seed": 1,
+      "original_objective_max_abs_difference": 0.0,
+      "competition_max_abs_difference": 0.0
+    },
+    {
+      "seed": 2,
+      "original_objective_max_abs_difference": 0.0,
+      "competition_max_abs_difference": 0.0
+    }
+  ],
+  "CPU_checks_passed": 5,
+  "isolation": "CPU state/RNG/gradient isolation checks passed; real measurement restores parameters/RNG and checks buffers; real run verifies baseline and head restoration. No separate live RNG equality certificate."
+}

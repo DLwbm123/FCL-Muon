@@ -1,0 +1,42 @@
+{
+  "per_seed": [
+    {
+      "seed": 0,
+      "objective_student_forward_images": 1202,
+      "competition_extra_student_forward_images": 1202,
+      "decision_extra_student_forward_images": 1202,
+      "total_student_forward_images": 3606,
+      "total_student_backward_images": 1202,
+      "teacher_forward_images": 1202
+    },
+    {
+      "seed": 1,
+      "objective_student_forward_images": 1140,
+      "competition_extra_student_forward_images": 1140,
+      "decision_extra_student_forward_images": 1140,
+      "total_student_forward_images": 3420,
+      "total_student_backward_images": 1140,
+      "teacher_forward_images": 1140
+    },
+    {
+      "seed": 2,
+      "objective_student_forward_images": 1070,
+      "competition_extra_student_forward_images": 1070,
+      "decision_extra_student_forward_images": 1070,
+      "total_student_forward_images": 3210,
+      "total_student_backward_images": 1070,
+      "teacher_forward_images": 1070
+    }
+  ],
+  "totals": {
+    "objective_student_forward_images": 3412,
+    "competition_extra_student_forward_images": 3412,
+    "decision_extra_student_forward_images": 3412,
+    "total_student_forward_images": 10236,
+    "total_student_backward_images": 3412,
+    "teacher_forward_images": 3412
+  },
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "communication": "No distributed network; hypothetical gradient bytes are not actual traffic."
+}

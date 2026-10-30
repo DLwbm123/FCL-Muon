@@ -1,0 +1,433 @@
+{
+  "status": "COMPLETED",
+  "total_probe_images": 1706,
+  "total_all_seen_prediction_changes": 0,
+  "per_probe": [
+    {
+      "seed": 0,
+      "probe": "selection",
+      "images": 313,
+      "counts": {
+        "prediction_changed": 0,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 0
+      },
+      "weighted_fractions": {
+        "prediction_changed": 0.0,
+        "correct_to_wrong": 0.0,
+        "wrong_to_correct": 0.0,
+        "wrong_to_different_wrong": 0.0,
+        "current_prediction_changed": 0.0,
+        "old_winner_changed": 0.0
+      },
+      "groups": [
+        {
+          "baseline_group": "all_seen_correct",
+          "weight": 0.952775,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0016652230009436607,
+            "current_ce": -0.0002341626763343811,
+            "competition_ce": -0.0014310603246092796,
+            "true_minus_max_old": 0.011968922781571745
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.0017477610148709409,
+            "current_ce": -0.00024576912317638593,
+            "competition_ce": -0.0015019918916945548,
+            "true_minus_max_old": 0.012562171322265744
+          }
+        },
+        {
+          "baseline_group": "current_correct_stolen",
+          "weight": 0.03238125,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0003973965242505074,
+            "current_ce": -0.00026226564459502696,
+            "competition_ce": -0.00013513090759515763,
+            "true_minus_max_old": 0.0004039874568581581
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.012272426921459405,
+            "current_ce": -0.008099305758580257,
+            "competition_ce": -0.00417312202571419,
+            "true_minus_max_old": 0.012475968557673286
+          }
+        },
+        {
+          "baseline_group": "current_wrong",
+          "weight": 0.01484375,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0005273508213460446,
+            "current_ce": -0.0004884492374956608,
+            "competition_ce": -3.8901583850383756e-05,
+            "true_minus_max_old": 0.00046926804315298797
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.03552679217489142,
+            "current_ce": -0.032906053894444516,
+            "competition_ce": -0.0026207382804469058,
+            "true_minus_max_old": 0.03161384711767498
+          }
+        }
+      ]
+    },
+    {
+      "seed": 0,
+      "probe": "confirmation",
+      "images": 288,
+      "counts": {
+        "prediction_changed": 0,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 0
+      },
+      "weighted_fractions": {
+        "prediction_changed": 0.0,
+        "correct_to_wrong": 0.0,
+        "wrong_to_correct": 0.0,
+        "wrong_to_different_wrong": 0.0,
+        "current_prediction_changed": 0.0,
+        "old_winner_changed": 0.0
+      },
+      "groups": [
+        {
+          "baseline_group": "all_seen_correct",
+          "weight": 0.9548178391959798,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0013659777608349096,
+            "current_ce": -0.00017942581269609267,
+            "competition_ce": -0.001186551948138817,
+            "true_minus_max_old": 0.010557236738652739
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.0014306160869230866,
+            "current_ce": -0.00018791627610056087,
+            "competition_ce": -0.0012426998108225258,
+            "true_minus_max_old": 0.011056807178574119
+          }
+        },
+        {
+          "baseline_group": "current_correct_stolen",
+          "weight": 0.039780150753768846,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.00012047660785104762,
+            "current_ce": -4.428928371649891e-05,
+            "competition_ce": -7.61873241345487e-05,
+            "true_minus_max_old": 0.00018299098327830807
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.0030285608668698533,
+            "current_ce": -0.0011133513291752134,
+            "competition_ce": -0.0019152095376946396,
+            "true_minus_max_old": 0.004600057561646399
+          }
+        },
+        {
+          "baseline_group": "current_wrong",
+          "weight": 0.005402010050251256,
+          "metric_delta_contribution": {
+            "all_seen_ce": 3.338017355856584e-05,
+            "current_ce": 4.7087714300682796e-05,
+            "competition_ce": -1.3707540742116956e-05,
+            "true_minus_max_old": -3.0468142212335787e-05
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": 0.006179213523864746,
+            "current_ce": 0.008716702461242676,
+            "competition_ce": -0.0025374889373779297,
+            "true_minus_max_old": -0.005640149116516113
+          }
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "probe": "selection",
+      "images": 301,
+      "counts": {
+        "prediction_changed": 0,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 1,
+        "old_winner_changed": 0
+      },
+      "weighted_fractions": {
+        "prediction_changed": 0.0,
+        "correct_to_wrong": 0.0,
+        "wrong_to_correct": 0.0,
+        "wrong_to_different_wrong": 0.0,
+        "current_prediction_changed": 0.003475,
+        "old_winner_changed": 0.0
+      },
+      "groups": [
+        {
+          "baseline_group": "all_seen_correct",
+          "weight": 0.9398125,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0017357602663338185,
+            "current_ce": -0.000554197034239769,
+            "competition_ce": -0.0011815632320940493,
+            "true_minus_max_old": 0.00906114438707009
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.0018469218767933162,
+            "current_ce": -0.0005896889371441314,
+            "competition_ce": -0.0012572329396491845,
+            "true_minus_max_old": 0.00964143846466193
+          }
+        },
+        {
+          "baseline_group": "current_correct_stolen",
+          "weight": 0.046656249999999996,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0009627970337867737,
+            "current_ce": -0.00039669114574790004,
+            "competition_ce": -0.0005661059401929378,
+            "true_minus_max_old": 0.001300733932852745
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.020635971253299905,
+            "current_ce": -0.008502422413886672,
+            "competition_ce": -0.01213354995724984,
+            "true_minus_max_old": 0.02787909300153238
+          }
+        },
+        {
+          "baseline_group": "current_wrong",
+          "weight": 0.013531249999999998,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0009062029629945755,
+            "current_ce": -0.0008736087843775749,
+            "competition_ce": -3.259459286928177e-05,
+            "true_minus_max_old": 0.0009676484420895576
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.06697111966703562,
+            "current_ce": -0.06456231200942818,
+            "competition_ce": -0.002408838272094727,
+            "true_minus_max_old": 0.07151212505049849
+          }
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "probe": "confirmation",
+      "images": 269,
+      "counts": {
+        "prediction_changed": 0,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 0
+      },
+      "weighted_fractions": {
+        "prediction_changed": 0.0,
+        "correct_to_wrong": 0.0,
+        "wrong_to_correct": 0.0,
+        "wrong_to_different_wrong": 0.0,
+        "current_prediction_changed": 0.0,
+        "old_winner_changed": 0.0
+      },
+      "groups": [
+        {
+          "baseline_group": "all_seen_correct",
+          "weight": 0.9297187109561784,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0014044840603460514,
+            "current_ce": -0.000349465311419412,
+            "competition_ce": -0.0010550191343787737,
+            "true_minus_max_old": 0.009508059406300376
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.0015106548290305956,
+            "current_ce": -0.0003758828420910244,
+            "competition_ce": -0.001134772401529629,
+            "true_minus_max_old": 0.010226813007260785
+          }
+        },
+        {
+          "baseline_group": "current_correct_stolen",
+          "weight": 0.04768503879316994,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0006431690846683452,
+            "current_ce": -0.00013155652063675605,
+            "competition_ce": -0.0005116130988837756,
+            "true_minus_max_old": 0.0008616296608117122
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.013487859105201528,
+            "current_ce": -0.002758863659676822,
+            "competition_ce": -0.010729006661876836,
+            "true_minus_max_old": 0.018069182339327906
+          }
+        },
+        {
+          "baseline_group": "current_wrong",
+          "weight": 0.022596250250651696,
+          "metric_delta_contribution": {
+            "all_seen_ce": -9.893854108534666e-05,
+            "current_ce": 3.725578267062288e-05,
+            "competition_ce": -0.0001361939383038352,
+            "true_minus_max_old": 0.00019512057053390236
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.0043785380312157405,
+            "current_ce": 0.0016487595179447258,
+            "competition_ce": -0.006027280490926022,
+            "true_minus_max_old": 0.008635086280666188
+          }
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "probe": "selection",
+      "images": 279,
+      "counts": {
+        "prediction_changed": 0,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 0
+      },
+      "weighted_fractions": {
+        "prediction_changed": 0.0,
+        "correct_to_wrong": 0.0,
+        "wrong_to_correct": 0.0,
+        "wrong_to_different_wrong": 0.0,
+        "current_prediction_changed": 0.0,
+        "old_winner_changed": 0.0
+      },
+      "groups": [
+        {
+          "baseline_group": "all_seen_correct",
+          "weight": 0.9446687500000001,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0019816390261054037,
+            "current_ce": -0.000451621912419796,
+            "competition_ce": -0.0015300171136856079,
+            "true_minus_max_old": 0.01266633806489408
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.002097707822033283,
+            "current_ce": -0.00047807436460642523,
+            "competition_ce": -0.0016196334574268576,
+            "true_minus_max_old": 0.01340823231941787
+          }
+        },
+        {
+          "baseline_group": "current_correct_stolen",
+          "weight": 0.05023125,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0006816452153027057,
+            "current_ce": -0.00027367671877145765,
+            "competition_ce": -0.0004079662427306175,
+            "true_minus_max_old": 0.0007907371196895838
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.013570142397465835,
+            "current_ce": -0.005448335822251241,
+            "competition_ce": -0.008121761706718775,
+            "true_minus_max_old": 0.015741935940068858
+          }
+        },
+        {
+          "baseline_group": "current_wrong",
+          "weight": 0.0051,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.00017659263610839845,
+            "current_ce": -0.0002927107572555542,
+            "competition_ce": 0.00011611812114715577,
+            "true_minus_max_old": 6.59571647644043e-05
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.034626007080078125,
+            "current_ce": -0.05739426612854004,
+            "competition_ce": 0.022768259048461914,
+            "true_minus_max_old": 0.012932777404785156
+          }
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "probe": "confirmation",
+      "images": 256,
+      "counts": {
+        "prediction_changed": 0,
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0,
+        "current_prediction_changed": 0,
+        "old_winner_changed": 0
+      },
+      "weighted_fractions": {
+        "prediction_changed": 0.0,
+        "correct_to_wrong": 0.0,
+        "wrong_to_correct": 0.0,
+        "wrong_to_different_wrong": 0.0,
+        "current_prediction_changed": 0.0,
+        "old_winner_changed": 0.0
+      },
+      "groups": [
+        {
+          "baseline_group": "all_seen_correct",
+          "weight": 0.9307062487442234,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0015189300066876992,
+            "current_ce": -0.00025875678202498504,
+            "competition_ce": -0.001260173224662714,
+            "true_minus_max_old": 0.010657541286735461
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.0016320187048675671,
+            "current_ce": -0.00027802196705364185,
+            "competition_ce": -0.0013539967378139253,
+            "true_minus_max_old": 0.011451025821643932
+          }
+        },
+        {
+          "baseline_group": "current_correct_stolen",
+          "weight": 0.049942234277677314,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.0006469375898686187,
+            "current_ce": -0.00024890441088964353,
+            "competition_ce": -0.0003980339899799875,
+            "true_minus_max_old": 0.0008891148094865531
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.01295371741423632,
+            "current_ce": -0.004983846127222553,
+            "competition_ce": -0.007969887525794911,
+            "true_minus_max_old": 0.017802864095809202
+          }
+        },
+        {
+          "baseline_group": "current_wrong",
+          "weight": 0.019351516978099257,
+          "metric_delta_contribution": {
+            "all_seen_ce": -0.00028810379003122767,
+            "current_ce": -0.00018036779130777009,
+            "competition_ce": -0.00010773599872345757,
+            "true_minus_max_old": 0.0002927252263435523
+          },
+          "conditional_mean_delta": {
+            "all_seen_ce": -0.01488791759102318,
+            "current_ce": -0.009320602178728325,
+            "competition_ce": -0.005567315412294856,
+            "true_minus_max_old": 0.015126732786625411
+          }
+        }
+      ]
+    }
+  ]
+}
