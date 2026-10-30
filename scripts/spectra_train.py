@@ -124,6 +124,8 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
             decomposed=torch.autograd.grad(cur+competition+kl,model.b_parameters())
             for a,b in zip(direct,decomposed):torch.testing.assert_close(a,b,atol=1e-7,rtol=1e-4)
             result.update(all_seen_objective_preflight=True,all_seen_gradient_images=len(ids2),
+                preflight_student_forward_images=5*len(ids)+len(ids2),
+                preflight_student_backward_images=len(ids)+2*len(ids2),preflight_teacher_forward_images=0,
                 maximum_gradient_decomposition_difference=max(float((a-b).abs().max()) for a,b in zip(direct,decomposed)),
                 all_seen_preflight_scope='two-head real ViT on four current training images with synthetic adapter increments; no test selection')
             del z,direct,decomposed

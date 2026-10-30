@@ -15,6 +15,8 @@ def main():
     for seed in range(3):
         key=str(seed);folder=OUT/f'seed{seed}'
         report=json.loads((folder/'FINAL_REPORT.json').read_text());seeds[key]=report
+        preflight=json.loads((folder/'REAL_PREFLIGHT.json').read_text())
+        assert preflight['passed'] and preflight['all_seen_objective_preflight']
         assert report['status']=='COMPLETED_QUALIFIED' and report['seed']==seed
         for name,path in REFERENCE_FOLDERS.items():
             references[name][key]=json.loads((ROOT/f'reports/{path}/seed{seed}/FINAL_REPORT.json').read_text())['arms']['global']
@@ -93,6 +95,8 @@ def main():
             'teacher_probe_forward_images':a['training_gate']['teacher_forward_images'],'student_probe_backward_images':a['training_gate']['backward_images'],
             'additional_logical_communication_bytes':sum(gc.values())-sum(cc.values()),'additional_logical_communication_percent':100*(sum(gc.values())/sum(cc.values())-1),
             'all_seen_guard_scalar_upload_bytes':gc['all_seen_guard_scalar_upload']}
+        preflight=json.loads((OUT/f'seed{s}/REAL_PREFLIGHT.json').read_text())
+        for key in ('preflight_student_forward_images','preflight_student_backward_images','preflight_teacher_forward_images'):cost[s][key]=preflight[key]
     result={'status':'COMPLETED_QUALIFIED','registered_seeds':[0,1,2],'scientific_gate_passed':all(conditions.values()),'conditions':conditions,
         'per_seed':seeds,'reference_arms':references,'differences':differences,'gate_by_seed_task':gates,'qualification_audit':audit,'additional_cost':cost,
         'completion':json.loads((OUT/'COMPLETION.json').read_text()),
