@@ -188,13 +188,15 @@ def main():
     lines+=['','本报告不证明普遍优于LoRM、不作统计显著性或T10结论。不因Bures/有效秩等代理变化宣称性能收益。',
         '完整分阶段新旧类、方向混淆、矩阵与同图净变化见FINAL_REPORT.json；逐层谱细节见QUALIFICATION_T5.json。',
         '权重、teacher、逐图logits/ID及完整运行日志保留私有；公开聚合报告、配置、源码和验收摘要。']
-    if gated:lines+=['训练目标门：仅同probe CE+KL改善>1e-6时接受eta=.1候选，否则精确原FedAvg。对照复用已合格同seed五任务运行；新方案有额外probe/逻辑通信开销，不是零成本比较。',json.dumps(arms['global']['training_gate'],ensure_ascii=False)]
+    if gated:lines+=[('训练目标门：全类CE+旧KL改善>1e-6且原CE_cur+KL不增超过1e-6才接受，否则精确FedAvg。' if records['global']['config'].get('all_seen_gate') else '训练目标门：同probe原CE+KL改善>1e-6才接受，否则精确FedAvg。')+' 对照复用已合格同seed运行，所有额外probe/逻辑通信计费。',json.dumps(arms['global']['training_gate'],ensure_ascii=False)]
     if records['global']['config'].get('direction_selection'):
         lines+=['方向版本：训练梯度在原候选与等范数反射方向间固定选择，再应用原训练接受门；新增反向成本，负向不是原谱插值，不能将原候选统计当实际部署。']
     if records['global']['config'].get('spectral_tangent'):
         lines+=['谱切向版本：客户端训练梯度先投影到公共SVD模式，再FP64聚合；按梯度切向调整奇异值，参考角度不超过eta.1候选并解析限制非负，随后沿用训练接受门。成本包含SVD基下发/模式向量上传和额外反向。']
-    if records['global']['config'].get('matrix_tangent'):
+    if records['global']['config'].get('matrix_tangent') and not records['global']['config'].get('rank8_transport'):
         lines+=['全矩阵切向版本：每client本地FP32完整B梯度作为模拟消息，server按原权重FP64累加；范数球切向在原参考角内旋转，允许改变奇异向量/谱，无原支持保持声明。通信包含完整梯度上传，梯度不落盘，训练门不保证旧类安全。']
+    if records['global']['config'].get('rank8_transport'):
+        lines+=['固定rank8传输：FP32客户端梯度做FP64截断SVD，两个FP32因子上传，server FP64重构后加权。报告真实因子载荷及SVD计算；方向仍同参考角/范数，不保证完整轨迹泛化或旧类安全。']
     (report/'FINAL_REPORT_ZH.txt').write_text('\n'.join(lines)+'\n')
     print(json.dumps({'report_ready':True,'scientific_conditions':conditions}))
 
