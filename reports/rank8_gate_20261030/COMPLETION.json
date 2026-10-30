@@ -1,0 +1,33 @@
+{
+  "status": "COMPLETED_QUALIFIED",
+  "all_recorded_processes_exited": true,
+  "started": 1793346993.13938,
+  "elapsed_seconds": 20369.019402980804,
+  "allocated_bytes_at_collection": 2937098240,
+  "new_training_visits": 1875000,
+  "seeds": [
+    {
+      "seed": 0,
+      "status": "completed",
+      "return_code": 0,
+      "qualified": true,
+      "elapsed_seconds": 18280.80048584938
+    },
+    {
+      "seed": 1,
+      "status": "completed",
+      "return_code": 0,
+      "qualified": true,
+      "elapsed_seconds": 18953.3781042099
+    },
+    {
+      "seed": 2,
+      "status": "completed",
+      "return_code": 0,
+      "qualified": true,
+      "elapsed_seconds": 20369.019402980804
+    }
+  ],
+  "rank8_protocol_used_amended_preflight_from_start": true,
+  "new_preflight_failure": false
+}
