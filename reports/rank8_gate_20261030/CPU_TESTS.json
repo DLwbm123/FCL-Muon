@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "scope": "rank8 client wire oracle, exact rejection, recovery, cost, config and matrix/all-seen regression"
+}

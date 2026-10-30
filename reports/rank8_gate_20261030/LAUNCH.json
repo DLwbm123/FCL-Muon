@@ -1,0 +1,26 @@
+{
+  "started": 1793346993.13938,
+  "maximum_seconds": 27900,
+  "outer_timeout_seconds": 28600,
+  "kill_grace_seconds": 60,
+  "storage_limit_bytes": 24000000000,
+  "write_stop_bytes": 20000000000,
+  "status": "RUNNING_NOT_COMPLETE",
+  "GPUs": [
+    0,
+    1,
+    2
+  ],
+  "CPU_tests_passed": 22,
+  "real_GPU_preflight_passed_all": true,
+  "neutral_main_and_worker_commands_verified": true,
+  "allocated_bytes_initial": 6656000,
+  "new_training_visits_planned": 1875000,
+  "initial_phase": "T1 task_start",
+  "original_FP32_pointwise_passed": [
+    true,
+    false,
+    true
+  ],
+  "precision_oracle_note": "Common precision amendment frozen before this experiment; no new preflight failure or retry."
+}

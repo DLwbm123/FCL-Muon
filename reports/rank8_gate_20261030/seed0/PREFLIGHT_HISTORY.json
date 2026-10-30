@@ -1,0 +1,8 @@
+{
+  "additional_cost": {
+    "preflight_student_forward_images": 0,
+    "preflight_student_backward_images": 0,
+    "preflight_teacher_forward_images": 0
+  },
+  "scope": "No earlier attempts in this experiment. The common precision amendment is part of the frozen protocol."
+}

@@ -1,0 +1,6 @@
+{
+  "commit": "5127bea20d18ede09fb20aa0f27ae4bfa11d6dc7",
+  "protocol": "research/fed_spectra/RANK8_GATE_PROTOCOL_ZH.txt",
+  "CPU_scientific_source": "e73199a",
+  "post_test_change": "Report prose only; scientific implementation unchanged."
+}
