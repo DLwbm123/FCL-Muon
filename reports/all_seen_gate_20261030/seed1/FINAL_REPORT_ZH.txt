@@ -1,0 +1,44 @@
+全已见类目标与原目标保护门：五任务配对结果
+结论：未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。
+Control eta=0；候选为原eta.1角度的全矩阵切向。全已见类CE+旧KL改善且原CE_cur+KL不恶化才接受，正式client训练不变。
+单位：精度/AIA为%，遗忘为pp。raw主指标，centered仅诊断。
+任务 | 路线 | 视图 | overall | old | new | AIA | forgetting | W | S
+T1 | control | raw | 99.1000 | NA | 99.1000 | 99.1000 | NA | 9 | 0
+T1 | control | centered | 99.1000 | NA | 99.1000 | 99.1000 | NA | 9 | 0
+T1 | global | raw | 99.2000 | NA | 99.2000 | 99.2000 | NA | 8 | 0
+T1 | global | centered | 99.2000 | NA | 99.2000 | 99.2000 | NA | 8 | 0
+T2 | control | raw | 95.0500 | 98.3000 | 91.8000 | 97.0750 | 0.8000 | 23 | 76
+T2 | control | centered | 95.8500 | 97.7000 | 94.0000 | 97.4750 | 1.4000 | 23 | 60
+T2 | global | raw | 95.1500 | 98.2000 | 92.1000 | 97.1750 | 1.0000 | 23 | 74
+T2 | global | centered | 95.8000 | 97.7000 | 93.9000 | 97.5000 | 1.5000 | 23 | 61
+T3 | control | raw | 91.1000 | 93.9500 | 85.4000 | 95.0833 | 1.5000 | 45 | 222
+T3 | control | centered | 94.1333 | 95.2000 | 92.0000 | 96.3611 | 1.3500 | 45 | 131
+T3 | global | raw | 91.2000 | 94.0000 | 85.6000 | 95.1833 | 1.6500 | 44 | 220
+T3 | global | centered | 94.1333 | 95.1000 | 92.2000 | 96.3778 | 1.4500 | 44 | 132
+T4 | control | raw | 88.8000 | 89.2333 | 87.5000 | 93.5125 | 2.8667 | 67 | 381
+T4 | control | centered | 91.8000 | 93.2000 | 87.6000 | 95.2208 | 1.8333 | 67 | 261
+T4 | global | raw | 88.9250 | 89.5333 | 87.1000 | 93.6188 | 2.7667 | 65 | 378
+T4 | global | centered | 91.8500 | 93.2333 | 87.7000 | 95.2458 | 1.8667 | 65 | 261
+T5 | control | raw | 86.1600 | 87.8000 | 79.6000 | 92.0420 | 3.1500 | 93 | 599
+T5 | control | centered | 90.4400 | 90.8000 | 89.0000 | 94.2647 | 2.3750 | 93 | 385
+T5 | global | raw | 86.0400 | 87.8000 | 79.0000 | 92.1030 | 3.2000 | 90 | 608
+T5 | global | centered | 90.2800 | 90.7000 | 88.6000 | 94.2527 | 2.5500 | 90 | 396
+
+T5 raw新方案减Control：{"overall_percent": -0.11999999999999034, "old_percent": 0.0, "new_percent": -0.6000000000000085, "AIA_percent": 0.06099999999999284, "forgetting_pp": 0.04999999999999982, "S": 9}
+预先固定条件：{"T5_raw_gain": false, "raw_AIA": true, "raw_old": true, "raw_new": true, "cross_task_stolen": false, "both_reload_qualified": true}
+T5同图纠正/破坏：{"raw": {"images": 5000, "corrected": 27, "destroyed": 33, "net_corrected": -6, "accuracy_delta_pp": -0.12}, "centered": {"images": 5000, "corrected": 16, "destroyed": 24, "net_corrected": -8, "accuracy_delta_pp": -0.16}}
+遗忘主表最大值包含当前阶段，与评测代码一致；排除当前阶段的有符号版本另存JSON。
+两路线均250客户端轮/625000训练访问，T3/T5实际checkpoint重载raw和centered预测一致；没有按T3分数选择eta或省略T5。
+
+control机制：{"eta": 0.0, "rounds": 25, "layer_QV_records": 600, "identity_records": 600, "mean_relative_correction": 0.0, "maximum_deployed_norm_relative_error": 0.0, "mean_effective_energy_rank_before": 15.907543467171951, "mean_effective_energy_rank_after": 15.907543467171951, "singular_scale_min": 1.0, "singular_scale_max": 1.0, "minimum_cosine_with_fedavg": 0.9999999999999889, "operator_seconds": 8.898277130909264, "clipping": "not used", "Bures_fallback": "not used"}
+control成本：{"client_rounds": 250, "training_visits": 625000, "stats_visits": 150000, "anchor_forward_images": 500000, "extra_probe_forward_images": 0, "extra_probe_backward_images": 0, "logical_communication_bytes": {"RRS_raw_upload": 2831155200, "A_broadcast": 58982400, "B_download": 589824000, "current_head_download": 7680000, "head_Gram_upload": 1179648000, "B_upload": 589824000, "current_head_upload": 7680000, "task_end_B_download": 117964800, "task_end_head_download": 1536000}, "peak_gpu_allocated_bytes": 2356347392, "elapsed_seconds": 10252.655414581299}
+
+global机制：{"eta": 0.1, "rounds": 25, "layer_QV_records": 600, "identity_records": 0, "mean_relative_correction": 0.010988182972046729, "maximum_deployed_norm_relative_error": 2.199268692839316e-08, "mean_effective_energy_rank_before": 15.839293485299962, "mean_effective_energy_rank_after": 15.836550501257868, "singular_scale_min": 0.9831804181623671, "singular_scale_max": 1.0417118082780616, "minimum_cosine_with_fedavg": 0.999436866882956, "operator_seconds": 8.19136719731614, "clipping": "not used", "Bures_fallback": "not used"}
+global成本：{"client_rounds": 250, "training_visits": 625000, "stats_visits": 150000, "anchor_forward_images": 500000, "extra_probe_forward_images": 27960, "extra_probe_backward_images": 7790, "logical_communication_bytes": {"RRS_raw_upload": 2831155200, "A_broadcast": 58982400, "B_download": 589824000, "current_head_download": 7680000, "head_Gram_upload": 1179648000, "B_upload": 589824000, "current_head_upload": 7680000, "gate_B_candidates_broadcast": 1179648000, "gate_shared_head_broadcast": 7680000, "gate_scalar_upload": 8000, "all_seen_guard_scalar_upload": 4000, "matrix_full_gradient_upload": 589824000, "task_end_B_download": 117964800, "task_end_head_download": 1536000}, "peak_gpu_allocated_bytes": 2357602304, "elapsed_seconds": 10443.046062707901}
+
+本报告不证明普遍优于LoRM、不作统计显著性或T10结论。不因Bures/有效秩等代理变化宣称性能收益。
+完整分阶段新旧类、方向混淆、矩阵与同图净变化见FINAL_REPORT.json；逐层谱细节见QUALIFICATION_T5.json。
+权重、teacher、逐图logits/ID及完整运行日志保留私有；公开聚合报告、配置、源码和验收摘要。
+训练目标门：仅同probe CE+KL改善>1e-6时接受eta=.1候选，否则精确原FedAvg。对照复用已合格同seed五任务运行；新方案有额外probe/逻辑通信开销，不是零成本比较。
+{"accepted_rounds": 25, "rounds": 25, "decisions": [{"task": 1, "round": 1, "accepted": true, "loss_difference": -0.009986655076127504}, {"task": 1, "round": 2, "accepted": true, "loss_difference": -0.0024666189819108723}, {"task": 1, "round": 3, "accepted": true, "loss_difference": -0.0013346685258788064}, {"task": 1, "round": 4, "accepted": true, "loss_difference": -0.00044493902488611757}, {"task": 1, "round": 5, "accepted": true, "loss_difference": -0.00012522367462515852}, {"task": 2, "round": 1, "accepted": true, "loss_difference": -0.008379790974594625}, {"task": 2, "round": 2, "accepted": true, "loss_difference": -0.00535297789452599}, {"task": 2, "round": 3, "accepted": true, "loss_difference": -0.003406530596502144}, {"task": 2, "round": 4, "accepted": true, "loss_difference": -0.0018371713643893783}, {"task": 2, "round": 5, "accepted": true, "loss_difference": -0.0004226780323311474}, {"task": 3, "round": 1, "accepted": true, "loss_difference": -0.005930388585990265}, {"task": 3, "round": 2, "accepted": true, "loss_difference": -0.0035904991690069443}, {"task": 3, "round": 3, "accepted": true, "loss_difference": -0.0025772230754140257}, {"task": 3, "round": 4, "accepted": true, "loss_difference": -0.001379521427676056}, {"task": 3, "round": 5, "accepted": true, "loss_difference": -0.0003549700017552726}, {"task": 4, "round": 1, "accepted": true, "loss_difference": -0.006900899517792269}, {"task": 4, "round": 2, "accepted": true, "loss_difference": -0.004566504641575708}, {"task": 4, "round": 3, "accepted": true, "loss_difference": -0.003587772834836467}, {"task": 4, "round": 4, "accepted": true, "loss_difference": -0.0018132508762879196}, {"task": 4, "round": 5, "accepted": true, "loss_difference": -0.0004523185709490729}, {"task": 5, "round": 1, "accepted": true, "loss_difference": -0.010432566012977595}, {"task": 5, "round": 2, "accepted": true, "loss_difference": -0.007251685604709235}, {"task": 5, "round": 3, "accepted": true, "loss_difference": -0.005387612911663009}, {"task": 5, "round": 4, "accepted": true, "loss_difference": -0.003143102026707534}, {"task": 5, "round": 5, "accepted": true, "loss_difference": -0.0006170142963761727}], "student_forward_images": 15580, "teacher_forward_images": 12380, "backward_images": 7790, "matrix_tangent": true, "objective": "all_seen_ce_plus_old_kl", "current_guard_rejected_rounds": 0, "original_loss_differences": [-0.009986655076127504, -0.0024666189819108723, -0.0013346685258788064, -0.00044493902488611757, -0.00012522367462515852, -0.001791018387116483, -0.0008547112763859221, -0.0004383901078719582, -0.0002512660382315568, -5.807381747291451e-05, -0.0011490361978765545, -0.0005099837100133314, -0.0003168893904425124, -0.00014653527552727086, -3.872310030274273e-05, -0.001166720026056292, -0.0005212326240260218, -0.00030807764704804397, -0.00011510257280897274, -2.6593692321330575e-05, -0.0015550743946572687, -0.0007663328546797799, -0.0004537671928061121, -0.00026213694966863155, -4.905632643494029e-05]}
+全矩阵切向版本：每client本地FP32完整B梯度作为模拟消息，server按原权重FP64累加；范数球切向在原参考角内旋转，允许改变奇异向量/谱，无原支持保持声明。通信包含完整梯度上传，梯度不落盘，训练门不保证旧类安全。

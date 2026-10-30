@@ -1,0 +1,80 @@
+全已见类目标与原目标保护门：三seed完整T5
+
+结论：通过全部冻结科学条件。仍限于本数据集/alpha/T5三seed探索，不作显著性或T10结论。
+T5 raw对control均值+0.313333 ± 0.385919pp（样本SD）；各seed[0.4399999999999977, -0.11999999999999034, 0.6199999999999903]。
+冻结条件：{"mean_raw_gain_ge_0.2pp": true, "mean_AIA_nonnegative": true, "mean_old_nonnegative": true, "every_seed_new_ge_minus1pp": true, "mean_S_not_increased": true, "two_positive_seeds": true, "all_qualified": true, "mean_vs_previous_gate_raw_nonnegative": true, "mean_vs_oriented_raw_nonnegative": true, "mean_vs_spectral_raw_nonnegative": true, "mean_vs_matrix_raw_nonnegative": true}
+
+seed | control raw | all-seen raw | Δold | Δnew | ΔAIA | 接受/25 | 原目标保护拒绝
+0 | 86.1400 | 86.5800 | +0.3000 | +1.0000 | +0.198000 | 25 | 0
+1 | 86.1600 | 86.0400 | +0.0000 | -0.6000 | +0.061000 | 25 | 0
+2 | 83.2800 | 83.9000 | +0.3250 | +1.8000 | +0.490667 | 25 | 0
+
+全部任务/对照配对差均值±样本SD（pp）：
+vs ungated raw T1: +0.033333 ± 0.115470; [-0.10000000000000853, 0.10000000000000853, 0.09999999999999432]
+vs ungated raw T2: +0.366667 ± 0.368556; [-0.04999999999999716, 0.6500000000000057, 0.5]
+vs ungated raw T3: +0.344444 ± 0.069389; [0.2666666666666657, 0.36666666666667425, 0.3999999999999915]
+vs ungated raw T4: +0.258333 ± 0.057735; [0.22499999999999432, 0.32500000000000284, 0.22499999999999432]
+vs ungated raw T5: +0.266667 ± 0.127017; [0.3399999999999892, 0.3400000000000034, 0.11999999999999034]
+vs ungated centered T1: +0.033333 ± 0.115470; [-0.10000000000000853, 0.10000000000000853, 0.09999999999999432]
+vs ungated centered T2: -0.166667 ± 0.104083; [-0.2500000000000142, -0.05000000000001137, -0.20000000000000284]
+vs ungated centered T3: -0.022222 ± 0.126198; [0.03333333333331723, 0.06666666666667709, -0.1666666666666572]
+vs ungated centered T4: -0.150000 ± 0.288314; [0.07500000000000284, -0.05000000000001137, -0.4750000000000085]
+vs ungated centered T5: -0.060000 ± 0.381576; [0.37999999999999545, -0.2599999999999909, -0.29999999999999716]
+vs previous_gate raw T1: +0.066667 ± 0.152753; [-0.10000000000000853, 0.10000000000000853, 0.20000000000000284]
+vs previous_gate raw T2: +0.333333 ± 0.378594; [-0.10000000000000853, 0.6000000000000085, 0.5]
+vs previous_gate raw T3: +0.288889 ± 0.038490; [0.2666666666666657, 0.2666666666666657, 0.3333333333333286]
+vs previous_gate raw T4: +0.225000 ± 0.108972; [0.29999999999999716, 0.2750000000000057, 0.10000000000000853]
+vs previous_gate raw T5: +0.240000 ± 0.177764; [0.37999999999999545, 0.29999999999999716, 0.03999999999999204]
+vs previous_gate centered T1: +0.066667 ± 0.152753; [-0.10000000000000853, 0.10000000000000853, 0.20000000000000284]
+vs previous_gate centered T2: -0.100000 ± 0.180278; [-0.2500000000000142, 0.09999999999999432, -0.15000000000000568]
+vs previous_gate centered T3: +0.033333 ± 0.120185; [0.06666666666666288, 0.13333333333333997, -0.09999999999999432]
+vs previous_gate centered T4: -0.158333 ± 0.255359; [0.025000000000005684, -0.05000000000001137, -0.45000000000000284]
+vs previous_gate centered T5: -0.020000 ± 0.330454; [0.35999999999999943, -0.1799999999999926, -0.23999999999999488]
+vs oriented raw T1: +0.066667 ± 0.152753; [-0.10000000000000853, 0.10000000000000853, 0.20000000000000284]
+vs oriented raw T2: +0.316667 ± 0.332916; [-0.04999999999999716, 0.6000000000000085, 0.3999999999999915]
+vs oriented raw T3: +0.277778 ± 0.050918; [0.23333333333332007, 0.2666666666666657, 0.3333333333333286]
+vs oriented raw T4: +0.266667 ± 0.038188; [0.22499999999999432, 0.29999999999999716, 0.2750000000000057]
+vs oriented raw T5: +0.253333 ± 0.102632; [0.3399999999999892, 0.28000000000000114, 0.13999999999998636]
+vs oriented centered T1: +0.066667 ± 0.152753; [-0.10000000000000853, 0.10000000000000853, 0.20000000000000284]
+vs oriented centered T2: -0.100000 ± 0.150000; [-0.2500000000000142, 0.04999999999999716, -0.09999999999999432]
+vs oriented centered T3: +0.022222 ± 0.164429; [0.09999999999999432, 0.13333333333333997, -0.1666666666666572]
+vs oriented centered T4: -0.133333 ± 0.251661; [0.10000000000000853, -0.10000000000000853, -0.4000000000000057]
+vs oriented centered T5: -0.033333 ± 0.358515; [0.37999999999999545, -0.2599999999999909, -0.21999999999999886]
+vs spectral raw T1: +0.033333 ± 0.057735; [0.0, 0.10000000000000853, 0.0]
+vs spectral raw T2: +0.300000 ± 0.217945; [0.15000000000000568, 0.5500000000000114, 0.20000000000000284]
+vs spectral raw T3: +0.344444 ± 0.126198; [0.4333333333333229, 0.4000000000000057, 0.20000000000000284]
+vs spectral raw T4: +0.308333 ± 0.123322; [0.22499999999999432, 0.44999999999998863, 0.2500000000000142]
+vs spectral raw T5: +0.380000 ± 0.138564; [0.29999999999999716, 0.5400000000000063, 0.29999999999999716]
+vs spectral centered T1: +0.033333 ± 0.057735; [0.0, 0.10000000000000853, 0.0]
+vs spectral centered T2: -0.083333 ± 0.225462; [-0.10000000000000853, 0.14999999999999147, -0.29999999999999716]
+vs spectral centered T3: -0.055556 ± 0.195316; [-0.20000000000000284, 0.1666666666666714, -0.13333333333332575]
+vs spectral centered T4: -0.133333 ± 0.212623; [-0.12499999999998579, 0.07500000000000284, -0.3500000000000085]
+vs spectral centered T5: -0.053333 ± 0.162891; [0.01999999999999602, 0.060000000000002274, -0.23999999999999488]
+vs matrix raw T1: +0.000000 ± 0.000000; [0.0, 0.0, 0.0]
+vs matrix raw T2: +0.150000 ± 0.086603; [0.04999999999999716, 0.20000000000000284, 0.20000000000000284]
+vs matrix raw T3: +0.122222 ± 0.069389; [0.19999999999998863, 0.06666666666667709, 0.09999999999999432]
+vs matrix raw T4: +0.116667 ± 0.052042; [0.17499999999999716, 0.09999999999999432, 0.07500000000000284]
+vs matrix raw T5: +0.120000 ± 0.020000; [0.09999999999999432, 0.14000000000000057, 0.11999999999999034]
+vs matrix centered T1: +0.000000 ± 0.000000; [0.0, 0.0, 0.0]
+vs matrix centered T2: +0.016667 ± 0.028868; [0.04999999999999716, 0.0, 0.0]
+vs matrix centered T3: +0.033333 ± 0.057735; [0.06666666666666288, 0.06666666666667709, -0.03333333333333144]
+vs matrix centered T4: -0.016667 ± 0.028868; [0.0, 0.0, -0.05000000000001137]
+vs matrix centered T5: -0.013333 ± 0.011547; [-0.01999999999999602, -0.01999999999999602, 0.0]
+vs control raw T1: +0.033333 ± 0.115470; [-0.10000000000000853, 0.10000000000000853, 0.09999999999999432]
+vs control raw T2: +0.283333 ± 0.275379; [0.15000000000000568, 0.10000000000000853, 0.5999999999999943]
+vs control raw T3: +0.344444 ± 0.221944; [0.3999999999999915, 0.09999999999999432, 0.5333333333333314]
+vs control raw T4: +0.275000 ± 0.281736; [0.09999999999999432, 0.125, 0.6000000000000085]
+vs control raw T5: +0.313333 ± 0.385919; [0.4399999999999977, -0.11999999999999034, 0.6199999999999903]
+vs control centered T1: +0.033333 ± 0.115470; [-0.10000000000000853, 0.10000000000000853, 0.09999999999999432]
+vs control centered T2: -0.133333 ± 0.076376; [-0.20000000000000284, -0.05000000000001137, -0.15000000000000568]
+vs control centered T3: -0.088889 ± 0.153960; [-0.26666666666667993, 0.0, 0.0]
+vs control centered T4: -0.100000 ± 0.163936; [-0.07500000000000284, 0.04999999999999716, -0.2750000000000057]
+vs control centered T5: -0.046667 ± 0.102632; [0.04000000000000625, -0.1599999999999966, -0.01999999999999602]
+
+额外成本逐seed：{"0": {"new_training_visits": 625000, "student_probe_forward_images": 15210, "teacher_probe_forward_images": 12200, "student_probe_backward_images": 7605, "additional_logical_communication_bytes": 1777164000, "additional_logical_communication_percent": 33.00644184686483, "all_seen_guard_scalar_upload_bytes": 4000, "preflight_student_forward_images": 48, "preflight_student_backward_images": 32, "preflight_teacher_forward_images": 0, "original_FP32_pointwise_passed": true, "engineering_amendment": "PREFLIGHT_PRECISION_AMENDMENT_ZH.txt"}, "1": {"new_training_visits": 625000, "student_probe_forward_images": 15580, "teacher_probe_forward_images": 12380, "student_probe_backward_images": 7790, "additional_logical_communication_bytes": 1777164000, "additional_logical_communication_percent": 33.00644184686483, "all_seen_guard_scalar_upload_bytes": 4000, "preflight_student_forward_images": 76, "preflight_student_backward_images": 52, "preflight_teacher_forward_images": 0, "original_FP32_pointwise_passed": false, "engineering_amendment": "PREFLIGHT_PRECISION_AMENDMENT_ZH.txt"}, "2": {"new_training_visits": 625000, "student_probe_forward_images": 15270, "teacher_probe_forward_images": 12150, "student_probe_backward_images": 7635, "additional_logical_communication_bytes": 1777164000, "additional_logical_communication_percent": 33.00644184686483, "all_seen_guard_scalar_upload_bytes": 4000, "preflight_student_forward_images": 48, "preflight_student_backward_images": 32, "preflight_teacher_forward_images": 0, "original_FP32_pointwise_passed": true, "engineering_amendment": "PREFLIGHT_PRECISION_AMENDMENT_ZH.txt"}}
+总新训练1875000访问；6个T3/T5重载和两门/角度/实际谱/成本/配对审计通过。完成回执：{"status": "COMPLETED_QUALIFIED", "all_recorded_processes_exited": true, "started": 1793334478.271342, "elapsed_seconds": 10447.864508867264, "allocated_bytes_at_collection": 2921316352, "new_training_visits": 1875000, "seeds": [{"seed": 0, "status": "completed", "return_code": 0, "qualified": true, "elapsed_seconds": 9500.131263256073}, {"seed": 1, "status": "completed", "return_code": 0, "qualified": true, "elapsed_seconds": 10447.864508867264}, {"seed": 2, "status": "completed", "return_code": 0, "qualified": true, "elapsed_seconds": 9640.06133890152}], "original_seed1_preflight_failed": true, "revised_preflight_passed_all_seeds": true, "engineering_amendment": "research/fed_spectra/PREFLIGHT_PRECISION_AMENDMENT_ZH.txt"}
+原五轮T5失败和旧局部诊断失败保持，不据本轮结果改写。完整raw/centered/old/new/AIA/遗忘/W+S/方向混淆、纠正破坏、两门及谱/成本见JSON；模型/ID/logits/梯度/完整日志留服务器。
+权衡：平均遗忘增加0.133333pp，old-to-new混淆增加0.075000pp，seed1 raw仍下降。不能称所有指标均改善。
+75/75候选接受，原目标保护门0次拒绝；此运行不能证明保护门本身产生了收益或保证旧类安全。
+seed1原FP32逐元素预检失败保留；统一修订数值验收后三seed通过，科学门槛不变，失败/诊断/追加计算全部计费。
+若本轮失败，关闭该同角矩阵候选家族继续试探；不得补seed、增角、降低条件重跑。后继主线必须是有独立依据的新机制假设。

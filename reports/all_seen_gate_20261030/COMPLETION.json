@@ -1,0 +1,34 @@
+{
+  "status": "COMPLETED_QUALIFIED",
+  "all_recorded_processes_exited": true,
+  "started": 1793334478.271342,
+  "elapsed_seconds": 10447.864508867264,
+  "allocated_bytes_at_collection": 2921316352,
+  "new_training_visits": 1875000,
+  "seeds": [
+    {
+      "seed": 0,
+      "status": "completed",
+      "return_code": 0,
+      "qualified": true,
+      "elapsed_seconds": 9500.131263256073
+    },
+    {
+      "seed": 1,
+      "status": "completed",
+      "return_code": 0,
+      "qualified": true,
+      "elapsed_seconds": 10447.864508867264
+    },
+    {
+      "seed": 2,
+      "status": "completed",
+      "return_code": 0,
+      "qualified": true,
+      "elapsed_seconds": 9640.06133890152
+    }
+  ],
+  "original_seed1_preflight_failed": true,
+  "revised_preflight_passed_all_seeds": true,
+  "engineering_amendment": "research/fed_spectra/PREFLIGHT_PRECISION_AMENDMENT_ZH.txt"
+}

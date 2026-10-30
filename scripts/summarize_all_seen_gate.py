@@ -19,7 +19,8 @@ def main():
         assert preflight['passed'] and preflight['all_seen_objective_preflight']
         assert report['status']=='COMPLETED_QUALIFIED' and report['seed']==seed
         for name,path in REFERENCE_FOLDERS.items():
-            references[name][key]=json.loads((ROOT/f'reports/{path}/seed{seed}/FINAL_REPORT.json').read_text())['arms']['global']
+            source=ROOT/'reports/actual_update_global_20261029' if name=='ungated' and seed==0 else ROOT/f'reports/{path}/seed{seed}'
+            references[name][key]=json.loads((source/'FINAL_REPORT.json').read_text())['arms']['global']
         for task in (3,5):
             q=json.loads((folder/f'global/QUALIFICATION_T{task}.json').read_text())
             assert q['qualified'] and q['config']['seed']==seed and q['client_rounds']==task*50
@@ -108,7 +109,10 @@ def main():
         'limitations':['Three exploratory seeds, one dataset and alpha, T5 only; no significance or T10 claim.',
         'Prior local validation had only three corrected images and prior exploratory exposure; it is not independent final evidence.',
         'Training probe guards are not old-image safety. Formal client training is unchanged; gradient messages and extra scalars are charged.',
-        'Existing matched references reused. GPU wall times are not communication measurements or acceleration evidence.']}
+        'Existing matched references reused. GPU wall times are not communication measurements or acceleration evidence.',
+        'All 75 candidates were accepted and the original-loss guard never rejected: this run does not establish a causal benefit of the guard.',
+        'Mean forgetting and old-to-new confusion increased despite improved mean old accuracy; not every metric improved.',
+        'Original seed1 FP32 pointwise preflight failed. The common amended numerical validation passed for all seeds; scientific conditions were unchanged.']}
     (OUT/'THREE_SEED_REPORT.json').write_text(json.dumps(result,indent=2)+'\n')
     lines=['全已见类目标与原目标保护门：三seed完整T5','',
         '结论：'+('通过全部冻结科学条件。仍限于本数据集/alpha/T5三seed探索，不作显著性或T10结论。' if result['scientific_gate_passed'] else '未通过全部冻结科学条件，保留阴性及所有权衡，不降低门槛或补seed。'),
@@ -126,6 +130,9 @@ def main():
     lines+=['','额外成本逐seed：'+json.dumps(cost,ensure_ascii=False),
         '总新训练1875000访问；6个T3/T5重载和两门/角度/实际谱/成本/配对审计通过。完成回执：'+json.dumps(result['completion'],ensure_ascii=False),
         '原五轮T5失败和旧局部诊断失败保持，不据本轮结果改写。完整raw/centered/old/new/AIA/遗忘/W+S/方向混淆、纠正破坏、两门及谱/成本见JSON；模型/ID/logits/梯度/完整日志留服务器。',
+        f"权衡：平均遗忘增加{d['forgetting_pp']['mean']:.6f}pp，old-to-new混淆增加{d['old_to_new_percent']['mean']:.6f}pp，seed1 raw仍下降。不能称所有指标均改善。",
+        '75/75候选接受，原目标保护门0次拒绝；此运行不能证明保护门本身产生了收益或保证旧类安全。',
+        'seed1原FP32逐元素预检失败保留；统一修订数值验收后三seed通过，科学门槛不变，失败/诊断/追加计算全部计费。',
         '若本轮失败，关闭该同角矩阵候选家族继续试探；不得补seed、增角、降低条件重跑。后继主线必须是有独立依据的新机制假设。']
     (OUT/'THREE_SEED_REPORT_ZH.txt').write_text('\n'.join(lines)+'\n')
     print(json.dumps({'scientific_gate_passed':result['scientific_gate_passed'],'conditions':conditions,'T5':d,'cost':cost},indent=2))
