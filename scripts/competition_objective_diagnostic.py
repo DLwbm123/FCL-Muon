@@ -149,6 +149,8 @@ def run(root,seed,source,old,old_direction,old_tangent,old_matrix,clock,decision
     if decision_rows is not None:
         row['decision_audit']=decision_rows
         row['decision_extra_student_forward_images']=sum(v['student_forward_images'] for v in decision_rows.values())
+    row['peak_gpu_allocated_bytes']=torch.cuda.max_memory_allocated()
+    row['elapsed_from_common_start']=time.time()-clock['started']
     write(root/f'reports/seed{seed}.json',row)
     del p,model,raw,train_tf,test_tf,pair;gc.collect();torch.cuda.empty_cache()
     return row
