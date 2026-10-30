@@ -17,6 +17,7 @@ def main():
         report=json.loads((folder/'FINAL_REPORT.json').read_text());seeds[key]=report
         preflight=json.loads((folder/'REAL_PREFLIGHT.json').read_text())
         assert preflight['passed'] and preflight['all_seen_objective_preflight']
+        if report['arms']['global']['training_gate'].get('rank8_transport'):assert preflight['rank8_preflight']
         assert report['status']=='COMPLETED_QUALIFIED' and report['seed']==seed
         for name,path in REFERENCE_FOLDERS.items():
             source=ROOT/'reports/actual_update_global_20261029' if name=='ungated' and seed==0 else ROOT/f'reports/{path}/seed{seed}'
@@ -29,7 +30,14 @@ def main():
             assert q['reload_raw_predictions_equal'] and q['reload_centered_predictions_equal']
             records=q['training_gate_records'];assert len(records)==len(q['actual_update_rounds'])==task*5
             clients=sum(len(v['baseline']['clients']) for v in records)
-            assert q['logical_communication_bytes']['matrix_full_gradient_upload']==clients*24*768*32*4
+            if q['config'].get('rank8_transport'):
+                assert q['config']['rank8_transport']=={'rank':8,'wire_dtype':'float32'}
+                assert q['logical_communication_bytes']['rank8_gradient_factor_upload']==clients*24*8*(768+32)*4
+                assert 'matrix_full_gradient_upload' not in q['logical_communication_bytes']
+                compressed=[v for g in records for v in g['baseline']['rank8_transport']['records']]
+                assert len(compressed)==clients*24 and q['rank8_client_SVDs']==len(compressed)
+                assert all(v['rank']==8 and v['wire_bytes']==25600 and 0<=v['retained_energy_fraction']<=1+1e-12 for v in compressed)
+            else:assert q['logical_communication_bytes']['matrix_full_gradient_upload']==clients*24*768*32*4
             assert q['logical_communication_bytes']['all_seen_guard_scalar_upload']==clients*2*8
             assert q['extra_probe_backward_images']==q['gate_backward_images']==sum(v['backward_images'] for v in records)>0
             assert q['gate_student_forward_images']==sum(v['student_forward_images'] for v in records)
@@ -103,6 +111,10 @@ def main():
             cost[s][key]=preflight[key]+history['additional_cost'][key]
         cost[s]['original_FP32_pointwise_passed']=preflight['original_FP32_pointwise_passed']
         cost[s]['engineering_amendment']='PREFLIGHT_PRECISION_AMENDMENT_ZH.txt'
+    if 'uncompressed' in references:
+        conditions['mean_vs_uncompressed_raw_nonnegative']=differences['uncompressed']['raw']['5']['overall_percent']['mean']>=-1e-10
+        conditions['each_extra_communication_le_25percent']=all(v['additional_logical_communication_percent']<=25 for v in cost.values())
+        for s,r in seeds.items():cost[s]['rank8_transport']=r['arms']['global']['training_gate']['rank8_transport']
     result={'status':'COMPLETED_QUALIFIED','registered_seeds':[0,1,2],'scientific_gate_passed':all(conditions.values()),'conditions':conditions,
         'per_seed':seeds,'reference_arms':references,'differences':differences,'gate_by_seed_task':gates,'qualification_audit':audit,'additional_cost':cost,
         'completion':json.loads((OUT/'COMPLETION.json').read_text()),
@@ -134,6 +146,9 @@ def main():
         '75/75候选接受，原目标保护门0次拒绝；此运行不能证明保护门本身产生了收益或保证旧类安全。',
         'seed1原FP32逐元素预检失败保留；统一修订数值验收后三seed通过，科学门槛不变，失败/诊断/追加计算全部计费。',
         '若本轮失败，关闭该同角矩阵候选家族继续试探；不得补seed、增角、降低条件重跑。后继主线必须是有独立依据的新机制假设。']
+    if 'uncompressed' in references:
+        lines[0]='固定rank8客户端梯度传输：三seed完整T5'
+        lines.append('梯度载荷减少与全部消息减少不同；本地SVD时间不是网络加速。原full-gradient成功保留；本轮失败不补seed/换秩/增角/改目标。')
     (OUT/'THREE_SEED_REPORT_ZH.txt').write_text('\n'.join(lines)+'\n')
     print(json.dumps({'scientific_gate_passed':result['scientific_gate_passed'],'conditions':conditions,'T5':d,'cost':cost},indent=2))
 

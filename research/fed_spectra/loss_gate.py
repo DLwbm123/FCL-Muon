@@ -34,6 +34,8 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
             assert self.cfg['matrix_tangent']=={'reference':'original_eta_angle','gradient':'client_fp32_server_fp64'}
         if self.cfg.get('all_seen_gate'):
             assert self.cfg.get('matrix_tangent') and self.cfg['all_seen_gate']=={'current_loss_tolerance':1e-6}
+        if self.cfg.get('rank8_transport'):
+            assert self.cfg.get('all_seen_gate') and self.cfg['rank8_transport']=={'rank':8,'wire_dtype':'float32'}
         self.s.update(training_gate_records=[])
 
     def fuse(self):
@@ -44,6 +46,7 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
         matrix=bool(self.cfg.get('matrix_tangent'))
         all_seen=bool(self.cfg.get('all_seen_gate'))
         objective_args={'all_seen_objective':True} if all_seen else {}
+        gradient_args={'rank8_transport':True} if self.cfg.get('rank8_transport') else {}
         origin=[b.detach().cpu().clone() for b in self.model.b_parameters()] if directed or tangent or matrix else None
         super().fuse()
         proposal=copy.deepcopy(self.s['actual_update_rounds'][-1])
@@ -58,7 +61,7 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
             for o,b in zip(origin,baseline):
                 u,_,vh=torch.linalg.svd(b.double()-o.double(),full_matrices=False)
                 projectors.append((u,vh))
-        deploy(baseline);before,grads=measure(self,probes,gradient=directed or tangent or matrix,projectors=projectors,full_client_gradients=matrix,**objective_args)
+        deploy(baseline);before,grads=measure(self,probes,gradient=directed or tangent or matrix,projectors=projectors,full_client_gradients=matrix,**objective_args,**gradient_args)
         direction=None
         if directed:
             positive_proposal=copy.deepcopy(proposal)
@@ -81,7 +84,7 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
                 if op['identity_reason'] is not None:record['identity_reason']=op['identity_reason']
             self.s['actual_update_rounds'][-1]=copy.deepcopy(proposal)
             matrix_record={'operators':operators,'positive_round':positive_proposal,
-                           'gradient_aggregation':'client_fp32_server_fp64'}
+                           'gradient_aggregation':'client_rank8_factors_fp32_server_fp64' if self.cfg.get('rank8_transport') else 'client_fp32_server_fp64'}
             del grads
         tangent_record=None
         if tangent:
@@ -134,7 +137,9 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
             self.charge('tangent_svd_bases_broadcast',nonempty*sum(u.numel()+vh.numel() for u,vh in projectors)*8)
             self.charge('tangent_mode_gradient_upload',nonempty*sum(vh.shape[0] for u,vh in projectors)*8)
         if matrix:
-            self.charge('matrix_full_gradient_upload',nonempty*sum(b.numel()*4 for b in self.model.b_parameters()))
+            if self.cfg.get('rank8_transport'):
+                self.charge('rank8_gradient_factor_upload',sum(v['wire_bytes'] for v in before['rank8_transport']['records']))
+            else:self.charge('matrix_full_gradient_upload',nonempty*sum(b.numel()*4 for b in self.model.b_parameters()))
         self.s['training_gate_records'].append({'task':t+1,'round':r+1,'accepted':accepted,
             'baseline':before,'candidate':after,'candidate_round':proposal,
             'loss_difference':after['weighted']['loss']-before['weighted']['loss'],

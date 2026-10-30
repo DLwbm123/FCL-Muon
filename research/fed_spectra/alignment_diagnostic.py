@@ -1,5 +1,6 @@
 """Read-only endpoint probes on current training inputs, never test selection."""
 import torch
+import time
 from torch.nn import functional as F
 from fcl.checkpoint import rng_state,restore_rng
 
@@ -13,9 +14,11 @@ def select_probes(groups,seed):
     return chosen
 
 
-def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False,all_seen_objective=False):
+def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False,all_seen_objective=False,rank8_transport=False):
     if projectors is not None and not gradient:raise ValueError('Projection requires gradients')
     if full_client_gradients and (not gradient or projectors is not None):raise ValueError('Invalid full client gradient mode')
+    if rank8_transport and not (full_client_gradients and all_seen_objective):raise ValueError('Rank8 requires all-seen full client gradients')
+    compression_records=[];compression_seconds=0.
     projected=[torch.zeros(vh.shape[0],dtype=torch.float64) for u,vh in projectors] if projectors is not None else None
     full=[torch.zeros_like(b.detach().cpu(),dtype=torch.float64) for b in p.model.b_parameters()] if full_client_gradients else None
     state=rng_state();modes={m:m.training for m in p.model.modules()}
@@ -50,9 +53,14 @@ def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False,
                 for target,b,(u,vh) in zip(projected,p.model.b_parameters(),projectors):
                     target.add_((u.T@b.grad.detach().cpu().double()@vh.T).diag(),alpha=weight)
             if full_client_gradients:
-                for target,b in zip(full,p.model.b_parameters()):
-                    # The simulated client message is FP32; weighted accumulation is FP64.
-                    target.add_(b.grad.detach().cpu().float().double(),alpha=weight)
+                for layer,(target,b) in enumerate(zip(full,p.model.b_parameters())):
+                    message=b.grad.detach().cpu().float()
+                    if rank8_transport:
+                        from .rank8_transport import encode_decode
+                        started=time.perf_counter();message,receipt=encode_decode(message)
+                        compression_seconds+=time.perf_counter()-started
+                        compression_records.append(dict(receipt,client=k,layer_QV=layer))
+                    target.add_(message.double(),alpha=weight)
             row['loss']=row['ce']+p.settings['anchor_weight']*row['kl']
             if all_seen_objective:row['current_loss']=row['current_ce']+p.settings['anchor_weight']*row['kl']
             rows.append(row)
@@ -61,6 +69,7 @@ def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False,
         grads=full if full_client_gradients else (projected if projectors is not None else ([b.grad.detach().cpu().double().clone() for b in p.model.b_parameters()] if gradient else None))
         result={'clients':rows,'weighted':totals,'student_forward_images':forward,
                 'teacher_forward_images':teacher_forward,'backward_images':backward,'student_forward_calls':calls,'teacher_forward_calls':teacher_calls},grads
+        if rank8_transport:result[0]['rank8_transport']={'records':compression_records,'seconds':compression_seconds}
         if all_seen_objective:result[0]['objective']='all_seen_ce_plus_old_kl_with_current_loss_diagnostic'
         return result
     finally:

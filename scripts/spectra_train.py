@@ -146,6 +146,19 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
                 preflight_student_backward_images=len(ids)+4*len(ids2),preflight_teacher_forward_images=0,
                 maximum_gradient_decomposition_difference=max(float((a-b).abs().max()) for a,b in zip(direct,decomposed)),
                 all_seen_preflight_scope='two-head real ViT on four current training images with synthetic adapter increments; no test selection')
+            if cfg.get('rank8_transport'):
+                from research.fed_spectra.rank8_transport import encode_decode
+                from research.fed_spectra.matrix_tangent import tangent_candidate
+                compression=[];operators=[]
+                with torch.no_grad():
+                    for b,base,ref,g in zip(model.b_parameters(),original,changed,direct):
+                        recovered,rec=encode_decode(g.detach().cpu().float())
+                        value,op=tangent_candidate(torch.zeros_like(base),base,ref,recovered)
+                        assert rec['rank']==8 and rec['wire_bytes']==25600 and op['actual_FP32_norm_relative_error']<=5e-4
+                        b.copy_(value);compression.append(rec);operators.append(op)
+                    assert torch.isfinite(model(xx)).all()
+                result.update(rank8_preflight=True,rank8_compression_records=compression,rank8_operators=operators,
+                    preflight_student_forward_images=result['preflight_student_forward_images']+len(ids2))
             del z,direct,decomposed
         del model;gc.collect();torch.cuda.empty_cache();return result
     from research.fed_spectra.math import gaussian_map,orthogonal_pool,rebase_adapter,fisher_coefficients
@@ -184,7 +197,7 @@ def main():
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
     seed=int(os.environ.get('EXPERIMENT_SEED','0'))
     if seed not in (0,1,2):raise ValueError('Unregistered seed')
-    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix','actual_allseen'):raise ValueError('Unknown configuration family')
+    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix','actual_allseen','actual_rank8'):raise ValueError('Unknown configuration family')
     cfg=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
     if time.time()>=clock['deadline']:raise TimeoutError('Original deadline exhausted')

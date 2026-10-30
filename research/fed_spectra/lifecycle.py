@@ -108,7 +108,15 @@ def qualify(p,n):
             q['gate_backward_images']=sum(v['backward_images'] for v in gates)
             q['extra_probe_backward_images']+=q['gate_backward_images']
             q['extra_probe_backward_calls']+=sum(v['backward_calls'] for v in gates)
-            q['limitations'].append('Full client FP32 gradients are temporary simulated messages, accumulated in FP64 and charged; diagnostic used FP32 weighted accumulation. Matrix tangent changes singular vectors at the unchanged reference angle.')
+            if not cfg.get('rank8_transport'):q['limitations'].append('Full client FP32 gradients are temporary simulated messages, accumulated in FP64 and charged; diagnostic used FP32 weighted accumulation. Matrix tangent changes singular vectors at the unchanged reference angle.')
+        if cfg.get('rank8_transport'):
+            compressed=[r for g in gates for r in g['baseline']['rank8_transport']['records']]
+            assert all(r['rank']==8 and r['wire_bytes']>0 for r in compressed)
+            assert q['logical_communication_bytes']['rank8_gradient_factor_upload']==sum(r['wire_bytes'] for r in compressed)
+            assert 'matrix_full_gradient_upload' not in q['logical_communication_bytes']
+            q['rank8_client_SVDs']=len(compressed)
+            q['rank8_SVD_seconds']=sum(g['baseline']['rank8_transport']['seconds'] for g in gates)
+            q['limitations'].append('Fixed client rank8 FP32 factors replace full gradient messages; spectra and loss do not certify generalization.')
         if cfg.get('all_seen_gate'):
             assert all('all_seen_objective' in v for v in gates)
             assert all(v['accepted']==(v['all_seen_objective']['primary_pass'] and v['all_seen_objective']['current_guard_pass']) for v in gates)

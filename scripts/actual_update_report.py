@@ -65,6 +65,8 @@ def validate_comparison_configs(reference,candidate):
     for c in [a,b]:c.pop('output');c['actual_update']['operator'].pop('eta')
     assert sum(bool(b.get(k)) for k in ['direction_selection','spectral_tangent','matrix_tangent'])<=1
     gated=bool(b.get('training_gate'))
+    if b.get('rank8_transport'):
+        assert b.get('all_seen_gate') and b.pop('rank8_transport')=={'rank':8,'wire_dtype':'float32'}
     if b.get('all_seen_gate'):
         assert b.get('matrix_tangent') and gated
         assert b.pop('all_seen_gate')=={'current_loss_tolerance':1e-6}
@@ -151,10 +153,13 @@ def main():
         result['limitations'].append('Direction selected by training gradient, then loss-gated; extra backward cost included; reflection is not original spectral interpolation.')
     if records['global']['config'].get('spectral_tangent'):
         result['limitations'].append('Loss-directed singular-value tangent with fixed reference angle ceiling; client-local mode gradients, basis broadcasts, and backward costs included.')
-    if records['global']['config'].get('matrix_tangent'):
+    if records['global']['config'].get('matrix_tangent') and not records['global']['config'].get('rank8_transport'):
         result['limitations'].append('Full matrix norm-sphere tangent; reference angle unchanged; full client FP32 gradients accumulated in FP64, charged and cleared. No spectral support guarantee.')
     if records['global']['config'].get('all_seen_gate'):
         result['limitations'].append('Candidate and gate use all-seen CE plus old KL with a current-loss nonworsening guard. Client optimization remains unchanged. Three scalar losses per point are charged.')
+    if records['global']['config'].get('rank8_transport'):
+        result['limitations'].append('Client gradients use fixed rank8 FP32 factors and FP64 reconstruction; logical factor payload and local SVD cost are recorded, not network measurements.')
+        arms['global']['training_gate']['rank8_transport']={'rank':8,'client_SVDs':sum(len(g['baseline']['rank8_transport']['records']) for g in gates),'SVD_seconds':sum(g['baseline']['rank8_transport']['seconds'] for g in gates)}
     write(report/'FINAL_REPORT.json',result)
     lines=['实际更新全局谱修正：五任务配对实验结果',
         '结论：'+('满足预先固定的单seed初步收益条件。' if result['hypothesis_supported_in_this_pilot'] else '未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。'),
@@ -164,6 +169,9 @@ def main():
     if records['global']['config'].get('all_seen_gate'):
         lines[0]='全已见类目标与原目标保护门：五任务配对结果'
         lines[2]='Control eta=0；候选为原eta.1角度的全矩阵切向。全已见类CE+旧KL改善且原CE_cur+KL不恶化才接受，正式client训练不变。'
+    if records['global']['config'].get('rank8_transport'):
+        lines[0]='固定rank8梯度传输与全目标保护门：五任务配对结果'
+        lines[2]+=' 客户端梯度固定rank8 FP32因子传输，server FP64重构；其余正式训练不变。'
     for t in range(5):
         for arm in arms:
             for view in ['raw','centered']:

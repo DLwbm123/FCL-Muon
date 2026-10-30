@@ -1,0 +1,12 @@
+固定rank8梯度传输：三seed完整T5（2026-10-30，运行前冻结）
+
+主线假设：客户端梯度的rank8因子消息可显著降低已通过T5科学条件的全已见类目标门的通信开销，同时保留完整轨迹收益。并非以局部条件通过自动扩展：三seed复用端点诊断梯度cosine .99394/.99147/.98924、验证J_all改善保留99.628/99.876/100.069%、每seed验证accuracy相同、相对baseline纠错1/2/0无新增错，以及73.9583%梯度载荷减少共同支持本次检验。局部验证已重用，不能排除完整训练累计偏差和旧类风险。旧full-gradient完整T5 mean+.313333pp及其seed1负/遗忘权衡原样保留。
+
+数据和预算完全沿用ALL_SEEN_GATE_PROTOCOL_ZH.txt：CIFAR100 alpha.05、三seed0/1/2、fresh预训练T1–T5，每task5round×10client×5epoch、batch16/rank32/lr.0002、原RRS/AdamW/Head-RegMean、正式CE_cur+温度2权重1旧KL不变；原5000train图/任务全使用。每seed250client/625000访问，三seed1875000；不续诊断或旧full T5端点。只读复用匹配Control及全部历史方法，不重训/优化baseline。
+唯一变化是候选梯度消息：每client独立FP32计算训练selection J_all=CE_all+KL均值梯度，FP64 SVD取固定前8，L=(U8*S8).float与R=Vh8.float，server先double重构再按原client训练样本权重FP64累计。rank8固定，不搜索，梯度/因子仅内存临时，不存入checkpoint。原eta.1参考角及矩阵范数球切向算子不变；J_all改善>1e-6且原CE_cur+KL不增>1e-6才接受，否则精确FedAvg。没有验证/测试参与候选/接受/参数。
+每非空client每轮24个768x32矩阵，完整载荷2359296bytes变为614400bytes。25轮250client上传153600000bytes，比full589824000少436224000bytes。候选B/head广播、三loss标量和全部原消息仍计；预计每seed比Control额外1340940000bytes、比例约24.90477%，不可把73.96%梯度消息减少称为总通信减少73.96%。SVD个数/本地时间单列，网络/分布式加速未经实测。所有probe前向/反向/teacher、统计、训练teacher及预检费用分别保留。
+
+科学成功条件：原+.20pp平均T5 raw相对Control、AIA>=0、old>=0、每seednew>=-1pp、平均S不增、至少2/3seedraw正、全部6个T3/T5重载/工程条件；对旧单向/符号/谱切向/原矩阵门平均raw均>=0。此外要求平均T5 raw不低于未压缩全目标门（>=0，无放宽容差外的非劣界）且各seed额外逻辑通信相对Control<=25%。任何条件失败均判此次成本-收益联合假设不通过，不补seed/换rank/改角度/目标/测试集调参。原full-gradient正向保持，不因压缩失败改写。不能据本次结果声称显著性/T10/跨数据集优势。
+工程：CPU独立每client SVD/FP32因子及FP64累计oracle；RNG和梯度清理；拒绝精确Control；自然接受/拒绝、逐转移恢复一致、真实payload计费、配置漂移拒绝；矩阵/原全目标门相关回归。使用真实rank8的16维toy生命周期（rank8对toy可能无秩损失，另有12x16梯度oracle确证实际截断），不以toy代替真实768x32预检。GPU每seed沿用已公开修订的FP64 loss恒等式/FP32逐层L2 oracle，原逐元素判定继续记录；在同一真实ViT4图两头梯度上编码rank8及实际切向部署、追加4图no_grad前向检查有限/同角范数，预检总28学生前向/20学生反向/0teacher。预检独立进程，正式fresh RNG。T3/T5各150/250client、375000/625000访问、3000/5000测试图重载预测一致；报表错误只修报告不重训。
+完整公开每seed各任务raw/centered/old/new/AIA/遗忘/W+S/方向混淆、所有匹配差、纠错破坏计数、两门判定、候选和实际部署谱、压缩能量/误差/消息量/SVD及全部成本；保留原seed1预检历史工程修订的披露，不能声称完全无工程协议变化。
+资源：独立root共享source、GPU0/1/2、每GPU空闲>=18GB，真实挂载/剩余空间/小写读probe；各seed supervisor共享root占用只计一次。共同起点含准备/CPU/排队/修复，内部27900s，外部至started+28600加60killgrace，总<8h不重置；24GB硬限/20GB写停止、预计<18GB，独立timeout和每batch预算/10秒存储检查。旧数据/模型/参考只读。唯一30分钟心跳原位更新，健康静默；完成后验退出/原clock/实际占用并公开可复现源码报告，不发布ID/模型/梯度/因子/完整日志/私有路径。
