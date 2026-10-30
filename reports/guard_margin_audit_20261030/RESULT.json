@@ -1,0 +1,639 @@
+{
+  "methods": {
+    "full": {
+      "0": {
+        "all": {
+          "rounds": 25,
+          "guard_rejected": 0,
+          "primary_pass": 25,
+          "accepted": 25,
+          "original_loss_difference": {
+            "min": -0.023114549154415714,
+            "mean": -0.0024174235515468765,
+            "max": -1.2757975445129577e-05
+          },
+          "minimum_guard_margin": 1.3757975445129577e-05,
+          "all_seen_loss_difference": {
+            "min": -0.023114549154415714,
+            "mean": -0.005117535509387481,
+            "max": -0.0003743071151431354
+          }
+        },
+        "1": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.023114549154415714,
+            "mean": -0.010083771503455938,
+            "max": -0.0007393460036721061
+          },
+          "minimum_guard_margin": 0.0007403460036721061,
+          "all_seen_loss_difference": {
+            "min": -0.023114549154415714,
+            "mean": -0.010083771503455938,
+            "max": -0.0007393460036721061
+          }
+        },
+        "2": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0014184839194174848,
+            "mean": -0.0006483800564892617,
+            "max": -7.778487605974993e-05
+          },
+          "minimum_guard_margin": 7.878487605974993e-05,
+          "all_seen_loss_difference": {
+            "min": -0.007462162551982343,
+            "mean": -0.0037309291521087197,
+            "max": -0.000500524579454209
+          }
+        },
+        "3": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0012209392901044447,
+            "mean": -0.0004810550122056195,
+            "max": -3.133376110345254e-05
+          },
+          "minimum_guard_margin": 3.233376110345254e-05,
+          "all_seen_loss_difference": {
+            "min": -0.007387111809710023,
+            "mean": -0.0037335153095889527,
+            "max": -0.0004200264940038001
+          }
+        },
+        "4": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0005161676417221317,
+            "mean": -0.0001968147529219255,
+            "max": -1.2757975445129577e-05
+          },
+          "minimum_guard_margin": 1.3757975445129577e-05,
+          "all_seen_loss_difference": {
+            "min": -0.005447680608753586,
+            "mean": -0.002790354154373037,
+            "max": -0.0003743071151431354
+          }
+        },
+        "5": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0018579334788490082,
+            "mean": -0.0006770964326616377,
+            "max": -3.822981368284406e-05
+          },
+          "minimum_guard_margin": 3.922981368284406e-05,
+          "all_seen_loss_difference": {
+            "min": -0.010528537451569009,
+            "mean": -0.00524910742741076,
+            "max": -0.0005603765706531094
+          }
+        }
+      },
+      "1": {
+        "all": {
+          "rounds": 25,
+          "guard_rejected": 0,
+          "primary_pass": 25,
+          "accepted": 25,
+          "original_loss_difference": {
+            "min": -0.009986655076127504,
+            "mean": -0.001005473074607084,
+            "max": -2.6593692321330575e-05
+          },
+          "minimum_guard_margin": 2.7593692321330576e-05,
+          "all_seen_loss_difference": {
+            "min": -0.010432566012977595,
+            "mean": -0.0036697033479795717,
+            "max": -0.00012522367462515852
+          }
+        },
+        "1": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.009986655076127504,
+            "mean": -0.0028716210566856917,
+            "max": -0.00012522367462515852
+          },
+          "minimum_guard_margin": 0.0001262236746251585,
+          "all_seen_loss_difference": {
+            "min": -0.009986655076127504,
+            "mean": -0.0028716210566856917,
+            "max": -0.00012522367462515852
+          }
+        },
+        "2": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.001791018387116483,
+            "mean": -0.000678691925415767,
+            "max": -5.807381747291451e-05
+          },
+          "minimum_guard_margin": 5.907381747291451e-05,
+          "all_seen_loss_difference": {
+            "min": -0.008379790974594625,
+            "mean": -0.003879829772468657,
+            "max": -0.0004226780323311474
+          }
+        },
+        "3": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0011490361978765545,
+            "mean": -0.0004322335348324824,
+            "max": -3.872310030274273e-05
+          },
+          "minimum_guard_margin": 3.972310030274273e-05,
+          "all_seen_loss_difference": {
+            "min": -0.005930388585990265,
+            "mean": -0.0027665204519685127,
+            "max": -0.0003549700017552726
+          }
+        },
+        "4": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.001166720026056292,
+            "mean": -0.00042754531245213224,
+            "max": -2.6593692321330575e-05
+          },
+          "minimum_guard_margin": 2.7593692321330576e-05,
+          "all_seen_loss_difference": {
+            "min": -0.006900899517792269,
+            "mean": -0.0034641492882882875,
+            "max": -0.0004523185709490729
+          }
+        },
+        "5": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0015550743946572687,
+            "mean": -0.0006172735436493465,
+            "max": -4.905632643494029e-05
+          },
+          "minimum_guard_margin": 5.005632643494029e-05,
+          "all_seen_loss_difference": {
+            "min": -0.010432566012977595,
+            "mean": -0.005366396170486709,
+            "max": -0.0006170142963761727
+          }
+        }
+      },
+      "2": {
+        "all": {
+          "rounds": 25,
+          "guard_rejected": 0,
+          "primary_pass": 25,
+          "accepted": 25,
+          "original_loss_difference": {
+            "min": -0.01147980656065048,
+            "mean": -0.0016106914128358476,
+            "max": -1.5719042182900378e-05
+          },
+          "minimum_guard_margin": 1.671904218290038e-05,
+          "all_seen_loss_difference": {
+            "min": -0.01147980656065048,
+            "mean": -0.0039961285085585024,
+            "max": -0.0003090259046526628
+          }
+        },
+        "1": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.01147980656065048,
+            "mean": -0.0050778420455381305,
+            "max": -0.0003090259046526628
+          },
+          "minimum_guard_margin": 0.0003100259046526628,
+          "all_seen_loss_difference": {
+            "min": -0.01147980656065048,
+            "mean": -0.0050778420455381305,
+            "max": -0.0003090259046526628
+          }
+        },
+        "2": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.004268016199301922,
+            "mean": -0.0013955514072626796,
+            "max": -6.291718930005741e-05
+          },
+          "minimum_guard_margin": 6.39171893000574e-05,
+          "all_seen_loss_difference": {
+            "min": -0.010061159317847318,
+            "mean": -0.004581777250971636,
+            "max": -0.0004284468773752548
+          }
+        },
+        "3": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0018097661580890323,
+            "mean": -0.0007106600511912253,
+            "max": -4.566573719494427e-05
+          },
+          "minimum_guard_margin": 4.6665737194944264e-05,
+          "all_seen_loss_difference": {
+            "min": -0.005815607402101131,
+            "mean": -0.002938469468438987,
+            "max": -0.00037420658837072907
+          }
+        },
+        "4": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0006428913454758003,
+            "mean": -0.00024761948027648,
+            "max": -1.5719042182900378e-05
+          },
+          "minimum_guard_margin": 1.671904218290038e-05,
+          "all_seen_loss_difference": {
+            "min": -0.0048818901901366285,
+            "mean": -0.002785032783309005,
+            "max": -0.0003875582332023564
+          }
+        },
+        "5": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0015990131129976354,
+            "mean": -0.0006217840799107227,
+            "max": -4.861007407307161e-05
+          },
+          "minimum_guard_margin": 4.9610074073071605e-05,
+          "all_seen_loss_difference": {
+            "min": -0.00988791528143923,
+            "mean": -0.004597520994534754,
+            "max": -0.0005618954791222208
+          }
+        }
+      }
+    },
+    "rank8": {
+      "0": {
+        "all": {
+          "rounds": 25,
+          "guard_rejected": 0,
+          "primary_pass": 25,
+          "accepted": 25,
+          "original_loss_difference": {
+            "min": -0.02253142913505435,
+            "mean": -0.002330806346446275,
+            "max": -1.4914505812341217e-05
+          },
+          "minimum_guard_margin": 1.5914505812341217e-05,
+          "all_seen_loss_difference": {
+            "min": -0.02253142913505435,
+            "mean": -0.005060220075305545,
+            "max": -0.00037655779132617084
+          }
+        },
+        "1": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.02253142913505435,
+            "mean": -0.009727348402058706,
+            "max": -0.0006127673611976206
+          },
+          "minimum_guard_margin": 0.0006137673611976206,
+          "all_seen_loss_difference": {
+            "min": -0.02253142913505435,
+            "mean": -0.009727348402058706,
+            "max": -0.0006127673611976206
+          }
+        },
+        "2": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0014276440495159526,
+            "mean": -0.0006265110831055742,
+            "max": -7.002700199372491e-05
+          },
+          "minimum_guard_margin": 7.102700199372491e-05,
+          "all_seen_loss_difference": {
+            "min": -0.007401776276296013,
+            "mean": -0.0037549274592380997,
+            "max": -0.00047667980589899406
+          }
+        },
+        "3": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0011765606657601901,
+            "mean": -0.0004403820942155995,
+            "max": -2.5887856818736232e-05
+          },
+          "minimum_guard_margin": 2.6887856818736233e-05,
+          "all_seen_loss_difference": {
+            "min": -0.007371446708310414,
+            "mean": -0.0037393999607674643,
+            "max": -0.0004302705939859264
+          }
+        },
+        "4": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0005535207288339741,
+            "mean": -0.00020123008683323867,
+            "max": -1.4914505812341217e-05
+          },
+          "minimum_guard_margin": 1.5914505812341217e-05,
+          "all_seen_loss_difference": {
+            "min": -0.005529876563465208,
+            "mean": -0.0027662169705377935,
+            "max": -0.00037655779132617084
+          }
+        },
+        "5": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0017209228641586471,
+            "mean": -0.0006585600660182573,
+            "max": -3.855972408782493e-05
+          },
+          "minimum_guard_margin": 3.955972408782493e-05,
+          "all_seen_loss_difference": {
+            "min": -0.010393321949453083,
+            "mean": -0.005313207583925661,
+            "max": -0.0005771449240855597
+          }
+        }
+      },
+      "1": {
+        "all": {
+          "rounds": 25,
+          "guard_rejected": 0,
+          "primary_pass": 25,
+          "accepted": 25,
+          "original_loss_difference": {
+            "min": -0.009667883154004811,
+            "mean": -0.0009721951635656893,
+            "max": -3.278497280553849e-05
+          },
+          "minimum_guard_margin": 3.378497280553849e-05,
+          "all_seen_loss_difference": {
+            "min": -0.01077189759383912,
+            "mean": -0.003740139976837676,
+            "max": -0.00017951191861648175
+          }
+        },
+        "1": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.009667883154004811,
+            "mean": -0.0027373616079706697,
+            "max": -0.00017951191861648175
+          },
+          "minimum_guard_margin": 0.00018051191861648174,
+          "all_seen_loss_difference": {
+            "min": -0.009667883154004811,
+            "mean": -0.0027373616079706697,
+            "max": -0.00017951191861648175
+          }
+        },
+        "2": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0017940726778935823,
+            "mean": -0.0007019639223348389,
+            "max": -6.595929414034141e-05
+          },
+          "minimum_guard_margin": 6.69592941403414e-05,
+          "all_seen_loss_difference": {
+            "min": -0.008401745321927612,
+            "mean": -0.00391631824119949,
+            "max": -0.0004409112254157854
+          }
+        },
+        "3": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0011288753339555174,
+            "mean": -0.00043423918648622664,
+            "max": -4.0097291255355993e-05
+          },
+          "minimum_guard_margin": 4.109729125535599e-05,
+          "all_seen_loss_difference": {
+            "min": -0.006171555884694702,
+            "mean": -0.0029366133382171533,
+            "max": -0.000366746250865968
+          }
+        },
+        "4": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0010736664060037593,
+            "mean": -0.0004049649287574036,
+            "max": -3.278497280553849e-05
+          },
+          "minimum_guard_margin": 3.378497280553849e-05,
+          "all_seen_loss_difference": {
+            "min": -0.007386654612375476,
+            "mean": -0.0036465723273344406,
+            "max": -0.00047749672038477353
+          }
+        },
+        "5": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0014171636824961698,
+            "mean": -0.0005824461722793078,
+            "max": -4.718853698577885e-05
+          },
+          "minimum_guard_margin": 4.818853698577885e-05,
+          "all_seen_loss_difference": {
+            "min": -0.01077189759383912,
+            "mean": -0.005463834369466625,
+            "max": -0.0006186924097826285
+          }
+        }
+      },
+      "2": {
+        "all": {
+          "rounds": 25,
+          "guard_rejected": 0,
+          "primary_pass": 25,
+          "accepted": 25,
+          "original_loss_difference": {
+            "min": -0.011112236827798189,
+            "mean": -0.0015434774694275107,
+            "max": -1.4406775683165063e-05
+          },
+          "minimum_guard_margin": 1.5406775683165063e-05,
+          "all_seen_loss_difference": {
+            "min": -0.011112236827798189,
+            "mean": -0.003981848072166094,
+            "max": -0.00035268312959233286
+          }
+        },
+        "1": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.011112236827798189,
+            "mean": -0.004881253868022469,
+            "max": -0.00035268312959233286
+          },
+          "minimum_guard_margin": 0.0003536831295923329,
+          "all_seen_loss_difference": {
+            "min": -0.011112236827798189,
+            "mean": -0.004881253868022469,
+            "max": -0.00035268312959233286
+          }
+        },
+        "2": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.004167142306920141,
+            "mean": -0.0013759011848084618,
+            "max": -6.742080049589039e-05
+          },
+          "minimum_guard_margin": 6.842080049589038e-05,
+          "all_seen_loss_difference": {
+            "min": -0.009938951263297358,
+            "mean": -0.004593531396910567,
+            "max": -0.0004856423811055999
+          }
+        },
+        "3": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0017342753253877241,
+            "mean": -0.0006954199055302868,
+            "max": -4.778787717221733e-05
+          },
+          "minimum_guard_margin": 4.878787717221733e-05,
+          "all_seen_loss_difference": {
+            "min": -0.005535274804010948,
+            "mean": -0.0028151132926065524,
+            "max": -0.00035855545587837323
+          }
+        },
+        "4": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0006350774045567886,
+            "mean": -0.00023589174898341198,
+            "max": -1.4406775683165063e-05
+          },
+          "minimum_guard_margin": 1.5406775683165063e-05,
+          "all_seen_loss_difference": {
+            "min": -0.00491185767739083,
+            "mean": -0.002824161240849632,
+            "max": -0.0004093878144397767
+          }
+        },
+        "5": {
+          "rounds": 5,
+          "guard_rejected": 0,
+          "primary_pass": 5,
+          "accepted": 5,
+          "original_loss_difference": {
+            "min": -0.0012445793180028003,
+            "mean": -0.0005289206397929236,
+            "max": -4.435250958195747e-05
+          },
+          "minimum_guard_margin": 4.5352509581957464e-05,
+          "all_seen_loss_difference": {
+            "min": -0.009960728882695558,
+            "mean": -0.004795180562441248,
+            "max": -0.0005890300428961215
+          }
+        }
+      }
+    }
+  },
+  "new_training_visits": 0,
+  "new_model_forward_images": 0,
+  "test_access": 0,
+  "limitations": [
+    "Retrospective training-probe records; not a causal gate test or old-class safety proof.",
+    "Methods have different trajectories; paired round differences are not a same-candidate causal comparison."
+  ]
+}
