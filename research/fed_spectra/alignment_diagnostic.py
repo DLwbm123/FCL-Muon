@@ -13,7 +13,7 @@ def select_probes(groups,seed):
     return chosen
 
 
-def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False):
+def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False,all_seen_objective=False):
     if projectors is not None and not gradient:raise ValueError('Projection requires gradients')
     if full_client_gradients and (not gradient or projectors is not None):raise ValueError('Invalid full client gradient mode')
     projected=[torch.zeros(vh.shape[0],dtype=torch.float64) for u,vh in projectors] if projectors is not None else None
@@ -28,19 +28,23 @@ def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False)
             if projectors is not None or full_client_gradients:p.model.zero_grad(set_to_none=True)
             weight=len(p.ids('train',p.s['task'],k))/total
             row={'client':k,'images':len(ids),'weight':weight,'ce':0.,'kl':0.,'accuracy':0.}
+            if all_seen_objective:row['current_ce']=0.
             for x,y in p.loader(p.raw[0],ids,p.cfg['batch']):
                 p.budget();p.check_labels(y);x=p.test_tf(x.to(p.device));y=y.to(p.device)
                 old=p.s['task']*p.cfg['cpt'];temperature=p.settings['anchor_temperature']
                 with torch.no_grad():target=(p.get_teacher()(x)[:,:old]/temperature).softmax(-1) if old else None
                 with torch.set_grad_enabled(gradient):
-                    z=p.model(x);ce=F.cross_entropy(z[:,old:old+p.cfg['cpt']],y-old)
+                    z=p.model(x);current_ce=F.cross_entropy(z[:,old:old+p.cfg['cpt']],y-old)
+                    ce=F.cross_entropy(z,y) if all_seen_objective else current_ce
                     kl=F.kl_div((z[:,:old]/temperature).log_softmax(-1),target,reduction='batchmean')*temperature**2 if old else torch.zeros((),device=z.device)
                     loss=ce+p.settings['anchor_weight']*kl
                     if not torch.isfinite(loss):raise ArithmeticError('Nonfinite probe objective')
                     fraction=len(y)/len(ids)
                     if gradient:(loss*(fraction if projectors is not None or full_client_gradients else weight*fraction)).backward();backward+=len(y)
                 row['ce']+=float(ce.detach())*fraction;row['kl']+=float(kl.detach())*fraction
-                row['accuracy']+=float((z[:,old:old+p.cfg['cpt']].argmax(-1)==y-old).float().sum())/len(ids)
+                correct=z.argmax(-1)==y if all_seen_objective else z[:,old:old+p.cfg['cpt']].argmax(-1)==y-old
+                row['accuracy']+=float(correct.float().sum())/len(ids)
+                if all_seen_objective:row['current_ce']+=float(current_ce.detach())*fraction
                 forward+=len(y);teacher_forward+=len(y) if old else 0;calls+=1;teacher_calls+=int(old>0)
             if projectors is not None:
                 for target,b,(u,vh) in zip(projected,p.model.b_parameters(),projectors):
@@ -49,11 +53,16 @@ def measure(p,probes,gradient=False,projectors=None,full_client_gradients=False)
                 for target,b in zip(full,p.model.b_parameters()):
                     # The simulated client message is FP32; weighted accumulation is FP64.
                     target.add_(b.grad.detach().cpu().float().double(),alpha=weight)
-            row['loss']=row['ce']+p.settings['anchor_weight']*row['kl'];rows.append(row)
-        totals={k:sum(v['weight']*v[k] for v in rows) for k in ['ce','kl','loss','accuracy']}
+            row['loss']=row['ce']+p.settings['anchor_weight']*row['kl']
+            if all_seen_objective:row['current_loss']=row['current_ce']+p.settings['anchor_weight']*row['kl']
+            rows.append(row)
+        keys=['ce','kl','loss','accuracy']+(['current_ce','current_loss'] if all_seen_objective else [])
+        totals={k:sum(v['weight']*v[k] for v in rows) for k in keys}
         grads=full if full_client_gradients else (projected if projectors is not None else ([b.grad.detach().cpu().double().clone() for b in p.model.b_parameters()] if gradient else None))
-        return {'clients':rows,'weighted':totals,'student_forward_images':forward,
+        result={'clients':rows,'weighted':totals,'student_forward_images':forward,
                 'teacher_forward_images':teacher_forward,'backward_images':backward,'student_forward_calls':calls,'teacher_forward_calls':teacher_calls},grads
+        if all_seen_objective:result[0]['objective']='all_seen_ce_plus_old_kl_with_current_loss_diagnostic'
+        return result
     finally:
         p.model.zero_grad(set_to_none=True)
         for module,mode in modes.items():module.training=mode

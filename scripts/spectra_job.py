@@ -11,10 +11,10 @@ def main():
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
     seed=int(os.environ.get('EXPERIMENT_SEED','0'))
     if seed not in (0,1,2):raise ValueError('Unregistered seed')
-    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix'):raise ValueError('Unknown configuration family')
-    arms=('control','global') if prefix in ('actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix') else ('control','mvp','full')
+    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix','actual_allseen'):raise ValueError('Unknown configuration family')
+    arms=('control','global') if prefix in ('actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix','actual_allseen') else ('control','mvp','full')
     if os.environ.get('RUN_ARMS')=='global':
-        assert prefix in ('actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix') and (root/'runs/control/QUALIFICATION_T5.json').exists()
+        assert prefix in ('actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix','actual_allseen') and (root/'runs/control/QUALIFICATION_T5.json').exists()
         arms=('global',)
     cfg=json.loads((root/f'configs/{prefix}_{arms[-1]}_seed{seed}.json').read_text())
     if len(arms)==1:assert cfg.get('training_gate')

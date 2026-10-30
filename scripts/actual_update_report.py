@@ -65,6 +65,9 @@ def validate_comparison_configs(reference,candidate):
     for c in [a,b]:c.pop('output');c['actual_update']['operator'].pop('eta')
     assert sum(bool(b.get(k)) for k in ['direction_selection','spectral_tangent','matrix_tangent'])<=1
     gated=bool(b.get('training_gate'))
+    if b.get('all_seen_gate'):
+        assert b.get('matrix_tangent') and gated
+        assert b.pop('all_seen_gate')=={'current_loss_tolerance':1e-6}
     if b.get('direction_selection'):
         assert b.pop('direction_selection')=={'type':'gradient_reflection','tie_tolerance':1e-12}
     if b.get('spectral_tangent'):
@@ -117,6 +120,9 @@ def main():
             arms['global']['training_gate'].update(backward_images=q['gate_backward_images'],tangent_capped_layers=q['tangent_capped_layers'])
         if q['config'].get('matrix_tangent'):
             arms['global']['training_gate'].update(backward_images=q['gate_backward_images'],matrix_tangent=True)
+        if q['config'].get('all_seen_gate'):
+            arms['global']['training_gate'].update(objective='all_seen_ce_plus_old_kl',current_guard_rejected_rounds=q['gate_current_guard_rejected_rounds'],
+                original_loss_differences=[v['all_seen_objective']['current_loss_difference'] for v in gates])
     a,b=arms['control']['raw'][-1],arms['global']['raw'][-1]
     differences={k:b[k]-a[k] for k in ['overall_percent','old_percent','new_percent','AIA_percent','forgetting_pp','S']}
     gate=frozen['scientific_gate']
@@ -147,12 +153,17 @@ def main():
         result['limitations'].append('Loss-directed singular-value tangent with fixed reference angle ceiling; client-local mode gradients, basis broadcasts, and backward costs included.')
     if records['global']['config'].get('matrix_tangent'):
         result['limitations'].append('Full matrix norm-sphere tangent; reference angle unchanged; full client FP32 gradients accumulated in FP64, charged and cleared. No spectral support guarantee.')
+    if records['global']['config'].get('all_seen_gate'):
+        result['limitations'].append('Candidate and gate use all-seen CE plus old KL with a current-loss nonworsening guard. Client optimization remains unchanged. Three scalar losses per point are charged.')
     write(report/'FINAL_REPORT.json',result)
     lines=['实际更新全局谱修正：五任务配对实验结果',
         '结论：'+('满足预先固定的单seed初步收益条件。' if result['hypothesis_supported_in_this_pilot'] else '未满足预先固定的初步收益条件；保留全部负结果与权衡，不修改阈值。'),
         ('Control eta=0；新方案为eta=.1谱候选加训练目标接受门。原训练配方不变，新增probe前向和逻辑通信，复用历史对照。' if gated else 'Control eta=0；新方案eta=.1。RRS、当前任务CE+旧类KL、AdamW、Head-RegMean和数据访问相同，仅服务器增量谱形修正不同。'),
         '单位：精度/AIA为%，遗忘为pp。raw主指标，centered仅诊断。',
         '任务 | 路线 | 视图 | overall | old | new | AIA | forgetting | W | S']
+    if records['global']['config'].get('all_seen_gate'):
+        lines[0]='全已见类目标与原目标保护门：五任务配对结果'
+        lines[2]='Control eta=0；候选为原eta.1角度的全矩阵切向。全已见类CE+旧KL改善且原CE_cur+KL不恶化才接受，正式client训练不变。'
     for t in range(5):
         for arm in arms:
             for view in ['raw','centered']:

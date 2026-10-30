@@ -108,6 +108,25 @@ def real_preflight(cfg,weights,raw,manifest,test_tf):
             result.update(matrix_tangent_preflight=True,matrix_tangent_checks=checks,gradient_images=len(ids),
                 matrix_scope='real ViT synthetic-increment logit-squared gradient; client-local CE/KL aggregation checked separately')
             model.zero_grad(set_to_none=True);del z
+        if cfg.get('all_seen_gate'):
+            from torch.nn import functional as F
+            from research.fed_spectra.competition_diagnostic import competition_terms
+            model.add_head(10);model.eval()
+            with torch.no_grad():
+                for b,v in zip(model.b_parameters(),original):b.copy_(v)
+            ids2=[i for group in manifest['partitions']['train'][1] for i in group][:4]
+            xx,yy=next(iter(loader(raw[0],ids2,4)));xx=test_tf(xx.cuda());yy=yy.cuda()
+            assert bool(((yy>=10)&(yy<20)).all())
+            z=model(xx);cur,full,competition=competition_terms(z,yy,10,10)
+            target=(z[:,:10].detach()/2).softmax(-1)
+            kl=F.kl_div((z[:,:10]/2).log_softmax(-1),target,reduction='batchmean')*4
+            direct=torch.autograd.grad(full+kl,model.b_parameters(),retain_graph=True)
+            decomposed=torch.autograd.grad(cur+competition+kl,model.b_parameters())
+            for a,b in zip(direct,decomposed):torch.testing.assert_close(a,b,atol=1e-7,rtol=1e-4)
+            result.update(all_seen_objective_preflight=True,all_seen_gradient_images=len(ids2),
+                maximum_gradient_decomposition_difference=max(float((a-b).abs().max()) for a,b in zip(direct,decomposed)),
+                all_seen_preflight_scope='two-head real ViT on four current training images with synthetic adapter increments; no test selection')
+            del z,direct,decomposed
         del model;gc.collect();torch.cuda.empty_cache();return result
     from research.fed_spectra.math import gaussian_map,orthogonal_pool,rebase_adapter,fisher_coefficients
     model=new_model(cfg,weights);model.add_head(10);model.add_head(10);model.eval()
@@ -145,7 +164,7 @@ def main():
     prefix=os.environ.get('CONFIG_PREFIX','spectra')
     seed=int(os.environ.get('EXPERIMENT_SEED','0'))
     if seed not in (0,1,2):raise ValueError('Unregistered seed')
-    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix'):raise ValueError('Unknown configuration family')
+    if prefix not in ('spectra','actual_update','actual_gate','actual_direction','actual_tangent','actual_matrix','actual_allseen'):raise ValueError('Unknown configuration family')
     cfg=json.loads((root/f'configs/{prefix}_{arm}_seed{seed}.json').read_text())
     clock=json.loads((root/'reports/job.json').read_text());clock={k:clock[k] for k in ('started','deadline')}
     if time.time()>=clock['deadline']:raise TimeoutError('Original deadline exhausted')

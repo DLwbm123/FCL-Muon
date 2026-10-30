@@ -1,0 +1,15 @@
+全已见类目标与原目标保护门：三seed完整T5（2026-10-30，运行前冻结）
+
+决策依据：原五轮完整T5失败、旧训练内全目标候选确认零纠错的失败均保留。独立T4单轮80/20验证在三个seed的996/996/997图上产生1/2/0张纠错且无新增错，原候选全类预测无改变；三个seed的J_all对baseline和原候选均改善、原CE+KL不恶化，冻结局部条件通过。加权accuracy变化+.101414/+.200301/0pp，mean+.100572pp；证据仅3张，验证曾在旧探索中出现，不是最终泛化。结合固定几何预算、实际纠错/一致损失迁移和正式计算/通信无需诊断重复前向，决定一次完整匹配轨迹检验。剩余长期/旧类安全风险必须由完整T5判断，不以局部通过宣称方法成功。
+
+与MATRIX_TANGENT_GATE_PROTOCOL_ZH.txt一致的部分：三seed0/1/2从原预训练fresh全部T1–T5，每任务5round×10client×5epochs、batch16、rank32、lr.0002、alpha.05、原RRS/AdamW reset/Head-RegMean、正式client CE_cur+温度2/权重1旧KL不变。原5000训练图/任务全部使用，匹配原Control完整配方；不续80/20诊断端点。每seed250client/625000新训练访问，合计1875000。只读复用已合格Control及全部旧方法报告，不重训/增强baseline。
+
+唯一候选方向变化：完整矩阵G来自训练selection的J_all=CE_all+原anchor_weight*KL_old，等价J_original+C，C系数固定1、不搜索。完整模型输出只有已见类，T1与原目标相同。每client独立FP32均值梯度，server按原client训练样本数FP64加权；正式直接对J_all一次反向，与诊断分别累计g/h仅数学等价，不承诺逐bit。原eta=.1谱positive提供完全相同参考角；每矩阵范数球切向旋转/零退化路径沿用原算子，角度不增加、不搜索，无第三候选。
+接受门：同一个固定selection每client最多32当前训练图，原seed61029+1009seed+31client；J_all下降严格>1e-6且J_original=CE_cur+旧KL不增加超过1e-6才接受。原目标保护差由同一前向额外计算CE_cur得到，无额外模型前向/反向。否则精确FedAvg，记录全类门和保护门各自是否通过。没有验证/测试参与方向、门或参数；只评价一个候选，head/正式client优化不改变。
+测量口径：新probe字段ce/accuracy分别是全已见类CE/accuracy，显式objective标记；同时记录current_ce/current_loss供保护门。旧默认measure路径不变。每轮baseline/candidate两B点、共享head下发；完整FP32 B梯度上传；每点CE_all/KL/CE_cur三标量，原gate_scalar_upload之外新增all_seen_guard_scalar_upload=非空client*2*8bytes。原矩阵门预计每seed新增通信1777160000bytes，本门仅再加4000bytes/25轮（依真实非空数核验）。完整梯度仅临时内存，不写checkpoint或公开；模拟消息不等于网络实测/隐私保护，不能宣称加速。所有probe student/teacher前向、student反向和训练teacher/统计分别计入。
+
+验收：CPU直接全目标与分解梯度double恒等式、独立client FP32梯度oracle/FP64聚合、RNG/梯度清理；全拒绝精确control；保护门拒绝测试；自然规则逐转移恢复、实际谱和成本；新配置漂移拒绝且必须matrix模式；旧矩阵/门/算子必要回归。真实ViT四图GPU预检每seed：原矩阵算子检查，另用两头同一forward检查直接CE_all+KL与CE_cur+C+KL的B梯度，FP32容差atol1e-7/rtol1e-4；无旧图或test用于预检，预检进程独立，正式fresh RNG。T3/T5各150/250client、375000/625000访问、3000/5000真实测试图重载预测raw/centered一致；报告故障只修报告，不重训。三seed全部完成，不按T3/接受率选路线。
+
+科学门槛保持：平均T5 raw对control>=+.20pp、平均AIA>=0、平均old>=0、每seednew>=-1pp、平均S不增、至少2/3seedraw正、6个重载工程通过；对旧单向门/符号门/谱切向门/原矩阵门的平均T5 raw均>=0。完整报告无门控比较，所有seed/任务raw与诊断centered、old/new/AIA/遗忘/W+S/方向混淆、逐图纠正破坏计数、两门判定/identity/实际部署谱/成本及均值样本SD。不能四舍五入凑门槛、补seed、增角或测试集调参；无显著性/T10/通用优势结论。失败关闭该同角矩阵候选家族的继续试探，不能改小条件后重跑。
+
+资源：三seed同一实验/共同起点含协议准备/CPU/排队/重试。内部27900s，外部至started+28600加60killgrace，总<8h不重置。独立grouproot共享source，24GB硬限/20GB写停止、预计<18GB；主管共享root占用不相加，10秒预算主管+独立timeout，每GPU>=18GB，挂载/余量/小写读probe，中性主子入口ps/nvidia-smi核验。旧data/deps/weights/manifests/control只读。唯一30分钟心跳原位更新；完成公开源码/完整报告/汇总和资格，模型/teacher/梯度/ID/logits/完整日志/私有路径留服务器。持续自主不复活旧停止三arm，不优化LoRM/历史A/B。

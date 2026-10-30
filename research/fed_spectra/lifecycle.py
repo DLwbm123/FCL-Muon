@@ -109,6 +109,11 @@ def qualify(p,n):
             q['extra_probe_backward_images']+=q['gate_backward_images']
             q['extra_probe_backward_calls']+=sum(v['backward_calls'] for v in gates)
             q['limitations'].append('Full client FP32 gradients are temporary simulated messages, accumulated in FP64 and charged; diagnostic used FP32 weighted accumulation. Matrix tangent changes singular vectors at the unchanged reference angle.')
+        if cfg.get('all_seen_gate'):
+            assert all('all_seen_objective' in v for v in gates)
+            assert all(v['accepted']==(v['all_seen_objective']['primary_pass'] and v['all_seen_objective']['current_guard_pass']) for v in gates)
+            q['gate_current_guard_rejected_rounds']=sum(not v['all_seen_objective']['current_guard_pass'] for v in gates)
+            q['limitations'].append('Candidate gradient and primary gate use all-seen CE plus old KL; client training still uses current CE plus old KL. Current-loss guard is training-internal, not old-image safety.')
         q['limitations'].append('Training-internal loss gate is not a held-out or old-task risk guarantee; extra forward and logical communication costs are reported.')
     if path.exists():raise ValueError('Do not overwrite a qualified milestone')
     write(path,q)

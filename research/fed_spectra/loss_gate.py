@@ -15,6 +15,11 @@ def gate_accept(baseline,candidate,minimum_improvement):
     return baseline-candidate>minimum_improvement
 
 
+def current_loss_safe(baseline,candidate,tolerance):
+    if not math.isfinite(baseline) or not math.isfinite(candidate):raise ArithmeticError('Nonfinite original objective')
+    return candidate-baseline<=tolerance
+
+
 class GatedActualUpdatePilot(ActualUpdatePilot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -27,6 +32,8 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
             assert self.cfg['spectral_tangent']=={'reference':'original_eta_angle','mode_gradient':'client_local_fp64'}
         if self.cfg.get('matrix_tangent'):
             assert self.cfg['matrix_tangent']=={'reference':'original_eta_angle','gradient':'client_fp32_server_fp64'}
+        if self.cfg.get('all_seen_gate'):
+            assert self.cfg.get('matrix_tangent') and self.cfg['all_seen_gate']=={'current_loss_tolerance':1e-6}
         self.s.update(training_gate_records=[])
 
     def fuse(self):
@@ -35,6 +42,8 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
         directed=bool(self.cfg.get('direction_selection'))
         tangent=bool(self.cfg.get('spectral_tangent'))
         matrix=bool(self.cfg.get('matrix_tangent'))
+        all_seen=bool(self.cfg.get('all_seen_gate'))
+        objective_args={'all_seen_objective':True} if all_seen else {}
         origin=[b.detach().cpu().clone() for b in self.model.b_parameters()] if directed or tangent or matrix else None
         super().fuse()
         proposal=copy.deepcopy(self.s['actual_update_rounds'][-1])
@@ -49,7 +58,7 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
             for o,b in zip(origin,baseline):
                 u,_,vh=torch.linalg.svd(b.double()-o.double(),full_matrices=False)
                 projectors.append((u,vh))
-        deploy(baseline);before,grads=measure(self,probes,gradient=directed or tangent or matrix,projectors=projectors,full_client_gradients=matrix)
+        deploy(baseline);before,grads=measure(self,probes,gradient=directed or tangent or matrix,projectors=projectors,full_client_gradients=matrix,**objective_args)
         direction=None
         if directed:
             positive_proposal=copy.deepcopy(proposal)
@@ -90,8 +99,15 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
             tangent_record={'operators':operators,'positive_round':positive_proposal,
                 'gradient_aggregation':'client_local_fp64_modes'}
             del grads
-        deploy(candidate);after,_=measure(self,probes)
+        deploy(candidate);after,_=measure(self,probes,**objective_args)
         accepted=gate_accept(before['weighted']['loss'],after['weighted']['loss'],self.cfg['training_gate']['minimum_improvement'])
+        all_seen_record=None
+        if all_seen:
+            tolerance=self.cfg['all_seen_gate']['current_loss_tolerance']
+            guard_pass=current_loss_safe(before['weighted']['current_loss'],after['weighted']['current_loss'],tolerance)
+            all_seen_record={'primary_pass':accepted,'current_guard_pass':guard_pass,'current_loss_tolerance':tolerance,
+                             'current_loss_difference':after['weighted']['current_loss']-before['weighted']['current_loss']}
+            accepted=accepted and guard_pass
         if not accepted:
             deploy(baseline)
             for pair in self.s['actual_update_rounds'][-1]['layers'].values():
@@ -110,6 +126,7 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
         self.charge('gate_B_candidates_broadcast',nonempty*(3 if directed else 2)*sum(b.numel()*4 for b in self.model.b_parameters()))
         self.charge('gate_shared_head_broadcast',nonempty*self.model.rows[-1].numel()*4)
         self.charge('gate_scalar_upload',nonempty*2*2*8)
+        if all_seen:self.charge('all_seen_guard_scalar_upload',nonempty*2*8)
         if directed:
             self.charge('direction_derivative_scalar_upload',nonempty*2*8)
             self.charge('direction_choice_broadcast',nonempty*8)
@@ -134,4 +151,5 @@ class GatedActualUpdatePilot(ActualUpdatePilot):
         if matrix:
             self.s['training_gate_records'][-1].update(matrix_tangent=matrix_record,backward_images=before['backward_images'],
                 backward_calls=before['student_forward_calls'])
+        if all_seen:self.s['training_gate_records'][-1]['all_seen_objective']=all_seen_record
         self.event('training_loss_gate',accepted=accepted,loss_difference=after['weighted']['loss']-before['weighted']['loss'])
