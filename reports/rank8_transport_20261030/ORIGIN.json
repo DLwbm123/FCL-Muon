@@ -1,0 +1,8 @@
+{
+  "started": 1793345278.54723,
+  "maximum_seconds": 2400,
+  "outer_timeout_seconds": 2700,
+  "kill_grace_seconds": 30,
+  "storage_limit_bytes": 2000000000,
+  "write_stop_bytes": 1000000000
+}

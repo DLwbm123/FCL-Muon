@@ -1,0 +1,12 @@
+固定rank8客户端梯度传输：训练外端点保真诊断（2026-10-30，运行前冻结）
+
+依据与主线作用：全已见类保护门三seed完整T5通过冻结条件，mean raw+.313333pp但seed1-.12pp、遗忘及旧到新混淆略增，不能称普遍安全；通信额外1777164000bytes/seed(+33.00644%)，其中完整梯度上传589824000bytes。下一问题是有限带宽下该主线方向及已观察到的局部纠错是否保留，不根据测试样本或seed调整算法，也不重训baseline。此为独立通信表示假设，不是改角度/目标继续搜性能。
+
+复用heldout_round_20261030三个共同T4 round1的local_done端点、原origin/baseline/positive/head及固定80/20拆分，只读；0新增训练、0test、0新checkpoint。当前验证996/996/997图，训练selection原最多32/client。它们已经参与前轮诊断/决策，不能称新的独立验证；结果只判定近似保真。来源full T5结果只作为成本依据，不读任何test标签/logits。
+候选固定：每client对J_all=CE_all+KL计算一次FP32完整B梯度（client均值），做FP64 SVD截断前8项；8=原LoRA32的四分之一，运行前固定，不搜索任何其他秩。发送L=(U8*S8).float()与R=Vh8.float()两个FP32因子，接收端转FP64重构再按原训练client权重累加。每个768x32矩阵25600bytes，是完整FP32的26.041667%；24矩阵10client每轮6144000bytes，相对完整23592960bytes。250client五任务梯度预测153600000bytes，比原少436224000bytes。只计算逻辑载荷，固定形状/秩由协议定义，无网络实测或加速/隐私声明；其他广播/标量成本不隐去，SVD计算单独记录。
+同一次client梯度还汇总未压缩FP32/server FP64全矩阵方向作为描述性参照（不额外反向）。两方向都用原eta.1 positive参考角及同范数matrix tangent算子，无扩大角度/第三候选；全目标、原目标保护条件不变，所有梯度来自训练selection，validation始终no_grad。FP32 weighted gradient返回值在FP64除以已知client权重并转回FP32，必须与乘回该权重的原消息精确相同，防止接口缩放改变梯度。
+
+先复现baseline和未压缩全目标候选相对旧heldout报告：selection/validation loss、CE、KL、C、accuracy最大差<=1e-6且validation全类准确率差<=1e-10；直接client梯度与旧分解梯度数学等价但不承诺bit相同。若不满足，保留原clock排查，不能用改阈值代替复现。披露每client/layer保留能量、聚合梯度相对误差/方向cosine、实际角度和范数、selection接受门、validation CE+KL/CE_all/C/accuracy/旧类winner及精确flip和分组贡献。梯度/因子/ID/logits不落盘不公开。
+冻结局部支持条件：三seed coverage>=.95、工程通过；梯度载荷<=原27%；selection全目标改善>1e-6且原目标不增>1e-6；validation J_all相对baseline的改善保留未压缩候选至少90%且下降>1e-6；validation原CE+KL不增>1e-6；validation全类accuracy每seed相对未压缩不降(1e-10容差)，相对baseline三seed mean严格正。任一不满足即此次固定rank8保真不支持，不挑seed、换秩/目标/角度、换拆分重试。即使通过也不是完整T5通过或旧类安全，需要另立完整协议，不能直接替代已发布全梯度方法。
+工程：ReadOnlyPilot禁止step/save/test，加载4heads/local_done/160client及原agg_B验证；GuardedLoader拒绝验证梯度和外部ID；teacher先创建再装hook；头不变、baseline恢复、成对重构<=2e-6、范数FP32<=5e-4、同参考角。成本全部模型前向/反向/teacher和client SVD个数/时间/序列化载荷独立计，不将旧训练归为新增，不把raw loader访问重复计费。CPU检查rank8重构/能量/零矩阵/形状边界、因子FP32量化、成对条件的坏seed/零收益拒绝及沿用矩阵/隔离检查。
+预算：独立root，原共同起点含准备/CPU/修复/排队；内部2400s，外部至+2700+30killgrace，总<46分钟，不重置。2GB硬限/1GB写停止、预计<100MB，新root只存源码/小报告；旧数据/依赖/权重/端点只读。GPU0>=18GB、实际挂载/余量/小写读probe；独立timeout、10秒存储检查和每batch预算，中性进程。唯一30分钟心跳原位更新。结果公开全部seed/成本/限制，保留全部旧失败和本次完整T5成功的有界结论。
