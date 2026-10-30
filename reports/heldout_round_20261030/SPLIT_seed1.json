@@ -1,0 +1,29 @@
+{
+  "seed": 1,
+  "train_counts": [
+    354,
+    726,
+    716,
+    413,
+    11,
+    445,
+    151,
+    610,
+    542,
+    36
+  ],
+  "validation_counts": [
+    88,
+    181,
+    178,
+    103,
+    2,
+    111,
+    37,
+    152,
+    135,
+    9
+  ],
+  "expected_new_training_visits": 20020,
+  "validation_weight_coverage": 1.0
+}

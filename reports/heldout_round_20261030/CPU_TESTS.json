@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "scope": "fixed split, leakage and gradient guards, frozen candidate conditions, geometry and paired isolation"
+}
