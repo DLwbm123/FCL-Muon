@@ -1,0 +1,14 @@
+训练目标与跨任务竞争失配诊断（2026-10-30，运行前冻结）
+
+依据：五种实际更新主线均未通过完整三seed T5科学门槛。全矩阵门最新mean raw+.193333±.400666pp，低于+.20；seed1仍-.26pp，new-1pp。其余门槛通过不改变总体失败，不能四舍五入、补seed或增加角度。依照先前约定，后续转目标/跨任务竞争分析，不扩大同类方向自由度。
+
+唯一问题：对同一训练内端点，已生成的全矩阵candidate降低当前类别块CE+旧类别KL时，是否反而增大跨任务竞争损失？这是局部可否证问题，不把T5差异追溯为已证实因果。
+复用原共同T4首轮三个seed baseline/positive与旧全矩阵诊断candidate生成规则。仍是原selection gradient、原eta.1参考角、同范数，不产生任何新候选/新优化步。先复现原baseline selection/confirmation、candidate selection/confirmation损失与accuracy，各最大差<=1e-6；selection与confirmation不交叉，coverage>=95%。没有旧类训练图回放，没有测试集读取；所有图本来都属于当前任务训练集，并非独立holdout。新训练访问0，测试访问0，checkpoint0。
+
+新增观测：CE_all=CE(全部已见类logits,全局标签)，CE_cur=CE(当前类别块logits,块内标签)，C=logsumexp(全部已见类logits)-logsumexp(当前类别块logits)。严格有CE_all=CE_cur+C；mean FP32误差容限2e-6，C非负。报告selection/confirmation在baseline/candidate的上述三值、当前块accuracy、全已见类accuracy、旧类胜出率、当前块正确却被旧类抢走比例、真类logit-max旧类logit平均间隔。按原client样本权重聚合，confirmation差除coverage。
+在baseline selection和confirmation各额外一次C反向，仅报告其与原CE+KL梯度cosine、对原candidate实际位移的一阶预测；梯度绝不影响候选或门，向量不保存。当前CE+KL仍按原FP32梯度累积复现，不声称等同正式clientFP32/serverFP64轨迹。
+
+预设失配支持条件：工程和coverage通过，原目标3/3确认下降>1e-6，至少2/3确认C上升>1e-6且mean C上升>1e-6。否则不支持此端点上的该失配解释；不改条件、不按seed选路线。完整报告CE_all和分类计数，不以loss符号冒充accuracy。即使不支持也不证明全过程无失配；三个共同端点不能解释旧类风险/完整T5，更不能因任何诊断值直接启动新完整训练。
+
+费用和边界：旧矩阵候选复现四次CE+KL前向（其中两个baseline反向）；新增竞争四次student前向及两个baseline反向，逐seed分别记账，teacher仅旧目标使用。无参数更新，无数据下载，无完整梯度持久化；当前图上的新旧边界信息不等于旧图准确率。
+预算：新root独立原始起点含准备/CPU，内部2400s、外部至started+2700+30killgrace，总<46min不重置。2GB实际上限/1GB写停止、预计<100MB，只读复用data/deps/weights及所有旧端点；GPU>=18GB，挂载/剩余/小写读probe，独立timeout和10秒存储检查，中性主子进程。CPU测试CE分解、旧logit梯度、加权计数、RNG/模型/梯度隔离通过才启动。完成公开全seed聚合/协议/源码/成本，原五轮失败保留，逐图ID/logits/模型/梯度/完整日志留服务器。唯一30分钟监测；结果后按证据推进有限主线下一步，不能自动原配置加seed/T10或补到成功。
