@@ -1,0 +1,10 @@
+{
+  "status": "RUNNING",
+  "gpu": 0,
+  "neutral_process_identity_verified": true,
+  "initial_allocated_bytes": 2945024,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "CPU_checks_passed": 5,
+  "preparation_note": "Initial system Python lacked numpy before tests ran. Existing neutral n3 environment passed all checks. No dependency download or clock reset."
+}
