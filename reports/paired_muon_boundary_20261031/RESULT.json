@@ -1,0 +1,141 @@
+{
+  "status": "completed",
+  "scientific_pass": false,
+  "gate_conditions": {
+    "raw_gain_at_least_6_of_3000": false,
+    "old_accuracy_not_lower": true,
+    "new_accuracy_no_more_than_10_of_1000_lower": true,
+    "forgetting_not_higher": true,
+    "raw_not_lower_than_unconditional_projection": true
+  },
+  "comparisons": {
+    "zero": {
+      "raw_accuracy": 0.9103333333333333,
+      "old_accuracy": 0.939,
+      "new_accuracy": 0.853,
+      "forgetting": 0.016000000000000014,
+      "corrected_vs_zero": 0,
+      "broken_vs_zero": 0,
+      "old_correct": 1878,
+      "new_correct": 853
+    },
+    "projected": {
+      "raw_accuracy": 0.9103333333333333,
+      "old_accuracy": 0.939,
+      "new_accuracy": 0.853,
+      "forgetting": 0.016000000000000014,
+      "corrected_vs_zero": 0,
+      "broken_vs_zero": 0,
+      "old_correct": 1878,
+      "new_correct": 853
+    },
+    "guarded": {
+      "raw_accuracy": 0.9103333333333333,
+      "old_accuracy": 0.939,
+      "new_accuracy": 0.853,
+      "forgetting": 0.016000000000000014,
+      "corrected_vs_zero": 0,
+      "broken_vs_zero": 0,
+      "old_correct": 1878,
+      "new_correct": 853
+    }
+  },
+  "guarded_accepted_clients": 5,
+  "guarded_total_clients": 10,
+  "retained_energy_client_mean": 0.17565048391925625,
+  "probe_cosine_min": -0.02034940154747466,
+  "probe_cosine_max": 0.022668660883405523,
+  "snapshot_nonzero_clients": 10,
+  "checkpoint_audit": {
+    "zero": {
+      "t3_training_visits": 125000,
+      "t3_client_rounds": 50
+    },
+    "projected": {
+      "t3_training_visits": 125000,
+      "t3_client_rounds": 50,
+      "B_l2_difference_vs_zero": 0.0170945401287643,
+      "B_matrices_different": 24
+    },
+    "guarded": {
+      "t3_training_visits": 125000,
+      "t3_client_rounds": 50,
+      "B_l2_difference_vs_zero": 0.015570489479451576,
+      "B_matrices_different": 24
+    }
+  },
+  "new_training_visits": 500000,
+  "new_training_statistics_forward_images": 110000,
+  "probe_student_forward_images": 292,
+  "probe_student_backward_images": 292,
+  "test_forward_images": 11000,
+  "training_side_image_reads": {
+    "1": 155000,
+    "2": 455292
+  },
+  "source_t1_training_visits": 125000,
+  "shared_logical_communication_bytes": {
+    "RRS_raw_upload": 1132462080,
+    "A_broadcast": 23592960,
+    "B_download": 117964800,
+    "current_head_download": 1536000,
+    "head_Gram_upload": 235929600,
+    "B_upload": 117964800,
+    "current_head_upload": 1536000,
+    "task_end_B_download": 23592960,
+    "task_end_head_download": 307200
+  },
+  "per_branch_logical_communication_bytes": {
+    "zero": {
+      "RRS_raw_upload": 0,
+      "A_broadcast": 0,
+      "B_download": 117964800,
+      "current_head_download": 1536000,
+      "head_Gram_upload": 235929600,
+      "B_upload": 117964800,
+      "current_head_upload": 1536000,
+      "task_end_B_download": 0,
+      "task_end_head_download": 0
+    },
+    "projected": {
+      "RRS_raw_upload": 0,
+      "A_broadcast": 0,
+      "B_download": 117964800,
+      "current_head_download": 1536000,
+      "head_Gram_upload": 235929600,
+      "B_upload": 117964800,
+      "current_head_upload": 1536000,
+      "task_end_B_download": 0,
+      "task_end_head_download": 0
+    },
+    "guarded": {
+      "RRS_raw_upload": 0,
+      "A_broadcast": 0,
+      "B_download": 117964800,
+      "current_head_download": 1536000,
+      "head_Gram_upload": 235929600,
+      "B_upload": 117964800,
+      "current_head_upload": 1536000,
+      "task_end_B_download": 0,
+      "task_end_head_download": 0
+    }
+  },
+  "preflight_history": {
+    "first_cpu_tests": 22,
+    "first_cpu_failures": 1,
+    "amended_cpu_tests": 22,
+    "amended_cpu_passed": true,
+    "gpu_ssb_cpu_l2": 1.0886297786782961e-05,
+    "gpu_preflight_image_accesses": 0
+  },
+  "original_elapsed_seconds": 5253.41850733757,
+  "allocated_bytes_at_completion": 2952413184,
+  "audit_cpu_elapsed_seconds": 0.791879415512085,
+  "limitations": [
+    "single seed, three tasks, component study; no significance or generality claim",
+    "zero corrected/broken counts do not establish identical per-image predictions",
+    "server-side historical Muon aggregation was not implemented in this experiment",
+    "test counts follow original evaluation assertions; no independent image-read counter was saved",
+    "probe and state transfer are simulated locally; no network or privacy guarantee"
+  ]
+}
