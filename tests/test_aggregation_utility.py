@@ -148,3 +148,11 @@ def test_stratified_partition_no_overlap_and_singletons_stay_fit():
     assert set(fit).isdisjoint(check) and sorted(fit+check)==ids and 10 in fit
     assert {labels[i] for i in fit}=={0,1,2}
     assert (fit,check)==split_indices(ids,labels,0,1,3,76103,.2)
+
+
+def test_adamw_utility_mode_runs_task_boundary_lifecycle(tmp_path):
+    pilot=toy(tmp_path/'adamw-utility',kind='adamw')
+    pilot.run()
+    assert pilot.s['phase']=='complete'
+    assert [record['mode'] for record in pilot.s['selection_records']]==['adamw','adamw']
+    assert len(pilot.s['training_records'])==12  # two non-empty clients, two rounds, three tasks

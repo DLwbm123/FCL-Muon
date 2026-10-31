@@ -35,6 +35,12 @@ def candidate_pool(current, history, a0, width):
 
 def quantities(z, c, weights, h, mode):
     # c: client x {Q,V} x output_dim x candidate_dim.
+    if mode == 'adamw':
+        from research.adamw_combined.adamw_utility_draft import quantities as adamw_quantities
+        q = adamw_quantities(z, c, weights, h)
+        q['federated_direction'] = q['direction']
+        q['federated_utility'] = q['utility']
+        return q
     projected = c @ z
     mean = torch.einsum('k,kvdr->vdr', weights, projected)
     local = ssb_batch(.1 * projected)

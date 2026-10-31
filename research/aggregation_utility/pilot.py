@@ -69,7 +69,7 @@ class UtilityPilot(ConfirmationPilot):
         if self.s['task']==0 or self.cfg['selection_mode']=='prefix':
             return
         t=self.s['task'];settings=self.cfg['selection'];started=time.time()
-        modes={'rrs':'federated','central':'central','federated':'federated'}
+        modes={'rrs':'federated','central':'central','federated':'federated','adamw':'adamw'}
         mode=modes[self.cfg['selection_mode']]
         self.event('selection_start',selection_mode=self.cfg['selection_mode'])
         heads=[r.detach().clone() for r in self.model.rows]
