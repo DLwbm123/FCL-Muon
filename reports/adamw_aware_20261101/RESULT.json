@@ -1,0 +1,71 @@
+{
+  "status": "completed",
+  "seed": 0,
+  "metrics": {
+    "control": {
+      "raw": 0.917,
+      "old": 0.948,
+      "new": 0.855,
+      "forgetting": 0.010000000000000009
+    },
+    "adamw_basis": {
+      "raw": 0.911,
+      "old": 0.946,
+      "new": 0.841,
+      "forgetting": 0.009000000000000008
+    }
+  },
+  "checks": {
+    "raw_net_at_least_6": false,
+    "old_correct_not_lower": false,
+    "new_loss_at_most_10": false,
+    "forgetting_not_higher": true,
+    "at_least_one_basis_accept": true,
+    "at_least_one_server_accept": true
+  },
+  "exploratory_gate_passed": false,
+  "source_t1_train_visits": 125000,
+  "new_train_visits": 250000,
+  "client_rounds_including_source_t1": 150,
+  "teacher_forward_images": 0,
+  "old_training_images": 0,
+  "current_stats_visits": 60000,
+  "selection_accepted_layers": [
+    12,
+    12
+  ],
+  "server_accepted_rounds": 10,
+  "basis_probe_samples_by_kind": {
+    "prototype_fit": 8016,
+    "fit_gradient": 8016,
+    "check_gradient": 1984
+  },
+  "server_probe_forward_images": 6000,
+  "server_probe_backward_images": 3000,
+  "server_assumed_gradient_upload_bytes": 235929600,
+  "server_assumed_probe_broadcast_bytes": 471859200,
+  "server_seconds_including_probes": 31.84356619976461,
+  "logical_communication_bytes": {
+    "RRS_raw_upload": 1698693120,
+    "A_broadcast": 35389440,
+    "B_download": 353894400,
+    "current_head_download": 4608000,
+    "head_Gram_upload": 707788800,
+    "B_upload": 353894400,
+    "current_head_upload": 4608000,
+    "task_end_B_download": 70778880,
+    "task_end_head_download": 921600,
+    "prototype_statistics_upload": 1230400,
+    "probe_fit_gradient_upload": 94371840,
+    "probe_check_gradient_upload": 94371840,
+    "candidate_pool_broadcast": 47185920,
+    "prototype_head_broadcast": 614400
+  },
+  "raw_reload_equal": true,
+  "test_images": 8000,
+  "test_count_basis": "task2 2000 + task3 3000 + task3 reload 3000; no per-image counter",
+  "source_test_previously_seen": true,
+  "network_measured": false,
+  "elapsed_seconds": 2388.8348240852356,
+  "peak_gpu_allocated_bytes": 2044696064
+}
