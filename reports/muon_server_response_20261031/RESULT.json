@@ -1,0 +1,89 @@
+{
+  "status": "completed",
+  "checks": {
+    "accepted_matrix": true,
+    "coverage": true,
+    "all_loss_improved": false,
+    "current_loss_not_worse": false
+  },
+  "local_conditions_passed": false,
+  "seed": 0,
+  "accepted_matrices": 22,
+  "matrix_reasons": {
+    "accepted": 22,
+    "history_budget": 2
+  },
+  "metrics": {
+    "selection": {
+      "baseline": {
+        "all": 0.592788072859349,
+        "current": 0.1247719309891644,
+        "accuracy": 0.87655,
+        "samples": 146,
+        "correct": 128,
+        "weight_coverage": 1.0
+      },
+      "candidate": {
+        "all": 0.5923451128254273,
+        "current": 0.12414924468618697,
+        "accuracy": 0.87655,
+        "samples": 146,
+        "correct": 128,
+        "weight_coverage": 1.0
+      },
+      "paired_flips": {
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0
+      },
+      "all_loss_difference": -0.0004429600339216355,
+      "current_loss_difference": -0.0006226863029774321
+    },
+    "confirmation": {
+      "baseline": {
+        "all": 0.43549894587744775,
+        "current": 0.06706587074469844,
+        "accuracy": 0.888525,
+        "samples": 146,
+        "correct": 132,
+        "weight_coverage": 1.0
+      },
+      "candidate": {
+        "all": 0.43571759447494607,
+        "current": 0.06708323243302311,
+        "accuracy": 0.888525,
+        "samples": 146,
+        "correct": 132,
+        "weight_coverage": 1.0
+      },
+      "paired_flips": {
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0
+      },
+      "all_loss_difference": 0.00021864859749831655,
+      "current_loss_difference": 1.7361688324668556e-05
+    }
+  },
+  "student_forward_images": 584,
+  "student_backward_images": 0,
+  "teacher_forward_images": 0,
+  "new_training_visits": 0,
+  "test_images_used": 0,
+  "old_train_images_used": 0,
+  "ssb_calls": 264,
+  "candidate_seconds": 0.22119736671447754,
+  "extra_network_bytes_measured": null,
+  "raw_image_reads": {
+    "1": 0,
+    "2": 584
+  },
+  "peak_gpu_allocated_bytes": 526487040,
+  "elapsed_seconds": 28.48201084136963,
+  "limitations": [
+    "B is the five-round cumulative task update, not the last round",
+    "last client momenta are not common-anchor gradients or full trajectory bias",
+    "both disjoint probes were previously used in training, basis statistics and a separate gated branch probe",
+    "no performance, generalization, old-class safety or measured-network claim"
+  ]
+}
