@@ -1,0 +1,126 @@
+{
+  "status": "completed",
+  "local_conditions_passed": false,
+  "checks": {
+    "accepted_matrix": true,
+    "fit_coverage": true,
+    "fit_all_loss_improved": true,
+    "fit_current_loss_not_worse": false,
+    "confirmation_coverage": true,
+    "confirmation_all_loss_improved": true,
+    "confirmation_current_loss_not_worse": false,
+    "confirmation_accuracy_not_lower": true
+  },
+  "seed": 0,
+  "accepted_matrices": 24,
+  "matrix_reasons": {
+    "accepted": 24
+  },
+  "metrics": {
+    "fit": {
+      "baseline": {
+        "all": 0.24007022289489885,
+        "current": 0.08222512201039141,
+        "accuracy": 0.9448501872659176,
+        "samples": 281,
+        "correct": 269,
+        "weight_coverage": 1.0
+      },
+      "candidate": {
+        "all": 0.23989812503972535,
+        "current": 0.08225725188385026,
+        "accuracy": 0.9448501872659176,
+        "samples": 281,
+        "correct": 269,
+        "weight_coverage": 1.0
+      },
+      "paired_flips": {
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0
+      },
+      "all_loss_difference": -0.00017209785517349752,
+      "current_loss_difference": 3.2129873458852654e-05,
+      "accuracy_difference": 0.0
+    },
+    "confirmation": {
+      "baseline": {
+        "all": 0.2748834438192388,
+        "current": 0.09185539136684942,
+        "accuracy": 0.9406367041198501,
+        "samples": 236,
+        "correct": 223,
+        "weight_coverage": 1.0
+      },
+      "candidate": {
+        "all": 0.2748620977879859,
+        "current": 0.09201695244661397,
+        "accuracy": 0.9406367041198501,
+        "samples": 236,
+        "correct": 223,
+        "weight_coverage": 1.0
+      },
+      "paired_flips": {
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0
+      },
+      "all_loss_difference": -2.1346031252866826e-05,
+      "current_loss_difference": 0.0001615610797645467,
+      "accuracy_difference": 0.0
+    }
+  },
+  "directional": {
+    "fit": {
+      "directional_derivative": -0.00017435839766871588,
+      "gradient_norm": 0.5023668001370375,
+      "correction_norm": 0.021800703979251844,
+      "cosine": -0.015920306363705616,
+      "samples": 281,
+      "weight_coverage": 1.0
+    },
+    "confirmation": {
+      "directional_derivative": -2.372381491642945e-05,
+      "gradient_norm": 0.5927530112662581,
+      "correction_norm": 0.021800703979251844,
+      "cosine": -0.001835862878323473,
+      "samples": 236,
+      "weight_coverage": 1.0
+    }
+  },
+  "new_training_visits": 20025,
+  "statistics_forward_images": 8010,
+  "diagnostic_student_forward_images": 1551,
+  "diagnostic_student_backward_images": 517,
+  "teacher_forward_images": 0,
+  "test_images_used": 0,
+  "old_train_images_used": 0,
+  "fit_reads": 28878,
+  "heldout_reads": 708,
+  "heldout_reads_at_candidate_freeze": 0,
+  "ssb_calls": 264,
+  "candidate_seconds": 0.21819162368774414,
+  "source_t1_t2_training_visits": 250000,
+  "new_logical_communication_bytes": {
+    "RRS_raw_upload": 566231040,
+    "A_broadcast": 11796480,
+    "B_download": 23592960,
+    "current_head_download": 307200,
+    "head_Gram_upload": 47185920,
+    "B_upload": 23592960,
+    "current_head_upload": 307200,
+    "task_end_B_download": 23592960,
+    "task_end_head_download": 307200
+  },
+  "theoretical_extra_client_momentum_upload_bytes": 23592960,
+  "theoretical_two_probe_gradient_upload_bytes": 47185920,
+  "theoretical_one_candidate_broadcast_bytes": 23592960,
+  "extra_network_bytes_measured": null,
+  "peak_gpu_allocated_bytes": 1940133376,
+  "elapsed_seconds": 278.44546484947205,
+  "limitations": [
+    "one seed and one round, not a full FCL result or old-class safety evidence",
+    "heldout excluded from this run but previously used in other research; pretraining overlap unknown",
+    "last local momenta are not common-anchor gradients or full trajectory bias"
+  ]
+}
