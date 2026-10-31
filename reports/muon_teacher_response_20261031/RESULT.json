@@ -1,0 +1,1451 @@
+{
+  "status": "completed",
+  "seed": 0,
+  "exploratory_gate_passed": false,
+  "checks": {
+    "raw_net_gain_at_least_6": false,
+    "old_correct_not_lower": true,
+    "new_correct_at_most_10_lower": true,
+    "forgetting_not_higher": true,
+    "at_least_one_round_accepted": false,
+    "raw_not_below_no_consensus": true,
+    "raw_not_below_kl_only": true
+  },
+  "metrics": {
+    "control": {
+      "raw_accuracy": 0.91,
+      "old_accuracy": 0.941,
+      "new_accuracy": 0.848,
+      "forgetting": 0.014000000000000012,
+      "corrected_vs_zero": 0,
+      "broken_vs_zero": 0,
+      "old_correct": 1882,
+      "new_correct": 848
+    },
+    "full": {
+      "raw_accuracy": 0.91,
+      "old_accuracy": 0.941,
+      "new_accuracy": 0.848,
+      "forgetting": 0.014000000000000012,
+      "corrected_vs_zero": 0,
+      "broken_vs_zero": 0,
+      "old_correct": 1882,
+      "new_correct": 848,
+      "wrong_to_different_wrong": 0
+    },
+    "no_consensus": {
+      "raw_accuracy": 0.91,
+      "old_accuracy": 0.941,
+      "new_accuracy": 0.848,
+      "forgetting": 0.014000000000000012,
+      "corrected_vs_zero": 0,
+      "broken_vs_zero": 0,
+      "old_correct": 1882,
+      "new_correct": 848,
+      "wrong_to_different_wrong": 0
+    },
+    "kl_only": {
+      "raw_accuracy": 0.91,
+      "old_accuracy": 0.941,
+      "new_accuracy": 0.848,
+      "forgetting": 0.014000000000000012,
+      "corrected_vs_zero": 0,
+      "broken_vs_zero": 0,
+      "old_correct": 1882,
+      "new_correct": 848,
+      "wrong_to_different_wrong": 0
+    }
+  },
+  "t1_reference_accuracy": 0.99,
+  "t2_reference_accuracies": [
+    0.978,
+    0.92
+  ],
+  "server_records": {
+    "full": [
+      {
+        "round": 0,
+        "teacher_variant": "full",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0022316740782545585,
+          "ideal_descent_product": 1.2398408436250323,
+          "step": 0.0012793428905677146,
+          "consensus_cosine": 0.7107586112967491,
+          "physical_response_dot": -0.0015861815679156374,
+          "correction_to_update_norm": 0.14612359162863192
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0022316740782545585,
+          "relative_kl": 0.0009093180619878909,
+          "evidence_shift_sq": 0.001322356016266668,
+          "ce_all": 0.24007022289489882,
+          "ce_current": 0.08222512201039141
+        },
+        "fit_candidate": {
+          "teacher_response": 0.0010791890952194028,
+          "relative_kl": 0.0005076843685836626,
+          "evidence_shift_sq": 0.0005715047266357402,
+          "ce_all": 0.24065115701439713,
+          "ce_current": 0.08263233071655769
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.0019493709181263065,
+          "relative_kl": 0.0008575159139517461,
+          "evidence_shift_sq": 0.0010918550041745605,
+          "ce_all": 0.27488344381923885,
+          "ce_current": 0.0918553913668494
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.0019493709181263065,
+          "relative_kl": 0.0008575159139517461,
+          "evidence_shift_sq": 0.0010918550041745605,
+          "ce_all": 0.27488344381923885,
+          "ce_current": 0.0918553913668494
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 0,
+        "confirmation_reads_after": 472,
+        "teacher_student_probe_seconds": 7.95526123046875,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 1,
+        "teacher_variant": "full",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0046769816430006165,
+          "ideal_descent_product": 1.873382955408833,
+          "step": 0.0017684139333054047,
+          "consensus_cosine": 0.7083449912017115,
+          "physical_response_dot": -0.0033129165288645433,
+          "correction_to_update_norm": 0.300958225019107
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0046769816430006165,
+          "relative_kl": 0.0018005575208482184,
+          "evidence_shift_sq": 0.0028764241221523987,
+          "ce_all": 0.3745650956592491,
+          "ce_current": 0.08773228045129046
+        },
+        "fit_candidate": {
+          "teacher_response": 0.002283058510816102,
+          "relative_kl": 0.0010855779276863554,
+          "evidence_shift_sq": 0.0011974805831297462,
+          "ce_all": 0.37498097475619074,
+          "ce_current": 0.08852406924777777
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.004045111481636414,
+          "relative_kl": 0.0015248144213564172,
+          "evidence_shift_sq": 0.0025202970602799957,
+          "ce_all": 0.42038806963702186,
+          "ce_current": 0.09502149758013198
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.004045111481636414,
+          "relative_kl": 0.0015248144213564172,
+          "evidence_shift_sq": 0.0025202970602799957,
+          "ce_all": 0.42038806963702186,
+          "ce_current": 0.09502149758013198
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 472,
+        "confirmation_reads_after": 944,
+        "teacher_student_probe_seconds": 7.883150815963745,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 2,
+        "teacher_variant": "full",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.007523085271005754,
+          "ideal_descent_product": 2.5512671893482253,
+          "step": 0.002098037400739007,
+          "consensus_cosine": 0.711497183630257,
+          "physical_response_dot": -0.005352653976756299,
+          "correction_to_update_norm": 0.5599206464153957
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.007523085271005754,
+          "relative_kl": 0.0026264338979998065,
+          "evidence_shift_sq": 0.0048966513730059474,
+          "ce_all": 0.47327292281915845,
+          "ce_current": 0.0901993211104593
+        },
+        "fit_candidate": {
+          "teacher_response": 0.003652554708428849,
+          "relative_kl": 0.0016818333269149725,
+          "evidence_shift_sq": 0.001970721381513877,
+          "ce_all": 0.4757327852748199,
+          "ce_current": 0.09107620089441992
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.00648890246626379,
+          "relative_kl": 0.002118993908855956,
+          "evidence_shift_sq": 0.004369908557407833,
+          "ce_all": 0.5224432709082959,
+          "ce_current": 0.09488995984533768
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.00648890246626379,
+          "relative_kl": 0.002118993908855956,
+          "evidence_shift_sq": 0.004369908557407833,
+          "ce_all": 0.5224432709082959,
+          "ce_current": 0.09488995984533768
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 944,
+        "confirmation_reads_after": 1416,
+        "teacher_student_probe_seconds": 7.849711179733276,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 3,
+        "teacher_variant": "full",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.009011004485661852,
+          "ideal_descent_product": 2.86068079198403,
+          "step": 0.0011513884665239097,
+          "consensus_cosine": 0.7124919090485299,
+          "physical_response_dot": -0.0032937548764297143,
+          "correction_to_update_norm": 0.7124919094996691
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.009011004485661852,
+          "relative_kl": 0.0031011240656642763,
+          "evidence_shift_sq": 0.005909880419997575,
+          "ce_all": 0.5154104503021585,
+          "ce_current": 0.08845942631473654
+        },
+        "fit_candidate": {
+          "teacher_response": 0.006161985012938523,
+          "relative_kl": 0.0024652483741252284,
+          "evidence_shift_sq": 0.003696736638813294,
+          "ce_all": 0.517111393017648,
+          "ce_current": 0.08896424349975476
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.007781408467126665,
+          "relative_kl": 0.002468175423097046,
+          "evidence_shift_sq": 0.005313233044029617,
+          "ce_all": 0.5679370149333812,
+          "ce_current": 0.09528386266947228
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.007781408467126665,
+          "relative_kl": 0.002468175423097046,
+          "evidence_shift_sq": 0.005313233044029617,
+          "ce_all": 0.5679370149333812,
+          "ce_current": 0.09528386266947228
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 1416,
+        "confirmation_reads_after": 1888,
+        "teacher_student_probe_seconds": 7.843218088150024,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 4,
+        "teacher_variant": "full",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.009230866200835759,
+          "ideal_descent_product": 2.9023860410048896,
+          "step": 0.00019335635409460013,
+          "consensus_cosine": 0.7125045082456892,
+          "physical_response_dot": -0.0005611947884591693,
+          "correction_to_update_norm": 0.7125045071674946
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.009230866200835759,
+          "relative_kl": 0.003164924140342037,
+          "evidence_shift_sq": 0.006065942060493722,
+          "ce_all": 0.5167636699689373,
+          "ce_current": 0.08881822753846536
+        },
+        "fit_candidate": {
+          "teacher_response": 0.00868127643359512,
+          "relative_kl": 0.0030472645979057063,
+          "evidence_shift_sq": 0.005634011835689414,
+          "ce_all": 0.517040217452803,
+          "ce_current": 0.08889906780392802
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.007976094838696532,
+          "relative_kl": 0.0025168917368811805,
+          "evidence_shift_sq": 0.0054592031018153514,
+          "ce_all": 0.5764896721084604,
+          "ce_current": 0.09837532206721218
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.007976094838696532,
+          "relative_kl": 0.0025168917368811805,
+          "evidence_shift_sq": 0.0054592031018153514,
+          "ce_all": 0.5764896721084604,
+          "ce_current": 0.09837532206721218
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 1888,
+        "confirmation_reads_after": 2360,
+        "teacher_student_probe_seconds": 7.866095304489136,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      }
+    ],
+    "no_consensus": [
+      {
+        "round": 0,
+        "teacher_variant": "no_consensus",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0022316740782545585,
+          "ideal_descent_product": 1.2398408436250323,
+          "step": 0.0017999681892472712,
+          "consensus_cosine": 1.0,
+          "physical_response_dot": -0.0022316740779132517,
+          "correction_to_update_norm": 0.20558821138591887
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0022316740782545585,
+          "relative_kl": 0.0009093180619878909,
+          "evidence_shift_sq": 0.001322356016266668,
+          "ce_all": 0.24007022289489882,
+          "ce_current": 0.08222512201039141
+        },
+        "fit_candidate": {
+          "teacher_response": 0.0008538623779895861,
+          "relative_kl": 0.00041102012078187637,
+          "evidence_shift_sq": 0.0004428422572077096,
+          "ce_all": 0.24091903830722652,
+          "ce_current": 0.08280795287589943
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.0019493709181263065,
+          "relative_kl": 0.0008575159139517461,
+          "evidence_shift_sq": 0.0010918550041745605,
+          "ce_all": 0.27488344381923885,
+          "ce_current": 0.0918553913668494
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.0019493709181263065,
+          "relative_kl": 0.0008575159139517461,
+          "evidence_shift_sq": 0.0010918550041745605,
+          "ce_all": 0.27488344381923885,
+          "ce_current": 0.0918553913668494
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 0
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 2360,
+        "confirmation_reads_after": 2832,
+        "teacher_student_probe_seconds": 7.596119165420532,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 1,
+        "teacher_variant": "no_consensus",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0046769816430006165,
+          "ideal_descent_product": 1.873382955408833,
+          "step": 0.0024965432879044997,
+          "consensus_cosine": 1.0,
+          "physical_response_dot": -0.004676981650034794,
+          "correction_to_update_norm": 0.42487520735210493
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0046769816430006165,
+          "relative_kl": 0.0018005575208482184,
+          "evidence_shift_sq": 0.0028764241221523987,
+          "ce_all": 0.3745650956592491,
+          "ce_current": 0.08773228045129046
+        },
+        "fit_candidate": {
+          "teacher_response": 0.001814572590628389,
+          "relative_kl": 0.0008967254800928941,
+          "evidence_shift_sq": 0.0009178471105354952,
+          "ce_all": 0.37520630858254633,
+          "ce_current": 0.08884588864854444
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.004045111481636414,
+          "relative_kl": 0.0015248144213564172,
+          "evidence_shift_sq": 0.0025202970602799957,
+          "ce_all": 0.42038806963702186,
+          "ce_current": 0.09502149758013198
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.004045111481636414,
+          "relative_kl": 0.0015248144213564172,
+          "evidence_shift_sq": 0.0025202970602799957,
+          "ce_all": 0.42038806963702186,
+          "ce_current": 0.09502149758013198
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 0
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 2832,
+        "confirmation_reads_after": 3304,
+        "teacher_student_probe_seconds": 7.604657888412476,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 2,
+        "teacher_variant": "no_consensus",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.007523085271005754,
+          "ideal_descent_product": 2.5512671893482253,
+          "step": 0.002948764168024159,
+          "consensus_cosine": 1.0,
+          "physical_response_dot": -0.007523085267133673,
+          "correction_to_update_norm": 0.7869611565816077
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.007523085271005754,
+          "relative_kl": 0.0026264338979998065,
+          "evidence_shift_sq": 0.0048966513730059474,
+          "ce_all": 0.47327292281915845,
+          "ce_current": 0.0901993211104593
+        },
+        "fit_candidate": {
+          "teacher_response": 0.002949490733578402,
+          "relative_kl": 0.0014407579836413144,
+          "evidence_shift_sq": 0.0015087327499370864,
+          "ce_all": 0.476815467735727,
+          "ce_current": 0.09143294982871364
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.00648890246626379,
+          "relative_kl": 0.002118993908855956,
+          "evidence_shift_sq": 0.004369908557407833,
+          "ce_all": 0.5224432709082959,
+          "ce_current": 0.09488995984533768
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.00648890246626379,
+          "relative_kl": 0.002118993908855956,
+          "evidence_shift_sq": 0.004369908557407833,
+          "ce_all": 0.5224432709082959,
+          "ce_current": 0.09488995984533768
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 0
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 3304,
+        "confirmation_reads_after": 3776,
+        "teacher_student_probe_seconds": 7.574916124343872,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 3,
+        "teacher_variant": "no_consensus",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.009011004485661852,
+          "ideal_descent_product": 2.86068079198403,
+          "step": 0.0016160021635354253,
+          "consensus_cosine": 1.0,
+          "physical_response_dot": -0.004622866348838625,
+          "correction_to_update_norm": 1.0000000005191267
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.009011004485661852,
+          "relative_kl": 0.0031011240656642763,
+          "evidence_shift_sq": 0.005909880419997575,
+          "ce_all": 0.5154104503021585,
+          "ce_current": 0.08845942631473654
+        },
+        "fit_candidate": {
+          "teacher_response": 0.0052890460871046424,
+          "relative_kl": 0.002251170238314395,
+          "evidence_shift_sq": 0.003037875848790248,
+          "ce_all": 0.5178186955535193,
+          "ce_current": 0.0891712160858141
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.007781408467126665,
+          "relative_kl": 0.002468175423097046,
+          "evidence_shift_sq": 0.005313233044029617,
+          "ce_all": 0.5679370149333812,
+          "ce_current": 0.09528386266947228
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.007781408467126665,
+          "relative_kl": 0.002468175423097046,
+          "evidence_shift_sq": 0.005313233044029617,
+          "ce_all": 0.5679370149333812,
+          "ce_current": 0.09528386266947228
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 0
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 3776,
+        "confirmation_reads_after": 4248,
+        "teacher_student_probe_seconds": 7.57093620300293,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 4,
+        "teacher_variant": "no_consensus",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.009230866200835759,
+          "ideal_descent_product": 2.9023860410048896,
+          "step": 0.0002713756219882416,
+          "consensus_cosine": 1.0,
+          "physical_response_dot": -0.0007876367997926983,
+          "correction_to_update_norm": 0.9999999968821177
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.009230866200835759,
+          "relative_kl": 0.003164924140342037,
+          "evidence_shift_sq": 0.006065942060493722,
+          "ce_all": 0.5167636699689373,
+          "ce_current": 0.08881822753846536
+        },
+        "fit_candidate": {
+          "teacher_response": 0.008466170081618611,
+          "relative_kl": 0.003000897195617241,
+          "evidence_shift_sq": 0.005465272886001374,
+          "ce_all": 0.5171518005448342,
+          "ce_current": 0.08893161462844369
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.007976094838696532,
+          "relative_kl": 0.0025168917368811805,
+          "evidence_shift_sq": 0.0054592031018153514,
+          "ce_all": 0.5764896721084604,
+          "ce_current": 0.09837532206721218
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.007976094838696532,
+          "relative_kl": 0.0025168917368811805,
+          "evidence_shift_sq": 0.0054592031018153514,
+          "ce_all": 0.5764896721084604,
+          "ce_current": 0.09837532206721218
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 0
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 4248,
+        "confirmation_reads_after": 4720,
+        "teacher_student_probe_seconds": 7.604968786239624,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      }
+    ],
+    "kl_only": [
+      {
+        "round": 0,
+        "teacher_variant": "kl_only",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0009093180619878909,
+          "ideal_descent_product": 0.5039539983128353,
+          "step": 0.0013067521149070678,
+          "consensus_cosine": 0.7242162898111881,
+          "physical_response_dot": -0.0006585429531934423,
+          "correction_to_update_norm": 0.14938149015764177
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0009093180619878909,
+          "relative_kl": 0.0009093180619878909,
+          "evidence_shift_sq": 0.001322356016266668,
+          "ce_all": 0.24007022289489882,
+          "ce_current": 0.08222512201039141
+        },
+        "fit_candidate": {
+          "teacher_response": 0.00042777280721346093,
+          "relative_kl": 0.00042777280721346093,
+          "evidence_shift_sq": 0.0007995652001586202,
+          "ce_all": 0.2405778877368686,
+          "ce_current": 0.0827368516855112
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.0008575159139517461,
+          "relative_kl": 0.0008575159139517461,
+          "evidence_shift_sq": 0.0010918550041745605,
+          "ce_all": 0.27488344381923885,
+          "ce_current": 0.0918553913668494
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.0008575159139517461,
+          "relative_kl": 0.0008575159139517461,
+          "evidence_shift_sq": 0.0010918550041745605,
+          "ce_all": 0.27488344381923885,
+          "ce_current": 0.0918553913668494
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 4720,
+        "confirmation_reads_after": 5192,
+        "teacher_student_probe_seconds": 7.8873138427734375,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 1,
+        "teacher_variant": "kl_only",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0018005575208482184,
+          "ideal_descent_product": 0.6476900079660658,
+          "step": 0.001993030603159567,
+          "consensus_cosine": 0.71692572566575,
+          "physical_response_dot": -0.0012908660064694399,
+          "correction_to_update_norm": 0.3373804752791272
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": true,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0018005575208482184,
+          "relative_kl": 0.0018005575208482184,
+          "evidence_shift_sq": 0.0028764241221523987,
+          "ce_all": 0.3745650956592491,
+          "ce_current": 0.08773228045129046
+        },
+        "fit_candidate": {
+          "teacher_response": 0.0008400016992160757,
+          "relative_kl": 0.0008400016992160757,
+          "evidence_shift_sq": 0.002024695596182245,
+          "ce_all": 0.37438314238920567,
+          "ce_current": 0.08862770754430206
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.0015248144213564172,
+          "relative_kl": 0.0015248144213564172,
+          "evidence_shift_sq": 0.0025202970602799957,
+          "ce_all": 0.42038806963702186,
+          "ce_current": 0.09502149758013198
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.0015248144213564172,
+          "relative_kl": 0.0015248144213564172,
+          "evidence_shift_sq": 0.0025202970602799957,
+          "ce_all": 0.42038806963702186,
+          "ce_current": 0.09502149758013198
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 5192,
+        "confirmation_reads_after": 5664,
+        "teacher_student_probe_seconds": 7.869350433349609,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 2,
+        "teacher_variant": "kl_only",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0026264338979998065,
+          "ideal_descent_product": 0.7822775998401982,
+          "step": 0.002416241898079109,
+          "consensus_cosine": 0.7196723717669552,
+          "physical_response_dot": -0.0018901719087146154,
+          "correction_to_update_norm": 0.652502535160095
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": false,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0026264338979998065,
+          "relative_kl": 0.0026264338979998065,
+          "evidence_shift_sq": 0.0048966513730059474,
+          "ce_all": 0.47327292281915845,
+          "ce_current": 0.0901993211104593
+        },
+        "fit_candidate": {
+          "teacher_response": 0.001235523803202223,
+          "relative_kl": 0.001235523803202223,
+          "evidence_shift_sq": 0.0036867384057364437,
+          "ce_all": 0.47391237592320246,
+          "ce_current": 0.09132422020708865
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.002118993908855956,
+          "relative_kl": 0.002118993908855956,
+          "evidence_shift_sq": 0.004369908557407833,
+          "ce_all": 0.5224432709082959,
+          "ce_current": 0.09488995984533768
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.002118993908855956,
+          "relative_kl": 0.002118993908855956,
+          "evidence_shift_sq": 0.004369908557407833,
+          "ce_all": 0.5224432709082959,
+          "ce_current": 0.09488995984533768
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 5664,
+        "confirmation_reads_after": 6136,
+        "teacher_student_probe_seconds": 7.860593318939209,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 3,
+        "teacher_variant": "kl_only",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.0031011240656642763,
+          "ideal_descent_product": 0.8531489557706337,
+          "step": 0.0011467613407106932,
+          "consensus_cosine": 0.7175688202930506,
+          "physical_response_dot": -0.0009783582429627013,
+          "correction_to_update_norm": 0.7175688204938339
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": true,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.0031011240656642763,
+          "relative_kl": 0.0031011240656642763,
+          "evidence_shift_sq": 0.005909880419997575,
+          "ce_all": 0.5154104503021585,
+          "ce_current": 0.08845942631473654
+        },
+        "fit_candidate": {
+          "teacher_response": 0.00223560119845861,
+          "relative_kl": 0.00223560119845861,
+          "evidence_shift_sq": 0.0050701691754506326,
+          "ce_all": 0.5154041538564066,
+          "ce_current": 0.08892887985066444
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.002468175423097046,
+          "relative_kl": 0.002468175423097046,
+          "evidence_shift_sq": 0.005313233044029617,
+          "ce_all": 0.5679370149333812,
+          "ce_current": 0.09528386266947228
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.002468175423097046,
+          "relative_kl": 0.002468175423097046,
+          "evidence_shift_sq": 0.005313233044029617,
+          "ce_all": 0.5679370149333812,
+          "ce_current": 0.09528386266947228
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 6136,
+        "confirmation_reads_after": 6608,
+        "teacher_student_probe_seconds": 7.847907066345215,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      },
+      {
+        "round": 4,
+        "teacher_variant": "kl_only",
+        "proposal": {
+          "proposed": true,
+          "reason": "proposed",
+          "ssb_calls": 24,
+          "response_loss": 0.003164924140342037,
+          "ideal_descent_product": 0.861055729753212,
+          "step": 0.00019267560741869174,
+          "consensus_cosine": 0.7178753169849256,
+          "physical_response_dot": -0.0001659044313961482,
+          "correction_to_update_norm": 0.7178753167331969
+        },
+        "decision": {
+          "accepted": false,
+          "checks": {
+            "candidate_proposed": true,
+            "coverage": true,
+            "teacher_improved": true,
+            "all_not_worse": true,
+            "current_not_worse": false
+          }
+        },
+        "fit_baseline": {
+          "teacher_response": 0.003164924140342037,
+          "relative_kl": 0.003164924140342037,
+          "evidence_shift_sq": 0.006065942060493722,
+          "ce_all": 0.5167636699689373,
+          "ce_current": 0.08881822753846536
+        },
+        "fit_candidate": {
+          "teacher_response": 0.0030020956791443516,
+          "relative_kl": 0.0030020956791443516,
+          "evidence_shift_sq": 0.0059000970136654065,
+          "ce_all": 0.5167556925385746,
+          "ce_current": 0.08889755908546085
+        },
+        "confirmation_baseline": {
+          "teacher_response": 0.0025168917368811805,
+          "relative_kl": 0.0025168917368811805,
+          "evidence_shift_sq": 0.0054592031018153514,
+          "ce_all": 0.5764896721084604,
+          "ce_current": 0.09837532206721218
+        },
+        "confirmation_selected": {
+          "teacher_response": 0.0025168917368811805,
+          "relative_kl": 0.0025168917368811805,
+          "evidence_shift_sq": 0.0054592031018153514,
+          "ce_all": 0.5764896721084604,
+          "ce_current": 0.09837532206721218
+        },
+        "gradient_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "teacher_forward_images": 281,
+          "student_forward_images": 281,
+          "student_backward_images": 281,
+          "local_ssb_calls": 240
+        },
+        "fit_candidate_cost": {
+          "samples": 281,
+          "weight_coverage": 1.0,
+          "student_forward_images": 281,
+          "teacher_forward_images": 281,
+          "student_backward_images": 0
+        },
+        "confirmation_baseline_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_selected_cost": {
+          "samples": 236,
+          "weight_coverage": 1.0,
+          "student_forward_images": 236,
+          "teacher_forward_images": 236,
+          "student_backward_images": 0
+        },
+        "confirmation_reads_before_selection": 6608,
+        "confirmation_reads_after": 7080,
+        "teacher_student_probe_seconds": 7.886455059051514,
+        "teacher_model_logical_bytes": 346795008,
+        "network_measured_bytes": null
+      }
+    ]
+  },
+  "new_training_visits": 300375,
+  "new_gram_forward_images": 60075,
+  "new_rrs_forward_images": 0,
+  "shared_source_rrs_forward_images": 4005,
+  "fit_image_reads": 368880,
+  "heldout_reads": 7080,
+  "old_train_images": 0,
+  "teacher_forward_images": 15510,
+  "student_probe_forward_images": 15510,
+  "student_probe_backward_images": 4215,
+  "teacher_broadcast_bytes_per_client_assumed": 346795008,
+  "test_images": 14000,
+  "test_opened_after_all_new_training": true,
+  "branch_fit_reads": {
+    "full": 122960,
+    "no_consensus": 122960,
+    "kl_only": 122960
+  },
+  "new_branch_logical_communication_bytes": {
+    "full": {
+      "RRS_raw_upload": 0,
+      "A_broadcast": 0,
+      "B_download": 117964800,
+      "current_head_download": 1536000,
+      "head_Gram_upload": 235929600,
+      "B_upload": 117964800,
+      "current_head_upload": 1536000,
+      "task_end_B_download": 0,
+      "task_end_head_download": 0
+    },
+    "no_consensus": {
+      "RRS_raw_upload": 0,
+      "A_broadcast": 0,
+      "B_download": 117964800,
+      "current_head_download": 1536000,
+      "head_Gram_upload": 235929600,
+      "B_upload": 117964800,
+      "current_head_upload": 1536000,
+      "task_end_B_download": 0,
+      "task_end_head_download": 0
+    },
+    "kl_only": {
+      "RRS_raw_upload": 0,
+      "A_broadcast": 0,
+      "B_download": 117964800,
+      "current_head_download": 1536000,
+      "head_Gram_upload": 235929600,
+      "B_upload": 117964800,
+      "current_head_upload": 1536000,
+      "task_end_B_download": 0,
+      "task_end_head_download": 0
+    }
+  },
+  "source_control_logical_communication_bytes": {
+    "RRS_raw_upload": 0,
+    "A_broadcast": 0,
+    "B_download": 117964800,
+    "current_head_download": 1536000,
+    "head_Gram_upload": 235929600,
+    "B_upload": 117964800,
+    "current_head_upload": 1536000,
+    "task_end_B_download": 0,
+    "task_end_head_download": 0
+  },
+  "reused_control_raw_consistency_checked": true,
+  "elapsed_seconds": 3392.576699256897,
+  "peak_gpu_allocated_bytes": 2643969024,
+  "limitations": [
+    "single seed, T3 only; not final FCL or statistical significance",
+    "reused control and test were previously evaluated; not independently blind",
+    "history/current moments and client update dispersion do not guarantee old-class safety",
+    "teacher response on current images does not guarantee true old-class safety",
+    "theoretical added communication is not a network measurement"
+  ]
+}
