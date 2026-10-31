@@ -1,0 +1,17 @@
+{
+  "status": "completed",
+  "worker_exit_code": 0,
+  "all_recorded_processes_exited": true,
+  "original_clock_seconds_to_supervisor_exit": 3262.487406,
+  "allocated_bytes_after_exit": 1938345984,
+  "peak_gpu_allocated_bytes": 2273048064,
+  "shared_endpoint": {"task": 2, "round": 0, "phase": "round_start", "head_count": 3},
+  "each_new_branch_endpoint": {"task": 2, "round": 5, "phase": "ready_evaluation", "head_count": 3, "client_rounds": 50, "t3_train_visits": 100125, "t3_statistics_visits_including_reused_rrs": 24030, "completed_gate_rounds": 5, "layers_per_round": 24},
+  "identity_config_and_new_clock_match": true,
+  "source_control_trained_again": false,
+  "source_control_aggregate_metrics_reproduced": true,
+  "source_control_prediction_byte_equality_checked": false,
+  "new_branch_logical_communication_bytes_each": 474931200,
+  "new_second_moment_theoretical_communication_bytes_each": 9830400,
+  "qualification_scope": "process exit, source lineage, checkpoint lifecycle and recorded access counts; test image count checked by dataset size assertion, not independent per-image receipts"
+}

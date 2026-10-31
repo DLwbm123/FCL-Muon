@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "cpu_gpu_ssb_l2": 1.0886297786782961e-05,
+  "rng_unchanged": true,
+  "image_accesses": 0
+}
