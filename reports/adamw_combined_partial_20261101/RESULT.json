@@ -1,0 +1,41 @@
+{
+  "status": "incomplete_original_deadline",
+  "supervisor_status": "worker_failed",
+  "worker_exit_code": 1,
+  "worker_error": "original experiment deadline reached",
+  "scientific_joint_gate": "not_evaluable_full_arm_incomplete",
+  "seed": 0,
+  "protocol_commit": "e4077587dc85cfe2bc0b364af7da17ffbc56f6b1",
+  "t3": {
+    "rrs_avg": {"raw": 0.9136666666666666, "old": 0.9475, "new": 0.846, "forgetting": 0.0085, "reload_raw_equal": true},
+    "fed_avg": {"raw": 0.91, "old": 0.9435, "new": 0.843, "forgetting": 0.0085, "reload_raw_equal": true},
+    "rrs_server": {"raw": 0.917, "old": 0.948, "new": 0.855, "forgetting": 0.01, "reload_raw_equal": true},
+    "fed_server": null
+  },
+  "t2": {
+    "rrs_avg": {"raw": 0.945, "old": 0.978, "new": 0.912},
+    "fed_avg": {"raw": 0.9435, "old": 0.977, "new": 0.91},
+    "rrs_server": {"raw": 0.948, "old": 0.974, "new": 0.922},
+    "fed_server": {"raw": 0.9465, "old": 0.975, "new": 0.918}
+  },
+  "committed_training_visits_lower_bound": 1032335,
+  "partially_processed_last_client_visits": null,
+  "committed_statistics_visits_lower_bound": 251467,
+  "test_forward_images_from_protocol_and_progress": 27000,
+  "dataset_images_independently_counted": false,
+  "teacher_forward_images": 0,
+  "old_task_training_images": 0,
+  "completed_arm_client_rounds_including_shared_t1": 150,
+  "combined_arm_committed_client_rounds_including_shared_t1": 116,
+  "combined_basis_accepted_t2_t3": [12, 10],
+  "combined_committed_server_rounds_accepted_total": [6, 6],
+  "started": 1793458869.1371012,
+  "deadline": 1793473269.1371012,
+  "ended": 1793473273.2449987,
+  "allocated_bytes_at_end": 2948894720,
+  "peak_gpu_allocated_bytes": null,
+  "initial_gpu_preflight_failed_before_dataset": true,
+  "gpu_preflight_module_retry_passed": true,
+  "network_measured": false,
+  "independent_blind_test": false
+}
