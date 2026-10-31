@@ -1,0 +1,17 @@
+{
+  "status": "completed",
+  "worker_exit_code": 0,
+  "all_recorded_processes_exited": true,
+  "original_clock_seconds_to_supervisor_exit": 2203.352498,
+  "allocated_bytes_after_exit": 1454215168,
+  "shared_endpoint": {"task": 2, "round": 0, "phase": "round_start", "head_count": 3, "t3_train_visits": 0, "t3_statistics_visits": 4005},
+  "each_branch_endpoint": {"task": 2, "round": 5, "phase": "ready_evaluation", "head_count": 3, "client_rounds": 50, "t3_train_visits": 100125, "t3_statistics_visits_including_shared": 24030},
+  "identity_config_clock_match": true,
+  "baseline_and_mainline_24_B_and_3_heads_exactly_equal": true,
+  "shared_logical_communication_bytes": 601927680,
+  "branch_logical_communication_bytes_each": 474931200,
+  "cpu_svd_calls": 120,
+  "cpu_svd_seconds": 0.03937721252441406,
+  "server_operator_seconds_including_svd": 1.2579941749572754,
+  "qualification_scope": "recorded process exit, selected checkpoint tensors, identity, lifecycle and counts; not an all-state or independent per-image byte audit"
+}
