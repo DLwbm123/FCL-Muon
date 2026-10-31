@@ -1,0 +1,128 @@
+{
+  "status": "completed",
+  "local_conditions_passed": false,
+  "checks": {
+    "candidate_accepted": false,
+    "fit_coverage": true,
+    "fit_all_improved": false,
+    "fit_current_not_worse": true,
+    "confirmation_coverage": true,
+    "confirmation_all_improved": false,
+    "confirmation_current_not_worse": true,
+    "confirmation_accuracy_not_lower": true
+  },
+  "candidate_receipt": {
+    "accepted": false,
+    "reason": "deployed_budget",
+    "all_directional": -0.00017317235703584916,
+    "current_directional": 3.0082419667705736e-05,
+    "baseline_history": 0.05081198379893276,
+    "proposal_history": 0.050424691165662554,
+    "deployed_relative_norm_error": 1.597356691362961e-10,
+    "cone": {
+      "solved": true,
+      "active_constraints": [
+        1
+      ],
+      "normal_dots": [
+        -0.00024767586360188287,
+        3.3881317890172014e-20
+      ]
+    }
+  },
+  "metrics": {
+    "fit": {
+      "baseline": {
+        "all": 0.24140149882809916,
+        "current": 0.0825911862740055,
+        "accuracy": 0.944053951367781,
+        "samples": 224,
+        "correct": 212,
+        "weight_coverage": 0.9857677902621723
+      },
+      "candidate": {
+        "all": 0.24140149882809916,
+        "current": 0.0825911862740055,
+        "accuracy": 0.944053951367781,
+        "samples": 224,
+        "correct": 212,
+        "weight_coverage": 0.9857677902621723
+      },
+      "paired_flips": {
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0
+      },
+      "all_loss_difference": 0.0,
+      "current_loss_difference": 0.0,
+      "accuracy_difference": 0.0
+    },
+    "confirmation": {
+      "baseline": {
+        "all": 0.2583706209497036,
+        "current": 0.0908682614406663,
+        "accuracy": 0.9750189969604863,
+        "samples": 224,
+        "correct": 216,
+        "weight_coverage": 0.9857677902621723
+      },
+      "candidate": {
+        "all": 0.2583706209497036,
+        "current": 0.0908682614406663,
+        "accuracy": 0.9750189969604863,
+        "samples": 224,
+        "correct": 216,
+        "weight_coverage": 0.9857677902621723
+      },
+      "paired_flips": {
+        "correct_to_wrong": 0,
+        "wrong_to_correct": 0,
+        "wrong_to_different_wrong": 0
+      },
+      "all_loss_difference": 0.0,
+      "current_loss_difference": 0.0,
+      "accuracy_difference": 0.0
+    }
+  },
+  "directional": {
+    "fit_all": 0.0,
+    "fit_current": 0.0,
+    "confirmation_all": 0.0,
+    "confirmation_current": 0.0
+  },
+  "fit_gradient_receipt": {
+    "samples": 224,
+    "weight_coverage": 0.9857677902621723,
+    "student_forward_images": 224,
+    "student_backward_images": 448
+  },
+  "confirmation_gradient_receipt": {
+    "samples": 224,
+    "weight_coverage": 0.9857677902621723,
+    "student_forward_images": 224,
+    "student_backward_images": 448
+  },
+  "student_forward_images": 1344,
+  "student_backward_images": 896,
+  "old_train_images": 0,
+  "test_images": 0,
+  "new_training_images": 0,
+  "fit_reads": 672,
+  "confirmation_reads": 672,
+  "heldout_reads_at_freeze": 0,
+  "theoretical_momentum_upload_bytes": 23592960,
+  "theoretical_gradient_upload_bytes": 66060288,
+  "theoretical_candidate_broadcast_7_clients_bytes": 16515072,
+  "theoretical_candidate_broadcast_10_clients_bytes": 23592960,
+  "network_bytes_measured": null,
+  "seed_reason_counts": {
+    "accepted": 24
+  },
+  "elapsed_seconds": 15.977701187133789,
+  "peak_gpu_allocated_bytes": 1973475328,
+  "limitations": [
+    "single round and seed; not full FCL or old-class safety",
+    "confirmation unused in source round but possibly seen in other research or pretraining",
+    "client final momenta are not common-anchor gradients or full trajectory bias"
+  ]
+}
