@@ -13,6 +13,9 @@ from research.adamw_combined.multistep_subspace_draft import propose_from_trials
 
 
 class MultistepPilot(CombinedPilot):
+    def propose_layers(self, pools, histories, trials):
+        return propose_from_trials(self.model, pools, histories, trials)
+
     def initialize_task(self):
         Pilot.initialize_task(self)
         if self.s['task'] == 0:
@@ -63,7 +66,7 @@ class MultistepPilot(CombinedPilot):
         self.charge('multistep_pool_broadcast', self.cfg['clients']*sum(p.numel()*p.element_size() for p in pools.values()))
         self.charge('multistep_wide_B_upload', sum(b.numel()*b.element_size() for t in trials for b in t['B']))
         self.charge('multistep_head_upload', sum(t['head'].numel()*t['head'].element_size() for t in trials))
-        selected, reasons = propose_from_trials(self.model, pools, histories, trials)
+        selected, reasons = self.propose_layers(pools, histories, trials)
         with torch.no_grad():
             for name, adapter in self.model.adapters.items():
                 adapter.A.copy_(selected[name])
