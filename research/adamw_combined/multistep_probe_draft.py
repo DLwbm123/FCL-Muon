@@ -70,7 +70,7 @@ def select_from_client_losses(counts, baseline, candidate, history_baseline, his
             'history_baseline': float(history_baseline), 'history_candidate': float(history_candidate)}
 
 
-def simulate_client(model, batches, epochs, task, classes_per_task, adapter_lr, rounds, formal_batches, schedule_epochs=None):
+def simulate_client(model, batches, epochs, task, classes_per_task, adapter_lr, rounds, formal_batches, schedule_epochs=None, endpoint_callback=None):
     """Run one candidate/client on supplied batches; caller supplies isolation and filtering.
 
     This prototype does not handle transforms, client shuffling, Gram fusion, or I/O.
@@ -115,13 +115,14 @@ def simulate_client(model, batches, epochs, task, classes_per_task, adapter_lr, 
     after, observed = measure()
     if observed != n or not math.isfinite(before) or not math.isfinite(after):
         raise ArithmeticError('invalid trial measurements')
+    endpoint = endpoint_callback(model, batches) if endpoint_callback is not None else None
     return {'before': before, 'after': after, 'samples': n, 'train_visits': seen,
             'steps': steps, 'B': [p.detach().clone() for p in bs],
-            'head': model.rows[-1].detach().clone()}
+            'head': model.rows[-1].detach().clone(), 'endpoint_extra': endpoint}
 
 
 def simulate_candidates(model, candidates, clients, formal_batches, epochs, task, classes_per_task,
-                        adapter_lr, rounds, trial_seed, schedule_epochs=None):
+                        adapter_lr, rounds, trial_seed, schedule_epochs=None, endpoint_callback=None):
     """Paired candidate/client probes; batches and client records stay private.
 
     The caller must provide fixed, disjoint training-side batches and a legal basis.
@@ -147,7 +148,7 @@ def simulate_candidates(model, candidates, clients, formal_batches, epochs, task
             random.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
             if torch.cuda.is_available(): torch.cuda.manual_seed_all(seed)
             return simulate_client(model, clients[index], epochs, task, classes_per_task,
-                                   adapter_lr, rounds, formal_batches[index], schedule_epochs)
+                                   adapter_lr, rounds, formal_batches[index], schedule_epochs, endpoint_callback)
         return paired_probes(model, list(range(len(clients))), run_client)
 
     return paired_probes(model, candidates, run_candidate)
