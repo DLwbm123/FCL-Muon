@@ -1,0 +1,25 @@
+{
+  "protocol_commit": "d8a0f348976f36ea7c4fcb4688b6947972c301c0",
+  "status": "completed",
+  "seed": 0,
+  "exploratory_joint_gate_passed": false,
+  "arms": {
+    "optimized": {"t3_all": 0.908, "t3_old": 0.941, "t3_new": 0.842, "t3_forgetting": 0.0115, "changed_layers": [0, 0], "server_accepts": 10, "new_training_visits": 225250, "reserved_reads": 0},
+    "fixed_rrs": {"t3_all": 0.908, "t3_old": 0.941, "t3_new": 0.842, "t3_forgetting": 0.0115, "changed_layers": [0, 0], "server_accepts": 10, "new_training_visits": 225250, "reserved_reads": 0}
+  },
+  "gates": {"net_correct_at_least_6": false, "old_not_lower": true, "new_loss_at_most_10": true, "forgetting_not_higher": true, "basis_changed": false, "server_accepted": true},
+  "terminal_model_tensors_equal": true,
+  "terminal_model_tensor_count": 189,
+  "t3_confusion_equal": true,
+  "independent_per_image_predictions_verified": false,
+  "per_arm_new_rrs_visits": 9010,
+  "per_arm_new_endpoint_gram_visits": 45050,
+  "per_arm_server_forward_visits": 5940,
+  "per_arm_server_backward_visits": 2970,
+  "per_arm_new_training_raw_reads": 285330,
+  "supervisor_elapsed_seconds": 5818.4238677,
+  "final_allocated_bytes": 813178880,
+  "training_peak_gpu_allocated_bytes": 9089763840,
+  "test_previously_seen": true,
+  "actual_network_measured": false
+}
