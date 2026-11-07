@@ -1,0 +1,49 @@
+{
+  "failure_class": "infrastructure FileNotFoundError during allocated-space scan of concurrently atomically renamed .job temporary ledger",
+  "scientific_source_changed": false,
+  "recovered_full_state_boundary": {
+    "task_index": 4,
+    "round_index": 3,
+    "phase": "clients",
+    "next_client": 7,
+    "committed_T5_client_rounds": 37,
+    "committed_T5_training_visits": 90605,
+    "committed_T5_training_steps": 5745,
+    "operator_applied_rounds": [
+      0,
+      1,
+      2
+    ],
+    "past_merges_and_commits": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "RNGs": [
+      "python",
+      "numpy",
+      "torch",
+      "cuda"
+    ]
+  },
+  "cumulative_study_GPU_seconds_at_failure": 48518.2926847823,
+  "original_clock_preserved": true,
+  "first_replayed_client_record_matches_except_timestamp": true,
+  "discarded_replay_training_visits": 2530,
+  "discarded_replay_steps": 160,
+  "discarded_endpoint_Gram_visits": 506,
+  "discarded_logical_upload_bytes": 7108608,
+  "final_T5_reload_confusion_matches": true,
+  "limitations": "first failed T5 worker complete loader counters unavailable; recovery receipt worker seconds/loader counters cover resumed invocation only; raw failed invocation records retained privately",
+  "checks": {
+    "vanished_job_temp_conservatively_charged": true,
+    "missing_regular_raises": true,
+    "permissions_raise": true,
+    "shim_compilation": true,
+    "frozen_controller_adaptation_contract": true,
+    "original_frozen_validation": true,
+    "complete_checkpoint_audit": true,
+    "resumed_receipt_full_task_cost_and_original_invocation_preserved": true
+  }
+}

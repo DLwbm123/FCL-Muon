@@ -1,0 +1,81 @@
+{
+  "version": "2026-11-06",
+  "anchor": "AdamW + original selected route + Head-RegMean",
+  "route_mode": "selected",
+  "gamma": 0.1,
+  "epsilon": 0.01,
+  "spectral_weight_power": 2,
+  "history_rank_cap": 64,
+  "dtype": "FP32 model, FP64 spectra/Gram/solve",
+  "PSD_relative_tolerance": 1e-10,
+  "total_tasks": 10,
+  "classes_per_task": 10,
+  "development": {
+    "seed": 0,
+    "arms": [
+      "E0",
+      "E3",
+      "E1",
+      "E2"
+    ],
+    "schedule": "T2 all arms -> H1 activity check -> T3 all arms",
+    "stop_after_task": 3
+  },
+  "confirmation": {
+    "seeds": [
+      3,
+      4,
+      5
+    ],
+    "arms": [
+      "E0",
+      "E3",
+      "E1",
+      "E2"
+    ],
+    "stop_after_task": 5,
+    "admission": "1.4 * maximum measured per-task worker wall time; complete 4-arm seed group first"
+  },
+  "budget": {
+    "gpu_seconds": 86400,
+    "wall_seconds": 86400,
+    "allocated_write_stop": 18500000000,
+    "new_task_admission_bytes": 18000000000,
+    "absolute_bytes_limit": 19000000000,
+    "GPU_workers": 1,
+    "idle_admission": "memory_used <100 MiB AND utilization=0",
+    "all_failures_smoke_profile_in_original_ledger": true,
+    "development_CPU_worker_seconds_conservatively_charged_as_GPU_seconds": true
+  },
+  "H1_stop": "E2 and E3 >=90% nonzero-B T2 matrices relative correction <1e-6",
+  "advancement": {
+    "final_mean_pp": 0.3,
+    "AIA_mean_pp": 0,
+    "old_mean_pp": 0,
+    "new_mean_min_pp": -0.2,
+    "positive_seeds_min": 2,
+    "worst_seed_min_pp": -0.5
+  },
+  "prefer_response": {
+    "E3_minus_E2_mean_pp": 0.1,
+    "nonnegative_seeds_min": 2,
+    "AIA_nonnegative": true
+  },
+  "direction_claim": "E3 must have stable paired advantage over E1; otherwise no claim of directional superiority",
+  "conditional_control": "E1E2 for all completed seeds if E2 wins and full control matrix budget fits",
+  "long_sequence": {
+    "seed": 3,
+    "arms": [
+      "E0",
+      "frozen_winner"
+    ],
+    "stop_after_task": 10,
+    "condition": "all three T5 groups completed, prespecified winner criteria, enough budget for complete pair; fork own T5 checkpoints with extension receipt"
+  },
+  "second_dataset": "only after T10, existing ImageNet-R assets/config reviewed and full paired admission; otherwise report unexecuted",
+  "current_probe": "first 8 sorted task RRS support indices, fixed head, before/after each formal map; restores RNG",
+  "common_intervention": "E0 seed0 T2 final round post-FedAvg Bhat; E1/E2/E3 shadows, first 8 current support examples and first ten test indices per old class with all-seen logits; no feedback",
+  "tests": "FP64 oracle/KKT target1e-10; gradcheck eps1e-6 atol1e-5 rtol1e-4; tracked/direct ViT maxabs2e-6",
+  "failure": "preserve original ledger and evidence; no automatic expensive failed rerun; development engineering corrections share original clock",
+  "publish": "local only; no automatic GitHub push"
+}

@@ -1,0 +1,69 @@
+{
+  "complete_T5_four_arm_seeds": [
+    3,
+    4
+  ],
+  "actual_n": 2,
+  "canonical_successful_training_receipts": 42,
+  "all_exit0_and_terminal_reload_receipts_verified": true,
+  "same_ten_task_partition": true,
+  "no_active_own_worker_controller_or_outer_timeout": true,
+  "formal_QV_operator_keys_unique": true,
+  "seed5": "not started: original full-group budget admission failed",
+  "T10": "not executed: three-seed prerequisite not met; no frozen winner",
+  "conditional_E1E2": "not executed: no eligible E2 winner",
+  "evaluation_repeated_for_final_report": false,
+  "mean_metrics_actual_two_seeds": {
+    "E0": {
+      "final": 87.57,
+      "AIA": 92.804,
+      "old": 88.44999999999999,
+      "new": 84.05,
+      "forgetting": 2.175000000000002
+    },
+    "E1": {
+      "final": 87.46000000000001,
+      "AIA": 92.74950000000001,
+      "old": 88.4125,
+      "new": 83.65,
+      "forgetting": 2.262500000000002
+    },
+    "E2": {
+      "final": 87.53999999999999,
+      "AIA": 92.74216666666666,
+      "old": 88.3875,
+      "new": 84.15,
+      "forgetting": 2.237500000000002
+    },
+    "E3": {
+      "final": 87.53999999999999,
+      "AIA": 92.81216666666666,
+      "old": 88.425,
+      "new": 84.0,
+      "forgetting": 2.300000000000002
+    }
+  },
+  "E3_mean_paired_differences_pp": {
+    "E0": {
+      "final": -0.030000000000001137,
+      "AIA": 0.00816666666666066,
+      "old": -0.02499999999999858,
+      "new": -0.04999999999999716,
+      "forgetting": 0.1250000000000001
+    },
+    "E1": {
+      "final": 0.07999999999999119,
+      "AIA": 0.06266666666665799,
+      "old": 0.012499999999995737,
+      "new": 0.3500000000000014,
+      "forgetting": 0.03750000000000009
+    },
+    "E2": {
+      "final": 0.0,
+      "AIA": 0.07000000000000028,
+      "old": 0.037499999999994316,
+      "new": -0.14999999999999858,
+      "forgetting": 0.06250000000000011
+    }
+  }
+}

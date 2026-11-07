@@ -1,3 +1,5 @@
+> **本分支：2026-11-06 双侧近端研究审阅交付。** 请从 [Pro审阅入口](reports/response_bilateral_20261106/PRO_REVIEW_ZH.md) 开始；[当前源码](research/response_bilateral/README.md)、[最终报告](reports/response_bilateral_20261106/FINAL_REPORT_ZH.md)。实际完成两组前五任务四臂，未执行本版本十任务；下文保留项目历史说明。
+
 # MuLoRA-FL (Shared-RRS + FedAvg)
 
 **Actual-update global correction (2026-10-29): five-task seed0 pilot completed; benefit gate not met.** [中文报告](reports/actual_update_global_20261029/FINAL_REPORT_ZH.txt), [JSON evidence](reports/actual_update_global_20261029/FINAL_REPORT.json), [qualification audit](reports/actual_update_global_20261029/FINAL_VALIDATION.json), [frozen protocol](research/fed_spectra/ACTUAL_UPDATE_PROTOCOL_ZH.txt). Raw accuracy is 86.14% (control) versus 86.24% (eta=0.1): +0.10pp, below the +0.20pp threshold, with old-class accuracy -0.075pp. Both T3/T5 reload checks passed. All 600 corrections were active and norm-preserving; no claim of stable benefit. The previous stopped FedSPECTRA run remains stopped.

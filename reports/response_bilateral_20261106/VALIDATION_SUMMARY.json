@@ -1,0 +1,95 @@
+{
+  "original_test_summary": [
+    "test_dense_hessian_oracle_kkt_penalty_coordinate_and_fedavg (research.response_bilateral.test_prox.ProxTest.test_dense_hessian_oracle_kkt_penalty_coordinate_and_fedavg) ... {'metric': 'response', 'oracle_relative_error': 2.179233245098264e-16, 'KKT_relative_residual': 1.9376492019919681e-16}",
+    "test_gradcheck_A_B_and_chart (research.response_bilateral.test_prox.ProxTest.test_gradcheck_A_B_and_chart) ... {'total_AB_directional_derivative_absolute_error': 7.344020946931096e-10}",
+    "test_scalar_control_dtype_and_invalid_geometry (research.response_bilateral.test_prox.ProxTest.test_scalar_control_dtype_and_invalid_geometry) ... {'FP32_cast_max_abs_error': 0.0}",
+    "test_zero_boundaries_and_nontrivial_zero_B_jacobian (research.response_bilateral.test_prox.ProxTest.test_zero_boundaries_and_nontrivial_zero_B_jacobian) ... ok",
+    "test_lifecycle_checkpoint_restore_and_E0_exact_regression (research.response_bilateral.test_lifecycle.LifecycleTest.test_lifecycle_checkpoint_restore_and_E0_exact_regression) ... ok",
+    "test_two_round_functional_real_trainer_match_and_outer (research.response_bilateral.test_lifecycle.LifecycleTest.test_two_round_functional_real_trainer_match_and_outer) ... ok",
+    "Ran 6 tests in 4.329s",
+    "OK"
+  ],
+  "unittest_count": 6,
+  "status": "passed during original qualified experiment; publication copies unchanged; no new training or test inference",
+  "FP64_oracle_relative_max": 2.18e-16,
+  "FP64_KKT_relative_max": 1.94e-16,
+  "preflight": {
+    "status": "passed",
+    "real_dataset_images": 0,
+    "source_T1_cuda_rng_restored": true,
+    "functional_arms": [
+      {
+        "arm": "E0",
+        "counts": {
+          "trial_visits": 320,
+          "trial_steps": 80,
+          "gram_visits": 80,
+          "query_visits": 40,
+          "head_fusions": 2
+        },
+        "B_max_abs_track_direct": 0.0,
+        "seconds": 96.5567795690149
+      },
+      {
+        "arm": "E1",
+        "counts": {
+          "trial_visits": 320,
+          "trial_steps": 80,
+          "gram_visits": 80,
+          "query_visits": 40,
+          "head_fusions": 2
+        },
+        "B_max_abs_track_direct": 0.0,
+        "seconds": 102.4097802080214
+      },
+      {
+        "arm": "E2",
+        "counts": {
+          "trial_visits": 320,
+          "trial_steps": 80,
+          "gram_visits": 80,
+          "query_visits": 40,
+          "head_fusions": 2
+        },
+        "B_max_abs_track_direct": 0.0,
+        "seconds": 76.8293424048461
+      },
+      {
+        "arm": "E3",
+        "counts": {
+          "trial_visits": 320,
+          "trial_steps": 80,
+          "gram_visits": 80,
+          "query_visits": 40,
+          "head_fusions": 2
+        },
+        "B_max_abs_track_direct": 0.0,
+        "seconds": 87.92272871686146
+      }
+    ],
+    "ViT_formal_round_and_complete_checkpoint_restore": true,
+    "peak_cuda_allocated_bytes": 1912678912,
+    "head_derivative_scope": "existing implicit surrogate, not a certified exact full-selector gradient"
+  },
+  "resource_controller_checks": {
+    "status": "passed",
+    "checks": [
+      "source contract/compile",
+      "exception resumes own dummy scheduler"
+    ],
+    "GPU_work": 0,
+    "dataset_images": 0,
+    "time": 1793988069.8002696
+  },
+  "storage_recovery_checks": {
+    "vanished_job_temp_conservatively_charged": true,
+    "missing_regular_raises": true,
+    "permissions_raise": true,
+    "shim_compilation": true,
+    "frozen_controller_adaptation_contract": true,
+    "original_frozen_validation": true,
+    "complete_checkpoint_audit": true,
+    "resumed_receipt_full_task_cost_and_original_invocation_preserved": true
+  },
+  "final_receipt_and_operator_checks": "FINAL_VALIDATION.json and FINAL_OPERATOR_AUDIT.json"
+}

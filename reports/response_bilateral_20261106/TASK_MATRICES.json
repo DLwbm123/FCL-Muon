@@ -1,0 +1,474 @@
+{
+  "s0_E0": {
+    "completed_tasks": 3,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.977,
+        0.91
+      ],
+      [
+        0.976,
+        0.914,
+        0.849
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.9435,
+      0.913
+    ],
+    "AIA": 0.9501666666666667,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      3,
+      8
+    ]
+  },
+  "s0_E1": {
+    "completed_tasks": 3,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.976,
+        0.912
+      ],
+      [
+        0.977,
+        0.915,
+        0.846
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.944,
+      0.9126666666666666
+    ],
+    "AIA": 0.9502222222222222,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      0,
+      8
+    ]
+  },
+  "s0_E2": {
+    "completed_tasks": 3,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.976,
+        0.91
+      ],
+      [
+        0.977,
+        0.917,
+        0.848
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.943,
+      0.914
+    ],
+    "AIA": 0.9503333333333334,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      7,
+      10
+    ]
+  },
+  "s0_E3": {
+    "completed_tasks": 3,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.976,
+        0.912
+      ],
+      [
+        0.977,
+        0.917,
+        0.846
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.944,
+      0.9133333333333333
+    ],
+    "AIA": 0.9504444444444444,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      0,
+      7
+    ]
+  },
+  "s3_E0": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.992
+      ],
+      [
+        0.979,
+        0.934
+      ],
+      [
+        0.974,
+        0.905,
+        0.897
+      ],
+      [
+        0.958,
+        0.894,
+        0.901,
+        0.827
+      ],
+      [
+        0.96,
+        0.887,
+        0.879,
+        0.824,
+        0.836
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.992,
+      0.9565,
+      0.9253333333333333,
+      0.895,
+      0.8772
+    ],
+    "AIA": 0.9292066666666667,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      9,
+      6,
+      7,
+      7
+    ]
+  },
+  "s3_E1": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.992
+      ],
+      [
+        0.979,
+        0.932
+      ],
+      [
+        0.972,
+        0.897,
+        0.897
+      ],
+      [
+        0.955,
+        0.894,
+        0.905,
+        0.83
+      ],
+      [
+        0.958,
+        0.89,
+        0.881,
+        0.822,
+        0.832
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.992,
+      0.9555,
+      0.922,
+      0.896,
+      0.8766
+    ],
+    "AIA": 0.92842,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      11,
+      9,
+      0,
+      7
+    ]
+  },
+  "s3_E2": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.992
+      ],
+      [
+        0.977,
+        0.932
+      ],
+      [
+        0.972,
+        0.9,
+        0.898
+      ],
+      [
+        0.958,
+        0.892,
+        0.902,
+        0.827
+      ],
+      [
+        0.955,
+        0.888,
+        0.881,
+        0.824,
+        0.832
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.992,
+      0.9545,
+      0.9233333333333333,
+      0.89475,
+      0.876
+    ],
+    "AIA": 0.9281166666666667,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      10,
+      8,
+      8,
+      8
+    ]
+  },
+  "s3_E3": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.992
+      ],
+      [
+        0.978,
+        0.932
+      ],
+      [
+        0.973,
+        0.903,
+        0.895
+      ],
+      [
+        0.958,
+        0.894,
+        0.903,
+        0.83
+      ],
+      [
+        0.959,
+        0.888,
+        0.877,
+        0.824,
+        0.83
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.992,
+      0.955,
+      0.9236666666666666,
+      0.89625,
+      0.8756
+    ],
+    "AIA": 0.9285033333333332,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      9,
+      0,
+      8,
+      0
+    ]
+  },
+  "s4_E0": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.989,
+        0.904
+      ],
+      [
+        0.986,
+        0.903,
+        0.903
+      ],
+      [
+        0.986,
+        0.881,
+        0.894,
+        0.795
+      ],
+      [
+        0.982,
+        0.873,
+        0.884,
+        0.787,
+        0.845
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.9465,
+      0.9306666666666666,
+      0.889,
+      0.8742
+    ],
+    "AIA": 0.9268733333333333,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      0,
+      0,
+      10,
+      6
+    ]
+  },
+  "s4_E1": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.989,
+        0.904
+      ],
+      [
+        0.986,
+        0.907,
+        0.894
+      ],
+      [
+        0.986,
+        0.888,
+        0.889,
+        0.8
+      ],
+      [
+        0.985,
+        0.87,
+        0.876,
+        0.791,
+        0.841
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.9465,
+      0.929,
+      0.89075,
+      0.8726
+    ],
+    "AIA": 0.9265700000000001,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      0,
+      0,
+      7,
+      7
+    ]
+  },
+  "s4_E2": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.989,
+        0.902
+      ],
+      [
+        0.986,
+        0.906,
+        0.896
+      ],
+      [
+        0.984,
+        0.88,
+        0.895,
+        0.801
+      ],
+      [
+        0.982,
+        0.868,
+        0.88,
+        0.793,
+        0.851
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.9455,
+      0.9293333333333333,
+      0.89,
+      0.8748
+    ],
+    "AIA": 0.9267266666666666,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      5,
+      0,
+      0,
+      9
+    ]
+  },
+  "s4_E3": {
+    "completed_tasks": 5,
+    "all_seen_task_accuracy_matrix": [
+      [
+        0.994
+      ],
+      [
+        0.99,
+        0.905
+      ],
+      [
+        0.985,
+        0.905,
+        0.903
+      ],
+      [
+        0.985,
+        0.885,
+        0.895,
+        0.799
+      ],
+      [
+        0.983,
+        0.867,
+        0.884,
+        0.792,
+        0.85
+      ]
+    ],
+    "stage_all_seen_accuracy": [
+      0.994,
+      0.9475,
+      0.931,
+      0.891,
+      0.8752
+    ],
+    "AIA": 0.92774,
+    "terminal_reload_confusion_matches": true,
+    "selected_changed_layers": [
+      0,
+      10,
+      9,
+      5
+    ]
+  }
+}

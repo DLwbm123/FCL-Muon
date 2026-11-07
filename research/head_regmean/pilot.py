@@ -177,10 +177,15 @@ class Pilot:
         s['next_client']+=1
         s['phase']='local_done' if s['next_client']==self.cfg['clients'] else 'clients'
 
+    def server_aggregate(self, proposal, head):
+        """Optional server map, before deployment and every checkpoint endpoint."""
+        return proposal
+
     def fuse(self):
         s=self.s
         head,raw,cert=aggregate_heads(s['heads'],s['grams'],s['sizes'],True,alpha=.5)
         if not torch.isfinite(head).all() or any(not torch.isfinite(b).all() for b in s['agg_B']):raise ArithmeticError('Nonfinite aggregate')
+        s['agg_B'] = self.server_aggregate(s['agg_B'], head)
         with torch.no_grad():
             for b,v in zip(self.model.b_parameters(),s['agg_B']):b.copy_(v)
             self.model.rows[-1].copy_(head)

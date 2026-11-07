@@ -1,0 +1,244 @@
+{
+  "source_commit_before_uncommitted_study": {
+    "implementation_checkout_HEAD": "0b11d1a366715ce22da4762b83c4cf0bae6dd391",
+    "route_compare_HEAD": "d12175f573a9619f04528a9f3a66405b1dfc98b6",
+    "dirty_state": "existing untracked directories preserved; source snapshot is authoritative"
+  },
+  "original_frozen_code_identity": "c4b414daa2dcc5b75744279e67f63b49ef7e3dc91ece7db75f2550bfb4f04c47",
+  "original_source_entry_count": 268,
+  "published_exact_scientific_dependency_closure_sha256": {
+    "fcl/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fcl/checkpoint.py": "5305758ef3ecfb9da662752c5bc885bec4fb1c50a40ab7aa23e603c37d993349",
+    "fcl/data.py": "f4165020e26caa8ed4b5b9c2e1704cdbce8de7b897f0acc4fd3bf1271573a17d",
+    "fcl/math.py": "05720f596f6a0b716f3669b9ceab32006723b721bca79fcdb139212dee8efc9e",
+    "fcl/model.py": "83c5d88f9b695f47c44478d48924b44e9041c54fe6e1fbf2353dbe626c3c3c6e",
+    "research/adamw_combined/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "research/adamw_combined/adamw_utility_draft.py": "0f1436bca4d623d5f86f12bb6a41add1497b121e9e084493c980260b143d4ef9",
+    "research/adamw_combined/differentiable_response_draft.py": "04c0b4ec21c3f4ef1d9cc3328808b4d386c69269475d1f9f1024150683adbbee",
+    "research/adamw_combined/differentiable_trial_draft.py": "9c4450ca02669b008242a0c4d47ec13c9f57922dfc73abffa431e672d3753bf5",
+    "research/adamw_combined/implicit_head_draft.py": "2319da44a8147124eb55e6d1dc8b32010108548b972fb0a53e88916027bd7803",
+    "research/adamw_combined/pilot.py": "d6b3b83326d0ef995ec159108ab55bcc31f83c4a739dd95bd43829481b5a0bbf",
+    "research/aggregation_utility/pilot.py": "1893a4b4d7d97a3f4183938ccc42c63dc3422782cb2b198b7ff3dea15d82292c",
+    "research/aggregation_utility/selection.py": "99394436f0d4637e0eff08dce61a5262a7f33e8a0f108248936741e13f77acda",
+    "research/basic_repair/fcl_basic_repair_tools.py": "7826efbb618ee632efbaa7081e9b7f05b41fc7cbf4c1952a5323afae1a6eb7fb",
+    "research/block_response_diagnostic/boundary_budget.py": "189d4802cb06fb7c9d649051472babf61dafb440a46ba39b76625118080c0726",
+    "research/block_response_diagnostic/boundary_ledger.py": "606bb4f8c3a63b29ec0a8df9466ddedc567d0fb8433ba486670d964139385cbf",
+    "research/fed_spectra/__init__.py": "145f2f0d52e5f7d64349640522a49941e3fa3627dc1de86a9b5eb03ef5bc41c4",
+    "research/fed_spectra/actual_update.py": "c88f8e7c7f8ba02b62881c372be5377f439a9947f8a4b34ec6bf3dd1131ef013",
+    "research/fed_spectra/math.py": "0914897b5ce09e051b2bc202062eb37a3da6afd8cb6ca97c334779dfaebc866c",
+    "research/fed_spectra/matrix_tangent.py": "60e424a297ba10ce7131370809c24fa47c2b2c3635023bd394739013042ce286",
+    "research/fed_spectra/pilot.py": "7d587e7d55630e812d6f3e27f05a27c5a57bf0d76df5e38342f886499368e64d",
+    "research/head_regmean/confirmation.py": "90e10415817ac008c3f574eb3157f92c342a3bde52c0a211e367d9c5479186c7",
+    "research/head_regmean/pilot.py": "1a144ffbd167ffcda87617ae4643a55e111793c0f509ca2c1a631ae1790ee1f7",
+    "research/head_regmean/solver.py": "6b8f8913e7a8381a89cf9f191492bd90d48d42413bda005966a80b37b3853647",
+    "research/response_bilateral/__init__.py": "010e46df3c587176c426ee5e941530a8ee3e9d49f6977344e4b16443587e3785",
+    "research/response_bilateral/freeze.py": "f9b27407d5e675c10a6b9db49b1cbfbd8a6610fb081106e26c37c819cbec3909",
+    "research/response_bilateral/pilot.py": "3cf057a3bd6a3bdf14a6735cd30e31a87a0f01fc59283e42e64c80d1a5b56a1b",
+    "research/response_bilateral/preflight.py": "7e00d98686bbd7552915e83a4a71886dd977515cf18749722fe86eb358796e2a",
+    "research/response_bilateral/prox.py": "9bd3ad55a815ce24cb106f996a41663205681fb1da9f5cb0ca9a1ced05acf219",
+    "research/response_bilateral/report.py": "2f1eb5a8f4e584356b5f6ddae1feb1670d3e3c32f6c1f7a904e99cc7341abddd",
+    "research/response_bilateral/runtime.py": "6f09ec18e99239770df1a818ac87b431b235d0a0f7e635437c25739890ee5c89",
+    "research/response_bilateral/supervisor.py": "e5433ebed668df350efee0045dd0f3c699286b8365c24c599e6a5197ee8e991e",
+    "research/response_bilateral/test_lifecycle.py": "9447ba015ee2955e58d842ef11ef2bf0b94b6ae5d5dd58e388acc598c35abe48",
+    "research/response_bilateral/test_prox.py": "46ae1e612988aa2c1118b09db1fe79821359d56d8f6f84611dcc3cce20b42dce",
+    "research/response_bilateral/worker.py": "737d9015f0d531149e1039bfad995f9f1c865743256071b66c84967566e3dd6e",
+    "research/response_drift_20261103/energy.py": "87fa608d6dd9fe33601f06f0c1240c3409bb39fe442e60f7cc66651e1aee18c1",
+    "research/route_compare_20261102/frame.py": "10f2866c9cac04476addc29e889fc13ce09a4d7027ac529076759ef23cb3c867",
+    "research/route_compare_20261102/functional_optim.py": "6c2bf1c867da2c1fb5819da92ab1bde96f0fd3b39fe75f7cf44ebebfe46a8444",
+    "research/route_compare_20261102/pilot.py": "cdeff56d8dec4a77c1a3632ec6810fc3d147715f59cee23d3472b1313113e5a0",
+    "research/route_compare_20261102/response.py": "67b01087397e21164fae68c92194c654b7d5f9f649d0a4fc5a28eccff0612207",
+    "research/route_compare_20261102/selection.py": "918d3462820d5fd1c7b8f510b2887fc3395d2b2ff1ee461d94a43293885c4c92"
+  },
+  "weights_sha256": "2d31bb5597c720912f8ea5e4f1de73909a6911798d78ae5d1b9d63a955fed049",
+  "manifest_sha256": {
+    "0": "8d50ce006375a9dd6a6e0c0b5f94526d2aa9b9f05361519bd65486769b70d434",
+    "3": "0916f2f356b0d66629122feb2dab000789cd00442eff3a90feb52bc4cd98936c",
+    "4": "5a2a47a94842e7a4ddc3411131664783d22e466acc6fc21bbdc1d6d2e6efcc25",
+    "5": "6e934217b93dce16c00185750886ad4dfe2666ec3fce57f43eb22b95eeafdff9"
+  },
+  "environment": {
+    "torch": "2.7.1+cu128",
+    "timm": "1.0.16",
+    "kornia": "0.7.3",
+    "cuda": "12.8"
+  },
+  "route": {
+    "pool_width": 64,
+    "split_seed": 76103,
+    "trial_seed": 192017,
+    "sample_cap": 32,
+    "short_rounds": 2,
+    "steps": [
+      0.05,
+      0.025,
+      0.0125
+    ],
+    "lambdas": [
+      0.0,
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "trust_radius": 1.0,
+    "orthogonal_tolerance": 1e-05,
+    "loss_tolerance": 1e-07,
+    "space_tolerance": 1e-05,
+    "outer_iterations": 2
+  },
+  "base_config": {
+    "dataset": "seq-cifar100",
+    "clients": 10,
+    "alpha": 0.05,
+    "seed": 0,
+    "tasks": 3,
+    "cpt": 10,
+    "rounds": 5,
+    "epochs": 5,
+    "batch": 16,
+    "rank": 32,
+    "lr": 0.0002,
+    "cosine_scale": 16,
+    "backbone": "vit_base_patch16_224.augreg_in21k",
+    "aggregation": "regmean",
+    "inference_rule": "fixed block mean subtraction; always report raw too",
+    "math_sdpa": true,
+    "precision": "FP32 deterministic algorithms, math SDPA, TF32 off",
+    "retain_task_checkpoints": false,
+    "retain_round_checkpoints": false,
+    "retain_first_round_endpoints": false,
+    "source_revision": "Frozen aggregation-utility source recorded in reports/SOURCE.json; base c7ce88f",
+    "selection_mode": "prefix",
+    "required_free_mib": 18000,
+    "maximum_seconds": 86400,
+    "storage_limit_bytes": 19000000000,
+    "write_stop_bytes": 18500000000,
+    "selection": {
+      "candidate_width": 64,
+      "formal_rank": 32,
+      "split_seed": 76103,
+      "check_fraction": 0.2,
+      "search_steps": 60,
+      "initial_step": 0.25,
+      "backtracks": 16,
+      "inward_derivative": 0.001,
+      "constraint_relative_tolerance": 2e-06,
+      "minimum_relative_gain": 0.0001,
+      "orthogonal_tolerance": 1e-05
+    },
+    "route": {
+      "pool_width": 64,
+      "split_seed": 76103,
+      "trial_seed": 192017,
+      "sample_cap": 32,
+      "short_rounds": 2,
+      "steps": [
+        0.05,
+        0.025,
+        0.0125
+      ],
+      "lambdas": [
+        0.0,
+        0.001,
+        0.01,
+        0.1,
+        1.0,
+        10.0,
+        100.0
+      ],
+      "trust_radius": 1.0,
+      "orthogonal_tolerance": 1e-05,
+      "loss_tolerance": 1e-07,
+      "space_tolerance": 1e-05,
+      "outer_iterations": 2,
+      "optimizer": "adamw",
+      "mode": "prefix"
+    }
+  },
+  "protocol": {
+    "version": "2026-11-06",
+    "anchor": "AdamW + original selected route + Head-RegMean",
+    "route_mode": "selected",
+    "gamma": 0.1,
+    "epsilon": 0.01,
+    "spectral_weight_power": 2,
+    "history_rank_cap": 64,
+    "dtype": "FP32 model, FP64 spectra/Gram/solve",
+    "PSD_relative_tolerance": 1e-10,
+    "total_tasks": 10,
+    "classes_per_task": 10,
+    "development": {
+      "seed": 0,
+      "arms": [
+        "E0",
+        "E3",
+        "E1",
+        "E2"
+      ],
+      "schedule": "T2 all arms -> H1 activity check -> T3 all arms",
+      "stop_after_task": 3
+    },
+    "confirmation": {
+      "seeds": [
+        3,
+        4,
+        5
+      ],
+      "arms": [
+        "E0",
+        "E3",
+        "E1",
+        "E2"
+      ],
+      "stop_after_task": 5,
+      "admission": "1.4 * maximum measured per-task worker wall time; complete 4-arm seed group first"
+    },
+    "budget": {
+      "gpu_seconds": 86400,
+      "wall_seconds": 86400,
+      "allocated_write_stop": 18500000000,
+      "new_task_admission_bytes": 18000000000,
+      "absolute_bytes_limit": 19000000000,
+      "GPU_workers": 1,
+      "idle_admission": "memory_used <100 MiB AND utilization=0",
+      "all_failures_smoke_profile_in_original_ledger": true,
+      "development_CPU_worker_seconds_conservatively_charged_as_GPU_seconds": true
+    },
+    "H1_stop": "E2 and E3 >=90% nonzero-B T2 matrices relative correction <1e-6",
+    "advancement": {
+      "final_mean_pp": 0.3,
+      "AIA_mean_pp": 0,
+      "old_mean_pp": 0,
+      "new_mean_min_pp": -0.2,
+      "positive_seeds_min": 2,
+      "worst_seed_min_pp": -0.5
+    },
+    "prefer_response": {
+      "E3_minus_E2_mean_pp": 0.1,
+      "nonnegative_seeds_min": 2,
+      "AIA_nonnegative": true
+    },
+    "direction_claim": "E3 must have stable paired advantage over E1; otherwise no claim of directional superiority",
+    "conditional_control": "E1E2 for all completed seeds if E2 wins and full control matrix budget fits",
+    "long_sequence": {
+      "seed": 3,
+      "arms": [
+        "E0",
+        "frozen_winner"
+      ],
+      "stop_after_task": 10,
+      "condition": "all three T5 groups completed, prespecified winner criteria, enough budget for complete pair; fork own T5 checkpoints with extension receipt"
+    },
+    "second_dataset": "only after T10, existing ImageNet-R assets/config reviewed and full paired admission; otherwise report unexecuted",
+    "current_probe": "first 8 sorted task RRS support indices, fixed head, before/after each formal map; restores RNG",
+    "common_intervention": "E0 seed0 T2 final round post-FedAvg Bhat; E1/E2/E3 shadows, first 8 current support examples and first ten test indices per old class with all-seen logits; no feedback",
+    "tests": "FP64 oracle/KKT target1e-10; gradcheck eps1e-6 atol1e-5 rtol1e-4; tracked/direct ViT maxabs2e-6",
+    "failure": "preserve original ledger and evidence; no automatic expensive failed rerun; development engineering corrections share original clock",
+    "publish": "local only; no automatic GitHub push"
+  },
+  "original_started": 1793979237.9771204,
+  "original_deadline": 1794065637.9771204,
+  "scope": "Public review metadata with private operational paths omitted; not a replacement for original operational FROZEN_PROTOCOL.json; unrelated unused research sources omitted; original frozen scientific dependency files are unchanged."
+}

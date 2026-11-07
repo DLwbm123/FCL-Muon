@@ -1,0 +1,399 @@
+两seed完整十任务最终实验报告
+CIFAR100 alpha=0.05；seeds0/1；Head-RegMean与标准LoRM各两条，全部完成并通过最终检查点验收。
+每个单元为 mean ± sample SD（n=2，ddof=1）；准确率为%，遗忘和方法差为百分点。差值的SD由同seed配对差计算。
+
+centered：指标 | Head-RegMean | LoRM | 配对差Head−LoRM
+最终总体准确率 | 86.1100 ± 0.3394 | 83.9950 ± 0.2192 | 2.1150 ± 0.5586
+最终旧类准确率 | 85.3667 ± 0.4243 | 84.1389 ± 0.4478 | 1.2278 ± 0.8721
+T10新类准确率 | 92.8000 ± 0.4243 | 82.7000 ± 1.8385 | 10.1000 ± 2.2627
+T2–T10平均新类准确率 | 89.9556 ± 0.6128 | 91.1167 ± 0.0236 | -1.1611 ± 0.6364
+平均增量准确率 | 91.0139 ± 0.1451 | 88.3271 ± 0.2104 | 2.6868 ± 0.0653
+遗忘（越低越好） | 5.2611 ± 1.0135 | 8.6444 ± 0.2671 | -3.3833 ± 1.2806
+
+每seed：
+seed0 {"regmean": {"final_all_seen": 85.87, "final_old": 85.06666666666666, "final_new": 93.10000000000001, "mean_new_T2_T10": 90.38888888888889, "average_incremental_accuracy": 91.11652380952381, "forgetting": 5.977777777777779}, "lorm": {"final_all_seen": 84.14999999999999, "final_old": 84.45555555555555, "final_new": 81.39999999999999, "mean_new_T2_T10": 91.10000000000001, "average_incremental_accuracy": 88.47587698412698, "forgetting": 8.455555555555556}, "head_minus_lorm_pp": {"final_all_seen": 1.7200000000000104, "final_old": 0.6111111111111178, "final_new": 11.70000000000001, "mean_new_T2_T10": -0.7111111111111179, "average_incremental_accuracy": 2.6406468253968307, "forgetting": -2.477777777777776}}
+seed1 {"regmean": {"final_all_seen": 86.35, "final_old": 85.66666666666667, "final_new": 92.5, "mean_new_T2_T10": 89.52222222222223, "average_incremental_accuracy": 90.91131746031745, "forgetting": 4.544444444444446}, "lorm": {"final_all_seen": 83.84, "final_old": 83.82222222222224, "final_new": 84.0, "mean_new_T2_T10": 91.13333333333333, "average_incremental_accuracy": 88.17835317460319, "forgetting": 8.833333333333334}, "head_minus_lorm_pp": {"final_all_seen": 2.50999999999999, "final_old": 1.8444444444444374, "final_new": 8.500000000000007, "mean_new_T2_T10": -1.6111111111111076, "average_incremental_accuracy": 2.7329642857142677, "forgetting": -4.288888888888887}}
+
+逐阶段：task | 主线overall | LoRMoverall | 主线a_tt | LoRMa_tt
+1 | 98.8000 ± 0.2828 | 97.7000 ± 0.0000 | 98.8000 ± 0.2828 | 97.7000 ± 0.0000
+2 | 96.1250 ± 0.3889 | 91.7500 ± 0.8485 | 95.1000 ± 0.4243 | 95.1500 ± 0.6364
+3 | 93.9500 ± 0.0707 | 90.1500 ± 0.9192 | 91.2000 ± 0.8485 | 93.6500 ± 0.2121
+4 | 92.6500 ± 0.1061 | 89.4750 ± 0.4243 | 93.0500 ± 1.6263 | 91.7000 ± 0.1414
+5 | 91.4800 ± 0.3111 | 88.4200 ± 0.1980 | 91.4000 ± 1.1314 | 94.3500 ± 1.7678
+6 | 89.0667 ± 0.7307 | 86.2583 ± 0.0589 | 83.1500 ± 6.0104 | 83.8500 ± 2.8991
+7 | 87.6714 ± 0.0808 | 85.4714 ± 0.3030 | 84.1000 ± 2.5456 | 90.3000 ± 1.1314
+8 | 87.0250 ± 0.1414 | 85.0625 ± 0.2121 | 86.6000 ± 0.9899 | 92.8500 ± 0.0707
+9 | 87.2611 ± 0.0393 | 84.9889 ± 0.2828 | 92.2000 ± 1.1314 | 95.5000 ± 1.2728
+10 | 86.1100 ± 0.3394 | 83.9950 ± 0.2192 | 92.8000 ± 0.4243 | 82.7000 ± 1.8385
+
+raw：指标 | Head-RegMean | LoRM | 配对差Head−LoRM
+最终总体准确率 | 79.5250 ± 0.7425 | 80.7150 ± 0.8839 | -1.1900 ± 0.1414
+最终旧类准确率 | 78.6444 ± 1.2571 | 80.6556 ± 0.8485 | -2.0111 ± 0.4086
+T10新类准确率 | 87.4500 ± 3.8891 | 81.2500 ± 1.2021 | 6.2000 ± 5.0912
+T2–T10平均新类准确率 | 84.0611 ± 0.0707 | 89.2944 ± 0.1964 | -5.2333 ± 0.2671
+平均增量准确率 | 86.9614 ± 0.5813 | 85.6709 ± 0.0157 | 1.2905 ± 0.5656
+遗忘（越低越好） | 6.6889 ± 0.9428 | 10.4722 ± 0.7778 | -3.7833 ± 0.1650
+
+每seed：
+seed0 {"regmean": {"final_all_seen": 79.0, "final_old": 77.75555555555556, "final_new": 90.2, "mean_new_T2_T10": 84.11111111111111, "average_incremental_accuracy": 86.55038888888889, "forgetting": 7.355555555555554}, "lorm": {"final_all_seen": 80.09, "final_old": 80.05555555555556, "final_new": 80.4, "mean_new_T2_T10": 89.15555555555554, "average_incremental_accuracy": 85.65981349206349, "forgetting": 11.02222222222222}, "head_minus_lorm_pp": {"final_all_seen": -1.090000000000002, "final_old": -2.300000000000002, "final_new": 9.799999999999997, "mean_new_T2_T10": -5.044444444444429, "average_incremental_accuracy": 0.8905753968253882, "forgetting": -3.6666666666666665}}
+seed1 {"regmean": {"final_all_seen": 80.04999999999998, "final_old": 79.53333333333332, "final_new": 84.7, "mean_new_T2_T10": 84.01111111111112, "average_incremental_accuracy": 87.37246428571427, "forgetting": 6.022222222222222}, "lorm": {"final_all_seen": 81.34, "final_old": 81.25555555555555, "final_new": 82.1, "mean_new_T2_T10": 89.43333333333334, "average_incremental_accuracy": 85.68199206349206, "forgetting": 9.922222222222222}, "head_minus_lorm_pp": {"final_all_seen": -1.2900000000000134, "final_old": -1.722222222222225, "final_new": 2.6000000000000023, "mean_new_T2_T10": -5.422222222222217, "average_incremental_accuracy": 1.6904722222222168, "forgetting": -3.9}}
+
+逐阶段：task | 主线overall | LoRMoverall | 主线a_tt | LoRMa_tt
+1 | 98.8000 ± 0.2828 | 97.7000 ± 0.0000 | 98.8000 ± 0.2828 | 97.7000 ± 0.0000
+2 | 95.2000 ± 0.4243 | 89.5750 ± 2.2274 | 92.9000 ± 1.2728 | 95.5500 ± 1.0607
+3 | 91.7167 ± 0.9664 | 88.1000 ± 0.8957 | 86.7500 ± 2.0506 | 93.5500 ± 0.6364
+4 | 89.4125 ± 0.0177 | 86.6875 ± 0.0530 | 92.1000 ± 1.1314 | 92.9500 ± 1.9092
+5 | 88.0100 ± 0.1838 | 85.5100 ± 0.0141 | 87.1500 ± 3.3234 | 90.8000 ± 0.7071
+6 | 83.7667 ± 0.4007 | 82.8667 ± 0.5893 | 75.8000 ± 1.1314 | 84.3000 ± 1.8385
+7 | 81.8786 ± 1.2425 | 82.0500 ± 0.4344 | 74.6000 ± 5.5154 | 85.3000 ± 1.1314
+8 | 80.5438 ± 1.5822 | 81.7937 ± 0.6452 | 73.9000 ± 3.8184 | 88.4000 ± 0.7071
+9 | 80.7611 ± 0.9035 | 81.7111 ± 0.6600 | 85.9000 ± 3.8184 | 91.5500 ± 1.3435
+10 | 79.5250 ± 0.7425 | 80.7150 ± 0.8839 | 87.4500 ± 3.8891 | 81.2500 ± 1.2021
+
+结果解释：
+两seed去均值总体、平均增量准确率和绝对旧类准确率均支持主线优势；平均新任务学习仍较低，不能只挑T10优势。双方原始推理下主线最终总体和平均新类均落后，收益依赖预固定去均值。
+较低遗忘须结合a_tt和旧类绝对准确率，不能单独当作更强保留机制的因果证据。两个seed的重复结果仍不等于独立heldout或统计显著性。
+
+最终任务竞争诊断（centered）：
+restricted_accuracy_percent: {"regmean": {"seed_values": {"0": 98.0, "1": 98.11}, "mean": 98.055, "sample_sd": 0.07778174593051983, "n": 2, "sd_ddof": 1}, "lorm": {"seed_values": {"0": 97.36, "1": 97.37}, "mean": 97.36500000000001, "sample_sd": 0.007071067811869093, "n": 2, "sd_ddof": 1}, "paired_head_minus_lorm": {"seed_values": {"0": 0.6400000000000006, "1": 0.7399999999999949}, "mean": 0.6899999999999977, "sample_sd": 0.07071067811865073, "n": 2, "sd_ddof": 1}}
+restricted_correct_but_other_task_wins_count: {"regmean": {"seed_values": {"0": 1213, "1": 1176}, "mean": 1194.5, "sample_sd": 26.16295090390226, "n": 2, "sd_ddof": 1}, "lorm": {"seed_values": {"0": 1321, "1": 1353}, "mean": 1337, "sample_sd": 22.627416997969522, "n": 2, "sd_ddof": 1}, "paired_head_minus_lorm": {"seed_values": {"0": -108, "1": -177}, "mean": -142.5, "sample_sd": 48.79036790187178, "n": 2, "sd_ddof": 1}}
+old_to_current_percent: {"regmean": {"seed_values": {"0": 4.022222222222222, "1": 3.822222222222222}, "mean": 3.922222222222222, "sample_sd": 0.14142135623730964, "n": 2, "sd_ddof": 1}, "lorm": {"seed_values": {"0": 1.866666666666667, "1": 1.7000000000000002}, "mean": 1.7833333333333337, "sample_sd": 0.11785113019775798, "n": 2, "sd_ddof": 1}, "paired_head_minus_lorm": {"seed_values": {"0": 2.155555555555555, "1": 2.122222222222222}, "mean": 2.1388888888888884, "sample_sd": 0.0235702260395515, "n": 2, "sd_ddof": 1}}
+current_to_old_percent: {"regmean": {"seed_values": {"0": 6.9, "1": 7.5}, "mean": 7.2, "sample_sd": 0.4242640687119283, "n": 2, "sd_ddof": 1}, "lorm": {"seed_values": {"0": 18.6, "1": 15.9}, "mean": 17.25, "sample_sd": 1.909188309203679, "n": 2, "sd_ddof": 1}, "paired_head_minus_lorm": {"seed_values": {"0": -11.700000000000001, "1": -8.4}, "mean": -10.05, "sample_sd": 2.333452377915607, "n": 2, "sd_ddof": 1}}
+
+成本（逐seed详见JSON，训练/统计/评估量均完整披露）：
+{
+  "per_seed": {
+    "0": {
+      "regmean": {
+        "training_visits": 1250000,
+        "optimizer_steps": 79350,
+        "client_rounds": 500,
+        "statistics_forward_images": 300000,
+        "task_evaluation_images": 55000,
+        "round_evaluation_images": 0,
+        "final_reload_images": 10000,
+        "worker_wall_seconds": 12812.419152021408,
+        "checkpoint_bytes": 403926043,
+        "run_output_allocated_bytes": 436649984,
+        "logical_communication_bytes": 10768588800,
+        "recorded_round_peak_gpu_bytes": null
+      },
+      "lorm": {
+        "training_visits": 1250000,
+        "optimizer_steps": 79350,
+        "client_rounds": 500,
+        "statistics_forward_images": 300000,
+        "task_evaluation_images": 55000,
+        "round_evaluation_images": 275000,
+        "final_reload_images": 10000,
+        "worker_wall_seconds": 8945.26824426651,
+        "checkpoint_bytes": 1914322935,
+        "run_output_allocated_bytes": 1946316800,
+        "logical_communication_bytes": null,
+        "recorded_round_peak_gpu_bytes": 7496478720
+      }
+    },
+    "1": {
+      "regmean": {
+        "training_visits": 1250000,
+        "optimizer_steps": 79200,
+        "client_rounds": 500,
+        "statistics_forward_images": 300000,
+        "task_evaluation_images": 55000,
+        "round_evaluation_images": 0,
+        "final_reload_images": 10000,
+        "worker_wall_seconds": 19733.881290197372,
+        "checkpoint_bytes": 403926235,
+        "run_output_allocated_bytes": 436649984,
+        "logical_communication_bytes": 10768588800,
+        "recorded_round_peak_gpu_bytes": null
+      },
+      "lorm": {
+        "training_visits": 1250000,
+        "optimizer_steps": 79200,
+        "client_rounds": 500,
+        "statistics_forward_images": 300000,
+        "task_evaluation_images": 55000,
+        "round_evaluation_images": 275000,
+        "final_reload_images": 10000,
+        "worker_wall_seconds": 10971.695147037506,
+        "checkpoint_bytes": 1914322999,
+        "run_output_allocated_bytes": 1946320896,
+        "logical_communication_bytes": null,
+        "recorded_round_peak_gpu_bytes": 7501512704
+      }
+    }
+  },
+  "aggregate": {
+    "regmean": {
+      "training_visits": {
+        "seed_values": {
+          "0": 1250000,
+          "1": 1250000
+        },
+        "mean": 1250000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 2500000
+      },
+      "optimizer_steps": {
+        "seed_values": {
+          "0": 79350,
+          "1": 79200
+        },
+        "mean": 79275,
+        "sample_sd": 106.06601717798213,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 158550
+      },
+      "client_rounds": {
+        "seed_values": {
+          "0": 500,
+          "1": 500
+        },
+        "mean": 500,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 1000
+      },
+      "statistics_forward_images": {
+        "seed_values": {
+          "0": 300000,
+          "1": 300000
+        },
+        "mean": 300000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 600000
+      },
+      "task_evaluation_images": {
+        "seed_values": {
+          "0": 55000,
+          "1": 55000
+        },
+        "mean": 55000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 110000
+      },
+      "round_evaluation_images": {
+        "seed_values": {
+          "0": 0,
+          "1": 0
+        },
+        "mean": 0,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 0
+      },
+      "final_reload_images": {
+        "seed_values": {
+          "0": 10000,
+          "1": 10000
+        },
+        "mean": 10000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 20000
+      },
+      "worker_wall_seconds": {
+        "seed_values": {
+          "0": 12812.419152021408,
+          "1": 19733.881290197372
+        },
+        "mean": 16273.15022110939,
+        "sample_sd": 4894.212813630165,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 32546.30044221878
+      },
+      "checkpoint_bytes": {
+        "seed_values": {
+          "0": 403926043,
+          "1": 403926235
+        },
+        "mean": 403926139,
+        "sample_sd": 135.7645019878171,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 807852278
+      },
+      "run_output_allocated_bytes": {
+        "seed_values": {
+          "0": 436649984,
+          "1": 436649984
+        },
+        "mean": 436649984,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 873299968
+      },
+      "logical_communication_bytes": {
+        "seed_values": {
+          "0": 10768588800,
+          "1": 10768588800
+        },
+        "mean": 10768588800,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 21537177600
+      },
+      "recorded_round_peak_gpu_bytes": null
+    },
+    "lorm": {
+      "training_visits": {
+        "seed_values": {
+          "0": 1250000,
+          "1": 1250000
+        },
+        "mean": 1250000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 2500000
+      },
+      "optimizer_steps": {
+        "seed_values": {
+          "0": 79350,
+          "1": 79200
+        },
+        "mean": 79275,
+        "sample_sd": 106.06601717798213,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 158550
+      },
+      "client_rounds": {
+        "seed_values": {
+          "0": 500,
+          "1": 500
+        },
+        "mean": 500,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 1000
+      },
+      "statistics_forward_images": {
+        "seed_values": {
+          "0": 300000,
+          "1": 300000
+        },
+        "mean": 300000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 600000
+      },
+      "task_evaluation_images": {
+        "seed_values": {
+          "0": 55000,
+          "1": 55000
+        },
+        "mean": 55000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 110000
+      },
+      "round_evaluation_images": {
+        "seed_values": {
+          "0": 275000,
+          "1": 275000
+        },
+        "mean": 275000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 550000
+      },
+      "final_reload_images": {
+        "seed_values": {
+          "0": 10000,
+          "1": 10000
+        },
+        "mean": 10000,
+        "sample_sd": 0.0,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 20000
+      },
+      "worker_wall_seconds": {
+        "seed_values": {
+          "0": 8945.26824426651,
+          "1": 10971.695147037506
+        },
+        "mean": 9958.481695652008,
+        "sample_sd": 1432.9002045282239,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 19916.963391304016
+      },
+      "checkpoint_bytes": {
+        "seed_values": {
+          "0": 1914322935,
+          "1": 1914322999
+        },
+        "mean": 1914322967,
+        "sample_sd": 45.254833995939045,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 3828645934
+      },
+      "run_output_allocated_bytes": {
+        "seed_values": {
+          "0": 1946316800,
+          "1": 1946320896
+        },
+        "mean": 1946318848,
+        "sample_sd": 2896.309375740099,
+        "n": 2,
+        "sd_ddof": 1,
+        "total": 3892637696
+      },
+      "logical_communication_bytes": null,
+      "recorded_round_peak_gpu_bytes": {
+        "seed_values": {
+          "0": 7496478720,
+          "1": 7501512704
+        },
+        "mean": 7498995712,
+        "sample_sd": 3559564.222784581,
+        "n": 2,
+        "sd_ddof": 1,
+        "maximum_across_runs": 7501512704
+      }
+    }
+  },
+  "study_totals": {
+    "training_visits": 5000000,
+    "client_rounds": 2000,
+    "statistics_forward_images": 1200000,
+    "task_evaluation_images": 220000,
+    "round_evaluation_images": 550000,
+    "final_reload_images": 40000
+  }
+}
+
+完整双方原始/去均值矩阵、每个矩阵单元的两seed统计、全阶段a_tt/old/new/overall/forgetting及task competition见TWO_SEED_FINAL.json。
+
+Two prespecified seeds only; sample SD is descriptive, not a significance or robustness guarantee.
+Shared CIFAR development test set, not independent held-out validation.
+Architecture/rank/optimizer/numerics differ; this is a whole-scheme comparison, not a single-mechanism causal ablation.
+Both methods use the same frozen centered rule. Raw results must not be omitted.
+Task-restricted accuracy uses true task only as an offline diagnostic, not inference and not attainable improvement guaranteed.
+Lower forgetting can partly reflect lower initial acquisition; compare absolute old accuracy and all a_tt.
+Shared GPUs and unequal round evaluation workloads prevent controlled wall-time efficiency claims.
+Head GPU peak and LoRM communication were not instrumented; null means unavailable, not zero.
+LoRM seed1 COMPLETE.elapsed uses original shared group clock; cost uses worker receipt elapsed instead.
+Historical PROGRESS files and RESULTS_SNAPSHOT are dated snapshots; this file supersedes their pending status.
+The newly authorized independent three-task aggregation-utility pilot is separate; this final report does not extend the ten-task scope.
