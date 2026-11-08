@@ -501,16 +501,21 @@
       "head_Gram_upload": 2359296000,
       "B_upload": 1179648000,
       "current_head_upload": 15360000,
-      "task_end_B_download": 212336640,
-      "task_end_head_download": 2764800
+      "task_end_B_download": 235929600,
+      "task_end_head_download": 3072000
     },
     "cost_notes": [
       "Loader counters are program counters, not OS-level tracing.",
       "Formal training visits exclude extra selected-route probes and statistics passes; route calls retained in private full receipts.",
       "Existing historical LoRM cost excluded from new-study budget; no LoRM retraining.",
       "Shared hardware and different evaluation workloads do not support speed claims.",
-      "Fresh T1 trained once in this run; no shared-prefix or historical-GPU cost double counting."
-    ]
+      "Fresh T1 trained once in this run; no shared-prefix or historical-GPU cost double counting.",
+      "Single-machine federated simulation; logical payload counters, not measured network traffic.",
+      "Excludes initial pretrained-backbone distribution and protocol/transport overhead.",
+      "The selected-route short federated response and outer derivative communications have not been fully instrumented. It is not a complete distributed communication total.",
+      "Do not claim lower communication than LoRM without instrumenting both methods under the same accounting rules."
+    ],
+    "communication_counter_source": "final committed checkpoint, includes T10 task-end messages"
   },
   "selected_route_changed_layers_by_task_T2_T10": [
     6,

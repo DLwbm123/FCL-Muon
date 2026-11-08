@@ -1,0 +1,29 @@
+{
+  "status": "counted_formal_protocol_messages_only",
+  "units": "decimal bytes; GB=1e9 bytes",
+  "source": "final committed checkpoint communication counters from FINAL_VALIDATION.json",
+  "all_client_total_bytes": 10768588800,
+  "upload_bytes": 9216614400,
+  "download_and_broadcast_bytes": 1551974400,
+  "categories": {
+    "RRS_raw_upload": 5662310400,
+    "A_broadcast": 117964800,
+    "B_download": 1179648000,
+    "current_head_download": 15360000,
+    "head_Gram_upload": 2359296000,
+    "B_upload": 1179648000,
+    "current_head_upload": 15360000,
+    "task_end_B_download": 235929600,
+    "task_end_head_download": 3072000
+  },
+  "statistics_share": 0.7449078564500485,
+  "per_client_mean_bytes": 1076858880.0,
+  "formal_round_per_client_bytes": 9498624,
+  "limits": [
+    "Single-machine federated simulation; logical payload counters, not measured network traffic.",
+    "Excludes initial pretrained-backbone distribution and protocol/transport overhead.",
+    "The selected-route short federated response and outer derivative communications have not been fully instrumented. It is not a complete distributed communication total.",
+    "Do not claim lower communication than LoRM without instrumenting both methods under the same accounting rules."
+  ],
+  "correction": "Previous cost.logical_communication_bytes used the T10 evaluated receipt before the final task-end merge messages. Corrected to the final committed checkpoint: +23900160 bytes. Accuracy metrics unchanged."
+}
