@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "real_dataset_images": 0,
+  "functional_clients": 10,
+  "short_updates": 80,
+  "head_fusions": 2,
+  "B_track_direct_max_abs": 0.0,
+  "formal_clients": 2,
+  "formal_synthetic_epoch_count": 1,
+  "both_readouts_and_full_restore": true,
+  "no_proximal_module": true,
+  "peak_cuda_allocated_bytes": 1537004544,
+  "peak_cuda_reserved_bytes": 1759510528,
+  "RRS_codec": {
+    "records": 24,
+    "actual_wire_bytes": 4793376,
+    "dense_reference_bytes": 113246208,
+    "max_diagonal_relative_error": 5.0484191425960945e-09
+  }
+}

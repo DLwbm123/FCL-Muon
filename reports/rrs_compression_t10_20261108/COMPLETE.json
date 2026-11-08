@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "tasks": 10,
+  "merges": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "committed_tasks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "all_10_readbacks_verified": true,
+  "wall_seconds": 16408.023826829158,
+  "final_checkpoint_phase": "complete",
+  "raw_AIA": 0.8720483333333334,
+  "baseline_raw_AIA": 0.8721501587301587,
+  "raw_AIA_difference_pp": -0.010182539682523917,
+  "final_communication": {
+    "RRS_compressed_upload": 239668800,
+    "A_broadcast": 117964800,
+    "B_download": 1179648000,
+    "current_head_download": 15360000,
+    "head_Gram_upload": 2359296000,
+    "B_upload": 1179648000,
+    "current_head_upload": 15360000,
+    "task_end_B_download": 235929600,
+    "task_end_head_download": 3072000
+  },
+  "baseline_final_communication": {
+    "RRS_raw_upload": 5662310400,
+    "A_broadcast": 117964800,
+    "B_download": 1179648000,
+    "current_head_download": 15360000,
+    "head_Gram_upload": 2359296000,
+    "B_upload": 1179648000,
+    "current_head_upload": 15360000,
+    "task_end_B_download": 235929600,
+    "task_end_head_download": 3072000
+  },
+  "RRS_wire_reduction_fraction": 0.9576729668511285,
+  "communication_limits": "formal logical payloads only; full distributed selector/outer-derivative and transport traffic not measured",
+  "loader_accesses_this_worker": {
+    "train_loaded": 1548989,
+    "test_loaded": 120000
+  }
+}
