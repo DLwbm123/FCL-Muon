@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "read_only": true,
+  "original_clock": {
+    "started": 1794109462.9252088,
+    "deadline": 1794195862.9252088
+  },
+  "checkpoint_phase": "complete",
+  "all_adapters_merged_zero_B": true,
+  "formal_tasks": 10,
+  "formal_clients": 500,
+  "formal_training_visits": 1250000,
+  "formal_training_steps": 79350,
+  "selected_route_tasks": 9,
+  "no_proximal_operator": true,
+  "final_readback_images": 10000,
+  "raw_confusion_equal": true,
+  "centered_confusion_equal": true,
+  "max_merged_vs_premerge_logit_difference": 0.0002963542938232422,
+  "restricted_accuracy_diagnostic": 0.9827,
+  "additional_test_loader_visits": 10000,
+  "additional_train_loader_visits": 0,
+  "communication": {
+    "RRS_raw_upload": 5662310400,
+    "A_broadcast": 117964800,
+    "B_download": 1179648000,
+    "current_head_download": 15360000,
+    "head_Gram_upload": 2359296000,
+    "B_upload": 1179648000,
+    "current_head_upload": 15360000,
+    "task_end_B_download": 235929600,
+    "task_end_head_download": 3072000
+  },
+  "route_changed_layers": [
+    6,
+    9,
+    8,
+    0,
+    9,
+    7,
+    7,
+    6,
+    5
+  ],
+  "peak_cuda_allocated_bytes": 525425152,
+  "audit_source_sha256": "23ef88bdaaf2b1fa421e810a1dfd174d4b8df2c4a3c2c7d9142453209ccfb8cc"
+}
