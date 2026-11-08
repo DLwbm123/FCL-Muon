@@ -2,3 +2,5 @@ RRS statistics compression only: fresh full T1-T10 seed0 compared with completed
 Ordinary AdamW/head/selected-route formal hyperparameters are unchanged. Dense64 codec regression checks exact selected-route training and history; compressed checkpoint recovery is checked separately. PSD and approximately preserved diagonal do not certify true dense historical-risk bounds. No performance-driven rank selection.
 Primary performance: raw AIA difference. Primary communication: exact RRS wire bytes. Formal protocol totals exclude full distributed selector/outer-derivative and transport costs. Final counters must come from COMPLETE/final committed checkpoint rather than the pre-merge T10 receipt.
 Registration and launch helpers run once under neutral parent filenames. The prior clock and all failed/recovery costs must be retained; do not rerun launch or overwrite the frozen protocol.
+
+User-selected default for subsequent project work: configs/default_rrs_compressed.json and DEFAULT_POLICY.json. Keep the uncompressed version for reference/ablation. Completed run protocols stay immutable; each new run freezes its own settings and budget.
