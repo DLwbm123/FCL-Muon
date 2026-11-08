@@ -59,8 +59,13 @@ def build(clock, synthetic=None):
                         yield x,y
             return Counted()
     else:raw,manifest,used_loader=synthetic
-    p=TenTaskPilot(model,raw,manifest,used_loader,train_tf.cuda(),test_tf.cuda(),cfg,
+    pilot_class=TenTaskPilot
+    if 'rrs_compression' in cfg:
+        from research.rrs_compression.pilot import CompressedPilot
+        pilot_class=CompressedPilot
+    p=pilot_class(model,raw,manifest,used_loader,train_tf.cuda(),test_tf.cuda(),cfg,
                    root/'src/runs/main',{'source_sha256':f['code_identity'],'manifest_sha256':f['manifest_sha256'],
-                   'weights_sha256':f['weights']['sha256'],'seed':0,'method':'original_adamw_selected_no_prox'},clock)
+                   'weights_sha256':f['weights']['sha256'],'seed':0,
+                   'method':'adamw_selected_rrs_compressed' if 'rrs_compression' in cfg else 'original_adamw_selected_no_prox'},clock)
     p.accesses=accesses
     return p

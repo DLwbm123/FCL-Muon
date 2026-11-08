@@ -101,8 +101,7 @@ class Pilot:
                     for x,y in self.loader(self.raw[0],ids,self.cfg['batch']):
                         self.budget();self.check_labels(y)
                         self.model.backbone.forward_features(self.test_tf(x.to(self.device)))
-                    for i,a in self.model.adapters.items():totals[i]+=a.stat.cpu()
-                    self.charge('RRS_raw_upload',sum(g.numel()*8 for g in totals.values()))
+                    self.aggregate_rrs_client(totals,{i:a.stat.cpu() for i,a in self.model.adapters.items()},k)
             finally:
                 for a in self.model.adapters.values():a.collect=False;a.stat=None
         for i,a in self.model.adapters.items():
@@ -113,6 +112,11 @@ class Pilot:
         self.charge('A_broadcast',self.cfg['clients']*sum(a.A.numel()*4 for a in self.model.adapters.values()))
         self.s['stats_records'].append({'task':t,'kind':'RRS','samples':len(self.ids('train',t))})
         self.s.update(round=0,phase='round_start')
+
+    def aggregate_rrs_client(self,totals,statistics,client):
+        """Default dense path preserves the original addition order and dtype."""
+        for name,g in statistics.items():totals[name]+=g
+        self.charge('RRS_raw_upload',sum(g.numel()*8 for g in statistics.values()))
 
     def check_labels(self,y):
         low=self.s['task']*self.cfg['cpt']
