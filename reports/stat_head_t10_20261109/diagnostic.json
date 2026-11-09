@@ -1,0 +1,152 @@
+{
+  "status": "completed",
+  "train_only": true,
+  "rows": [
+    {
+      "state": "initial",
+      "mapping": "identity",
+      "fit_classes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pseudo_old_classes": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "fit_images": 40,
+      "held_train_images": 40,
+      "held_feature_MSE": 0.0003317469570982736,
+      "held_mean_error": 0.9534324109076482,
+      "held_scatter_relative_error": 0.5111432885955572,
+      "held_nearest_mean_accuracy": 1.0
+    },
+    {
+      "state": "initial",
+      "mapping": "lowrank64",
+      "fit_classes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pseudo_old_classes": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "fit_images": 40,
+      "held_train_images": 40,
+      "held_feature_MSE": 0.00028767514036139225,
+      "held_mean_error": 0.6990089901316664,
+      "held_scatter_relative_error": 0.6460781933155342,
+      "held_nearest_mean_accuracy": 1.0
+    },
+    {
+      "state": "initial",
+      "mapping": "full_affine",
+      "fit_classes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pseudo_old_classes": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "fit_images": 40,
+      "held_train_images": 40,
+      "held_feature_MSE": 0.0001594564304338775,
+      "held_mean_error": 0.5043755820231277,
+      "held_scatter_relative_error": 0.4942011351639285,
+      "held_nearest_mean_accuracy": 1.0
+    },
+    {
+      "state": "late_C0_merged",
+      "mapping": "identity",
+      "fit_classes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pseudo_old_classes": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "fit_images": 40,
+      "held_train_images": 40,
+      "held_feature_MSE": 6.607897289362558e-05,
+      "held_mean_error": 0.427265787563364,
+      "held_scatter_relative_error": 0.2732716220979259,
+      "held_nearest_mean_accuracy": 1.0
+    },
+    {
+      "state": "late_C0_merged",
+      "mapping": "lowrank64",
+      "fit_classes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pseudo_old_classes": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "fit_images": 40,
+      "held_train_images": 40,
+      "held_feature_MSE": 0.00011558981041277551,
+      "held_mean_error": 0.5295888674649158,
+      "held_scatter_relative_error": 0.43708959470187797,
+      "held_nearest_mean_accuracy": 1.0
+    },
+    {
+      "state": "late_C0_merged",
+      "mapping": "full_affine",
+      "fit_classes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "pseudo_old_classes": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "fit_images": 40,
+      "held_train_images": 40,
+      "held_feature_MSE": 5.877817404778225e-05,
+      "held_mean_error": 0.37801280390250147,
+      "held_scatter_relative_error": 0.2979144191826723,
+      "held_nearest_mean_accuracy": 1.0
+    }
+  ],
+  "limitation": "late completed C0 already learned diagnostic classes; pseudo-old train-side stress test, not chronological old-data guarantee",
+  "decision": "negative findings retained; no parameter tuning, no gate on intermediate test scores"
+}
