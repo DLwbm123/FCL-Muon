@@ -1,0 +1,4 @@
+evidence_id,method,tasks,seeds,n,raw_AIA_percent,raw_final_percent,centered_AIA_percent,centered_final_percent,role
+T10-L0,official LoRM,10,0,1,85.65981349206349,80.09,88.47587698412698,84.14999999999999,verified historical standard comparator
+T10-U0,"current AdamW selected route, dense RRS, Head-RegMean",10,0,1,87.21501587301587,79.49000000000001,91.83079761904762,86.24000000000001,completed same-seed uncompressed reference
+T10-C0,"current AdamW selected route, RRS rank64 compression, Head-RegMean",10,0,1,87.20483333333334,79.61,91.8856865079365,86.18,current user-selected working default

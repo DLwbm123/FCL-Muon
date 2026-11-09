@@ -1,0 +1,20 @@
+{
+  "status": "user_selected_default",
+  "authorization": "用户：那就后续用压缩版本",
+  "method": "ordinary AdamW + selected route + Shared-A/B-only + Head-RegMean",
+  "rrs_compression": {
+    "mode": "lowrank_diag",
+    "rank": 64,
+    "factor_dtype": "float32",
+    "residual_dtype": "float32",
+    "wire_header": "little-endian uint32 version/dimension/rank + 4 float64 diagnostics",
+    "server_statistics": "decoded Gram for RRS, selected pool, history and historical exposure constraints"
+  },
+  "implementation_package": "research.rrs_compression",
+  "config_template": "configs/default_rrs_compressed.json",
+  "verified_training_commit": "6493928432973fc689b8fac57316818952dd9ded",
+  "proximal_enabled": false,
+  "uncompressed_role": "retained reference/ablation; not the default",
+  "future_experiments": "Freeze individual data/seed/budget/protocol before launch; preserve completed frozen experiments; this adoption does not launch another run",
+  "communication_accounting": "RRS serialized bytes and formal protocol subtotal; full distributed selector/outer-derivative exchanges are not yet fully metered"
+}

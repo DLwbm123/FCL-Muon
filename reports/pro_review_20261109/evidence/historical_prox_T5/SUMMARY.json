@@ -1,0 +1,57 @@
+{
+  "status": "archived; not the current default; no automatic continuation",
+  "arms": {
+    "E0": "identity/no proximal",
+    "E1": "own shadow-E3 magnitude control",
+    "E2": "Euclidean bilateral proximal",
+    "E3": "response bilateral proximal"
+  },
+  "results": [
+    {
+      "arm": "E0",
+      "tasks": 5,
+      "seeds": [
+        3,
+        4
+      ],
+      "n": 2,
+      "raw_AIA_mean_percent": 92.804,
+      "raw_final_mean_percent": 87.57
+    },
+    {
+      "arm": "E1",
+      "tasks": 5,
+      "seeds": [
+        3,
+        4
+      ],
+      "n": 2,
+      "raw_AIA_mean_percent": 92.74950000000001,
+      "raw_final_mean_percent": 87.46000000000001
+    },
+    {
+      "arm": "E2",
+      "tasks": 5,
+      "seeds": [
+        3,
+        4
+      ],
+      "n": 2,
+      "raw_AIA_mean_percent": 92.74216666666666,
+      "raw_final_mean_percent": 87.53999999999999
+    },
+    {
+      "arm": "E3",
+      "tasks": 5,
+      "seeds": [
+        3,
+        4
+      ],
+      "n": 2,
+      "raw_AIA_mean_percent": 92.81216666666666,
+      "raw_final_mean_percent": 87.53999999999999
+    }
+  ],
+  "conclusion": "No reliable proximal benefit; E3-E0 AIA +0.0081667pp, final -0.03pp; only two T5 groups.",
+  "important": "This study stopped before seed5/T10 under its old group-budget gate. That historical gate does NOT apply to the later independent completed T10-U0/T10-C0 runs."
+}

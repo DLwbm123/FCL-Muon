@@ -1,0 +1,4 @@
+Own-source and scoped-diff files included: 49
+No raw image data, weights, per-image logits, private asset stats, job ledgers, raw logs or credentials.
+Current source based on user-selected default commit 4f93cbf; training evidence commit 6493928.
+Review handoff only; candidate descriptions do not authorize executions or changes to completed protocols.

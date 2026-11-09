@@ -1,0 +1,102 @@
+{
+  "source_commit": "f0fca03",
+  "status": "ALL_FOUR_RUNS_COMPLETE_VERIFIED_TWO_SEED_FINAL",
+  "seeds": [
+    0,
+    1
+  ],
+  "tasks": 10,
+  "method_warning": "early Shared-RRS + Head-RegMean with original SSB B optimizer, not current AdamW selected-route method",
+  "raw": {
+    "average_incremental_accuracy": {
+      "regmean": {
+        "seed_values": {
+          "0": 86.55038888888889,
+          "1": 87.37246428571427
+        },
+        "mean": 86.96142658730159,
+        "sample_sd": 0.5812950877418503,
+        "n": 2,
+        "sd_ddof": 1
+      },
+      "lorm": {
+        "seed_values": {
+          "0": 85.65981349206349,
+          "1": 85.68199206349206
+        },
+        "mean": 85.67090277777777,
+        "sample_sd": 0.015682618254171155,
+        "n": 2,
+        "sd_ddof": 1
+      }
+    },
+    "final_all_seen": {
+      "regmean": {
+        "seed_values": {
+          "0": 79.0,
+          "1": 80.04999999999998
+        },
+        "mean": 79.52499999999999,
+        "sample_sd": 0.7424621202458629,
+        "n": 2,
+        "sd_ddof": 1
+      },
+      "lorm": {
+        "seed_values": {
+          "0": 80.09,
+          "1": 81.34
+        },
+        "mean": 80.715,
+        "sample_sd": 0.8838834764831844,
+        "n": 2,
+        "sd_ddof": 1
+      }
+    }
+  },
+  "centered": {
+    "average_incremental_accuracy": {
+      "regmean": {
+        "seed_values": {
+          "0": 91.11652380952381,
+          "1": 90.91131746031745
+        },
+        "mean": 91.01392063492062,
+        "sample_sd": 0.14510280106635456,
+        "n": 2,
+        "sd_ddof": 1
+      },
+      "lorm": {
+        "seed_values": {
+          "0": 88.47587698412698,
+          "1": 88.17835317460319
+        },
+        "mean": 88.32711507936509,
+        "sample_sd": 0.21038110327873052,
+        "n": 2,
+        "sd_ddof": 1
+      }
+    },
+    "final_all_seen": {
+      "regmean": {
+        "seed_values": {
+          "0": 85.87,
+          "1": 86.35
+        },
+        "mean": 86.11,
+        "sample_sd": 0.33941125496953556,
+        "n": 2,
+        "sd_ddof": 1
+      },
+      "lorm": {
+        "seed_values": {
+          "0": 84.14999999999999,
+          "1": 83.84
+        },
+        "mean": 83.995,
+        "sample_sd": 0.2192031021678213,
+        "n": 2,
+        "sd_ddof": 1
+      }
+    }
+  }
+}

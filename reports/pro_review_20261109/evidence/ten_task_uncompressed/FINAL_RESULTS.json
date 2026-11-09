@@ -1,0 +1,539 @@
+{
+  "status": "complete_verified",
+  "seed": 0,
+  "tasks": 10,
+  "proximal": false,
+  "three_seed_gate": false,
+  "units": "accuracy percent; differences percentage points",
+  "primary": "raw all-seen AIA over stages T1..T10",
+  "comparison": "verified historical official LoRM seed0 with identical manifest; whole-scheme comparison, not single-mechanism ablation",
+  "metrics": {
+    "raw": {
+      "current_AIA": 87.21501587301587,
+      "LoRM_AIA": 85.65981349206349,
+      "AIA_difference_pp": 1.5552023809523803,
+      "current_final": 79.49000000000001,
+      "LoRM_final": 80.09,
+      "final_difference_pp": -0.5999999999999943,
+      "current_forgetting_pp": 5.7111111111111095
+    },
+    "centered": {
+      "current_AIA": 91.83079761904762,
+      "LoRM_AIA": 88.47587698412698,
+      "AIA_difference_pp": 3.3549206349206315,
+      "current_final": 86.24000000000001,
+      "LoRM_final": 84.14999999999999,
+      "final_difference_pp": 2.0900000000000176,
+      "current_forgetting_pp": 7.33333333333333
+    }
+  },
+  "matrices_percent": {
+    "raw": {
+      "current": [
+        [
+          99.4
+        ],
+        [
+          97.7,
+          91.60000000000001
+        ],
+        [
+          97.7,
+          91.60000000000001,
+          85.1
+        ],
+        [
+          97.2,
+          87.1,
+          85.9,
+          87.7
+        ],
+        [
+          96.5,
+          85.3,
+          84.2,
+          87.9,
+          89.0
+        ],
+        [
+          93.89999999999999,
+          83.0,
+          84.39999999999999,
+          85.7,
+          88.6,
+          76.0
+        ],
+        [
+          94.8,
+          81.2,
+          82.6,
+          83.7,
+          87.9,
+          76.0,
+          70.5
+        ],
+        [
+          95.0,
+          81.2,
+          82.5,
+          83.39999999999999,
+          87.4,
+          75.3,
+          69.6,
+          69.8
+        ],
+        [
+          94.0,
+          80.4,
+          80.60000000000001,
+          84.8,
+          85.7,
+          75.2,
+          70.8,
+          70.6,
+          86.1
+        ],
+        [
+          93.0,
+          79.60000000000001,
+          82.3,
+          81.69999999999999,
+          80.5,
+          72.6,
+          67.5,
+          65.8,
+          82.89999999999999,
+          89.0
+        ]
+      ],
+      "LoRM": [
+        [
+          97.7
+        ],
+        [
+          87.5,
+          94.8
+        ],
+        [
+          82.0,
+          90.2,
+          94.0
+        ],
+        [
+          79.80000000000001,
+          80.80000000000001,
+          91.7,
+          94.3
+        ],
+        [
+          77.4,
+          78.8,
+          88.5,
+          91.5,
+          91.3
+        ],
+        [
+          72.8,
+          74.8,
+          87.1,
+          89.0,
+          88.0,
+          83.0
+        ],
+        [
+          71.89999999999999,
+          72.3,
+          86.1,
+          87.0,
+          86.6,
+          82.19999999999999,
+          86.1
+        ],
+        [
+          70.8,
+          70.39999999999999,
+          85.1,
+          86.9,
+          85.9,
+          79.7,
+          84.0,
+          87.9
+        ],
+        [
+          69.5,
+          67.5,
+          84.8,
+          86.6,
+          83.7,
+          79.5,
+          82.39999999999999,
+          86.6,
+          90.60000000000001
+        ],
+        [
+          67.5,
+          66.5,
+          84.1,
+          82.3,
+          83.0,
+          78.4,
+          82.5,
+          86.2,
+          90.0,
+          80.4
+        ]
+      ]
+    },
+    "centered": {
+      "current": [
+        [
+          99.4
+        ],
+        [
+          98.2,
+          95.6
+        ],
+        [
+          98.4,
+          93.0,
+          92.2
+        ],
+        [
+          97.8,
+          88.8,
+          91.3,
+          94.39999999999999
+        ],
+        [
+          96.89999999999999,
+          86.0,
+          89.9,
+          93.60000000000001,
+          94.8
+        ],
+        [
+          95.1,
+          85.7,
+          88.7,
+          91.3,
+          90.9,
+          89.1
+        ],
+        [
+          95.19999999999999,
+          83.0,
+          87.8,
+          90.8,
+          90.9,
+          89.0,
+          84.6
+        ],
+        [
+          95.1,
+          81.39999999999999,
+          87.2,
+          91.3,
+          90.3,
+          88.2,
+          84.2,
+          89.2
+        ],
+        [
+          93.89999999999999,
+          80.4,
+          87.0,
+          90.9,
+          90.3,
+          87.2,
+          83.5,
+          88.6,
+          96.2
+        ],
+        [
+          92.4,
+          78.5,
+          86.3,
+          87.8,
+          87.0,
+          78.60000000000001,
+          82.0,
+          85.5,
+          91.4,
+          92.9
+        ]
+      ],
+      "LoRM": [
+        [
+          97.7
+        ],
+        [
+          90.0,
+          94.69999999999999
+        ],
+        [
+          86.3,
+          92.30000000000001,
+          93.8
+        ],
+        [
+          85.0,
+          87.4,
+          92.7,
+          91.60000000000001
+        ],
+        [
+          83.3,
+          84.89999999999999,
+          89.60000000000001,
+          88.0,
+          95.6
+        ],
+        [
+          81.10000000000001,
+          81.89999999999999,
+          88.4,
+          86.5,
+          93.5,
+          85.9
+        ],
+        [
+          80.30000000000001,
+          80.30000000000001,
+          86.9,
+          84.39999999999999,
+          92.5,
+          85.9,
+          89.5
+        ],
+        [
+          79.2,
+          79.10000000000001,
+          85.2,
+          83.7,
+          92.0,
+          82.19999999999999,
+          87.5,
+          92.80000000000001
+        ],
+        [
+          78.4,
+          74.0,
+          84.7,
+          82.6,
+          91.0,
+          82.1,
+          86.7,
+          92.60000000000001,
+          94.6
+        ],
+        [
+          77.5,
+          74.1,
+          84.89999999999999,
+          79.2,
+          89.60000000000001,
+          81.6,
+          86.9,
+          92.2,
+          94.1,
+          81.39999999999999
+        ]
+      ]
+    }
+  },
+  "stages": [
+    {
+      "task": "1",
+      "current_raw_accuracy_percent": "99.4",
+      "LoRM_raw_accuracy_percent": "97.7",
+      "current_centered_accuracy_percent": "99.4",
+      "LoRM_centered_accuracy_percent": "97.7",
+      "raw_difference_pp": "1.7000000000000028",
+      "centered_difference_pp": "1.7000000000000028"
+    },
+    {
+      "task": "2",
+      "current_raw_accuracy_percent": "94.65",
+      "LoRM_raw_accuracy_percent": "91.14999999999999",
+      "current_centered_accuracy_percent": "96.89999999999999",
+      "LoRM_centered_accuracy_percent": "92.35",
+      "raw_difference_pp": "3.500000000000014",
+      "centered_difference_pp": "4.549999999999997"
+    },
+    {
+      "task": "3",
+      "current_raw_accuracy_percent": "91.46666666666667",
+      "LoRM_raw_accuracy_percent": "88.73333333333333",
+      "current_centered_accuracy_percent": "94.53333333333333",
+      "LoRM_centered_accuracy_percent": "90.80000000000001",
+      "raw_difference_pp": "2.7333333333333343",
+      "centered_difference_pp": "3.73333333333332"
+    },
+    {
+      "task": "4",
+      "current_raw_accuracy_percent": "89.47500000000001",
+      "LoRM_raw_accuracy_percent": "86.65",
+      "current_centered_accuracy_percent": "93.075",
+      "LoRM_centered_accuracy_percent": "89.17500000000001",
+      "raw_difference_pp": "2.825000000000003",
+      "centered_difference_pp": "3.8999999999999915"
+    },
+    {
+      "task": "5",
+      "current_raw_accuracy_percent": "88.58",
+      "LoRM_raw_accuracy_percent": "85.50000000000001",
+      "current_centered_accuracy_percent": "92.24",
+      "LoRM_centered_accuracy_percent": "88.28",
+      "raw_difference_pp": "3.079999999999984",
+      "centered_difference_pp": "3.9599999999999937"
+    },
+    {
+      "task": "6",
+      "current_raw_accuracy_percent": "85.26666666666667",
+      "LoRM_raw_accuracy_percent": "82.45",
+      "current_centered_accuracy_percent": "90.13333333333333",
+      "LoRM_centered_accuracy_percent": "86.21666666666665",
+      "raw_difference_pp": "2.816666666666663",
+      "centered_difference_pp": "3.9166666666666714"
+    },
+    {
+      "task": "7",
+      "current_raw_accuracy_percent": "82.38571428571429",
+      "LoRM_raw_accuracy_percent": "81.74285714285713",
+      "current_centered_accuracy_percent": "88.75714285714285",
+      "LoRM_centered_accuracy_percent": "85.6857142857143",
+      "raw_difference_pp": "0.642857142857153",
+      "centered_difference_pp": "3.071428571428555"
+    },
+    {
+      "task": "8",
+      "current_raw_accuracy_percent": "80.525",
+      "LoRM_raw_accuracy_percent": "81.33749999999999",
+      "current_centered_accuracy_percent": "88.3625",
+      "LoRM_centered_accuracy_percent": "85.2125",
+      "raw_difference_pp": "-0.8124999999999858",
+      "centered_difference_pp": "3.1499999999999915"
+    },
+    {
+      "task": "9",
+      "current_raw_accuracy_percent": "80.91111111111111",
+      "LoRM_raw_accuracy_percent": "81.24444444444445",
+      "current_centered_accuracy_percent": "88.66666666666667",
+      "LoRM_centered_accuracy_percent": "85.18888888888888",
+      "raw_difference_pp": "-0.3333333333333428",
+      "centered_difference_pp": "3.4777777777777885"
+    },
+    {
+      "task": "10",
+      "current_raw_accuracy_percent": "79.49000000000001",
+      "LoRM_raw_accuracy_percent": "80.09",
+      "current_centered_accuracy_percent": "86.24000000000001",
+      "LoRM_centered_accuracy_percent": "84.14999999999999",
+      "raw_difference_pp": "-0.5999999999999943",
+      "centered_difference_pp": "2.0900000000000176"
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "read_only": true,
+    "original_clock": {
+      "started": 1794109462.9252088,
+      "deadline": 1794195862.9252088
+    },
+    "checkpoint_phase": "complete",
+    "all_adapters_merged_zero_B": true,
+    "formal_tasks": 10,
+    "formal_clients": 500,
+    "formal_training_visits": 1250000,
+    "formal_training_steps": 79350,
+    "selected_route_tasks": 9,
+    "no_proximal_operator": true,
+    "final_readback_images": 10000,
+    "raw_confusion_equal": true,
+    "centered_confusion_equal": true,
+    "max_merged_vs_premerge_logit_difference": 0.0002963542938232422,
+    "restricted_accuracy_diagnostic": 0.9827,
+    "additional_test_loader_visits": 10000,
+    "additional_train_loader_visits": 0,
+    "communication": {
+      "RRS_raw_upload": 5662310400,
+      "A_broadcast": 117964800,
+      "B_download": 1179648000,
+      "current_head_download": 15360000,
+      "head_Gram_upload": 2359296000,
+      "B_upload": 1179648000,
+      "current_head_upload": 15360000,
+      "task_end_B_download": 235929600,
+      "task_end_head_download": 3072000
+    },
+    "route_changed_layers": [
+      6,
+      9,
+      8,
+      0,
+      9,
+      7,
+      7,
+      6,
+      5
+    ],
+    "peak_cuda_allocated_bytes": 525425152,
+    "audit_source_sha256": "23ef88bdaaf2b1fa421e810a1dfd174d4b8df2c4a3c2c7d9142453209ccfb8cc"
+  },
+  "cost": {
+    "training_visits": 1250000,
+    "training_updates": 79350,
+    "client_rounds": 500,
+    "loader_accesses_main_worker": {
+      "train_loaded": 1548989,
+      "test_loaded": 110000
+    },
+    "final_readback_test_visits": 10000,
+    "main_worker_seconds": 12635.82236712519,
+    "GPU_seconds_including_preflight_and_final_audit": 12827.456527987495,
+    "actual_allocated_bytes": 837042176,
+    "peak_cuda_allocated_main_bytes": 2199964160,
+    "logical_communication_bytes": {
+      "RRS_raw_upload": 5662310400,
+      "A_broadcast": 117964800,
+      "B_download": 1179648000,
+      "current_head_download": 15360000,
+      "head_Gram_upload": 2359296000,
+      "B_upload": 1179648000,
+      "current_head_upload": 15360000,
+      "task_end_B_download": 235929600,
+      "task_end_head_download": 3072000
+    },
+    "cost_notes": [
+      "Loader counters are program counters, not OS-level tracing.",
+      "Formal training visits exclude extra selected-route probes and statistics passes; route calls retained in private full receipts.",
+      "Existing historical LoRM cost excluded from new-study budget; no LoRM retraining.",
+      "Shared hardware and different evaluation workloads do not support speed claims.",
+      "Fresh T1 trained once in this run; no shared-prefix or historical-GPU cost double counting.",
+      "Single-machine federated simulation; logical payload counters, not measured network traffic.",
+      "Excludes initial pretrained-backbone distribution and protocol/transport overhead.",
+      "The selected-route short federated response and outer derivative communications have not been fully instrumented. It is not a complete distributed communication total.",
+      "Do not claim lower communication than LoRM without instrumenting both methods under the same accounting rules."
+    ],
+    "communication_counter_source": "final committed checkpoint, includes T10 task-end messages"
+  },
+  "selected_route_changed_layers_by_task_T2_T10": [
+    6,
+    9,
+    8,
+    0,
+    9,
+    7,
+    7,
+    6,
+    5
+  ],
+  "limits": [
+    "One new seed; not a multi-seed significance or stability result.",
+    "Both methods evaluated on the established CIFAR development test set; not independent held-out evidence.",
+    "Architectures/ranks/optimizer and precision differ; no single-component causal claim.",
+    "Centered readout was prespecified secondary; raw remains primary and is not suppressed.",
+    "Current run has no proximal correction; gains cannot be attributed to proximal correction.",
+    "Task-restricted diagnostic uses true task ID and is not an official inference result."
+  ]
+}

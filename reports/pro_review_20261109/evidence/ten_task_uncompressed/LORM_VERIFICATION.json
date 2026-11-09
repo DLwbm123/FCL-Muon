@@ -1,0 +1,75 @@
+{
+  "COMPLETE.json": {
+    "config": {
+      "dataset": "seq-cifar100",
+      "method": "lorm_official",
+      "seed": 0,
+      "alpha": 0.05,
+      "clients": 10,
+      "tasks": 10,
+      "rounds": 5,
+      "epochs": 5,
+      "batch": 16,
+      "precision": "16-mixed",
+      "manifest": "manifests/seq-cifar100_n10_a0.05_s0.json",
+      "output": "runs/lorm_seed0",
+      "official": {
+        "optimizer": "AdamW",
+        "lr": 0.0005,
+        "r": 16,
+        "wd_reg": 0,
+        "lora_head": false,
+        "regmean_all": true,
+        "alpha_regmean_head": 0.5,
+        "alpha_regmean_backbone": 0,
+        "gram_dtype": "32",
+        "reg_dtype_64": true,
+        "train_matrix": "alt",
+        "lr_B": -1,
+        "lr_A": -1,
+        "regmean_rounds": 1
+      },
+      "record_fixed_rules": true
+    },
+    "end": 1792990048.92752,
+    "elapsed": 8917.688328266144
+  },
+  "QUALIFICATION.json": {
+    "qualified": true,
+    "client_rounds": 500,
+    "training_visits": 1250000,
+    "optimizer_steps": 79350,
+    "checkpoint_boundary_complete": true,
+    "final_checkpoint_raw_predictions_equal": true,
+    "final_checkpoint_centered_predictions_equal": true,
+    "max_reload_logit_difference": 0.0,
+    "audit_images": 10000,
+    "statistics_image_forwards": 300000,
+    "round_evaluation_images": 275000,
+    "task_evaluation_images": 55000,
+    "note": "Pinned official learner; end-round and end-task statistics retained, no performance gate"
+  },
+  "FINAL_CHECK.json": {
+    "checked": 1792990830.191971,
+    "passed": true,
+    "checks": {
+      "complete_qualified_worker": true,
+      "full_task10_boundary": true,
+      "full_matrix_exact": true,
+      "full_client_budget": true,
+      "50_rounds": true,
+      "fixed_rules_all_stages": true,
+      "full10000_reload_verified": true,
+      "original_clock": true,
+      "no_training_process": true
+    },
+    "checkpoint_bytes": 1914322935,
+    "run_output_allocated_bytes": 1946316800,
+    "worker_elapsed_seconds": 8945.26824426651,
+    "training_elapsed_seconds": 8917.688328266144,
+    "max_recorded_round_peak_gpu_bytes": 7496478720,
+    "sum_round_seconds": 7196.6634685993195,
+    "optimizer_steps": 79350,
+    "evaluation_not_repeated": "Reused successful worker full10000 reload; this check only reads checkpoint and records."
+  }
+}

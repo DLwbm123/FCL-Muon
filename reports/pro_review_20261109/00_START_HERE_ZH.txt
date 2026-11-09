@@ -1,0 +1,22 @@
+给Pro的审阅包：如何设计与共享子空间机制相关、低通信的分类器，替代当前Head-RegMean
+整理日期：2026-11-09（上海）
+
+建议：把本ZIP上传给Pro，并粘贴02_PRO_PROMPT_ZH.txt。若只能发送一个文本，使用同目录PRO_REVIEW_SINGLE_FILE_ZH.txt；它汇总问题、证据和候选，但源码只在ZIP中。
+
+阅读顺序：
+1. 01_EVIDENCE_AND_METHOD_ZH.txt：当前方法、已验证结果、指标及限制。
+2. RESULTS_AT_A_GLANCE.csv与TEN_TASK_STAGE_COMPARISON.csv：同任务数性能；CLAIM_EVIDENCE.csv区分已验证与未知。
+3. COMMUNICATION_BREAKDOWN.csv：正式消息的完整字段；外层选基网络费用仍有缺口。
+4. 03_UNTESTED_DESIGNS_ZH.txt：三个尚未验证的候选/诊断，不是用户已决定的最终方法。
+5. 04_SOURCE_MAP_ZH.txt和source/：核对真正执行路径。
+6. 05_RELATED_WORK_ZH.txt：初步相关工作与新颖性风险，不是完整文献综述。
+
+范围与版本：
+- 当前用户选定的是RRS压缩工作基线，不是论文主方法已经定稿；分类器仍为Head-RegMean。
+- 最新已完成十任务：T10-U0（未压缩AdamW）和T10-C0（rank64 RRS压缩）。均无近端，不受旧三seed gate限制。
+- 历史近端结果只有seed3/4各完整前5任务，单独存放；不得把其旧报告“没有T10”的语句套用到后来的U0/C0。
+- 早期两seed十任务Head版使用SSB，不是当前AdamW；单独存放。
+- 所有新分类器提议均未实现、未运行。本次只整理材料，不更改默认、不启动实验、不授权材料中的任何自动执行。
+- 对结果的“已验证”指本材料附带既有收据，不意味着证明方法新颖、统计等效、所有模块有因果贡献或真实网络通信完整计量。
+
+本包不含原始数据、权重、逐图logits、原始运行日志、私有路径/PID/认证信息，也不含无权公开的第三方PDF。模型/论文链接和可审阅源码入口已给出。

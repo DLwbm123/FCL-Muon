@@ -1,0 +1,11 @@
+category,uncompressed_bytes,compressed_bytes,scope
+RRS_statistics_upload,5662310400,239668800,compressed count includes actual codec headers/diagnostics
+A_broadcast,117964800,117964800,counted formal messages
+B_download,1179648000,1179648000,counted formal messages
+B_upload,1179648000,1179648000,counted formal messages
+current_head_download,15360000,15360000,counted formal messages
+current_head_upload,15360000,15360000,counted formal messages
+head_Gram_upload,2359296000,2359296000,counted formal messages
+task_end_B_download,235929600,235929600,counted formal messages
+task_end_head_download,3072000,3072000,counted formal messages
+FORMAL_SUBTOTAL,10768588800,5345947200,NOT full distributed traffic

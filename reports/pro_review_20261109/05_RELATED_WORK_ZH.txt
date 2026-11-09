@@ -1,0 +1,53 @@
+初步相关工作入口（非穷尽，未确认候选具有新颖性）
+
+1. RegMean / Dataless Knowledge Fusion by Merging Weights of Language Models, ICLR2023
+https://arxiv.org/abs/2212.09849
+https://openreview.net/pdf?id=FCnohuR6AnM
+响应匹配/输入Gram加权线性层合并已有来源。
+
+2. LoRM / Closed-form merging of parameter-efficient modules for Federated Continual Learning, ICLR2025
+https://arxiv.org/abs/2410.17961
+官方参考源码固定版本：
+https://github.com/aimagelab/fed-mammoth/blob/6d57b5d361f743f3ff0cd1371409bd7a1158de64/_models/lorm.py
+https://github.com/aimagelab/fed-mammoth/blob/6d57b5d361f743f3ff0cd1371409bd7a1158de64/_models/regmean.py
+本包未复制第三方上游代码或PDF。
+
+3. RanPAC, NeurIPS2023
+https://arxiv.org/abs/2307.02251
+随机特征/类统计与解析分类已有来源；直接换成解析头不等于原创，冻结特征假设与当前移动主干不同。
+
+4. SLCA, ICCV2023
+https://arxiv.org/abs/2303.05118
+类别均值/协方差生成特征、分类头对齐已有来源。
+
+5. Semantic Drift Compensation, CVPR2020
+https://arxiv.org/abs/2004.00440
+用当前数据估计旧类别漂移已有来源。
+
+6. Learnable Drift Compensation, ECCV2024
+https://arxiv.org/abs/2407.08536
+移动主干上的可学习原型补偿已有来源。
+
+7. Scalable Analytic Classifiers with Associative Drift Compensation for Class-Incremental Learning of Vision Transformers, 2026预印本
+https://arxiv.org/abs/2602.00144
+低秩解析分类与历史统计补偿已有组合；需细读目标/信息假设，而非只对标题判断差异。
+
+8. Gated subspace alignment with drift compensation for parameter-efficient Class-Incremental Learning, 2026
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0348270
+适配器子空间与原型映射已有组合。
+
+9. FedRAN, Accurate and Resource-Efficient Federated Continual Learning, 2026技术报告
+https://arxiv.org/abs/2606.11480
+联邦低秩统计上传与解析分类已有相关路线；不能简单把已有解析头加上联邦二字当创新。
+
+上述前沿条目主要经官方摘要/可访问正文初查，不是已完成逐篇代码复现或系统新颖性审查。请Pro进一步核对完整论文、年份/发表状态及假设，报告实质重叠和不确定性。
+
+当前公开结果/代码固定入口：
+压缩完整T10：
+https://github.com/DLwbm123/FCL-Muon/blob/6493928432973fc689b8fac57316818952dd9ded/reports/rrs_compression_t10_20261108/FINAL_REPORT_ZH.txt
+默认压缩配置：
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/configs/default_rrs_compressed.json
+未压缩完整T10及通信修正：
+https://github.com/DLwbm123/FCL-Muon/blob/0604b844faf364c4ceb2d211fe94c75f0852ab3a/reports/adamw_t10_20261108/FINAL_REPORT_ZH.txt
+历史近端T5档案（其中“未跑T10”等只针对该旧实验）：
+https://github.com/DLwbm123/FCL-Muon/blob/f061aa601b817b86c2bd462c42faff8fb74bde96/reports/response_bilateral_20261106/PRO_REVIEW_ZH.md

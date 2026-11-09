@@ -1,0 +1,46 @@
+diff --git a/research/adamw_t10/runtime.py b/research/adamw_t10/runtime.py
+index 746ce49..adeb3fe 100644
+--- a/research/adamw_t10/runtime.py
++++ b/research/adamw_t10/runtime.py
+@@ -59,8 +59,13 @@ def build(clock, synthetic=None):
+                         yield x,y
+             return Counted()
+     else:raw,manifest,used_loader=synthetic
+-    p=TenTaskPilot(model,raw,manifest,used_loader,train_tf.cuda(),test_tf.cuda(),cfg,
++    pilot_class=TenTaskPilot
++    if 'rrs_compression' in cfg:
++        from research.rrs_compression.pilot import CompressedPilot
++        pilot_class=CompressedPilot
++    p=pilot_class(model,raw,manifest,used_loader,train_tf.cuda(),test_tf.cuda(),cfg,
+                    root/'src/runs/main',{'source_sha256':f['code_identity'],'manifest_sha256':f['manifest_sha256'],
+-                   'weights_sha256':f['weights']['sha256'],'seed':0,'method':'original_adamw_selected_no_prox'},clock)
++                   'weights_sha256':f['weights']['sha256'],'seed':0,
++                   'method':'adamw_selected_rrs_compressed' if 'rrs_compression' in cfg else 'original_adamw_selected_no_prox'},clock)
+     p.accesses=accesses
+     return p
+diff --git a/research/head_regmean/pilot.py b/research/head_regmean/pilot.py
+index f128c59..b161dcf 100644
+--- a/research/head_regmean/pilot.py
++++ b/research/head_regmean/pilot.py
+@@ -101,8 +101,7 @@ class Pilot:
+                     for x,y in self.loader(self.raw[0],ids,self.cfg['batch']):
+                         self.budget();self.check_labels(y)
+                         self.model.backbone.forward_features(self.test_tf(x.to(self.device)))
+-                    for i,a in self.model.adapters.items():totals[i]+=a.stat.cpu()
+-                    self.charge('RRS_raw_upload',sum(g.numel()*8 for g in totals.values()))
++                    self.aggregate_rrs_client(totals,{i:a.stat.cpu() for i,a in self.model.adapters.items()},k)
+             finally:
+                 for a in self.model.adapters.values():a.collect=False;a.stat=None
+         for i,a in self.model.adapters.items():
+@@ -114,6 +113,11 @@ class Pilot:
+         self.s['stats_records'].append({'task':t,'kind':'RRS','samples':len(self.ids('train',t))})
+         self.s.update(round=0,phase='round_start')
+ 
++    def aggregate_rrs_client(self,totals,statistics,client):
++        """Default dense path preserves the original addition order and dtype."""
++        for name,g in statistics.items():totals[name]+=g
++        self.charge('RRS_raw_upload',sum(g.numel()*8 for g in statistics.values()))
++
+     def check_labels(self,y):
+         low=self.s['task']*self.cfg['cpt']
+         if bool(((y<low)|(y>=low+self.cfg['cpt'])).any()):raise ValueError('Old/future data in current task')

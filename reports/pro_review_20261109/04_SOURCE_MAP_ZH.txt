@@ -1,0 +1,49 @@
+源码阅读入口（source/ 为当前压缩版；不是全部历史分支）
+
+research/adamw_t10/runtime.py:36  build
+fcl/model.py:6  QVAdapter
+fcl/model.py:46  ContinualViT
+fcl/math.py:31  rrs
+fcl/math.py:60  History
+research/route_compare_20261102/pilot.py:41  RoutePilot
+  adapter_optimizer: line 46
+  initialize_task: line 59
+  _select: line 125
+research/route_compare_20261102/response.py:17  federated_response
+research/route_compare_20261102/selection.py:18  select_basis
+research/head_regmean/pilot.py:27  Pilot
+  initialize_task: line 92
+  aggregate_rrs_client: line 116
+  local_gram: line 125
+  adapter_optimizer: line 145
+  train_client: line 148
+  fuse: line 188
+  step: line 222
+research/head_regmean/solver.py:23  sphere_solve
+research/head_regmean/solver.py:87  aggregate_heads
+research/rrs_compression/codec.py:14  encode
+research/rrs_compression/codec.py:38  decode
+research/rrs_compression/pilot.py:7  CompressedPilot
+  aggregate_rrs_client: line 8
+research/rrs_compression/worker.py:10  main
+research/rrs_compression/test_checks.py:15  CodecChecks
+research/rrs_compression/test_checks.py:42  LifecycleChecks
+
+注意：
+1. 旧类名MuLoRAFL、ClientMuon及fed_spectra模块存在于继承/导入闭包中，不代表当前运行使用Muon/SSB；实际RoutePilot.adapter_optimizer由route.optimizer=adamw选择AdamAdapter。
+2. 压缩改变的是客户端RRS包和服务器解码统计；Head-RegMean仍完整FP64 Gram。投影头、统一统计头、漂移校正均未实现。
+3. 压缩版与未压缩版的源码差异入口是head初始化器统计聚合hook及runtime factory。default dense hook保留原加法顺序；dense codec的selected轨迹回归检查已通过。请不要把小模型回归等同于所有历史真实轨迹逐值相同。
+4. worker最终COMPLETE与FINAL_VALIDATION已含最后任务结束消息；T10阶段收据是在该任务merge前，不宜用其通信字段替代最终总数。
+5. 当前选基functional_response是在同一进程里用客户端当前训练support/query模拟，并非已经实现真实跨机器分布式自动微分。请审查实际分布式实现所需消息，而非把当前进程共享数据当作通信为零的依据。
+6. 可在具备兼容PyTorch/NumPy的环境从source目录做CPU检查：python -m unittest research.rrs_compression.test_checks。真实训练需另行准备合法数据/权重/私有资产身份文件；本包不含这些内容，不声称独立解压即可复现GPU训练。
+
+补充参考：research/adamw_t10/worker.py和final_audit.py是未压缩T10的执行/终态审计逻辑，当前压缩训练使用research/rrs_compression/worker.py。UNCOMPRESSED_TO_COMPRESSED_ENTRY_DIFF.txt仅展示两项框架接入改动，不是全仓库diff。
+
+不便读取ZIP时，可按固定版本直接查看当前公开源码：
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/fcl/model.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/fcl/math.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/head_regmean/solver.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/head_regmean/pilot.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/route_compare_20261102/pilot.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/route_compare_20261102/response.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/rrs_compression/codec.py

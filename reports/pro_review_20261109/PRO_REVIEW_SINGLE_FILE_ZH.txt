@@ -1,0 +1,223 @@
+给Pro的审阅包：如何设计与共享子空间机制相关、低通信的分类器，替代当前Head-RegMean
+整理日期：2026-11-09（上海）
+
+建议：把本ZIP上传给Pro，并粘贴02_PRO_PROMPT_ZH.txt。若只能发送一个文本，使用同目录PRO_REVIEW_SINGLE_FILE_ZH.txt；它汇总问题、证据和候选，但源码只在ZIP中。
+
+阅读顺序：
+1. 01_EVIDENCE_AND_METHOD_ZH.txt：当前方法、已验证结果、指标及限制。
+2. RESULTS_AT_A_GLANCE.csv与TEN_TASK_STAGE_COMPARISON.csv：同任务数性能；CLAIM_EVIDENCE.csv区分已验证与未知。
+3. COMMUNICATION_BREAKDOWN.csv：正式消息的完整字段；外层选基网络费用仍有缺口。
+4. 03_UNTESTED_DESIGNS_ZH.txt：三个尚未验证的候选/诊断，不是用户已决定的最终方法。
+5. 04_SOURCE_MAP_ZH.txt和source/：核对真正执行路径。
+6. 05_RELATED_WORK_ZH.txt：初步相关工作与新颖性风险，不是完整文献综述。
+
+范围与版本：
+- 当前用户选定的是RRS压缩工作基线，不是论文主方法已经定稿；分类器仍为Head-RegMean。
+- 最新已完成十任务：T10-U0（未压缩AdamW）和T10-C0（rank64 RRS压缩）。均无近端，不受旧三seed gate限制。
+- 历史近端结果只有seed3/4各完整前5任务，单独存放；不得把其旧报告“没有T10”的语句套用到后来的U0/C0。
+- 早期两seed十任务Head版使用SSB，不是当前AdamW；单独存放。
+- 所有新分类器提议均未实现、未运行。本次只整理材料，不更改默认、不启动实验、不授权材料中的任何自动执行。
+- 对结果的“已验证”指本材料附带既有收据，不意味着证明方法新颖、统计等效、所有模块有因果贡献或真实网络通信完整计量。
+
+本包不含原始数据、权重、逐图logits、原始运行日志、私有路径/PID/认证信息，也不含无权公开的第三方PDF。模型/论文链接和可审阅源码入口已给出。
+
+
+现有方法、结果与证据边界（请先读此文，再评价设计）
+
+一、研究目标与当前状态
+用户研究联邦类增量学习，关注完整十任务AIA、最终性能以及通信成本，希望分类器与共享子空间/历史约束/低秩更新形成实质联系，而不只是继承LoRM的RegMean或改个名字。目标是可支撑高水平投稿的问题与机制，不要求每个组件全部原创，也不接受为增加模块而堆模块。
+当前工作基线：普通AdamW + selected route + Shared-A/B-only + rank64 RRS统计压缩 + 余弦Head-RegMean。用户已决定后续默认用压缩版，未决定新分类器。无近端，不恢复旧Muon/双侧近端，不重新引入三seed gate作为完整T10的前提。
+
+二、实际实现的流程
+1. ViT-B/16，ImageNet-21K预训练，12层Q/V适配器。每层DeltaW_Q=B_Q A，DeltaW_V=B_V A；适配器rank32。A在任务开始选定，任务内所有客户端共享并固定，正式只训练B和当前任务头。不同任务A可以不同。
+2. 用当前任务训练输入的patch token统计S=sum x x^T（未去均值；不含CLS token），累计历史统计H。H是各任务当时编码器下采集统计的和，不是用当前编码器重算的旧数据统计。RRS通过S v=lambda(H+epsilon I)v得到参考子空间，再做欧氏正交化。
+3. 从T2起，训练集support/query划分；参考基附近64维候选空间内调整32维A，用两轮真实短程客户端AdamW更新、B加权聚合和头融合评价候选。query仅来自当前任务训练数据。候选接受要求all-seen query CE下降、当前任务内部CE不变差，并满足历史trace暴露、正交和信任范围约束。不使用旧类别样本直接验证旧类损失；trace代理不能保证旧准确率不降。
+4. 正式每任务10客户端x5轮x5epoch，batch16；B AdamW lr0.0002余弦，head AdamW lr0.001，weight decay均为0。AdamW状态按客户端/轮重新建立。B按本地样本数FedAvg；共享A使sum p_k B_k A=(sum p_k B_k)A。该等式只在参数更新层成立，不自动意味着深层CLS特征响应低秩或局部分类头在全局特征上仍最优。
+5. 每个客户端训练完后，用自身局部终态编码器采集归一化CLS特征Gram，服务器对当前任务余弦头做Head-RegMean。其有效权重行归一化，目标是sum tr[(U-U_k)G_k(U-U_k)^T]，带每行单位范数约束；G_k非对角收缩系数0.5。Gram原始和已含样本计数，不再重复乘N_k。旧任务头冻结；训练CE仅当前任务类别；推理在全部已见类别中argmax。
+6. 任务结束将BA一次合并到主干，将当前RRS统计一次加入历史。RRS统计的当前压缩：客户端本地做谱分解，F=FP32(U64 sqrt(Lambda64))，d=FP32(max(diag(S)-diag(FF^T),0))；传F、d及44字节头/诊断；服务器仅用S_hat=FF^T+diag(d)选基、构候选池、约束历史暴露、累计H。无全Gram旁路。该近似PSD、近似保持对角/trace，但不是原S的Loewner上界。
+7. 当前短程响应的头反向含既有隐式代理。tracked/direct前向一致、算子或小状态机测试通过，不等于整个选基链是精确真实超梯度。新头要重新检查其前向、梯度和状态恢复。
+
+三、指标与主对比
+AIA_T=100/T * sum_{t=1..T} a_t，其中a_t为学完第t任务时在当时全部已见类上的原始argmax准确率；不是最终任务行的平均。CIFAR100每类测试数相同，最终总体准确率等于最终各任务准确率均值，但仍不同于AIA。
+主指标原始raw；辅助fixed-centered：每任务10类logit块减去自身均值，再在全部已见类argmax，不使用真实任务ID。两种读出均报告；不依据分数切换主指标。
+设置为100类/10任务、10客户端、Dirichlet alpha0.05，相同seed0 manifest/类别顺序与预训练来源。U0/C0分别fresh T1-T10，不复用旧T1。每条轨迹500客户端轮、125万正式训练图次、79350更新，十次阶段重载及最终已合并checkpoint额外10000图重载均通过。
+
+证据ID        方法                         raw AIA      raw最终      centered AIA   centered最终
+T10-L0       官方LoRM历史seed0             85.659813%   80.09%       88.475877%     84.15%
+T10-U0       当前AdamW未压缩RRS            87.215016%   79.49%       91.830798%     86.24%
+T10-C0       当前AdamW压缩RRS（默认）      87.204833%   79.61%       91.885687%     86.18%
+
+C0-U0：raw AIA -0.010183pp，raw最终+0.12pp；centered AIA +0.054889pp，centered最终-0.06pp。仅一个完整配对seed，支持“此seed AIA近似保持”，不支持统计等价/严格无损/多seed稳定。
+C0-L0：raw AIA +1.545020pp、raw最终-0.48pp；centered AIA +3.409810pp、centered最终+2.03pp。原始最终准确率仍低于LoRM，不得只报AIA正差。
+遗忘也保留：C0 raw 6.622222pp，U0 5.711111pp，增加0.911111pp；centered 7.877778/7.333333pp。初始习得不同会影响遗忘，应结合完整矩阵和绝对旧类准确率，不声称所有指标都更好。
+U0相对LoRM是整套方法的历史比较：LoRM rank16作用于48个qkv/attention out/MLP线性矩阵，A/B按B/A/B/A/B交替训练，AdamW lr0.0005恒定，线性+bias头，16-mixed，Gram FP32，regmean_all、backbone alpha0/head alpha0.5。当前rank32仅Q/V、B-only、FP32、余弦头等不同。不能将AIA差归因于某单模块，也不作同卡同负载速度比较。LoRM centered后处理与当前实现数值精度也不完全相同。
+
+四、通信：已有明确瓶颈，但不是完整真实网络计量
+十任务十客户端总和，GB=1e9字节：
+RRS统计上行 U0 5.6623104GB -> C0 0.2396688GB，减少95.7673%；实际1200个包，每包199724字节，包含44字节头及四项客户端诊断。
+正式协议已计量小计 U0 10.7685888GB -> C0 5.3459472GB，减少50.3561%；其余正式消息逐项相同。
+C0 Head-RegMean Gram 2.359296GB，占44.13%；B正式上下行合计2.359296GB。每客户端每轮头Gram=768x768x8=4718592字节，约4.72MB，是当前用户希望改进的主要对象。
+完整分布式选基/外层导数交换、首次预训练主干分发、网络协议/传输开销未完整计量。当前是单机联邦模拟，不能把同进程访问客户端support/query视为分布式零通信的可部署实现。所有新P基、统计、广播、梯度/JVP、轮数、缓存和额外样本访问均应计入。
+LoRM历史通信计数为空。12.0537392GB只是“每轮完整A/B与头交换、backbone Gram只编码对角线、缓存固定大张量”的静态估计；不是实测总量，也不是最优通信下界。不能用C0的正式小计与这个估算直接声称全面更省。不能按模拟器中稠密保存的对角Gram原样传输来夸大LoRM费用。
+
+五、线索与尚未成立的因果结论
+C0同一模型raw最终79.61%、固定去均值86.18%，相差6.57pp，说明读出/跨任务分数可比性值得重点研究，但不能证明分类头或漂移是唯一瓶颈。U0曾核验task-restricted诊断98.27%，它使用真实task id，不能作为正式可达准确率，也不能移作C0已测值。
+完整T10方法vsLoRM并未隔离RRS、selected route和Head-RegMean各自贡献；没有完整同框架T10的纯RRS vs selected、FedAvg-head vs RegMean-head等消融。现有小模型selected轨迹回归证明工程一致，不证明模块带来泛化收益。
+对已有组件的使用应明确引用。RegMean本身来自ICLR2023的Regression Mean，LoRM将其用于低秩模块合并；当前单位球余弦适配不应被夸为主原创。RRS及谱截断等组成部分也不能未经文献核查就分别宣称原创。
+
+六、历史结果：保留负证据，不混用版本/任务数
+双侧近端历史：seed3/4各完整前5任务，E0恒等、E1自身shadow-E3幅值、E2欧氏近端、E3响应近端。raw AIA均值92.8040/92.7495/92.7422/92.8122%，最终87.57/87.46/87.54/87.54%。E3-E0 AIA +0.0082pp、最终-0.03pp，一正一负，没有可靠近端收益；实际n=2。旧预算门未准入seed5/T10，不适用于后来独立的U0/C0十任务实验。
+早期Head十任务：原SSB优化器，非当前AdamW selected。seed0/1 raw AIA86.550389/87.372464%，mean86.961427%；centered91.116524/90.911317%，mean91.013921%。历史LoRM两seed raw AIA均值85.670903%、centered88.327115%。这些早期Head结果不能冒充当前方法多seed证据。
+旧近端E0 seed0/T2=94.35，而此前A1/T2=94.65，跨旧真实轨迹逐值回归未建立，故不能用旧成绩替换当时E0。当前U0是后来的fresh完整T10，其T2=94.65，仍不能据此把所有旧运行视为同一条轨迹。
+
+七、运行与研究边界
+C0已完成，预检/正式训练约4.6014保守GPU小时，实际占用0.8427GB；新实验采用单GPU worker、<24h、每服务器新增<50GB的用户总约定（已做实验更严格20GB）。后续新方法需独立冻结数据、比较、种子、通信/计算预算与停止条件；不可改已完成结果或按测试挑rank/温度/seed。用户关注主线提升，不进行无关baseline精调，不因组件必须全原创而丢弃有效框架，也不按组件数量判断顶会价值。
+本次仅整理供Pro审阅，不启动任何训练或新候选。当前压缩版仍为工作基线；候选不自动成为默认，也不更改旧协议。
+
+
+尚未验证的候选：请Pro批判审查，可否定/替换，不要先验接受
+
+重要：以下仅是设计草案，均未实现/训练。来自前面对话，不代表用户已经选定最终方案。
+
+候选A：统一全局统计头 + 实际聚合更新驱动的类别统计传输
+动机：局部头与全局编码器失配；旧类别统计随主干更新过时。RRS决定参数方向、共享A与B聚合提供明确DeltaW，但分类语义没有自动跟随。
+流程设想：客户端在聚合后的同一全局编码器上收集当前类n/mu/压缩散布；根据DeltaW_l=DeltaB_l A_l的方向JVP或更新前后配对CLS特征估计响应子空间P，学习接近恒等T=I+P K；把旧mu/Sigma近似传到当前坐标，建立覆盖已见类的统一统计判别器（LDA/岭回归/其他候选由Pro论证）。
+必须解决：旧类只可由当前数据外推，可能失败；低秩参数不保证最终特征低秩；已有RRS patch Gram是无标签且不含CLS，不能直接拿来恢复类语义/分类协方差；不同坐标统计不能直接相加；类协方差聚合需均值差修正；标签/先验/校准参数不能用测试集调。局部训练临时头与最终推理头的关系、selected短响应如何使用同一真实分类器必须说清。
+候选与主线的潜在联系应通过实际DeltaB A及测得的全局CLS响应体现，而非只给普通漂移补偿改名。现有LDC/SDC/LR-RGDA等已有重叠，不能直接宣称新颖。
+
+候选B：只在实际响应子空间中校正分类器，避免完整头Gram
+设P为最终特征空间d x q正交基，W0为逐行归一化后的有效参考头，z_g为聚合后全局特征，候选W=W0+D P^T。以本地真实输出相对W0 z_g的残差r_k为目标，h=P^T z_g；平方目标min_D sum||D h-r_k||^2+lambda||D||^2只需上传S_k=sum h h^T（q x q）和R_k=sum r_k h^T（当前类别数 x q），不需要d x d Gram。线性无范数约束时D=(sum R_k)(sum S_k+lambda I)^(-1)。
+若保留余弦头，不能直接岭回归再归一化就宣称原目标最优。可固定W_perp=W0(I-PP^T)，W=W_perp+E P^T，逐行约束||E_c||^2=1-||W_perp,c||^2，解低维球面二次问题；边界半径为零、FP32部署和不可行/病态条件需处理。
+q64、10类、FP32时S/R核心数组18944字节，而当前头Gram4718592字节。这个约99.6%仅是核心数组尺寸差，不含P构造/广播、W0/全局B下发、共同编码器上的额外前向、选基超梯度通信与缓存。
+P必须在分布式约束下由实际CLS响应得到，不能上传全Gram或原始特征再称通信低，也不能直接用中间层A。若选择任务级固定P，要检验后续轮的覆盖；若轮间更新，要计入所有消息。保留稳定正交补，不将全部分类特征强制降到q维。
+若仅校正当前任务头，它也不会自动解决旧头随主干变化的时间漂移，必须单独说明。它仍属广义响应匹配/受限RegMean家族，并非天然“除了RegMean之外”的全新目标。只有实际响应子空间比同维普通投影/通用映射有额外价值，才有机制证据。
+
+候选C：直接对头Gram套低秩+对角codec
+可作为必要的通信控制，验证问题究竟是编码开销还是融合机制；并不因易实现或压缩有效，就自动作为最终创新。头Gram特征分布与RRS patch Gram不同，RRS codec成功不能直接保证头融合效果、数值稳定或梯度一致性。
+
+希望Pro的判断：若A/B都不值得做，请提出更自然的替代，明确问题、机制为何必要、数学目标、客户端/服务器过程、历史信息、与现有主线的交互、全部消息与关键证伪实验。不要把AIA79.61与86.18的差直接解释成可由任何一个新头恢复的收益。
+
+
+初步相关工作入口（非穷尽，未确认候选具有新颖性）
+
+1. RegMean / Dataless Knowledge Fusion by Merging Weights of Language Models, ICLR2023
+https://arxiv.org/abs/2212.09849
+https://openreview.net/pdf?id=FCnohuR6AnM
+响应匹配/输入Gram加权线性层合并已有来源。
+
+2. LoRM / Closed-form merging of parameter-efficient modules for Federated Continual Learning, ICLR2025
+https://arxiv.org/abs/2410.17961
+官方参考源码固定版本：
+https://github.com/aimagelab/fed-mammoth/blob/6d57b5d361f743f3ff0cd1371409bd7a1158de64/_models/lorm.py
+https://github.com/aimagelab/fed-mammoth/blob/6d57b5d361f743f3ff0cd1371409bd7a1158de64/_models/regmean.py
+本包未复制第三方上游代码或PDF。
+
+3. RanPAC, NeurIPS2023
+https://arxiv.org/abs/2307.02251
+随机特征/类统计与解析分类已有来源；直接换成解析头不等于原创，冻结特征假设与当前移动主干不同。
+
+4. SLCA, ICCV2023
+https://arxiv.org/abs/2303.05118
+类别均值/协方差生成特征、分类头对齐已有来源。
+
+5. Semantic Drift Compensation, CVPR2020
+https://arxiv.org/abs/2004.00440
+用当前数据估计旧类别漂移已有来源。
+
+6. Learnable Drift Compensation, ECCV2024
+https://arxiv.org/abs/2407.08536
+移动主干上的可学习原型补偿已有来源。
+
+7. Scalable Analytic Classifiers with Associative Drift Compensation for Class-Incremental Learning of Vision Transformers, 2026预印本
+https://arxiv.org/abs/2602.00144
+低秩解析分类与历史统计补偿已有组合；需细读目标/信息假设，而非只对标题判断差异。
+
+8. Gated subspace alignment with drift compensation for parameter-efficient Class-Incremental Learning, 2026
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0348270
+适配器子空间与原型映射已有组合。
+
+9. FedRAN, Accurate and Resource-Efficient Federated Continual Learning, 2026技术报告
+https://arxiv.org/abs/2606.11480
+联邦低秩统计上传与解析分类已有相关路线；不能简单把已有解析头加上联邦二字当创新。
+
+上述前沿条目主要经官方摘要/可访问正文初查，不是已完成逐篇代码复现或系统新颖性审查。请Pro进一步核对完整论文、年份/发表状态及假设，报告实质重叠和不确定性。
+
+当前公开结果/代码固定入口：
+压缩完整T10：
+https://github.com/DLwbm123/FCL-Muon/blob/6493928432973fc689b8fac57316818952dd9ded/reports/rrs_compression_t10_20261108/FINAL_REPORT_ZH.txt
+默认压缩配置：
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/configs/default_rrs_compressed.json
+未压缩完整T10及通信修正：
+https://github.com/DLwbm123/FCL-Muon/blob/0604b844faf364c4ceb2d211fe94c75f0852ab3a/reports/adamw_t10_20261108/FINAL_REPORT_ZH.txt
+历史近端T5档案（其中“未跑T10”等只针对该旧实验）：
+https://github.com/DLwbm123/FCL-Muon/blob/f061aa601b817b86c2bd462c42faff8fb74bde96/reports/response_bilateral_20261106/PRO_REVIEW_ZH.md
+
+
+源码阅读入口（source/ 为当前压缩版；不是全部历史分支）
+
+research/adamw_t10/runtime.py:36  build
+fcl/model.py:6  QVAdapter
+fcl/model.py:46  ContinualViT
+fcl/math.py:31  rrs
+fcl/math.py:60  History
+research/route_compare_20261102/pilot.py:41  RoutePilot
+  adapter_optimizer: line 46
+  initialize_task: line 59
+  _select: line 125
+research/route_compare_20261102/response.py:17  federated_response
+research/route_compare_20261102/selection.py:18  select_basis
+research/head_regmean/pilot.py:27  Pilot
+  initialize_task: line 92
+  aggregate_rrs_client: line 116
+  local_gram: line 125
+  adapter_optimizer: line 145
+  train_client: line 148
+  fuse: line 188
+  step: line 222
+research/head_regmean/solver.py:23  sphere_solve
+research/head_regmean/solver.py:87  aggregate_heads
+research/rrs_compression/codec.py:14  encode
+research/rrs_compression/codec.py:38  decode
+research/rrs_compression/pilot.py:7  CompressedPilot
+  aggregate_rrs_client: line 8
+research/rrs_compression/worker.py:10  main
+research/rrs_compression/test_checks.py:15  CodecChecks
+research/rrs_compression/test_checks.py:42  LifecycleChecks
+
+注意：
+1. 旧类名MuLoRAFL、ClientMuon及fed_spectra模块存在于继承/导入闭包中，不代表当前运行使用Muon/SSB；实际RoutePilot.adapter_optimizer由route.optimizer=adamw选择AdamAdapter。
+2. 压缩改变的是客户端RRS包和服务器解码统计；Head-RegMean仍完整FP64 Gram。投影头、统一统计头、漂移校正均未实现。
+3. 压缩版与未压缩版的源码差异入口是head初始化器统计聚合hook及runtime factory。default dense hook保留原加法顺序；dense codec的selected轨迹回归检查已通过。请不要把小模型回归等同于所有历史真实轨迹逐值相同。
+4. worker最终COMPLETE与FINAL_VALIDATION已含最后任务结束消息；T10阶段收据是在该任务merge前，不宜用其通信字段替代最终总数。
+5. 当前选基functional_response是在同一进程里用客户端当前训练support/query模拟，并非已经实现真实跨机器分布式自动微分。请审查实际分布式实现所需消息，而非把当前进程共享数据当作通信为零的依据。
+6. 可在具备兼容PyTorch/NumPy的环境从source目录做CPU检查：python -m unittest research.rrs_compression.test_checks。真实训练需另行准备合法数据/权重/私有资产身份文件；本包不含这些内容，不声称独立解压即可复现GPU训练。
+
+补充参考：research/adamw_t10/worker.py和final_audit.py是未压缩T10的执行/终态审计逻辑，当前压缩训练使用research/rrs_compression/worker.py。UNCOMPRESSED_TO_COMPRESSED_ENTRY_DIFF.txt仅展示两项框架接入改动，不是全仓库diff。
+
+不便读取ZIP时，可按固定版本直接查看当前公开源码：
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/fcl/model.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/fcl/math.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/head_regmean/solver.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/head_regmean/pilot.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/route_compare_20261102/pilot.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/route_compare_20261102/response.py
+https://github.com/DLwbm123/FCL-Muon/blob/4f93cbf5b2fb35f845103517c84ccba9d975c917/research/rrs_compression/codec.py
+
+
+我在做联邦类增量学习，请基于上传的FCL_Pro_review_20261109.zip，帮我判断：怎样设计与我现有主线机制自然相关、通信更低且有实质研究价值的分类器，替代当前借鉴LoRM的Head-RegMean？
+
+先读00_START_HERE、01_EVIDENCE_AND_METHOD和RESULTS_AT_A_GLANCE，再按04_SOURCE_MAP读核心源码；03里的候选只是草案，请不要预先认定它们正确，也不要让它们限制你的方案。
+
+我的当前工作基线是：普通AdamW + 历史约束的RRS/响应选基 + 任务内固定共享A、客户端只训练B + rank64低秩因子/对角残差FP32压缩RRS统计 + 余弦Head-RegMean。主干与分类器仍随任务发生耦合。已经完整跑完同seed0的10任务：未压缩raw AIA87.2150%、压缩87.2048%；压缩RRS上行从5.6623GB降到0.2397GB。压缩版已计量正式通信小计5.3459GB中，Head-RegMean完整Gram仍占2.3593GB/44.1%。完整选基/外层导数的分布式通信尚未计量，不要把小计当实网总量。
+
+我希望你实质回答以下问题：
+1. 现有证据到底支持什么？分类器、表示漂移、跨任务分数失配、响应选基本身，哪些只是待检验解释？不要把去均值提升当成新方法可保证恢复的收益。
+2. 结合实际Shared-A、DeltaB A聚合、压缩历史统计和当前任务训练数据可用性，提出1个首选、至多1个备选的分类机制。至少有一种能真正替代RegMean目标；如果投影方案仍属RegMean家族，请直接指出。
+3. 给出可实现的数学目标、变量维度、状态与前向规则；明确新类和旧类怎样一起判别，旧类没有图像时保留/更新什么，客户端与服务器分别做什么。局部训练头与最终推理头如何衔接，selected短响应是否使用相同新头？
+4. 请明确目标是当期10类头还是全部已见类统一头，公式中的类别数C必须一致；无旧类样本时不要假装能直接拟合旧类标签。若利用实际低秩更新估计最终CLS响应，请说明估计方法、共同锚点、线性化/低秩假设和可证伪条件。不能直接把中间层A或patch Gram当成分类特征空间的基/协方差。
+5. 给出完整通信消息表，包括P/基/统计构造、广播、额外轮数、后向/JVP消息、各项精度、缓存、客户端/服务器存储和数据访问。不要只计算q x q小矩阵就宣称节省99%。与LoRM比较必须区分实测/逻辑计数/静态估算。
+6. 检查正定性/可逆性、余弦单位范数约束、FP32部署、不同客户端坐标、原型漂移外推等数学问题。若只有近似，请指出误差来源，不以参数低秩推出非线性特征严格低秩。
+7. 与RegMean、LoRM、SLCA、RanPAC、SDC/LDC以及新的低秩解析分类/漂移补偿工作比较，指出拟议机制的实质差异。允许借鉴已有组件，但不要通过改名称、堆模块或要求全部组件自创来判断创新性。若所有候选贡献不足，请明确否定并提出更贴近问题的替代。
+8. 给出最小且有因果解释力的验证顺序：先少量共同状态/训练侧机制检查，再同预算完整10任务AIA对比。包括固定同维普通投影/通用漂移校正或直接Gram压缩等必要控制，区分换编码、换目标、换特征几何的作用。不要一上来扩成大规模baseline调参或无理由的三seed准入门；统计稳健性可以后续确认。
+
+请按“证据判断 → 核心问题 → 首选机制与公式 → 通信/计算账 → 与已有工作差异 → 主要风险与证伪实验 → 最小实施计划”的顺序回答。明确区分论文已有事实、源码事实、数学推导、你的新假设和未验证效果。不需要你启动任何程序、自动调参或修改旧实验协议。

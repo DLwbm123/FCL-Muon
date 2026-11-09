@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "checkpoint_phase": "complete",
+  "all_tasks_merged_committed": true,
+  "final_readback_images": 10000,
+  "raw_confusion_equal": true,
+  "centered_confusion_equal": true,
+  "merged_raw_accuracy": 0.7961,
+  "merged_centered_accuracy": 0.8618,
+  "communication": {
+    "RRS_compressed_upload": 239668800,
+    "A_broadcast": 117964800,
+    "B_download": 1179648000,
+    "current_head_download": 15360000,
+    "head_Gram_upload": 2359296000,
+    "B_upload": 1179648000,
+    "current_head_upload": 15360000,
+    "task_end_B_download": 235929600,
+    "task_end_head_download": 3072000
+  },
+  "recorded_real_dataset_train_visits": 1250000,
+  "compressed_records": 1200
+}

@@ -1,0 +1,74 @@
+{
+  "units": "accuracy percent, not fractions",
+  "main_ten_task_results": [
+    {
+      "evidence_id": "T10-L0",
+      "method": "official LoRM",
+      "tasks": 10,
+      "seeds": "0",
+      "n": 1,
+      "raw_AIA_percent": 85.65981349206349,
+      "raw_final_percent": 80.09,
+      "centered_AIA_percent": 88.47587698412698,
+      "centered_final_percent": 84.14999999999999,
+      "role": "verified historical standard comparator"
+    },
+    {
+      "evidence_id": "T10-U0",
+      "method": "current AdamW selected route, dense RRS, Head-RegMean",
+      "tasks": 10,
+      "seeds": "0",
+      "n": 1,
+      "raw_AIA_percent": 87.21501587301587,
+      "raw_final_percent": 79.49000000000001,
+      "centered_AIA_percent": 91.83079761904762,
+      "centered_final_percent": 86.24000000000001,
+      "role": "completed same-seed uncompressed reference"
+    },
+    {
+      "evidence_id": "T10-C0",
+      "method": "current AdamW selected route, RRS rank64 compression, Head-RegMean",
+      "tasks": 10,
+      "seeds": "0",
+      "n": 1,
+      "raw_AIA_percent": 87.20483333333334,
+      "raw_final_percent": 79.61,
+      "centered_AIA_percent": 91.8856865079365,
+      "centered_final_percent": 86.18,
+      "role": "current user-selected working default"
+    }
+  ],
+  "compressed_minus_uncompressed": {
+    "raw": {
+      "compressed_AIA_percent": 87.20483333333334,
+      "uncompressed_AIA_percent": 87.21501587301587,
+      "AIA_difference_pp": -0.01018253968253191,
+      "compressed_final_percent": 79.61,
+      "uncompressed_final_percent": 79.49000000000001,
+      "final_difference_pp": 0.11999999999999789,
+      "compressed_forgetting_pp": 6.622222222222221,
+      "uncompressed_forgetting_pp": 5.7111111111111095
+    },
+    "centered": {
+      "compressed_AIA_percent": 91.8856865079365,
+      "uncompressed_AIA_percent": 91.83079761904763,
+      "AIA_difference_pp": 0.05488888888886834,
+      "compressed_final_percent": 86.18,
+      "uncompressed_final_percent": 86.24000000000001,
+      "final_difference_pp": -0.060000000000004494,
+      "compressed_forgetting_pp": 7.877777777777776,
+      "uncompressed_forgetting_pp": 7.33333333333333
+    }
+  },
+  "compressed_minus_historical_LoRM": {
+    "raw": {
+      "AIA_difference_pp": 1.5450198412698484,
+      "final_difference_pp": -0.480000000000004
+    },
+    "centered": {
+      "AIA_difference_pp": 3.409809523809514,
+      "final_difference_pp": 2.0300000000000153
+    }
+  },
+  "comparison_limit": "C0/U0 isolate the fixed RRS codec under the same framework; either versus LoRM is a historical whole-scheme comparison with architecture/optimizer/precision differences."
+}

@@ -1,0 +1,37 @@
+{
+  "status": "static_protocol_estimate_not_measured_network_or_historical_counter",
+  "historical_LoRM_communication_counter": null,
+  "source": "pinned upstream 6d57b5d361f743f3ff0cd1371409bd7a1158de64 plus historical seed0 start event matrix_shapes and COMPLETE config",
+  "tasks": 10,
+  "clients": 10,
+  "rounds_per_task": 5,
+  "gram_dtype": "float32",
+  "factor_dtype": "float32",
+  "backbone_gram_alpha": 0,
+  "head_gram_alpha": 0.5,
+  "adapted_matrices": 48,
+  "A_bytes": 4128768,
+  "B_bytes": 5308416,
+  "head_bytes": 307600,
+  "backbone_gram_diagonal_bytes": 258048,
+  "head_full_gram_bytes": 2359296,
+  "assumptions": [
+    "All A/B factors and the full 100-class linear head transmitted in both directions each formal round; one final server-to-client factor/head transfer per task.",
+    "Backbone Grams encoded by their diagonals exactly because alpha_regmean_backbone=0; head Grams remain full.",
+    "Only mathematical payloads counted; initial pretrained model, transport overhead, shared cached old_delta and redundant fixed state_dict entries excluded.",
+    "Further caching of unchanged A/B factors could reduce the estimate; this is not a minimum or a measured implementation total."
+  ],
+  "LoRM_parameter_and_head_bytes": 10719262400,
+  "LoRM_statistics_bytes": 1334476800,
+  "LoRM_total_bytes_under_assumptions": 12053739200,
+  "LoRM_total_GB": 12.0537392,
+  "dense_Gram_alternative_total_bytes": 334650603200,
+  "ours_counted_parameter_and_other_bytes": 2746982400,
+  "ours_counted_statistics_bytes": 8021606400,
+  "ours_counted_total_bytes": 10768588800,
+  "limitations": [
+    "Our 10.7685888GB excludes full distributed selected-route response/outer derivative message costs.",
+    "Do not infer end-to-end communication advantage from 10.77GB counted payload versus 12.05GB model estimate.",
+    "Dense Gram tensors exist in the simulator but sending all their zero off-diagonal entries is avoidable and not an appropriate basis for claiming superiority."
+  ]
+}

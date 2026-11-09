@@ -1,0 +1,12 @@
+claim,value,evidence_status,source,limitation
+current_method_vs_LoRM,raw AIA +1.545020pp; raw final -0.48pp,verified one-seed historical whole-scheme comparison,RESULTS_AT_A_GLANCE.json,not one-module causality or multi-seed robustness
+RRS_compression_accuracy,raw AIA -0.010183pp vs dense,verified matched seed0 full T10 pair,evidence/ten_task_rrs64/FINAL_RESULTS.json,not statistical equivalence or lossless proof
+RRS_wire_saving,5.6623104GB to0.2396688GB; -95.7673%,actual serialized compressed bytes vs dense tensor counter,COMMUNICATION_BREAKDOWN.csv,compressed headers included; not a full-network claim
+formal_message_subtotal,10.7685888GB to5.3459472GB; -50.3561%,counted formal logical messages,COMMUNICATION_BREAKDOWN.csv,selector/outer derivative and network overhead missing
+remaining_head_cost,2.359296GB;44.13% of compressed formal subtotal,verified byte accounting,evidence/ten_task_rrs64/FINAL_RESULTS.json,not the only remaining real-network cost
+forgetting,raw forgetting +0.911111pp vs dense,verified single-seed metric,evidence/ten_task_rrs64/FINAL_RESULTS.json,all metrics do not improve; acquisition affects forgetting
+proximal_gain,E3-E0 T5 raw AIA +0.008167pp; final -0.03pp,archived n2 five-task comparison,evidence/historical_prox_T5/SUMMARY.json,no reliable proximal benefit; not current T10
+independent_selected_route_gain,unknown,not isolated by existing full T10 comparisons,01_EVIDENCE_AND_METHOD_ZH.txt,do not assign whole-method AIA gain to RRS/selection alone
+classifier_only_bottleneck,unknown,raw/centered readout gap is a diagnostic clue,01_EVIDENCE_AND_METHOD_ZH.txt,does not prove head-only cause or attainable gain
+new_classifier_effectiveness,unknown,unimplemented design candidates,03_UNTESTED_DESIGNS_ZH.txt,no accuracy/communication guarantee
+novelty_of_candidates,unknown,preliminary related-work scan only,05_RELATED_WORK_ZH.txt,SDC/LDC/analytic classifiers/projected response matching already overlap
