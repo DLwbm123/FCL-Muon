@@ -162,11 +162,12 @@ class RoutePilot(Pilot):
             self.budget(); restore_rng(paired)
             offload = torch.autograd.graph.save_on_cpu(pin_memory=False) if track else contextlib.nullcontext()
             with offload:
-                result = federated_response(self.model, bases, rounds, gram, queries, full_sizes,
+                result = getattr(self, "functional_response", federated_response)(self.model, bases, rounds, gram, queries, full_sizes,
                             [math.ceil(n/self.cfg['batch']) for n in full_sizes],
                             cfg['optimizer'], self.cfg['lr'], self.cfg['rounds'], self.cfg['epochs'],
                             task, self.cfg['cpt'], use_checkpoint=True, track_response=track,
-                            server_operator=getattr(self, 'response_server_operator', None))
+                            server_operator=getattr(self, 'response_server_operator', None),
+                            **getattr(self, 'response_options', {}))
             calls.append({'track_outer': track, **result['counts'],
                           'query_clients': result['query_client_coverage'],
                           'query_weight_coverage': result['query_weight_coverage'],
