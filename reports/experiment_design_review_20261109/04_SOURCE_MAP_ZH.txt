@@ -1,0 +1,73 @@
+实际实现源码索引：source为当前训练源码加只读通信参考审计；d730ffa训练实现，f62da62包含G64结果。
+临时头FedAvg与最终LDA在不同路径，四个64维/秩预算不混为一谈。
+
+fcl/model.py
+  6 QVAdapter
+    7 __init__
+    18 forward
+    29 start
+    36 merge
+  46 ContinualViT
+    47 __init__
+    60 add_head
+    66 b_parameters
+    68 forward
+  74 MuLoRAFL
+  77 MuLoRAFLFedMuon
+
+fcl/math.py
+  6 mulora_ssb
+  19 muon_operator
+  24 compact_polar
+  31 rrs
+  52 aggregate
+  60 History
+    61 __init__
+    64 commit
+  72 ClientMuon
+    73 __init__
+    80 step
+  96 spectrum
+
+research/route_compare_20261102/pilot.py
+  18 split_support_query
+  33 _subset
+  41 RoutePilot
+    42 __init__
+    46 adapter_optimizer
+    54 ids
+    59 initialize_task
+    125 _select
+
+research/route_compare_20261102/selection.py
+  9 canonical_references
+  18 select_basis
+
+research/stat_head/statistics.py
+  11 codec_matrix
+  19 projection
+  24 fp32
+  27 local_packet
+  50 merge
+
+research/stat_head/pilot.py
+  11 HeadPilot
+    15 response_options
+    19 __init__
+    23 initialize_task
+    28 backward_loss
+    36 local_gram
+    46 _features
+    54 fuse
+
+research/stat_head/response.py
+  18 federated_response
+
+research/stat_head/model.py
+  6 StatisticsViT
+    7 __init__
+    13 forward
+    19 deploy
+
+research/stat_head/communication.py
+  8 selection_ledger

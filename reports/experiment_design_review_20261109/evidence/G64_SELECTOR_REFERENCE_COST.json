@@ -1,0 +1,287 @@
+{
+  "scope": "analytical reference distributed tensor schedule from actual selected calls; not measured network; no transport/retries/pretrained distribution",
+  "note": "dense STE adjoints retained; fusion/caching or other valid distributed partitions may change these bytes",
+  "totals": {
+    "forward_logical_reference_bytes": 5152283360,
+    "backward_unfused_reference_bytes": 4638535680,
+    "calls": 46
+  },
+  "rows": [
+    {
+      "task": 2,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 2,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 2,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 2,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 2,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 3,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 3,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 3,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 3,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 3,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 4,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 4,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 4,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 4,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 4,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 5,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 5,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 5,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 5,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 5,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 6,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 6,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 6,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 6,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 6,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 6,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 7,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 7,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 7,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 7,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 7,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 8,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 8,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 8,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 8,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 8,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 9,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 9,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 9,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 9,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 9,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 10,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 10,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 10,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    },
+    {
+      "task": 10,
+      "track_outer": true,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 272855040
+    },
+    {
+      "task": 10,
+      "track_outer": false,
+      "forward_logical_reference_bytes": 112006160,
+      "backward_unfused_reference_bytes": 0
+    }
+  ]
+}

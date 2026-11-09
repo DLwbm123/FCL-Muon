@@ -1,0 +1,614 @@
+{
+  "status": "complete_verified",
+  "seed": 0,
+  "tasks": 10,
+  "rank": 64,
+  "primary": "raw all-seen stage AIA T1..T10 difference vs uncompressed same-seed method",
+  "units": "accuracy percent; differences percentage points; decimal bytes",
+  "metrics": {
+    "raw": {
+      "compressed_AIA_percent": 87.20483333333334,
+      "uncompressed_AIA_percent": 87.21501587301587,
+      "AIA_difference_pp": -0.01018253968253191,
+      "compressed_final_percent": 79.61,
+      "uncompressed_final_percent": 79.49000000000001,
+      "final_difference_pp": 0.11999999999999789,
+      "compressed_forgetting_pp": 6.622222222222221,
+      "uncompressed_forgetting_pp": 5.7111111111111095
+    },
+    "centered": {
+      "compressed_AIA_percent": 91.8856865079365,
+      "uncompressed_AIA_percent": 91.83079761904763,
+      "AIA_difference_pp": 0.05488888888886834,
+      "compressed_final_percent": 86.18,
+      "uncompressed_final_percent": 86.24000000000001,
+      "final_difference_pp": -0.060000000000004494,
+      "compressed_forgetting_pp": 7.877777777777776,
+      "uncompressed_forgetting_pp": 7.33333333333333
+    }
+  },
+  "stage_comparison": [
+    {
+      "task": 1,
+      "compressed_raw_accuracy_percent": 99.2,
+      "uncompressed_raw_accuracy_percent": 99.4,
+      "raw_accuracy_difference_pp": -0.20000000000000018,
+      "compressed_raw_AIA_percent": 99.2,
+      "uncompressed_raw_AIA_percent": 99.4,
+      "raw_AIA_difference_pp": -0.20000000000000018,
+      "compressed_centered_accuracy_percent": 99.2,
+      "uncompressed_centered_accuracy_percent": 99.4,
+      "compressed_centered_AIA_percent": 99.2,
+      "uncompressed_centered_AIA_percent": 99.4,
+      "centered_AIA_difference_pp": -0.20000000000000018
+    },
+    {
+      "task": 2,
+      "compressed_raw_accuracy_percent": 94.85,
+      "uncompressed_raw_accuracy_percent": 94.65,
+      "raw_accuracy_difference_pp": 0.20000000000000018,
+      "compressed_raw_AIA_percent": 97.025,
+      "uncompressed_raw_AIA_percent": 97.025,
+      "raw_AIA_difference_pp": 0.0,
+      "compressed_centered_accuracy_percent": 96.89999999999999,
+      "uncompressed_centered_accuracy_percent": 96.89999999999999,
+      "compressed_centered_AIA_percent": 98.05,
+      "uncompressed_centered_AIA_percent": 98.15,
+      "centered_AIA_difference_pp": -0.10000000000001119
+    },
+    {
+      "task": 3,
+      "compressed_raw_accuracy_percent": 91.56666666666666,
+      "uncompressed_raw_accuracy_percent": 91.46666666666667,
+      "raw_accuracy_difference_pp": 0.10000000000000009,
+      "compressed_raw_AIA_percent": 95.20555555555555,
+      "uncompressed_raw_AIA_percent": 95.17222222222222,
+      "raw_AIA_difference_pp": 0.033333333333340764,
+      "compressed_centered_accuracy_percent": 94.3,
+      "uncompressed_centered_accuracy_percent": 94.53333333333333,
+      "compressed_centered_AIA_percent": 96.8,
+      "uncompressed_centered_AIA_percent": 96.94444444444444,
+      "centered_AIA_difference_pp": -0.14444444444444704
+    },
+    {
+      "task": 4,
+      "compressed_raw_accuracy_percent": 89.2,
+      "uncompressed_raw_accuracy_percent": 89.47500000000001,
+      "raw_accuracy_difference_pp": -0.275000000000003,
+      "compressed_raw_AIA_percent": 93.70416666666667,
+      "uncompressed_raw_AIA_percent": 93.74791666666667,
+      "raw_AIA_difference_pp": -0.04374999999999796,
+      "compressed_centered_accuracy_percent": 93.025,
+      "uncompressed_centered_accuracy_percent": 93.075,
+      "compressed_centered_AIA_percent": 95.85625,
+      "uncompressed_centered_AIA_percent": 95.97708333333334,
+      "centered_AIA_difference_pp": -0.12083333333333668
+    },
+    {
+      "task": 5,
+      "compressed_raw_accuracy_percent": 88.58,
+      "uncompressed_raw_accuracy_percent": 88.58,
+      "raw_accuracy_difference_pp": 0.0,
+      "compressed_raw_AIA_percent": 92.67933333333333,
+      "uncompressed_raw_AIA_percent": 92.71433333333334,
+      "raw_AIA_difference_pp": -0.03500000000000725,
+      "compressed_centered_accuracy_percent": 92.25999999999999,
+      "uncompressed_centered_accuracy_percent": 92.24,
+      "compressed_centered_AIA_percent": 95.137,
+      "uncompressed_centered_AIA_percent": 95.22966666666667,
+      "centered_AIA_difference_pp": -0.09266666666666312
+    },
+    {
+      "task": 6,
+      "compressed_raw_accuracy_percent": 84.51666666666667,
+      "uncompressed_raw_accuracy_percent": 85.26666666666667,
+      "raw_accuracy_difference_pp": -0.7500000000000062,
+      "compressed_raw_AIA_percent": 91.31888888888889,
+      "uncompressed_raw_AIA_percent": 91.47305555555555,
+      "raw_AIA_difference_pp": -0.15416666666665524,
+      "compressed_centered_accuracy_percent": 90.28333333333333,
+      "uncompressed_centered_accuracy_percent": 90.13333333333333,
+      "compressed_centered_AIA_percent": 94.32805555555555,
+      "uncompressed_centered_AIA_percent": 94.38027777777776,
+      "centered_AIA_difference_pp": -0.05222222222220907
+    },
+    {
+      "task": 7,
+      "compressed_raw_accuracy_percent": 82.19999999999999,
+      "uncompressed_raw_accuracy_percent": 82.38571428571429,
+      "raw_accuracy_difference_pp": -0.18571428571428905,
+      "compressed_raw_AIA_percent": 90.01619047619049,
+      "uncompressed_raw_AIA_percent": 90.17486394557824,
+      "raw_AIA_difference_pp": -0.15867346938774896,
+      "compressed_centered_accuracy_percent": 88.95714285714286,
+      "uncompressed_centered_accuracy_percent": 88.75714285714285,
+      "compressed_centered_AIA_percent": 93.56078231292517,
+      "uncompressed_centered_AIA_percent": 93.57697278911566,
+      "centered_AIA_difference_pp": -0.01619047619048075
+    },
+    {
+      "task": 8,
+      "compressed_raw_accuracy_percent": 81.025,
+      "uncompressed_raw_accuracy_percent": 80.525,
+      "raw_accuracy_difference_pp": 0.5000000000000004,
+      "compressed_raw_AIA_percent": 88.89229166666667,
+      "uncompressed_raw_AIA_percent": 88.96863095238096,
+      "raw_AIA_difference_pp": -0.07633928571428861,
+      "compressed_centered_accuracy_percent": 88.6625,
+      "uncompressed_centered_accuracy_percent": 88.3625,
+      "compressed_centered_AIA_percent": 92.94849702380952,
+      "uncompressed_centered_AIA_percent": 92.92516369047618,
+      "centered_AIA_difference_pp": 0.023333333333330764
+    },
+    {
+      "task": 9,
+      "compressed_raw_accuracy_percent": 81.3,
+      "uncompressed_raw_accuracy_percent": 80.91111111111111,
+      "raw_accuracy_difference_pp": 0.38888888888888307,
+      "compressed_raw_AIA_percent": 88.0487037037037,
+      "uncompressed_raw_AIA_percent": 88.07335097001764,
+      "raw_AIA_difference_pp": -0.024647266313937433,
+      "compressed_centered_accuracy_percent": 89.08888888888889,
+      "uncompressed_centered_accuracy_percent": 88.66666666666667,
+      "compressed_centered_AIA_percent": 92.51965167548502,
+      "uncompressed_centered_AIA_percent": 92.45199735449735,
+      "centered_AIA_difference_pp": 0.06765432098766455
+    },
+    {
+      "task": 10,
+      "compressed_raw_accuracy_percent": 79.61,
+      "uncompressed_raw_accuracy_percent": 79.49000000000001,
+      "raw_accuracy_difference_pp": 0.11999999999999789,
+      "compressed_raw_AIA_percent": 87.20483333333334,
+      "uncompressed_raw_AIA_percent": 87.21501587301587,
+      "raw_AIA_difference_pp": -0.010182539682523917,
+      "compressed_centered_accuracy_percent": 86.18,
+      "uncompressed_centered_accuracy_percent": 86.24000000000001,
+      "compressed_centered_AIA_percent": 91.8856865079365,
+      "uncompressed_centered_AIA_percent": 91.83079761904762,
+      "centered_AIA_difference_pp": 0.054888888888882104
+    }
+  ],
+  "matrices_percent": {
+    "raw": {
+      "compressed": [
+        [
+          99.2
+        ],
+        [
+          98.3,
+          91.4
+        ],
+        [
+          97.89999999999999,
+          91.8,
+          85.0
+        ],
+        [
+          97.8,
+          85.9,
+          84.89999999999999,
+          88.2
+        ],
+        [
+          97.0,
+          84.7,
+          83.3,
+          88.1,
+          89.8
+        ],
+        [
+          94.69999999999999,
+          82.5,
+          81.39999999999999,
+          83.3,
+          88.7,
+          76.5
+        ],
+        [
+          95.3,
+          79.80000000000001,
+          79.60000000000001,
+          82.3,
+          88.7,
+          76.2,
+          73.5
+        ],
+        [
+          94.5,
+          80.7,
+          80.60000000000001,
+          83.1,
+          88.7,
+          76.2,
+          72.5,
+          71.89999999999999
+        ],
+        [
+          94.6,
+          78.10000000000001,
+          78.0,
+          85.1,
+          86.7,
+          75.8,
+          72.1,
+          73.8,
+          87.5
+        ],
+        [
+          92.60000000000001,
+          77.0,
+          79.5,
+          80.30000000000001,
+          80.60000000000001,
+          73.1,
+          70.39999999999999,
+          68.30000000000001,
+          83.89999999999999,
+          90.4
+        ]
+      ],
+      "uncompressed": [
+        [
+          99.4
+        ],
+        [
+          97.7,
+          91.60000000000001
+        ],
+        [
+          97.7,
+          91.60000000000001,
+          85.1
+        ],
+        [
+          97.2,
+          87.1,
+          85.9,
+          87.7
+        ],
+        [
+          96.5,
+          85.3,
+          84.2,
+          87.9,
+          89.0
+        ],
+        [
+          93.89999999999999,
+          83.0,
+          84.39999999999999,
+          85.7,
+          88.6,
+          76.0
+        ],
+        [
+          94.8,
+          81.2,
+          82.6,
+          83.7,
+          87.9,
+          76.0,
+          70.5
+        ],
+        [
+          95.0,
+          81.2,
+          82.5,
+          83.39999999999999,
+          87.4,
+          75.3,
+          69.6,
+          69.8
+        ],
+        [
+          94.0,
+          80.4,
+          80.60000000000001,
+          84.8,
+          85.7,
+          75.2,
+          70.8,
+          70.6,
+          86.1
+        ],
+        [
+          93.0,
+          79.60000000000001,
+          82.3,
+          81.69999999999999,
+          80.5,
+          72.6,
+          67.5,
+          65.8,
+          82.89999999999999,
+          89.0
+        ]
+      ]
+    },
+    "centered": {
+      "compressed": [
+        [
+          99.2
+        ],
+        [
+          98.5,
+          95.3
+        ],
+        [
+          98.2,
+          92.5,
+          92.2
+        ],
+        [
+          98.0,
+          88.3,
+          91.4,
+          94.39999999999999
+        ],
+        [
+          96.7,
+          86.8,
+          89.7,
+          93.5,
+          94.6
+        ],
+        [
+          94.8,
+          85.6,
+          88.9,
+          91.9,
+          90.8,
+          89.7
+        ],
+        [
+          94.6,
+          82.69999999999999,
+          88.2,
+          91.10000000000001,
+          90.7,
+          88.8,
+          86.6
+        ],
+        [
+          94.1,
+          81.8,
+          87.2,
+          91.2,
+          90.7,
+          88.6,
+          85.5,
+          90.2
+        ],
+        [
+          93.60000000000001,
+          80.80000000000001,
+          86.2,
+          91.60000000000001,
+          90.5,
+          88.1,
+          84.6,
+          90.0,
+          96.39999999999999
+        ],
+        [
+          91.7,
+          77.10000000000001,
+          86.2,
+          87.7,
+          85.9,
+          77.60000000000001,
+          83.6,
+          86.7,
+          91.2,
+          94.1
+        ]
+      ],
+      "uncompressed": [
+        [
+          99.4
+        ],
+        [
+          98.2,
+          95.6
+        ],
+        [
+          98.4,
+          93.0,
+          92.2
+        ],
+        [
+          97.8,
+          88.8,
+          91.3,
+          94.39999999999999
+        ],
+        [
+          96.89999999999999,
+          86.0,
+          89.9,
+          93.60000000000001,
+          94.8
+        ],
+        [
+          95.1,
+          85.7,
+          88.7,
+          91.3,
+          90.9,
+          89.1
+        ],
+        [
+          95.19999999999999,
+          83.0,
+          87.8,
+          90.8,
+          90.9,
+          89.0,
+          84.6
+        ],
+        [
+          95.1,
+          81.39999999999999,
+          87.2,
+          91.3,
+          90.3,
+          88.2,
+          84.2,
+          89.2
+        ],
+        [
+          93.89999999999999,
+          80.4,
+          87.0,
+          90.9,
+          90.3,
+          87.2,
+          83.5,
+          88.6,
+          96.2
+        ],
+        [
+          92.4,
+          78.5,
+          86.3,
+          87.8,
+          87.0,
+          78.60000000000001,
+          82.0,
+          85.5,
+          91.4,
+          92.9
+        ]
+      ]
+    }
+  },
+  "communication": {
+    "scope": "counted formal-protocol logical payloads; not complete distributed traffic",
+    "compressed": {
+      "RRS_compressed_upload": 239668800,
+      "A_broadcast": 117964800,
+      "B_download": 1179648000,
+      "current_head_download": 15360000,
+      "head_Gram_upload": 2359296000,
+      "B_upload": 1179648000,
+      "current_head_upload": 15360000,
+      "task_end_B_download": 235929600,
+      "task_end_head_download": 3072000
+    },
+    "uncompressed": {
+      "RRS_raw_upload": 5662310400,
+      "A_broadcast": 117964800,
+      "B_download": 1179648000,
+      "current_head_download": 15360000,
+      "head_Gram_upload": 2359296000,
+      "B_upload": 1179648000,
+      "current_head_upload": 15360000,
+      "task_end_B_download": 235929600,
+      "task_end_head_download": 3072000
+    },
+    "compressed_total_bytes": 5345947200,
+    "uncompressed_total_bytes": 10768588800,
+    "formal_total_reduction_fraction": 0.5035610237062818,
+    "limits": [
+      "Full distributed selected-route/outer-derivative exchanges are unmetered.",
+      "Initial pretrained backbone distribution and network/transport overhead excluded.",
+      "Compressed RRS count includes actual 44-byte headers/client diagnostics; old dense counter is tensor payload only.",
+      "No real-network bandwidth or latency measurement."
+    ]
+  },
+  "compression_diagnostics": {
+    "relative_fro_error": {
+      "minimum": 0.00016621060784551247,
+      "median": 0.0611740586407344,
+      "mean": 0.05337973425983538,
+      "p90": 0.08578922499821752,
+      "maximum": 0.12649975498518812
+    },
+    "relative_diagonal_error": {
+      "minimum": 4.981346288958806e-13,
+      "median": 3.7553711463390175e-10,
+      "mean": 5.747201350698665e-10,
+      "p90": 1.1656088774068507e-09,
+      "maximum": 4.75758656426991e-08
+    },
+    "top_rank_trace_fraction": {
+      "minimum": 0.4894764832857399,
+      "median": 0.7329737030803977,
+      "mean": 0.7584438863744377,
+      "p90": 0.9858279187112278,
+      "maximum": 0.9995179238023845
+    },
+    "seconds": {
+      "minimum": 0.03161677299067378,
+      "median": 0.0374996168538928,
+      "mean": 0.03855521323857829,
+      "p90": 0.04386090161278844,
+      "maximum": 0.08340359292924404
+    },
+    "codec_records": 1200,
+    "codec_header_bytes_per_message": 44,
+    "wire_bytes": 239668800,
+    "dense_reference_bytes": 5662310400,
+    "RRS_reduction_fraction": 0.9576729668511285,
+    "all_codec_client_wall_seconds": 46.26625588629395
+  },
+  "validation": {
+    "status": "passed",
+    "checkpoint_phase": "complete",
+    "all_tasks_merged_committed": true,
+    "final_readback_images": 10000,
+    "raw_confusion_equal": true,
+    "centered_confusion_equal": true,
+    "merged_raw_accuracy": 0.7961,
+    "merged_centered_accuracy": 0.8618,
+    "communication": {
+      "RRS_compressed_upload": 239668800,
+      "A_broadcast": 117964800,
+      "B_download": 1179648000,
+      "current_head_download": 15360000,
+      "head_Gram_upload": 2359296000,
+      "B_upload": 1179648000,
+      "current_head_upload": 15360000,
+      "task_end_B_download": 235929600,
+      "task_end_head_download": 3072000
+    },
+    "recorded_real_dataset_train_visits": 1250000,
+    "compressed_records": 1200
+  },
+  "cost": {
+    "formal_client_rounds": 500,
+    "formal_training_visits": 1250000,
+    "formal_updates": 79350,
+    "loader_accesses": {
+      "train_loaded": 1548989,
+      "test_loaded": 120000
+    },
+    "main_worker_seconds_including_final_readback": 16408.023826829158,
+    "conservative_GPU_seconds_including_preflight": 16565.107132464647,
+    "actual_allocated_bytes_at_completion": 842735616,
+    "peak_cuda_allocated_bytes": 2199964160,
+    "peak_cuda_reserved_bytes": 2373976064,
+    "note": "Shared GPUs and differing workloads prevent controlled runtime efficiency claims; loader counters are program counts."
+  },
+  "route_changed_layers_T2_T10": [
+    6,
+    6,
+    0,
+    8,
+    7,
+    11,
+    10,
+    10,
+    8
+  ],
+  "limits": [
+    "One fixed seed/codec pair; no multi-seed robustness or statistical equivalence claim.",
+    "Fixed low-rank truncation and FP32 quantization are evaluated together.",
+    "Decoded Gram is PSD and approximately diagonal-preserving, not a dense-Gram Loewner upper bound.",
+    "Historical exposure repair uses the compressed history; original dense-risk preservation is not certified.",
+    "Server reconstructs full matrices and client performs eigendecomposition; no server-memory/client-compute saving claim.",
+    "Both methods share the established development test set, not an independent final holdout.",
+    "Head-RegMean, response selector hyperparameters and formal training unchanged; no proximal module."
+  ]
+}

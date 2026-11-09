@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "scope": "full-rank tiny statistics/transport/LDA graph; FP32 forward vs surrogate backward",
+  "rows": [
+    {
+      "epsilon": 0.003,
+      "surrogate": 0.024862475854864494,
+      "finite_difference": 0.024864537210733673,
+      "relative_error": 8.290344805971836e-05
+    },
+    {
+      "epsilon": 0.001,
+      "surrogate": 0.024862475854864494,
+      "finite_difference": 0.024885581751177277,
+      "relative_error": 0.0009284852788981027
+    }
+  ],
+  "limitation": "does not certify truncated-codec STE or full ViT outer hypergradient"
+}

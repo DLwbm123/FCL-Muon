@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "real_dataset_images": 0,
+  "arms": [
+    {
+      "arm": "gram_codec",
+      "loss_track_direct_max_abs": 0.0,
+      "B_track_direct_max_abs": 0.0,
+      "two_task_state_restore": true,
+      "actual_old_stat_selected_forward": true,
+      "communication": {
+        "RRS_compressed_upload": 9586752,
+        "A_broadcast": 4718592,
+        "B_download": 9437184,
+        "current_head_download": 122880,
+        "head_Gram_upload": 0,
+        "head_Gram_compressed_upload": 798896,
+        "B_upload": 9437184,
+        "current_head_upload": 122880,
+        "task_end_B_download": 9437184,
+        "task_end_head_download": 122880
+      }
+    },
+    {
+      "arm": "unified",
+      "loss_track_direct_max_abs": 0.0,
+      "B_track_direct_max_abs": 0.0,
+      "two_task_state_restore": true,
+      "actual_old_stat_selected_forward": true,
+      "communication": {
+        "RRS_compressed_upload": 9586752,
+        "A_broadcast": 4718592,
+        "B_download": 9437184,
+        "current_head_download": 122880,
+        "B_upload": 9437184,
+        "current_head_upload": 122880,
+        "unified_statistics_upload": 1787408,
+        "all_seen_head_download": 184560,
+        "task_end_B_download": 9437184,
+        "task_end_head_download": 122880
+      }
+    }
+  ],
+  "peak_cuda_reserved_bytes": 1059061760,
+  "peak_cuda_allocated_bytes": 1000994816
+}
