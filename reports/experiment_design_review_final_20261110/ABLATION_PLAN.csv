@@ -1,0 +1,12 @@
+priority,variant,basis,transport,status,question,controls
+P0,UT64,selected,learned,current experiment,full T10 raw AIA; endpoint; communication,run full frozen protocol
+P1,A,RRS,identity,planned,reference for main effects and interaction,same unified head and aux FedAvg
+P1,B,selected,identity,planned first,does transport add beyond unified head,same unified head and aux FedAvg
+P1,C,RRS,learned,planned,does selected help transport,same unified head and aux FedAvg
+P2,no_history,selected,learned,planned,historical metric and repair contribution,disable both history initialization and exposure repair
+P2,coordinates,fixed endpoints,same old mapping,planned diagnostic,local versus global new statistics,"same global B, data, LDA and old statistics"
+P3,mean_only,selected,means only,planned diagnostic then T10 if needed,does covariance transport help,keep old scatter fixed
+P3,generic_affine,same route,full affine,planned diagnostic,is lowrank residual preferable,same current paired data; explicit costs
+P3,readout,fixed encoder,same statistics,planned diagnostic,LDA covariance and bias contribution,identity diagonal full covariance; fixed variants
+P4,compression,same route,same migration,planned,own scatter compression accuracy-cost tradeoff,change RRS codec or scatter codec one at a time
+P5,robustness,frozen winner,frozen winner,planned after mechanism,multi-seed and cross-setting reliability,predeclared seeds and identical evaluations
