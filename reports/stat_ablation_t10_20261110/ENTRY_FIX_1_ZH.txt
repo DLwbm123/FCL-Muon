@@ -1,0 +1,11 @@
+预检入口修订1（训练前，不改变科学参数）
+
+静态复核发现：identity虽然已经产生严格T=I,b=0，但合并函数仍读取完整响应包的hm/dm/hh/dh来计算未使用的回归诊断。identity算法只需类别计数/均值/散布，正式通信也按这些字段计费，因此应明确切断这条多余信息路径。
+修订：identity合并只接受counts/means/scatter；正式和selected入口都会删除其他漂移字段，再调用合并。T/b保持恒等/零，LDA/数据划分/秩/岭/epoch/client/seed均不变；full/mean-only前向对原实现的CPU回归仍逐值一致。
+补充测试：从包中删除全部漂移字段和n后，identity能运行且输出相同；不只测试把元数据改成不同值。
+
+原真实ViT合成预检被主管SIGTERM有序终止，退出-15；尚未启动Frozen真实图像序列、B或A/C/M训练。旧source归档、原冻结、job/launch、日志及检查收据保留。原预检258.705296961125保守GPU秒计入总成本。
+新预检使用独立entry1目录与日志；接续同一ledger、同一起点和deadline。原检查起点与24小时硬限均未重置，不重复启动主训练。
+原主管/timeout退出属于本次受控入口修订，不应误判为现主管故障。以当前job中的PID及recovery_launch为准。
+job中若保留reason=signal_or_resource_hard_stop，属于entry0的受控终止记录；应结合当前status/active/worker_pid与新日志判断，不能把旧reason当成entry1失败。
+另在正式训练前收紧终态验收定义：FP32 BA合并后，全部官方分支raw/centered混淆与派生指标必须完全一致；连续的评测者漂移误差保留合并前值，不对其强加跨FP32合并的逐位相等。此修订只影响验收，不改训练/判别；V1冻结与说明保留。预检持续通过。

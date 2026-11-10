@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "checked": [
+    "identity_full_mean_only",
+    "identity",
+    "full",
+    "mean_only"
+  ],
+  "python": true,
+  "numpy_generator_array_position_and_cached_gaussian": true,
+  "torch": true,
+  "cuda": true,
+  "scope": "CPU readback of complete synthetic shared/standalone checkpoint RNG; no parameter updates or GPU context"
+}

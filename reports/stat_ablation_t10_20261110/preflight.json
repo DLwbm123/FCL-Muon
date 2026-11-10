@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "real_dataset_images": 0,
+  "shared_vs_three_standalone": [
+    {
+      "modes": [
+        "identity",
+        "full",
+        "mean_only"
+      ],
+      "two_task_restore": true,
+      "shared_training_equal": true
+    },
+    {
+      "modes": [
+        "identity"
+      ],
+      "two_task_restore": true,
+      "shared_training_equal": true
+    },
+    {
+      "modes": [
+        "full"
+      ],
+      "two_task_restore": true,
+      "shared_training_equal": true
+    },
+    {
+      "modes": [
+        "mean_only"
+      ],
+      "two_task_restore": true,
+      "shared_training_equal": true
+    }
+  ],
+  "backbone_A_B_aux_Patch_history_RNG_identical": true,
+  "independent_branch_statistics_and_predictions_equal": true,
+  "identity_short_response": {
+    "loss_track_direct_max_abs": 0.0,
+    "B_track_direct_max_abs": 0.0,
+    "finite_gradients": true
+  },
+  "frozen_two_task_restore": true,
+  "evaluator_only_diagnostics_exercised": true,
+  "peak_cuda_reserved_bytes": 1054867456,
+  "peak_cuda_allocated_bytes": 1001333760
+}
