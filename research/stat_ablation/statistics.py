@@ -48,15 +48,17 @@ def local_packet(z0,z,labels,classes,R,rank=64,scale=1.,track=False):
 
 
 def merge(packets,old,R,ridge_u=.1,ridge_s=.1,floor=1e-6,mode="full",return_map=False):
-    if mode not in ('identity','full','mean_only'):raise ValueError('unknown transport mode')
+    if mode not in ('identity','translation','full','mean_only'):raise ValueError('unknown transport mode')
     if not packets:raise ValueError('no statistics')
-    # Identity accepts ONLY class sufficient statistics; no untransmitted
-    # response moments are read, including for certificates.
-    if mode=='identity':
+    # Identity needs only class statistics; translation additionally reads n and dm.
+    if mode in ('identity','translation'):
         template=packets[0]['means'];d=template.shape[1];q=R.shape[1]
         U=torch.zeros(d,q,device=template.device,dtype=template.dtype)
         T=torch.eye(d,device=template.device,dtype=template.dtype)
         b=torch.zeros(d,device=template.device,dtype=template.dtype);lu=torch.zeros((),device=template.device,dtype=template.dtype)
+        if mode=='translation':
+            n=sum(p['n'] for p in packets)
+            b=sum(p['n']*p['dm'] for p in packets)/n
     else:
         n=sum(p['n'] for p in packets)
         hm=sum(p['n']*p['hm'] for p in packets)/n;dm=sum(p['n']*p['dm'] for p in packets)/n
@@ -86,9 +88,14 @@ def merge(packets,old,R,ridge_u=.1,ridge_s=.1,floor=1e-6,mode="full",return_map=
 
 
 def class_wire(full_wire,d,q,c,mode):
-    if mode!='identity':return full_wire
     moment_bytes=4*(q+d+q*q+d*q)
-    return full_wire[8:8+8*c]+full_wire[8+8*c+moment_bytes:]
+    counts_end=8+8*c
+    if mode=='identity':
+        return full_wire[8:counts_end]+full_wire[counts_end+moment_bytes:]
+    if mode=='translation':
+        delta_begin=counts_end+4*q
+        return full_wire[:counts_end]+full_wire[delta_begin:delta_begin+4*d]+full_wire[counts_end+moment_bytes:]
+    return full_wire
 
 
 def dense_packet(z,labels,classes,R):

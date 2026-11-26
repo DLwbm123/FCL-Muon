@@ -42,11 +42,26 @@ class AblationChecks(unittest.TestCase):
         results['identity']['means'].zero_()
         self.assertGreater(float(results['full']['means'].abs().sum()),0)
 
+    def test_translation_uses_only_sample_count_and_mean_displacement(self):
+        shards=[slice(0,21),slice(21,90)]
+        packets=[local_packet(self.z0[s],self.z[s],self.y[s],3,self.R,12)[0] for s in shards]
+        fields=('n','dm','counts','means','scatter')
+        translated=merge([{k:p[k] for k in fields} for p in packets],self.old,self.R,mode='translation',return_map=True)
+        neutral=merge(packets,self.old,self.R,mode='identity')
+        offset=sum(p['dm']*p['n'] for p in packets)/90
+        T,b=translated[4]
+        torch.testing.assert_close(b,(self.z-self.z0).mean(0),atol=1e-8,rtol=1e-6)
+        self.assertTrue(torch.equal(T,torch.eye(12,dtype=torch.float64)))
+        self.assertTrue(torch.equal(translated[0]['means'][:2],self.old['means']+offset))
+        self.assertTrue(torch.equal(translated[0]['means'][2:],neutral[0]['means'][2:]))
+        self.assertTrue(torch.equal(translated[0]['scatter'],neutral[0]['scatter']))
+
     def test_wire_accounting(self):
         z=torch.randn(20,768);y=torch.arange(20)%10;R=projection(768,64)
         _,wire,_=local_packet(z,z,y,10,R,64)
         self.assertEqual(len(wire),446852)
         self.assertEqual(len(class_wire(wire,768,64,10,'identity')),230524)
+        self.assertEqual(len(class_wire(wire,768,64,10,'translation')),233604)
 
 
 if __name__=='__main__':unittest.main()

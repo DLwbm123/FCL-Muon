@@ -18,7 +18,8 @@ def main():
         ids=[ids[i] for i in (torch.randperm(len(ids)).tolist() if shuffle else range(len(ids)))]
         return [tuple(torch.stack(v) for v in zip(*(raw[j] for j in ids[i:i+batch]))) for i in range(0,len(ids),batch)]
     reference=None;results=[]
-    for modes in [('identity','full','mean_only'),('identity',),('full',),('mean_only',)]:
+    shared_modes=tuple(f.get('rrs_branch_modes',('identity','full','mean_only')))
+    for modes in [shared_modes,*[(mode,) for mode in shared_modes]]:
         os.environ['ARM']='rrs_shared';p=build(clock,synthetic=([raw,raw],manifest,loader))
         p.cfg=copy.deepcopy(p.cfg);p.cfg.update(clients=2,epochs=1,rounds=1,batch=2,tasks=2,branch_modes=list(modes),primary_mode='full' if len(modes)>1 else modes[0],diagnostic_tasks=[])
         p.s['stat_branches']={mode:None for mode in modes}
@@ -65,7 +66,7 @@ def main():
     while p.s['phase']!='complete':p.step()
     p.restore();p.s['task']=1;diag=p.evaluate(False);p.s['task']=2
     if set(diag['conditional_readouts'])!={'dense_current_scatter','local_current_coordinates','diagonal_metric','isotropic_metric','no_bias'}:raise ValueError('missing conditional readout')
-    if set(diag['evaluator_only_transfer'])!={'identity','full','mean_only'}:raise ValueError('missing isolated old-test audit')
+    if set(diag['evaluator_only_transfer'])!=set(shared_modes):raise ValueError('missing isolated old-test audit')
     if any(not torch.equal(v,p.model.state_dict()[k].cpu()) for k,v in reference['model'].items()):raise ArithmeticError('diagnostic altered training trajectory')
     del p;gc.collect();torch.cuda.empty_cache()
     os.environ['ARM']='frozen';p=build(clock,synthetic=([raw,raw],manifest,loader))
@@ -75,7 +76,7 @@ def main():
     for t in range(2):step_frozen(p,t)
     if any(torch.count_nonzero(b) for b in p.model.b_parameters()) or p.s['training_records']:raise ValueError('frozen trained parameters')
     write(root,root/'src/reports/preflight.json',dict(status='passed',real_dataset_images=0,
-        shared_vs_three_standalone=results,backbone_A_B_aux_Patch_history_RNG_identical=True,
+        shared_vs_standalone=results,backbone_A_B_aux_Patch_history_RNG_identical=True,
         independent_branch_statistics_and_predictions_equal=True,identity_short_response=response,
         frozen_two_task_restore=True,evaluator_only_diagnostics_exercised=True,
         peak_cuda_reserved_bytes=torch.cuda.max_memory_reserved(),peak_cuda_allocated_bytes=torch.cuda.max_memory_allocated()))

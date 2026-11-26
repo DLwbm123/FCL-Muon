@@ -41,7 +41,7 @@ def build(clock, synthetic=None):
     from fcl.data import transforms,loader
     root,f=validate();import copy
     cfg=copy.deepcopy(f['config']);cfg['head_protocol']='unified';cfg['arm']=os.environ.get('ARM','identity_selected')
-    cfg['branch_modes']=['identity'] if cfg['arm']=='identity_selected' else ['identity','full','mean_only']
+    cfg['branch_modes']=['identity'] if cfg['arm']=='identity_selected' else f.get('rrs_branch_modes',['identity','full','mean_only'])
     cfg['route']['mode']='selected' if cfg['arm']=='identity_selected' else 'rrs'
     cfg['primary_mode']='identity' if cfg['arm']=='identity_selected' else 'full'
     torch.manual_seed(cfg['seed']);np.random.seed(cfg['seed']);random.seed(cfg['seed'])
