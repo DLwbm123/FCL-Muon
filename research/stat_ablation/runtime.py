@@ -28,7 +28,7 @@ def validate():
         if [s.st_size,s.st_mtime_ns,s.st_ino]!=stat:raise ValueError('shared asset changed')
     if f['environment']!={'torch':str(torch.__version__),'timm':str(timm.__version__),'kornia':str(kornia.__version__),'cuda':torch.version.cuda}:
         raise ValueError('environment changed')
-    manifest=root/'src/manifests/seed0.json'
+    manifest=root/'src/manifests'/f.get('manifest_name','seed0.json')
     if hashlib.sha256(manifest.read_bytes()).hexdigest()!=f['manifest_sha256']:raise ValueError('manifest changed')
     return root,f
 
@@ -38,22 +38,26 @@ def build(clock, synthetic=None):
     from safetensors.torch import load_file
     from fcl.model import MuLoRAFL
     from research.stat_head.model import StatisticsViT
-    from fcl.data import transforms,loader
+    from fcl.data import transforms,loader,load_raw
     root,f=validate();import copy
     cfg=copy.deepcopy(f['config']);cfg['head_protocol']='unified';cfg['arm']=os.environ.get('ARM','identity_selected')
     cfg['branch_modes']=['identity'] if cfg['arm']=='identity_selected' else f.get('rrs_branch_modes',['identity','full','mean_only'])
     cfg['route']['mode']='selected' if cfg['arm']=='identity_selected' else 'rrs'
     cfg['primary_mode']='identity' if cfg['arm']=='identity_selected' else 'full'
+    cfg['task_end_statistics']=f.get('task_end_statistics',False)
+    if cfg['task_end_statistics'] and cfg['route']['mode']!='rrs':
+        raise ValueError('Delayed statistics require pure RRS with no intermediate consumer')
     torch.manual_seed(cfg['seed']);np.random.seed(cfg['seed']);random.seed(cfg['seed'])
     backbone=timm.create_model(cfg['backbone'],pretrained=False,num_classes=0)
     backbone.load_state_dict({k:v for k,v in load_file(f['weights']['path']).items() if not k.startswith('head.')},strict=True)
-    model=(StatisticsViT if cfg['head_protocol']=='unified' else MuLoRAFL)(backbone,100,cfg['rank'],cfg['cosine_scale']).cuda().eval()
+    model=(StatisticsViT if cfg['head_protocol']=='unified' else MuLoRAFL)(backbone,cfg['tasks']*cfg['cpt'],cfg['rank'],cfg['cosine_scale']).cuda().eval()
     train_tf,test_tf=transforms()
     accesses={'train_loaded':0,'test_loaded':0}
     if synthetic is None:
-        from torchvision.datasets import CIFAR100
-        raw=[CIFAR100(root/'src/data',train=t,download=False) for t in (True,False)]
-        manifest=json.loads((root/'src/manifests/seed0.json').read_text())
+        raw,cpt,classes=load_raw(cfg['dataset'],root/'src/data',download=False)
+        if cpt!=cfg['cpt'] or classes!=cfg['tasks']*cpt:
+            raise ValueError('Dataset dimensions differ from frozen protocol')
+        manifest=json.loads((root/'src/manifests'/f.get('manifest_name','seed0.json')).read_text())
         if any(list(r.targets)!=manifest['labels'][s] for r,s in zip(raw,('train','test'))):raise ValueError('labels mismatch')
         def used_loader(dataset,ids,batch,shuffle=False):
             class Counted:
@@ -67,7 +71,7 @@ def build(clock, synthetic=None):
     pilot_class=HeadPilot
     p=pilot_class(model,raw,manifest,used_loader,train_tf.cuda(),test_tf.cuda(),cfg,
                    root/('src/runs/'+cfg['arm']),{'source_sha256':f['code_identity'],'manifest_sha256':f['manifest_sha256'],
-                   'weights_sha256':f['weights']['sha256'],'seed':0,
+                   'weights_sha256':f['weights']['sha256'],'seed':cfg['seed'],
                    'method':'adamw_selected_rrs_compressed' if 'rrs_compression' in cfg else 'original_adamw_selected_no_prox'},clock)
     p.accesses=accesses
     return p

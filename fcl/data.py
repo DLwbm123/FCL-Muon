@@ -32,12 +32,12 @@ def upstream_split(train_labels,test_labels,cpt,clients,alpha,seed):
     return {split:[[x.tolist() for x in task] for task in getattr(obj,split+'_data')] for split in ['train','test']}
 
 
-def load_raw(dataset,root):
+def load_raw(dataset,root,download=True):
     from torchvision.datasets import CIFAR100
     from PIL import Image
     import yaml
     if dataset=='seq-cifar100':
-        return [CIFAR100(root,train=t,download=True) for t in (True,False)],10,100
+        return [CIFAR100(root,train=t,download=download) for t in (True,False)],10,100
     class Images(Dataset):
         def __init__(self,split):
             cfg=yaml.safe_load((UPSTREAM/f'imagenet_r_utils/imagenet-r_{split}.yaml').read_text())

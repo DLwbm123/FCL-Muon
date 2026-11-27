@@ -39,8 +39,10 @@ class AblationPilot(HeadPilot):
 
     def fuse(self):
         s=self.s;bs=self.model.b_parameters();modes=self.cfg['branch_modes'];primary=self.cfg['primary_mode']
+        last_round=s['round']==self.cfg['rounds']-1
+        collect=last_round or not self.cfg.get('task_end_statistics',False)
         with observe(self.model):
-            if primary!='identity' and not s['anchor_features']:
+            if collect and primary!='identity' and not s['anchor_features']:
                 snapshot=[b.clone() for b in bs]
                 try:
                     for b in bs:b.zero_()
@@ -50,6 +52,9 @@ class AblationPilot(HeadPilot):
             for b,v in zip(bs,s['agg_B']):b.copy_(v)
             total=sum(s['sizes'])
             self.model.rows[-1].copy_(sum(h*(n/total) for h,n in zip(s['heads'],s['sizes'])))
+            if not collect:
+                self.finish_round(())
+                return
             packets=[];dense_packets=[];wires={mode:0 for mode in modes}
             diagnostic=s['task']+1 in self.cfg['diagnostic_tasks'] and s['round']==self.cfg['rounds']-1
             for k in range(self.cfg['clients']):
@@ -69,7 +74,8 @@ class AblationPilot(HeadPilot):
             s['branch_heads']={};maps={}
             for mode in modes:
                 stats,W,beta,cert,mapping=merge(packets,s['branch_anchors'][mode],self.R,mode=mode,return_map=True)
-                if int(stats['counts'].sum())!=(s['task']+1)*len(self.ids('train',s['task'])):raise AssertionError('count duplication')
+                if int(stats['counts'].sum())!=sum(len(self.ids('train',t)) for t in range(s['task']+1)):
+                    raise AssertionError('count duplication')
                 s['stat_branches'][mode]={k:v.detach().cpu() for k,v in stats.items()}
                 s['branch_heads'][mode]=(W.detach().cpu(),beta.detach().cpu())
                 s['branch_statistics_upload'][mode]+=wires[mode];maps[mode]=tuple(v.cpu() for v in mapping)
@@ -102,7 +108,11 @@ class AblationPilot(HeadPilot):
                     w=torch.linalg.solve(metric+ridge*eye,means.T).T;b=-.5*(w*means).sum(1)
                     s['conditional_readouts'][name]=(w,b)
                 s['conditional_readouts']['no_bias']=(W,torch.zeros_like(beta))
+        self.finish_round(modes)
+
+    def finish_round(self,modes):
         self.event('aggregate',branch_modes=modes)
+        s=self.s
         s.update(round=s['round']+1,heads=[],grams=[],sizes=[],agg_B=[],next_client=0,phase='round_start',local_coordinate_packets={})
 
     def evaluation_features(self,old_only=False):

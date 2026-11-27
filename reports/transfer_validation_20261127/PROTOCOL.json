@@ -1,0 +1,21 @@
+{
+  "study": "Paired transport robustness and same-start freezing controls",
+  "parent": "8ef2437c8014f4b2ef6405f91ce49edef4bb025e",
+  "groups": [
+    {"dataset":"seq-cifar100","classes_per_task":10,"seed":1,"analytic_first_task_rounds":10},
+    {"dataset":"seq-cifar100","classes_per_task":10,"seed":2,"analytic_first_task_rounds":10},
+    {"dataset":"seq-imagenetr","classes_per_task":20,"seed":0,"analytic_first_task_rounds":20}
+  ],
+  "common": "Ten tasks, ten clients, Dirichlet alpha 0.05, upstream pinned split code and existing train/test samples. Fixed class order and same pretrained augreg_in21k ViT-B/16, transforms and raw all-seen evaluation. CIFAR seed 0 is the prior frozen reference. No test-based tuning or additional sweep.",
+  "rrs_branch_modes":["identity","translation","mean_only","full"],
+  "task_end_statistics": true,
+  "retain_stage_checkpoints":[1,5],
+  "pure_rrs": "Inherit seed0 RRS rank32, Gram codec rank64, the original five rounds and five epochs of local AdamW, batch16, and original diagonal/factor and LDA settings. Fit the same four independent histories only at the last communication round. Use the two-task three-round real ViT gate and fail closed on discrepancy. Use task-start feature anchors and an identical current data view. Selected-response runs are outside this study.",
+  "analytic": "FedRAN v2 independent implementation and STSA-E retain previous hyperparameters, share one T1 AdaptFormer fit per split and then freeze. ImageNet-R uses 20 T1 rounds, the same two local epochs and batch128, with the paper's STSA-E settings. Add normalized CLS and the group's rank64 decoded-scatter LDA on exactly that T1 AdaptFormer representation, fitting one stream with no further gradient training.",
+  "same_start_frozen": "At each new pure RRS trajectory's committed T1 checkpoint, retain and use that exact representation for frozen LDA with dense and rank64 scatters over all ten tasks. Same-start matched contrast freezes on exactly the data/seed as the continuing RRS run. Report the source T1 train and communication separately from incremental frozen inference.",
+  "existing_endpoint_controls": "Use existing completed CIFAR seed 0 checkpoints. On frozen T1 AdaptFormer, run one statistics replay to evaluate FedRAN lambda 1e5/1e6/1e7, STSA-E and matched LDA. Report all choices without replacing the preregistered 1e6. On RRS T10, evaluate cumulative stored means by class age using Euclidean and common-LDA Mahalanobis errors, cross fixed weight/intercept readouts and paired corrected/harmed examples as aggregate counts only. Evaluator results never flow into fitting.",
+  "primary": "Paired raw AIA of low-rank mean transport minus simple translation for each seed and dataset. Report all per-seed contrasts and descriptive CIFAR seed mean and sample SD. Keep ImageNet-R separate.",
+  "secondary": "Raw final, weighted old/new accuracy and forgetting; centered AIA; same-T1 continuing RRS versus frozen LDA and external analytic comparisons; logical message components and resource receipts. For unbalanced ImageNet-R, stage raw accuracy uses sample weighting, all stages enter the AIA equally.",
+  "budgets":{"wall_seconds":86400,"aggregate_gpu_seconds":86400,"storage_limit_bytes":20000000000,"write_stop_bytes":18000000000,"checkpoint_reserve_bytes":1500000000,"max_gpu_workers":6},
+  "termination":"One original wall clock for all checks, lanes and any recovery. Supervisor and worker enforce the hard limits independently of SSH. Stop on protocol or numerical failure rather than score. Cohort comparison is complete when the new full-length runs and frozen controls have terminal receipts."
+}

@@ -11,7 +11,7 @@ from .runtime import setup,build,validate
 def restore_frozen(p):
     x=torch.load(p.out/'latest.pt',map_location='cpu',weights_only=False)
     if x['config']!=p.cfg or x['clock']!=p.clock or x['identity']!=p.identity:raise ValueError('frozen recovery identity changed')
-    if not all(x['merged_flags'].values()) or x['head_count']!=0:raise ValueError('frozen backbone modified')
+    if not all(x['merged_flags'].values()) or x['head_count']!=len(p.model.rows):raise ValueError('frozen backbone modified')
     p.model.load_state_dict(x['model'],strict=True);p.s=x['state'];restore_rng(x['rng'])
 
 
@@ -33,7 +33,8 @@ def step_frozen(p,t):
             counters=p.s['frozen_communication'][mode]
             counters['class_statistics_upload']=counters.get('class_statistics_upload',0)+cost[mode]
             counters['all_seen_head_download']=counters.get('all_seen_head_download',0)+p.cfg['clients']*(W.numel()+beta.numel())*4
-            if int(stats['counts'].sum())!=(t+1)*len(p.ids('train',t)):raise AssertionError('frozen count error')
+            if int(stats['counts'].sum())!=sum(len(p.ids('train',j)) for j in range(t+1)):
+                raise AssertionError('frozen count error')
         p.model.deploy(*p.s['branch_heads']['dense'])
     result=p.evaluate(False);p.s['stages'].append(result);p.s['matrix'].append(result['per_task'])
     p.s['phase']='frozen_evaluated';p.save();restore_frozen(p)

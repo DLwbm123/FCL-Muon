@@ -9,7 +9,7 @@ from fcl.checkpoint import atomic_save
 
 @contextlib.contextmanager
 def lock(root):
-    with (Path(root)/'.storage.lock').open('a') as handle:
+    with (Path(os.environ.get('COHORT_ROOT',root))/'.storage.lock').open('a') as handle:
         fcntl.flock(handle, fcntl.LOCK_EX)
         try:
             yield
@@ -39,6 +39,6 @@ def write(root, path, value):
 
 def save(root, path, value):
     with lock(root):
-        if allocated(root)+1_500_000_000 >= 18_000_000_000:
+        if allocated(os.environ.get('COHORT_ROOT',root))+1_500_000_000 >= 18_000_000_000:
             raise RuntimeError('storage reserve reached; existing checkpoint retained')
         atomic_save(value, path)

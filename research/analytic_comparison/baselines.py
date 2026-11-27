@@ -12,12 +12,12 @@ import torch
 from safetensors.torch import load_file
 from torch import nn
 from torch.nn import functional as F
-from torchvision.datasets import CIFAR100
 
-from fcl.data import loader, transforms
+from fcl.data import loader, transforms, load_raw
 from research.adamw_t10.pilot import centered_logits, metrics
 from research.adamw_t10.storage import save, write
 from research.stat_ablation.runtime import setup, validate
+from research.stat_ablation.statistics import class_wire, local_packet, merge, projection
 
 
 def build_adapter(root, weights, width):
@@ -63,8 +63,8 @@ def cosine(features, weight):
     return F.linear(F.normalize(features, dim=-1), F.normalize(weight, dim=-1))
 
 
-def t1_adapt(backbone, data, groups, transform, spec, check_budget, progress):
-    model = nn.Sequential(backbone, CosineHead(backbone.num_features, 10).cuda()).train()
+def t1_adapt(backbone, data, groups, classes, transform, spec, check_budget, progress):
+    model = nn.Sequential(backbone, CosineHead(backbone.num_features, classes).cuda()).train()
     params = [p for p in model.parameters() if p.requires_grad]
     round_payload = sum(p.numel() * p.element_size() for p in params)
     rng = np.random.RandomState(spec['seed'])
@@ -168,8 +168,12 @@ def get_features(backbone, data, indices, batch, transform, check_budget):
 
 
 def score(features, labels, projection, classifier, stages, task_classes, mode):
-    expanded = (features @ projection).relu()
-    logits = cosine(expanded, classifier.T) if mode == 'stsa_e' else expanded @ classifier
+    if mode == 'matched_lda':
+        weight, bias = classifier
+        logits = F.linear(F.normalize(features, dim=-1), weight, bias)
+    else:
+        expanded = (features @ projection).relu()
+        logits = cosine(expanded, classifier.T) if mode == 'stsa_e' else expanded @ classifier
     classes = logits.shape[1]
     if not torch.isfinite(logits).all():
         raise ValueError('Nonfinite test logits')
@@ -227,25 +231,38 @@ def main():
 
     torch.manual_seed(spec['seed'])
     mathematical_checks()
-    manifest = json.loads((root / 'src/manifests/seed0.json').read_text())
-    raw = [CIFAR100(root / 'src/data', train=train, download=False) for train in (True, False)]
-    if any(dataset.targets != manifest['labels'][key] for dataset, key in zip(raw, ('train', 'test'))):
-        raise ValueError('CIFAR-100 labels differ from frozen split')
+    config = freeze['config']
+    manifest = json.loads((root / 'src/manifests' / freeze.get('manifest_name', 'seed0.json')).read_text())
+    raw, cpt, classes = load_raw(config['dataset'], root / 'src/data', download=False)
+    if (cpt != config['cpt'] or classes != config['tasks'] * cpt
+        or any(list(dataset.targets) != manifest['labels'][key] for dataset, key in zip(raw, ('train', 'test')))):
+        raise ValueError('Dataset dimensions or labels differ from frozen split')
     parts = manifest['partitions']
     train_tf, test_tf = [tf.cuda() for tf in transforms()]
     backbone = build_adapter(root, freeze['weights']['path'], spec['adapter_width'])
-    cost = t1_adapt(backbone, raw[0], parts['train'][0], train_tf, spec, check_budget, progress)
-    backbone.eval().requires_grad_(False)
+    warmstart = os.environ.get('WARMSTART_CHECKPOINT')
     projections = {mode: proposal(backbone.num_features, spec[mode]['width'], spec['seed']) for mode in ('fedran', 'stsa_e')}
+    cost = {}
+    if warmstart:
+        source = torch.load(warmstart, map_location='cuda', weights_only=True)
+        backbone.load_state_dict(source['model'], strict=True)
+        projections = source['projections']
+    else:
+        cost = t1_adapt(backbone, raw[0], parts['train'][0], cpt, train_tf, spec, check_budget, progress)
+    backbone.eval().requires_grad_(False)
     stsa_generator = torch.Generator(device='cuda').manual_seed(spec['seed'])
-    data_types = {mode: projections[mode].dtype for mode in projections}
-    histories = {mode: [] for mode in projections}
-    charges = {mode: {'statistics_upload_bytes': 0, 'head_download_bytes': 0} for mode in projections}
-    stsa_gram, fedran_summary = None, None
+    ridges = {'fedran': spec['fedran']['ridge'], **spec.get('fedran_ridge_controls', {})}
+    options = {mode: projections['fedran'] for mode in ridges}
+    options['stsa_e'] = projections['stsa_e']
+    if spec.get('matched_lda',False):
+        options['matched_lda'] = None
+    histories = {mode: [] for mode in options}
+    charges = {mode: {'statistics_upload_bytes': 0, 'head_download_bytes': 0} for mode in options}
+    stsa_gram, fedran_summary, lda_state = None, None, None
+    R = projection(backbone.num_features, config.get('transport_rank',64))
     cumulative = {mode: None for mode in projections}
     for t, clients in enumerate(parts['train']):
-        cpt = freeze['config']['cpt']
-        task_spectral, packets = None, []
+        task_spectral, packets, lda_packets = None, [], []
         fedran_sums = torch.zeros(spec['fedran']['width'], cpt, device='cuda', dtype=torch.float64)
         for indices in clients:
             features, labels = get_features(backbone, raw[0], indices, spec['feature_batch'], test_tf, check_budget)
@@ -256,15 +273,20 @@ def main():
             summary = tuple(tensor.float().double() for tensor in summary)
             task_spectral = spectral_merge(task_spectral, summary, spec['fedran']['rank'])
             fedran_sums += sums.float().double()
-            charges['fedran']['statistics_upload_bytes'] += 4 * (
-                sum(x.numel() for x in summary) + sums.shape[0] * (t + 1) * cpt
-            )
+            wire = 4 * (sum(x.numel() for x in summary) + sums.shape[0] * (t + 1) * cpt)
+            for mode in ridges:
+                charges[mode]['statistics_upload_bytes'] += wire
             stsa_features = (features.double() @ projections['stsa_e'].double()).relu()
             client_packets = stsa_packets(stsa_features, current, spec['stsa_e']['dummy'], cpt, stsa_generator)
             packets.extend(client_packets)
             charges['stsa_e']['statistics_upload_bytes'] += sum(a.numel() * 8 + b.numel() * 8 for a, b in client_packets)
+            if 'matched_lda' in options:
+                z = F.normalize(features,dim=-1).cpu()
+                packet,wire,_ = local_packet(z,z,current.cpu(),cpt,R,config.get('head_rank',64))
+                lda_packets.append(packet)
+                charges['matched_lda']['statistics_upload_bytes'] += len(class_wire(wire,z.shape[1],R.shape[1],cpt,'identity'))
         num_train = sum(map(len, clients))
-        if num_train != 5000 or sum(int(counts.sum()) for _, counts in packets) != num_train:
+        if sum(int(counts.sum()) for _, counts in packets) != num_train:
             raise ValueError('Task statistics do not include each current training sample once')
         fedran_summary = spectral_merge(fedran_summary, task_spectral, spec['fedran']['rank'])
         stsa_sums, gram = stsa_estimate(packets)
@@ -272,20 +294,25 @@ def main():
         for mode, new_sums in zip(('fedran', 'stsa_e'), (fedran_sums, stsa_sums)):
             cumulative[mode] = new_sums if t == 0 else torch.cat((cumulative[mode], new_sums), dim=1)
         classifiers = {
-            'fedran': spectral_ridge(fedran_summary, cumulative['fedran'], spec['fedran']['ridge']),
+            **{mode: spectral_ridge(fedran_summary, cumulative['fedran'], ridge).float() for mode,ridge in ridges.items()},
             'stsa_e': torch.linalg.solve(
                 stsa_gram + spec['stsa_e']['ridge'] * torch.eye(len(stsa_gram), device='cuda', dtype=stsa_gram.dtype),
                 cumulative['stsa_e'],
-            ),
+            ).float(),
         }
+        if lda_packets:
+            lda_state,W,beta,_ = merge(lda_packets,lda_state,R,mode='identity')
+            if int(lda_state['counts'].sum()) != sum(len(g) for task in parts['train'][:t+1] for g in task):
+                raise ValueError('Unexpected LDA coverage')
+            classifiers['matched_lda'] = (W.float().cuda(),beta.float().cuda())
         indices = [i for groups in parts['test'][:t + 1] for group in groups for i in group]
         features, labels = get_features(backbone, raw[1], indices, spec['feature_batch'], test_tf, check_budget)
-        if len(labels) != 1000 * (t + 1):
-            raise ValueError('Unexpected all-seen evaluation size')
+        if len(labels) != len(indices) or set(labels.tolist()) != set(range((t+1)*cpt)):
+            raise ValueError('Unexpected all-seen evaluation coverage')
         for mode, classifier in classifiers.items():
-            classifiers[mode] = classifier.to(data_types[mode])
-            charges[mode]['head_download_bytes'] += len(clients) * classifier.numel() * 4
-            histories[mode].append(score(features, labels, projections[mode], classifiers[mode], histories[mode], cpt, mode))
+            arrays = classifier if isinstance(classifier,tuple) else (classifier,)
+            charges[mode]['head_download_bytes'] += len(clients) * sum(a.numel()*a.element_size() for a in arrays)
+            histories[mode].append(score(features, labels, options[mode], classifier, histories[mode], cpt, mode))
         record = {mode: dict(
             raw_AIA=float(np.mean([s['all_seen'] for s in stages])),
             raw_final=stages[-1]['all_seen'],
@@ -295,7 +322,7 @@ def main():
         write(root, reports / f'T{t + 1}.json', record)
         print(json.dumps({'task': t + 1, **{mode: row['raw_AIA'] for mode, row in record.items()}}), flush=True)
 
-    save(root, output / 'latest.pt', dict(model=backbone.state_dict(), classifiers=classifiers, projections=projections))
+    save(root, output / 'latest.pt', dict(model=backbone.state_dict(), classifiers=classifiers, projections=options))
     recovered = torch.load(output / 'latest.pt', map_location='cuda', weights_only=True)
     backbone.load_state_dict(recovered['model'], strict=True)
     features, labels = get_features(backbone, raw[1], indices, spec['feature_batch'], test_tf, check_budget)
@@ -305,7 +332,8 @@ def main():
                  histories[mode][:-1], cpt, mode) != expected:
             raise RuntimeError(f'Final reload changed {mode} metrics')
     write(root, reports / 'COMPLETE.json', dict(status='completed', tasks=len(parts['train']), branches=record,
-          final_checkpoint_reload_equal=True, training_shared_t1_once=True, real_analytic_train_samples=50000,
+          final_checkpoint_reload_equal=True, training_shared_t1_once=not bool(warmstart), reused_warmstart=bool(warmstart),
+          real_analytic_train_samples=len(raw[0]),
           wall_seconds=time.monotonic() - began, peak_cuda_reserved_bytes=torch.cuda.max_memory_reserved()))
 
 
