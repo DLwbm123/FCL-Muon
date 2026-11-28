@@ -1,0 +1,22 @@
+{
+  "study": "ImageNet-R replication of paired transfer and same-start frozen control",
+  "reference_commit": "bc0b59472ef8f6041c3566fd5e9b3acbfbed1ad9",
+  "reference_protocol": "../transfer_validation_20261127/PROTOCOL.json",
+  "dataset": "seq-imagenetr",
+  "train_samples": 24000,
+  "test_samples": 6000,
+  "groups": [
+    {"seed": 1, "physical_gpu": 6},
+    {"seed": 2, "physical_gpu": 7}
+  ],
+  "inherited_configuration": "Reuse the frozen ImageNet-R seed 0 sources, environment, model, data, class order, split generator, training settings and evaluation. Change only the seed in the training configuration.",
+  "trajectory": "One shared pure RRS trajectory per seed with ordinary AdamW and compressed rank64 RRS Gram. Ten tasks, twenty classes per task, ten clients, Dirichlet alpha 0.05, five rounds, five local epochs, batch size 16.",
+  "rrs_branch_modes": ["identity", "translation", "mean_only", "full"],
+  "task_end_statistics": true,
+  "retain_stage_checkpoints": [1, 5],
+  "frozen_readout": "Run dense and rank64 LDA from the same seed's committed RRS T1 checkpoint, on all ten tasks, with no additional optimizer updates.",
+  "primary": "Raw all-seen AIA. Retain the inherited mean-only minus translation contrast. Also report full minus mean-only, full minus translation, and full minus same-start rank64 LDA.",
+  "secondary": "T10 raw all-seen, old/new accuracy, average forgetting, centered AIA and formal logical payloads. Report paired differences by seed and their descriptive mean and sample SD, with the previous seed 0 identified separately.",
+  "budgets": {"wall_seconds": 86400, "aggregate_gpu_seconds": 86400, "storage_limit_bytes": 20000000000, "write_stop_bytes": 18000000000, "checkpoint_reserve_bytes": 1500000000, "max_gpu_workers": 2},
+  "termination": "One original clock, summed GPU time, and storage budget. Stop on protocol, numerical, or budget failure. Require ten-stage reloaded receipts from both trajectories and both frozen controls, then publish the summary and per-stage metrics."
+}
