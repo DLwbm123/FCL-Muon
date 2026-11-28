@@ -1,0 +1,108 @@
+{
+  "dataset": "ImageNet-R",
+  "seed": 0,
+  "tasks": 10,
+  "encoder": "Same committed RRS T1 as the parent frozen LDA control",
+  "source_commit": "bc0b59472ef8f6041c3566fd5e9b3acbfbed1ad9",
+  "methods": {
+    "rrs_t1_frozen_fedran": {
+      "raw_aia": 0.8156124959377935,
+      "raw_final": 0.74,
+      "final_old": 0.7400976668475312,
+      "final_new": 0.7388535031847133,
+      "final_forgetting": 0.0687910335696119,
+      "centered_aia": 0.814303291685377
+    },
+    "rrs_t1_frozen_lda_compressed": {
+      "raw_aia": 0.8210163767088611,
+      "raw_final": 0.756,
+      "final_old": 0.7585458491589799,
+      "final_new": 0.7261146496815286,
+      "final_forgetting": 0.05988015286945858,
+      "centered_aia": 0.7518075098693032
+    },
+    "adaptformer_t1_frozen_fedran": {
+      "raw_aia": 0.7384810427304828,
+      "raw_final": 0.6481666666666667,
+      "final_old": 0.6478567552902875,
+      "final_new": 0.6518046709129511,
+      "final_forgetting": 0.08901137138659347,
+      "centered_aia": 0.7374016792213738
+    },
+    "continuing_rrs_full": {
+      "raw_aia": 0.8357458124700952,
+      "raw_final": 0.7611666666666667,
+      "final_old": 0.7581841200940496,
+      "final_new": 0.7961783439490446,
+      "final_forgetting": 0.10459382559615012,
+      "centered_aia": 0.7969336506486507
+    }
+  },
+  "fedran_minus_same_encoder_lda_pp": {
+    "raw_aia": -0.5403880771067571,
+    "raw_final": -1.6000000000000014,
+    "final_old": -1.8448182311448735,
+    "final_new": 1.273885350318471,
+    "final_forgetting": 0.8910880700153321,
+    "centered_aia": 6.249578181607374
+  },
+  "fedran_minus_adaptformer_t1_fedran_pp": {
+    "raw_aia": 7.7131453207310745,
+    "raw_final": 9.183333333333332,
+    "final_old": 9.224091155724368,
+    "final_new": 8.704883227176218,
+    "final_forgetting": -2.0220337816981573,
+    "centered_aia": 7.690161246400318
+  },
+  "fedran_minus_same_encoder_lda_by_task_pp": [
+    0.0,
+    -0.2382843526608447,
+    -0.7174392935982321,
+    0.0,
+    0.03207184092366422,
+    -0.4801280341424463,
+    -0.3715745471435161,
+    -0.7082152974504319,
+    -1.32031108699584,
+    -1.6000000000000014
+  ],
+  "new_class_test_samples_by_task": [
+    543,
+    716,
+    553,
+    686,
+    620,
+    631,
+    557,
+    636,
+    587,
+    471
+  ],
+  "logical_bytes_excluding_reused_t1_training": {
+    "fedran": {
+      "statistics_upload_bytes": 283201564,
+      "head_download_bytes": 90112000
+    },
+    "rank64_lda": {
+      "class_statistics_upload": 26132400,
+      "all_seen_head_download": 33836000
+    }
+  },
+  "resources": {
+    "gpu_index": 4,
+    "started": "2026-11-28T13:08:56.067773+08:00",
+    "finished": "2026-11-28T13:22:19.159693+08:00",
+    "wall_seconds": 803.091920375824,
+    "newly_allocated_bytes": 16080896,
+    "peak_cuda_reserved_bytes": 5601492992,
+    "new_training_visits": 0,
+    "new_optimizer_updates": 0
+  },
+  "validation": {
+    "fedran_final_reload_equal": true,
+    "frozen_lda_all_stage_reloads_verified": true,
+    "fedran_stage_receipts_match_completion": true,
+    "matching_class_test_counts_all_stages": true,
+    "frozen_lda_matches_published_stage_metrics": true
+  }
+}

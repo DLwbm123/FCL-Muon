@@ -1,0 +1,27 @@
+{
+  "question": "How does the frozen RRS T1 representation perform with FedRAN's analytic head, versus the existing LDA on the same representation?",
+  "parent_commit": "bc0b59472ef8f6041c3566fd5e9b3acbfbed1ad9",
+  "dataset": "seq-imagenetr",
+  "seed": 0,
+  "tasks": 10,
+  "clients": 10,
+  "dirichlet_alpha": 0.05,
+  "manifest_sha256": "da412683a00e9d9310e2419fef853fd45a4db1ed15be1a5035aa114ffb980442",
+  "encoder": "Read-only committed and merged RRS T1 used by the prior same-start frozen LDA control. Extract unnormalized CLS for FedRAN.",
+  "classifier": {
+    "implementation": "Existing FedRAN v2 independent implementation kernels, preserving the analytic comparator's preprocessing, seed, feature batching, encoding and spatial/temporal merge order",
+    "feature_batch": 128,
+    "width": 2048,
+    "rank": 512,
+    "ridge": 1000000
+  },
+  "primary": "Raw all-seen AIA difference between frozen RRS T1 + FedRAN and frozen RRS T1 + rank64 LDA, one matched ImageNet-R seed.",
+  "secondary": "T10 raw all-seen, old/new accuracy, forgetting, centered AIA, and comparison to prior AdaptFormer T1 + FedRAN. Report the reused encoder training cost separately.",
+  "budgets": {
+    "wall_seconds": 3600,
+    "allocated_bytes": 2000000000,
+    "min_free_gpu_mib": 18000
+  },
+  "stop": "Ten stage receipts and exact final classifier reload metrics, or first protocol, numerical, time or storage failure.",
+  "training": "Zero additional gradient updates. No hyperparameter tuning."
+}
