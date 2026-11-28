@@ -1,0 +1,9 @@
+{
+  "scope": "Read-only independent committed T1 gate, T10 merge diagnostic, and existing dense/rank64 T1 frozen control. Zero gradient updates. Original cohort and exact merge failure remain recorded.",
+  "gpu": 6,
+  "original_started": 1795848989.353909,
+  "original_deadline": 1795935389.353909,
+  "max_wall_seconds": 2408,
+  "prior_gpu_seconds": 28949.40950931143,
+  "T1_gate": "Strict original seed, model, manifest and pretrained identity, committed T1 state, and exact raw/centered all-branch confusion/readouts."
+}
