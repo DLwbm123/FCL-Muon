@@ -376,6 +376,23 @@
       "sample_sd_pp": 0.2759128297273724
     }
   },
+  "full_minus_mean_only_aia_contribution_pp": {
+    "0": {
+      "old": 0.44370574170886845,
+      "new": -0.003761833472842395,
+      "total": 0.4399439082360261
+    },
+    "1": {
+      "old": 0.46815971757860275,
+      "new": -0.03813867227767186,
+      "total": 0.4300210453009309
+    },
+    "2": {
+      "old": 0.479705025555479,
+      "new": -0.008199267112677159,
+      "total": 0.47150575844280185
+    }
+  },
   "new_seeds": {
     "1": {
       "training_visits": 600000,
@@ -389,8 +406,13 @@
         "current_head_upload": 30720000,
         "unified_statistics_upload": 47765200,
         "all_seen_head_download": 33836000,
-        "task_end_B_download": 212336640,
-        "task_end_head_download": 5529600
+        "task_end_B_download": 235929600,
+        "task_end_head_download": 6144000
+      },
+      "formal_payload_common_source": "committed T10 checkpoint; original merge gate failed",
+      "t10_post_evaluation_payload_bytes": {
+        "task_end_B_download": 23592960,
+        "task_end_head_download": 614400
       },
       "statistics_upload_by_branch": {
         "identity": 26132400,
@@ -422,8 +444,13 @@
         "current_head_upload": 30720000,
         "unified_statistics_upload": 47765200,
         "all_seen_head_download": 33836000,
-        "task_end_B_download": 212336640,
-        "task_end_head_download": 5529600
+        "task_end_B_download": 235929600,
+        "task_end_head_download": 6144000
+      },
+      "formal_payload_common_source": "terminal COMPLETE.json",
+      "t10_post_evaluation_payload_bytes": {
+        "task_end_B_download": 23592960,
+        "task_end_head_download": 614400
       },
       "statistics_upload_by_branch": {
         "identity": 26132400,
